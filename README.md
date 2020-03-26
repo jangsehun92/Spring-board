@@ -19,7 +19,6 @@ Spring Framework를 사용하여 게시판을 구현한다.
 * 로그인/로그아웃 
 * Ajax를 이용한 게시글 CRUD
 * 페이징 처리 
-* REST API  
-* 댓글 
+* 게시글 관련 REST API  
+* 댓글 CRUD
 * 추천 기능
-

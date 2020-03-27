@@ -24,5 +24,4 @@
 	<context:component-scan base-package="jsh.project.board" />
 	
 	
-	
 </beans:beans>

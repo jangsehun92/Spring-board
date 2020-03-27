@@ -36,9 +36,10 @@
 
 	<tx:annotation-driven />
 
+	<!-- Test용 -->
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="configLocation" value="WEB-INF/spring/sqls/config.xml" />
+		<property name="configLocation" value="file:src/main/webapp/WEB-INF/spring/sqls/config.xml" />
 	</bean>
 	
 	<!-- session.open & session.close 를 알아서 해줄것임 -->

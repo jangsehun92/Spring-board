@@ -10,7 +10,7 @@
   <!-- mapper의 위치를 잡아준다. -->
   <mappers>
     <!-- 게시판 관련 -->
-  	<mapper resource="/sqls/board/boardMapper.xml"/>
+  	<!-- <mapper resource="/sqls/board/boardMapper.xml"/> -->
   </mappers>
 
 </configuration>

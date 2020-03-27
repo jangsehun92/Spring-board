@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+
+  <!-- 패키지.domain클래스 까지 입력 -->
+  <typeAliases>
+  
+  </typeAliases>
+
+  <!-- mapper의 위치를 잡아준다. -->
+  <mappers>
+    <!-- 게시판 관련 -->
+  	<mapper resource="/sqls/board/boardMapper.xml"/>
+  </mappers>
+
+</configuration>

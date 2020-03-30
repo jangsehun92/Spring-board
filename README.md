@@ -15,8 +15,8 @@ Spring Framework를 사용하여 게시판을 구현한다.
 * DB : Oracle 11g
 
 ## 구현기능 
-* 회원가입
-* 로그인/로그아웃 
+* [spring security] 회원가입
+* [spring security] 로그인/로그아웃 
 * Ajax를 이용한 게시글 CRUD
 * 페이징 처리 
 * 게시글 관련 REST API  

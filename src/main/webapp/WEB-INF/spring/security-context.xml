@@ -14,7 +14,7 @@
         <intercept-url pattern="/article" method="PUT" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/article" method="DELETE" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
 		<intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
-		<form-login login-page="/login "/>
+		<form-login login-page="/login" />
 		<!-- <csrf disabled="true"/> -->
     </http>  
     

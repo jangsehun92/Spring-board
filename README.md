@@ -14,7 +14,7 @@ Spring Framework를 사용하여 게시판을 구현한다.
 * ORM : mybatis 3.4.6
 * DB : Oracle 11g
 
-## 구현기능 
+## 기능 목록
 * [spring security] 회원가입
 * [spring security] 로그인/로그아웃 
 * Ajax를 이용한 게시글 CRUD 
@@ -23,3 +23,6 @@ Spring Framework를 사용하여 게시판을 구현한다.
 * 댓글 CRUD
 * 추천 기능
 * 검색 기능
+
+## 진행 
+1. 시큐리티 공부 및 적용 

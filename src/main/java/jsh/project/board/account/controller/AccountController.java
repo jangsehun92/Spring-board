@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AccountController {
 	
+	//예제 코드
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(@RequestParam(value = "error", required = false) String error, 
                             @RequestParam(value = "logout", required = false) String logout,

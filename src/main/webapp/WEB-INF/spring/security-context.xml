@@ -14,7 +14,9 @@
         <intercept-url pattern="/article" method="PUT" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/article" method="DELETE" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
 		<intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
-		<form-login login-page="/login" />
+		<form-login login-page="/login" 
+					username-parameter="email"
+					password-parameter="password"/>
 		<!-- <csrf disabled="true"/> -->
     </http>  
     
@@ -31,10 +33,10 @@
 	<!-- DB -->
 	<authentication-manager>
 		<authentication-provider>
-		<jdbc-user-service 
+		<jdbc-user-service
 		data-source-ref="dataSource"
-		users-by-username-query="select username, password, enabled from member_table where username = ?"
-		authorities-by-username-query="select username, authority from authority_table where username = ?"
+		users-by-username-query="select email password, enabled from member_table where email = ?"
+		authorities-by-username-query="select email authority from authority_table where email = ?"
 		/>
 		</authentication-provider>
 	</authentication-manager>  

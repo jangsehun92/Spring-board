@@ -18,12 +18,24 @@
 		<!-- <csrf disabled="true"/> -->
     </http>  
     
+    <!-- test -->
     <authentication-manager>
 		<authentication-provider>
 			<user-service>
 				<user name="admin" password="admin" authorities="hasRole(ROLE_ADMIN)" />
 				<user name="user" password="user" authorities="hasRole(ROLE_ADMIN)" />
 			</user-service>
+		</authentication-provider>
+	</authentication-manager>  
+	
+	<!-- DB -->
+	<authentication-manager>
+		<authentication-provider>
+		<jdbc-user-service 
+		data-source-ref="dataSource"
+		users-by-username-query="select username, password, enabled from member_table where username = ?"
+		authorities-by-username-query="select username, authority from authority_table where username = ?"
+		/>
 		</authentication-provider>
 	</authentication-manager>  
 	

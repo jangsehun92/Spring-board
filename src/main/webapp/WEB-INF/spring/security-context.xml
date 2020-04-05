@@ -20,6 +20,8 @@
 		<!-- <csrf disabled="true"/> -->
     </http>  
     
+    <!--  passwordEncoder bean 만들기 -->
+    
     <!-- test -->
     <authentication-manager>
 		<authentication-provider>

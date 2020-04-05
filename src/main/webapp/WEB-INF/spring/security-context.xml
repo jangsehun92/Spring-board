@@ -35,6 +35,7 @@
 		<authentication-provider>
 		<jdbc-user-service
 		data-source-ref="dataSource"
+		role-prefix="ROLE_"
 		users-by-username-query="select email password, enabled from member_table where email = ?"
 		authorities-by-username-query="select email authority from authority_table where email = ?"
 		/>

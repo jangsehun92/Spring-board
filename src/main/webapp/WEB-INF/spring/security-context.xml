@@ -24,8 +24,8 @@
     <authentication-manager>
 		<authentication-provider>
 			<user-service>
-				<user name="admin" password="admin" authorities="hasRole(ROLE_ADMIN)" />
-				<user name="user" password="user" authorities="hasRole(ROLE_ADMIN)" />
+				<user name="admin" password="{noop}admin" authorities="ROLE_ADMIN" />
+				<user name="user" password="{noop}user" authorities="ROLE_USER" />
 			</user-service>
 		</authentication-provider>
 	</authentication-manager>  
@@ -36,11 +36,13 @@
 		<jdbc-user-service
 		data-source-ref="dataSource"
 		role-prefix="ROLE_"
-		users-by-username-query="select email password, enabled from member_table where email = ?"
-		authorities-by-username-query="select email authority from authority_table where email = ?"
+		users-by-username-query="select email, password, enabled from user_table where email = ?"
+		authorities-by-username-query="select email, authority from authority_table where email = ?"
 		/>
 		</authentication-provider>
-	</authentication-manager>  
+	</authentication-manager>
+	
+	
 	
 	
     

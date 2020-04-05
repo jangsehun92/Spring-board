@@ -20,6 +20,7 @@ public class AccountController {
     public String loginPage(@RequestParam(value = "error", required = false) String error, 
                             @RequestParam(value = "logout", required = false) String logout,
                             Model model) {
+		System.out.println("들어옴");
         String errorMessge = null;
         if(error != null) {
             errorMessge = "Username or Password is incorrect !!";

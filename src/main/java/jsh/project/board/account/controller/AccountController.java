@@ -12,8 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jsh.project.board.account.service.AccountService;
+
 @Controller
 public class AccountController {
+	
+	private AccountService accountService;
+	
+	public AccountController(AccountService accountService) {
+		this.accountService = accountService;
+	}
 	
 	//예제 코드
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -21,6 +29,7 @@ public class AccountController {
                             @RequestParam(value = "logout", required = false) String logout,
                             Model model) {
         String errorMessge = null;
+       
         if(error != null) {
             errorMessge = "Username or Password is incorrect !!";
         }

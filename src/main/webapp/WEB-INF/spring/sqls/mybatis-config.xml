@@ -4,13 +4,14 @@
 
   <!-- 패키지.domain클래스 까지 입력 -->
   <typeAliases>
-  
+  	<typeAlias type="jsh.project.board.account.dto.Account" alias="Account"/>
   </typeAliases>
 
   <!-- mapper의 위치를 잡아준다. -->
   <mappers>
     <!-- 게시판 관련 -->
-  	<!-- <mapper resource="/sqls/board/boardMapper.xml"/> -->
+  	<mapper resource="/sqls/board/boardMapper.xml"/>
+  	<mapper resource="/sqls/account/accountMapper.xml"/>
   </mappers>
 
 </configuration>

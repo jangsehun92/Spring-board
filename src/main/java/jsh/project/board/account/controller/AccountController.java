@@ -29,7 +29,7 @@ public class AccountController {
                             @RequestParam(value = "logout", required = false) String logout,
                             Model model) {
         String errorMessge = null;
-       
+       //boardDao를 만들어서 현재 @repository 가 안먹히는지 살펴보자
         if(error != null) {
             errorMessge = "Username or Password is incorrect !!";
         }

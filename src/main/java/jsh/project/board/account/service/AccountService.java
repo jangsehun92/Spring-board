@@ -15,14 +15,6 @@ public class AccountService implements UserDetailsService{
 	@Autowired
 	private AccountDao accountDao;
 	
-	public AccountService() {
-		
-	}
-	
-	public AccountService(AccountDao accountDao) {
-		this.accountDao = accountDao;
-	}
-	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		System.out.println(email);

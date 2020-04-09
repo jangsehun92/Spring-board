@@ -6,8 +6,8 @@
     http://www.springframework.org/schema/beans/spring-beans.xsd  
     http://www.springframework.org/schema/security  
     http://www.springframework.org/schema/security/spring-security.xsd"> 
-     
-    <http auto-config="true" use-expressions="true">  
+    
+    <http auto-config="true" use-expressions="true">
         <intercept-url pattern="/articles" access="permitAll" />
         <intercept-url pattern="/article" method="GET" access="permitAll" />
         <intercept-url pattern="/article" method="POST" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
@@ -34,7 +34,6 @@
 	</authentication-manager>   -->
 	
 	<beans:bean id="userService" class="jsh.project.board.account.service.AccountService"/>
-	
 	
 	<!-- DB -->
 	<authentication-manager>

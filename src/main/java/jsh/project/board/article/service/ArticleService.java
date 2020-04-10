@@ -1,5 +1,7 @@
 package jsh.project.board.article.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import jsh.project.board.article.dao.ArticleDao;
@@ -12,6 +14,10 @@ public class ArticleService {
 	
 	public ArticleService(ArticleDao articleDao) {
 		this.articleDao = articleDao;
+	}
+	
+	public List<Article> getArticleList(){
+		return articleDao.getList();
 	}
 	
 	public Article getArticle(int id) {

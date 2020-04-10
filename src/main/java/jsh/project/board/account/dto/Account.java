@@ -7,18 +7,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+@SuppressWarnings("serial")
 public class Account implements UserDetails{
 	
 	private String email;
 	private String password;
-	private String nickName;
+	private String nickname;
 	private boolean enabled;
 	private String authority;
 	
-	public Account() {
-		System.out.println("생성됨");
-	}
-
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		ArrayList<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
@@ -36,12 +33,12 @@ public class Account implements UserDetails{
 		return email;
 	}
 	
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
+	public void setNickName(String nickname) {
+		this.nickname = nickname;
 	}
 	
 	public String getNickName() {
-		return nickName;
+		return nickname;
 	}
 
 	@Override

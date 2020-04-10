@@ -14,5 +14,6 @@
 	<select id="articleList" resultType="Article">
 	
 	</select>
-
+	
+	
 </mapper>

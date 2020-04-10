@@ -4,8 +4,13 @@
 
   <!-- 패키지.domain클래스 까지 입력 -->
   <typeAliases>
+  	
   	<typeAlias type="jsh.project.board.account.dto.Account" alias="Account"/>
+  	<typeAlias type="jsh.project.board.account.dto.CreateAccountDto" alias="CreateAccountDto"/>
+  	
+  	
   	<typeAlias type="jsh.project.board.article.dto.Article" alias="Article"/>
+  	
   </typeAliases>
 
   <!-- mapper의 위치를 잡아준다. -->

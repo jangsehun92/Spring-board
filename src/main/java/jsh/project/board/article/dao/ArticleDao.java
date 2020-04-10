@@ -23,5 +23,5 @@ public class ArticleDao {
 	public Article getArticle(int id) {
 		return sqlSession.selectOne("boardMapper.article", id);
 	}
-
+	
 }

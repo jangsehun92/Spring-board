@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="accountMapper">	
+	<resultMap type="Account" id="AccountResultMap">
+		<result property="email" column="email"/>
+		<result property="password" column="password"/>
+		<result property="nickname" column="nickname"/>
+		<result property="enabled" column="enabled"/>
+		<result property="role" column="user_role"/>
+	</resultMap>
 
 	<insert id="save" parameterType="CreateAccountDto">
 		INSERT INTO 
 			user_table values(#{email},#{password},#{nickname},1,#{role})
 	</insert>
 
-	<select id="selectByEmail" parameterType="java.lang.String" resultType="Account">
+	<select id="selectByEmail" parameterType="java.lang.String" resultMap="AccountResultMap">
 		SELECT 
 			*
 		FROM 

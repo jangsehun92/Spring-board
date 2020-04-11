@@ -9,6 +9,8 @@
     
     <http auto-config="true" use-expressions="true">
         <intercept-url pattern="/articles" access="permitAll" />
+        <intercept-url pattern="/test1" access="hasRole('ROLE_ADMIN')" />
+        <intercept-url pattern="/test2" access="hasRole('ROLE_USER')" />
         <intercept-url pattern="/article" method="GET" access="permitAll" />
         <intercept-url pattern="/article" method="POST" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/article" method="PUT" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
@@ -38,16 +40,17 @@
 	
 	<!-- DB -->
 	<authentication-manager>
-		<authentication-provider user-service-ref="userService"/>
-		
+		<authentication-provider user-service-ref="userService">
+		<!-- <password-encoder ref="passwordEncoder"/> -->
 		<!-- <jdbc-user-service
 		data-source-ref="dataSource"
 		role-prefix="ROLE_"
 		users-by-username-query="select email, password, enabled from user_table where email = ?"
 		authorities-by-username-query="select email, authority from authority_table where email = ?"
 		/>
-		<password-encoder ref="passwordEncoder"/> -->
-		<!--  </authentication-provider>-->
+		-->
+		
+		</authentication-provider>
 	</authentication-manager>
 	
 	

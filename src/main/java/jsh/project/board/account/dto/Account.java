@@ -14,12 +14,12 @@ public class Account implements UserDetails{
 	private String password;
 	private String nickname;
 	private boolean enabled;
-	private String authority;
+	private String role;
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		ArrayList<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
-		auth.add(new SimpleGrantedAuthority(authority));
+		auth.add(new SimpleGrantedAuthority(role));
 		return auth;
 	}
 
@@ -59,6 +59,10 @@ public class Account implements UserDetails{
 	@Override
 	public boolean isEnabled() {
 		return enabled;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 

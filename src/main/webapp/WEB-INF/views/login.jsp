@@ -55,6 +55,9 @@ function check_form(){
 					<button class="btn btn-primary btn-block" type="submit" style="margin-top: 10px;">로그인</button>
 				</form:form>
 			</div>
+			<div>
+				<p>${errorMessge }</p>
+			</div>
 		</div>
 	</div>
 </body>

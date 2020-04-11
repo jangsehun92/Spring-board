@@ -21,5 +21,9 @@ public class AccountDao{
 	public Account getUserByEmail(String email) {
 		return sqlSession.selectOne("accountMapper.selectByEmail",email);
 	}
+	
+	public String findByEmail(String email) {
+		return sqlSession.selectOne("accountMapper.auth_selectByEmail",email);
+	}
 
 }

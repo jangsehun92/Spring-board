@@ -31,6 +31,7 @@ public class AccountController {
         String errorMessge = null;
         
         if(error != null) {
+        	System.out.println("Controller : " +error);
             errorMessge = "Username or Password is incorrect !!";
         }
         if(logout != null) {

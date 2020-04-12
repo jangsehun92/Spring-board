@@ -16,16 +16,10 @@ public class AccountService implements UserDetailsService{
 	
 	@Autowired
 	private AccountDao accountDao;
-	
-	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	public AccountService() {
-		
-	}
-	
 	public void register(CreateAccountDto dto) {
-		//권한 설정 과 비밀번호 암호화를 해야한다.
+		//DB에 저장하기 전에 권한 설정 과 비밀번호 암호화를 해준다.
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 		dto.setRole("ROLE_USER");
 		accountDao.save(dto);
@@ -34,7 +28,6 @@ public class AccountService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Account account = accountDao.getUserByEmail(email);
-//		account.setPassword(passwordEncoder.encode(account.getPassword()));
 		return account;
 	}
 

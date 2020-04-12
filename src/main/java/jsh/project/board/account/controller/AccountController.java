@@ -1,9 +1,12 @@
 package jsh.project.board.account.controller;
 
+import java.security.Principal;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jsh.project.board.account.dto.Account;
 import jsh.project.board.account.dto.CreateAccountDto;
 import jsh.project.board.account.service.AccountService;
 
@@ -63,6 +67,13 @@ public class AccountController {
     	accountService.register(dto);
     	return "login";
     }
+    
+    @GetMapping("/account/info")
+    public String info(Principal principal) {
+    	System.out.println(principal.getName());
+    	return "login";
+    }
+
 	
 
 }

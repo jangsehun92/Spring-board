@@ -8,10 +8,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jsh.project.board.account.dto.CreateAccountDto;
 import jsh.project.board.account.service.AccountService;
 
 @Controller
@@ -49,7 +52,17 @@ public class AccountController {
         }
         return "redirect:/login?logout=true";
     }
-	
+    
+    @GetMapping("/account/join")
+    public String joinPage() {
+    	return "join";
+    }
+    
+    @PostMapping("/account/join")
+    public String join(CreateAccountDto dto) {
+    	accountService.register(dto);
+    	return "login";
+    }
 	
 
 }

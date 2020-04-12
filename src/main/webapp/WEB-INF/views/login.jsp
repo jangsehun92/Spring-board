@@ -7,9 +7,8 @@
 <meta charset="UTF-8">
 <title>Login</title>
 </head>
-<!-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script> -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.5.0.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/inko@1.1.0/inko.min.js"></script>
-
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
@@ -18,7 +17,6 @@
 <script type="text/javascript">
 //한 > 영 & 영 > 한 변환 자바스크립트 오픈소스 라이브러리
 var inko = new Inko();
-//jquery 파일이 없어서 동작하지 않음
 function check_form(){
 	var email = $("#email").val().replace(/\s|/gi,'');
 	var password = inko.ko2en($("#password").val().replace(/\s|/gi,''));
@@ -45,7 +43,7 @@ function check_form(){
 					</h5>
 				</div>
 				<!--  <form class="form-signup form-user panel-body" method="post" action="/login" onsubmit="return check_form();">-->
-				<form:form class="form-signup form-user panel-body" method="post" action="/board/login" onsubmit="return check_form();">
+				<form:form class="form-signup form-user panel-body" method="post" action="/login" onsubmit="return check_form();">
 					<fieldset>
 						<input type="text" class="form-control input-sm" id="email" name="email" placeholder="이메일">
 						

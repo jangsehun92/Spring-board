@@ -32,6 +32,10 @@ function check_form(){
 		return false;
 	}
 }
+
+function join(){
+	location.href="/account/join";
+}
 </script>
 
 	<div class="container" style="margin-top: 80px; align-items: center;">
@@ -52,6 +56,7 @@ function check_form(){
 					
 					<button class="btn btn-primary btn-block" type="submit" style="margin-top: 10px;">로그인</button>
 				</form:form>
+					<button class="btn btn-primary btn-block" type="button" style="margin-top: 10px;" onclick="join();">회원가입</button>
 			</div>
 			<div>
 				<p>${errorMessge }</p>

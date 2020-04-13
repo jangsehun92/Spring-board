@@ -23,13 +23,4 @@
 			email = #{email}
 	</select>
 	
-	<select id="auth_selectByEmail" parameterType="java.lang.String" resultType="String">
-		select 
-        	authority
-        FROM 
-        	authority_table
-        WHERE
-        	email = #{email}
-	</select>
-
 </mapper>

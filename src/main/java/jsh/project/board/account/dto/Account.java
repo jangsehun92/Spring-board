@@ -33,11 +33,11 @@ public class Account implements UserDetails{
 		return email;
 	}
 	
-	public void setNickName(String nickname) {
+	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
 	
-	public String getNickName() {
+	public String getNickname() {
 		return nickname;
 	}
 

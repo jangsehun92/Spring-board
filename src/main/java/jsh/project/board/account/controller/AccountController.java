@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jsh.project.board.account.dto.Account;
 import jsh.project.board.account.dto.CreateAccountDto;
 import jsh.project.board.account.service.AccountService;
+import oracle.jdbc.oracore.PickleOutputStream;
 
 @Controller
 public class AccountController {
@@ -69,8 +70,10 @@ public class AccountController {
     }
     
     @GetMapping("/account/info")
-    public String info(Principal principal) {
-    	System.out.println(principal.getName());
+    public String info(Principal principal, Authentication auth) {
+    	System.out.println(principal.getName());//null을 유발할수 있다.
+    	//이렇게도 인증한 정보를 얻어올 수 있다.
+    	//Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	return "login";
     }
 

@@ -39,7 +39,6 @@ public class AccountController {
         String errorMessge = null;
         
         if(error != null) {
-        	System.out.println("Controller : " +error);
             errorMessge = "Username or Password is incorrect !!";
         }
         if(logout != null) {
@@ -71,11 +70,21 @@ public class AccountController {
     
     @GetMapping("/account/info")
     public String info(Principal principal, Authentication auth) {
+    	
     	System.out.println(principal.getName());//null을 유발할수 있다.
     	//이렇게도 인증한 정보를 얻어올 수 있다.
     	//Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	return "login";
     }
+    
+    @GetMapping("/account/exception")
+    public String exception() throws Exception {
+    	
+    	throw new Exception("exception Test");
+
+    }
+    
+    
 
 	
 

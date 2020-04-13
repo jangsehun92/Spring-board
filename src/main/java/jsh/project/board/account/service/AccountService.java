@@ -21,7 +21,13 @@ public class AccountService{
 		//DB에 저장하기 전에 권한 설정 과 비밀번호 암호화를 해준다.
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 		dto.setRole("ROLE_USER");
+		
 		accountDao.save(dto);
+	}
+	
+	public boolean checkEmail(String email) {
+		
+		return false;
 	}
 	
 

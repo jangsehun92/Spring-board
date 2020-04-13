@@ -65,5 +65,7 @@ public class Account implements UserDetails{
 		this.password = password;
 	}
 	
+	//이메일인증이 되어있는지(여부에 따라 Exception 발생시키기)
+	
 
 }

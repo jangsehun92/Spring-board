@@ -1,17 +1,17 @@
 package jsh.project.board.account.dto;
 
-public class CreateAccountDto {
+public class AccountCreateDto {
 	
 	private String email;
 	private String password;
 	private String nickname;
 	private String role;
 	
-	public CreateAccountDto() {
+	public AccountCreateDto() {
 		
 	}
 	
-	public CreateAccountDto(String email, String password, String nickname) {
+	public AccountCreateDto(String email, String password, String nickname) {
 		this.email = email;
 		this.password = password;
 		this.nickname = nickname;

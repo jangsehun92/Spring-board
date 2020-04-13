@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jsh.project.board.account.dto.Account;
-import jsh.project.board.account.dto.CreateAccountDto;
+import jsh.project.board.account.dto.AccountCreateDto;
 import jsh.project.board.account.service.AccountService;
 import oracle.jdbc.oracore.PickleOutputStream;
 
@@ -63,7 +63,7 @@ public class AccountController {
     }
     
     @PostMapping("/account/join")
-    public String join(CreateAccountDto dto) {
+    public String join(AccountCreateDto dto) {
     	accountService.register(dto);
     	return "login";
     }

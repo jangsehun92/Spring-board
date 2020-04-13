@@ -4,7 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import jsh.project.board.account.dto.Account;
-import jsh.project.board.account.dto.CreateAccountDto;
+import jsh.project.board.account.dto.AccountCreateDto;
 
 @Repository
 public class AccountDao{
@@ -15,7 +15,7 @@ public class AccountDao{
 		this.sqlSession = sqlSession;
 	}
 	
-	public void save(CreateAccountDto dto) {
+	public void save(AccountCreateDto dto) {
 		sqlSession.insert("accountMapper.save",dto);
 	}
 	

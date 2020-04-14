@@ -26,7 +26,7 @@ public class AccountService{
 	}
 	
 	public boolean checkEmail(String email) {
-		
+		System.out.println(accountDao.findByEmail(email));
 		return true;
 	}
 	

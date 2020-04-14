@@ -84,6 +84,13 @@ public class AccountController {
 
     }
     
+    @GetMapping("/account/email")
+    public String checkEmail(String email) throws Exception {
+    	System.out.println(email);
+    	accountService.checkEmail(email);
+    	return"join";
+    }
+    
     
 
 	

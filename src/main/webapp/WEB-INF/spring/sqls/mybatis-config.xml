@@ -4,11 +4,11 @@
 
   <!-- 패키지.domain클래스 까지 입력 -->
   <typeAliases>
-  	
+  	<!-- Account 관련  -->
   	<typeAlias type="jsh.project.board.account.dto.Account" alias="Account"/>
-  	<typeAlias type="jsh.project.board.account.dto.CreateAccountDto" alias="CreateAccountDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.AccountCreateDto" alias="AccountCreateDto"/>
   	
-  	
+  	<!-- Article 관련 -->
   	<typeAlias type="jsh.project.board.article.dto.Article" alias="Article"/>
   	
   </typeAliases>

@@ -23,5 +23,9 @@ public class AccountDao{
 		return sqlSession.selectOne("accountMapper.selectByEmail",email);
 	}
 	
+	public int findByEmail(String email) {
+		return sqlSession.selectOne("accountMapper.checkEmail",email);
+	}
+	
 
 }

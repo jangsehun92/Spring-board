@@ -9,7 +9,7 @@
 		<result property="role" column="user_role"/>
 	</resultMap>
 
-	<insert id="save" parameterType="CreateAccountDto">
+	<insert id="save" parameterType="AccountCreateDto">
 		INSERT INTO 
 			user_table values(#{email},#{password},#{nickname},1,#{role})
 	</insert>
@@ -17,6 +17,15 @@
 	<select id="selectByEmail" parameterType="java.lang.String" resultMap="AccountResultMap">
 		SELECT 
 			*
+		FROM 
+			user_table
+		WHERE 
+			email = #{email}
+	</select>
+	
+	<select id="checkEmail" parameterType="java.lang.String" resultType="int">
+		SELECT 
+			email
 		FROM 
 			user_table
 		WHERE 

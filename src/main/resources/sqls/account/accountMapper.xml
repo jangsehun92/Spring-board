@@ -25,7 +25,7 @@
 	
 	<select id="checkEmail" parameterType="java.lang.String" resultType="int">
 		SELECT 
-			email
+			count(email)
 		FROM 
 			user_table
 		WHERE 

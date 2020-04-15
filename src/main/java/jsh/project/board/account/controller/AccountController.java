@@ -5,22 +5,26 @@ import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import jsh.project.board.account.dto.Account;
 import jsh.project.board.account.dto.AccountCreateDto;
+import jsh.project.board.account.dto.AccountEmail;
+import jsh.project.board.account.exception.EmailAlreadyUsedException;
 import jsh.project.board.account.service.AccountService;
-import oracle.jdbc.oracore.PickleOutputStream;
 
 @Controller
 public class AccountController {
@@ -77,18 +81,36 @@ public class AccountController {
     	return "login";
     }
     
+    
+    
     @GetMapping("/account/exception")
-    public String exception() throws Exception {
-    	
-    	throw new Exception("exception Test");
+    public String exception(){
+    	throw new EmailAlreadyUsedException();
 
     }
     
-    @GetMapping("/account/email")
-    public String checkEmail(String email) throws Exception {
+    @GetMapping("/account/email/{email:.+}")
+    public @ResponseBody ResponseEntity<String> checkEmail(@PathVariable("email")String email){
     	System.out.println(email);
+    	return new ResponseEntity<>(""+accountService.checkEmail(email), HttpStatus.OK);
+    }
+    
+    @GetMapping("/account/test")
+    public String test() {
+    	return "test";
+    }
+    @GetMapping("/account/get/{email}")
+    public String ajaxTest_get(@PathVariable("email")String email) {
+    	System.out.println("/account/get/"+email);
     	accountService.checkEmail(email);
-    	return"join";
+    	//System.out.println("account/test(get) : "+ dto.getEmail());
+    	throw new EmailAlreadyUsedException();
+    }
+    
+    @PostMapping("/account/post")
+    public String ajaxTest_post(AccountEmail dto) {
+    	System.out.println("account/test(post) : "+ dto.getEmail());
+    	throw new EmailAlreadyUsedException();
     }
     
     

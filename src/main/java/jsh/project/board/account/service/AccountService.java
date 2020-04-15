@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import jsh.project.board.account.dao.AccountDao;
 import jsh.project.board.account.dto.AccountCreateDto;
+import jsh.project.board.account.exception.EmailAlreadyUsedException;
 
 @Service
 public class AccountService{
@@ -26,8 +27,12 @@ public class AccountService{
 	}
 	
 	public boolean checkEmail(String email) {
-		System.out.println(accountDao.findByEmail(email));
-		return true;
+		//System.out.println(accountDao.findByEmail(email));
+		if(accountDao.findByEmail(email) == 1) {
+			throw new EmailAlreadyUsedException();
+		}
+		System.out.println("checkEmail?");
+		return true; 
 	}
 	
 

@@ -24,7 +24,7 @@ function check_form(){
 	var passwordCheck = inko.ko2en($("#password").val().replace(/\s|/gi,''));
 	var nickname = $("#nickname").val().replace(/\s|/gi,'');
 	
-	if(email=="") {
+	/* if(email=="") {
 		alert("이메일을 입력해주세요.");
 		$("#email").focus();
 		return false;
@@ -61,8 +61,7 @@ function check_form(){
 		alert("닉네임을 입력해주세요.");
 		$("#nickname").focus();
 		return false;
-	}
-	
+	} */
 	var result;
 	$.ajax({
 		url:"/account/email/"+email,
@@ -74,14 +73,16 @@ function check_form(){
 			result = data;
 		},
 		error:function(request,status,error){
-			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			jsonValue = jQuery.parseJSON(request.responseText);
+			alert(jsonValue.message);
+			//"code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error
 		}
 	});
 	
-	if(result != 0){
+	/* if(!result){
 		alert("이미 가입된 email 입니다.");
 		return false;
-	}
+	} */
 }
 </script>
 <div class="container" style="margin-top: 80px;">
@@ -93,7 +94,7 @@ function check_form(){
 					</h5>
 				</div>
 				<!-- <form method="post" action="/account/join" class="form-signup form-user panel-body" onsubmit="return check_form();"> -->
-				<form:form method="post" action="/account/join" class="form-signup form-user panel-body">
+				<form:form method="post" action="/account/join" class="form-signup form-user panel-body" onsubmit="return check_form();">
 					<fieldset>
 						<input type="text" class="form-control input-sm" id="email" name="email" placeholder="이메일" maxlength="30" style="margin-top: 10px;">
 						

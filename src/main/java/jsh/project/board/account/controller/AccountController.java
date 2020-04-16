@@ -66,7 +66,7 @@ public class AccountController {
     }
     
     @PostMapping("/account/join")
-    public String join(AccountCreateDto dto) {
+    public String join(AccountCreateDto dto) throws Exception {
     	accountService.register(dto);
     	return "login";
     }

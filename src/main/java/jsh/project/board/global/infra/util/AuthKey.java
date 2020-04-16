@@ -4,17 +4,15 @@ import java.util.Random;
 
 public class AuthKey {
 
-	private int size;
-	private boolean lowerCheck;
+	private int size = 64;
+	private boolean lowerCheck = false;
 	
-	public String getKey(int size, boolean lowerCheck) {
-		this.size = size;
-		this.lowerCheck = lowerCheck;
+	public String getKey() {
 		
-		return makeKey();
+		return init();
 	}
 	
-	private String makeKey() {
+	private String init() {
 		Random random = new Random();
 		StringBuffer sb = new StringBuffer();
 		

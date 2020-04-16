@@ -26,13 +26,10 @@ public class AccountService{
 		accountDao.save(dto);
 	}
 	
-	public boolean checkEmail(String email) {
-		//System.out.println(accountDao.findByEmail(email));
+	public void checkEmail(String email) {
 		if(accountDao.findByEmail(email) == 1) {
 			throw new EmailAlreadyUsedException();
 		}
-		System.out.println("checkEmail?");
-		return true; 
 	}
 	
 

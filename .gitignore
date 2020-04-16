@@ -13,7 +13,7 @@ local.properties
 .settings/
 .loadpath
 .recommenders
-
+servlet-context.xml
 # External tool builders
 .externalToolBuilders/
 

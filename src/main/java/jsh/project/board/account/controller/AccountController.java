@@ -81,7 +81,7 @@ public class AccountController {
     }
     
     @GetMapping("/account/email")
-    public @ResponseBody ResponseEntity<String> checkEmail(String email){
+    public @ResponseBody ResponseEntity<HttpStatus> checkEmail(String email){
     	log.info("이메일 중복 체크를 위한 값 : " + email);
     	accountService.checkEmail(email);
     	return new ResponseEntity<>(HttpStatus.OK);

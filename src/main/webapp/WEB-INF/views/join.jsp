@@ -24,7 +24,7 @@ function check_form(){
 	var passwordCheck = inko.ko2en($("#password").val().replace(/\s|/gi,''));
 	var nickname = $("#nickname").val().replace(/\s|/gi,'');
 	
-	/* if(email=="") {
+	if(email=="") {
 		alert("이메일을 입력해주세요.");
 		$("#email").focus();
 		return false;
@@ -61,28 +61,29 @@ function check_form(){
 		alert("닉네임을 입력해주세요.");
 		$("#nickname").focus();
 		return false;
-	} */
-	var result;
+	}
+	
+	var code;
 	$.ajax({
-		url:"/account/email/"+email,
+		url:"/account/email?email="+email,
 		type:"get",
 		async : false,
 		contentType : "application/json; charset=UTF-8",
 		dataType : "text",
 		success:function(data){
-			result = data;
+			
 		},
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
+			code = jsonValue.code;
 			alert(jsonValue.message);
 			//"code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error
 		}
 	});
 	
-	/* if(!result){
-		alert("이미 가입된 email 입니다.");
+	if(code == 'A001'){
 		return false;
-	} */
+	} 
 }
 </script>
 <div class="container" style="margin-top: 80px;">

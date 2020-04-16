@@ -18,7 +18,7 @@
 //한 > 영 & 영 > 한 변환 자바스크립트 오픈소스 라이브러리
 var inko = new Inko();
 function check_form(){
-	var email = $("#email").val().replace(/\s|/gi,'');
+	var email = $("#email").val();//.replace(/\s|/gi,'');
 	
 	
 	var accountEmail ={
@@ -29,26 +29,24 @@ function check_form(){
 	alert(accountEmail);
 	
 	$.ajax({
-		url:"/account/get/"+email,
+		url:"/account/get?email="+email,
 		type:"get",
-		async : false,
+		//async : false,
 		contentType : "application/json; charset=UTF-8",
 		dataType : "text",
 		//data: JSON.stringify(accountEmail),
 		success:function(data){
+			//alert(data);
 			result = data;
 		},
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
-			alert(jsonValue.code);
 			alert(jsonValue.message);
 			//"code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error
 		}
 	});
 	
-	if(!result){
-		return false;
-	}
+	return false;
 }
 </script>
 
@@ -60,7 +58,7 @@ function check_form(){
 						test 로그인
 					</h5>
 				</div>
-				<form:form method="post" action="/account/join" class="form-signup form-user panel-body" onsubmit="return check_form();">
+				<form:form method="post" action="/account/post" class="form-signup form-user panel-body" onsubmit="return check_form();">
 					<fieldset>
 						<input type="text" class="form-control input-sm" id="email" name="email" placeholder="이메일" maxlength="30" style="margin-top: 10px;">
 						

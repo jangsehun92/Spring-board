@@ -5,6 +5,8 @@ import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,21 +15,18 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jsh.project.board.account.dto.AccountCreateDto;
-import jsh.project.board.account.dto.AccountEmail;
-import jsh.project.board.account.exception.EmailAlreadyUsedException;
 import jsh.project.board.account.service.AccountService;
 
 @Controller
 public class AccountController {
+	private static final Logger log = LoggerFactory.getLogger(AccountController.class);
 	
 	private AccountService accountService;
 	
@@ -74,45 +73,19 @@ public class AccountController {
     
     @GetMapping("/account/info")
     public String info(Principal principal, Authentication auth) {
-    	
-    	System.out.println(principal.getName());//null을 유발할수 있다.
+    	//비동기 요청을 통해 정보를 전달해줄 것인지?
+    	log.info(principal.getName());//null을 유발할수 있다.
     	//이렇게도 인증한 정보를 얻어올 수 있다.
     	//Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	return "login";
     }
     
-    
-    
-    @GetMapping("/account/exception")
-    public String exception(){
-    	throw new EmailAlreadyUsedException();
-
-    }
-    
-    @GetMapping("/account/email/{email:.+}")
-    public @ResponseBody ResponseEntity<String> checkEmail(@PathVariable("email")String email){
-    	System.out.println(email);
-    	return new ResponseEntity<>(""+accountService.checkEmail(email), HttpStatus.OK);
-    }
-    
-    @GetMapping("/account/test")
-    public String test() {
-    	return "test";
-    }
-    @GetMapping("/account/get/{email}")
-    public String ajaxTest_get(@PathVariable("email")String email) {
-    	System.out.println("/account/get/"+email);
+    @GetMapping("/account/email")
+    public @ResponseBody ResponseEntity<String> checkEmail(String email){
+    	log.info("이메일 중복 체크를 위한 값 : " + email);
     	accountService.checkEmail(email);
-    	//System.out.println("account/test(get) : "+ dto.getEmail());
-    	throw new EmailAlreadyUsedException();
+    	return new ResponseEntity<>(HttpStatus.OK);
     }
-    
-    @PostMapping("/account/post")
-    public String ajaxTest_post(AccountEmail dto) {
-    	System.out.println("account/test(post) : "+ dto.getEmail());
-    	throw new EmailAlreadyUsedException();
-    }
-    
     
 
 	

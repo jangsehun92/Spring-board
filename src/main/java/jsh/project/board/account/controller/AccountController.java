@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jsh.project.board.account.dto.AccountCreateDto;
+import jsh.project.board.account.dto.AccountEmailDto;
 import jsh.project.board.account.service.AccountService;
 
 @Controller
@@ -85,6 +86,12 @@ public class AccountController {
     	log.info("이메일 중복 체크를 위한 값 : " + email);
     	accountService.checkEmail(email);
     	return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @GetMapping("/account/emailConfirm")
+    public String emailConfirm(AccountEmailDto dto) {
+    	accountService.emailConfirm(dto);
+    	return "login";
     }
     
 

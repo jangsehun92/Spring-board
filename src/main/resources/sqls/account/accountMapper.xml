@@ -5,13 +5,14 @@
 		<result property="email" column="email"/>
 		<result property="password" column="password"/>
 		<result property="nickname" column="nickname"/>
+		<result property="authentication" column="authentication"/>
 		<result property="enabled" column="enabled"/>
 		<result property="role" column="user_role"/>
 	</resultMap>
 
 	<insert id="save" parameterType="AccountCreateDto">
 		INSERT INTO 
-			user_table values(#{email},#{password},#{nickname},1,#{role})
+			user_table values(#{email},#{password},#{nickname},0,1,#{role})
 	</insert>
 
 	<select id="selectByEmail" parameterType="java.lang.String" resultMap="AccountResultMap">
@@ -31,5 +32,14 @@
 		WHERE 
 			email = #{email}
 	</select>
+	
+	<update id="emailChecked" parameterType="java.lang.String">
+		UPDATE 
+			user_table
+		SET
+			authentication = 1
+		WHERE
+			email = #{email}
+	</update>
 	
 </mapper>

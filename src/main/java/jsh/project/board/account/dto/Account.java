@@ -7,12 +7,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import jsh.project.board.account.exception.EmailNotCheckedException;
+
 @SuppressWarnings("serial")
 public class Account implements UserDetails{
 	
 	private String email;
 	private String password;
 	private String nickname;
+	private int authentication;
 	private boolean enabled;
 	private String role;
 	
@@ -65,7 +68,19 @@ public class Account implements UserDetails{
 		this.password = password;
 	}
 	
-	//이메일인증이 되어있는지(여부에 따라 Exception 발생시키기)
+	public void setAuthentication(int authentication) {
+		this.authentication = authentication;
+	}
 	
+	public int getAuthentication() {
+		return authentication;
+	}
+	
+	//이메일인증이 되어있는지(여부에 따라 Exception 발생시키기)
+	public void authenticationCheck() {
+		if(authentication == 0) {
+			throw new EmailNotCheckedException();
+		}
+	}
 
 }

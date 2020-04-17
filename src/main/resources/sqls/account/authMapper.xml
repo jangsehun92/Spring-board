@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="authMapper">
+	<insert id="create" parameterType="AccountEmailDto">
+		INSERT INTO 
+			auth_table
+		VALUES(
+			#{email},
+			#{authKey},
+			0
+		)
+	</insert>
+	
+	<select id="findByEmail" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT
+			auth_key
+		FROM
+			auth_table
+		WHERE
+			email = #{email} and
+			expired = 0
+	</select>
+	
+	<update id="expired" parameterType="AccountEmailDto">
+		UPDATE auth_table
+		SET expired = 1
+		WHERE
+			email = #{email} and
+			auth_key = #{authKey}
+	</update>
+</mapper>

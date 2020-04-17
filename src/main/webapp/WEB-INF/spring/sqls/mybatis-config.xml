@@ -7,6 +7,7 @@
   	<!-- Account 관련  -->
   	<typeAlias type="jsh.project.board.account.dto.Account" alias="Account"/>
   	<typeAlias type="jsh.project.board.account.dto.AccountCreateDto" alias="AccountCreateDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.AccountEmailDto" alias="AccountEmailDto"/>
   	
   	<!-- Article 관련 -->
   	<typeAlias type="jsh.project.board.article.dto.Article" alias="Article"/>
@@ -18,6 +19,8 @@
     <!-- 게시판 관련 -->
   	<mapper resource="/sqls/board/boardMapper.xml"/>
   	<mapper resource="/sqls/account/accountMapper.xml"/>
+  	<mapper resource="/sqls/account/authMapper.xml"/>
+  	
   </mappers>
 
 </configuration>

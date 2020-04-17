@@ -8,6 +8,7 @@
   	<typeAlias type="jsh.project.board.account.dto.Account" alias="Account"/>
   	<typeAlias type="jsh.project.board.account.dto.AccountCreateDto" alias="AccountCreateDto"/>
   	<typeAlias type="jsh.project.board.account.dto.AccountEmailDto" alias="AccountEmailDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.AccountCheckDto" alias="AccountCheckDto"/>
   	
   	<!-- Article 관련 -->
   	<typeAlias type="jsh.project.board.article.dto.Article" alias="Article"/>

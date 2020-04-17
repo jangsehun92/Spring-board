@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import jsh.project.board.account.dto.Account;
+import jsh.project.board.account.dto.AccountCheckDto;
 import jsh.project.board.account.dto.AccountCreateDto;
 import jsh.project.board.account.dto.AccountEmailDto;
 
@@ -29,6 +30,10 @@ public class AccountDao{
 		return sqlSession.selectOne("accountMapper.checkEmail",email);
 	}
 	
+	public AccountCheckDto getAccountInfo(String email) {
+		return sqlSession.selectOne("accountMapper.accountInfo",email);
+	}
+	
 	public void emailChecked(String email) {
 		sqlSession.update("accountMapper.emailChecked",email);
 	}
@@ -40,6 +45,10 @@ public class AccountDao{
 	
 	public String authKeySearch(String email) {
 		return sqlSession.selectOne("authMapper.findByEmail",email);
+	}
+	
+	public void authKeyUpdate(AccountEmailDto dto) {
+		sqlSession.update("authMapper.update",dto);
 	}
 	
 	public void expired(AccountEmailDto dto) {

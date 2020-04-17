@@ -83,7 +83,34 @@ function check_form(){
 	
 	if(code == 'A001'){
 		return false;
-	} 
+	} else{
+		
+		var accountCreateDto = {
+				email : $("#email").val(),
+				password : $("#password").val(),
+				nickname : $("#nickname").val()
+		}
+		
+		$.ajax({
+			url:"/account/join",
+			type:"post",
+			contentType : "application/json; charset=UTF-8",
+			dataType : "text",
+			data: JSON.stringify(accountCreateDto),
+			success:function(data){
+				alert("인증 이메일이 발송 되었습니다.");
+				location.href="/account/sendEmail?email="+$("#email").val();
+			},
+			error:function(request,status,error){
+				alert("회원가입에 실패하였습니다.");
+				/* jsonValue = jQuery.parseJSON(request.responseText);
+				code = jsonValue.code;
+				alert(jsonValue.message); */
+				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		});
+		
+	}
 }
 </script>
 <div class="container" style="margin-top: 80px;">
@@ -95,7 +122,7 @@ function check_form(){
 					</h5>
 				</div>
 				<!-- <form method="post" action="/account/join" class="form-signup form-user panel-body" onsubmit="return check_form();"> -->
-				<form:form method="post" action="/account/join" class="form-signup form-user panel-body" onsubmit="return check_form();">
+				<form:form method="post" action="/account/join" class="form-signup form-user panel-body">
 					<fieldset>
 						<input type="text" class="form-control input-sm" id="email" name="email" placeholder="이메일" maxlength="30" style="margin-top: 10px;">
 						
@@ -105,7 +132,8 @@ function check_form(){
 						
 						<input type="text" class="form-control input-sm" id="nickname" name="nickname" placeholder="닉네임" maxlength="10" style="margin-top: 10px;">
 					</fieldset>
-					<input type="submit" class="btn btn-primary btn-block" value="회원가입" style="margin-top: 10px;">
+					<!-- <input type="submit" class="btn btn-primary btn-block" value="회원가입" style="margin-top: 10px;"> -->
+					<input type="button" class="btn btn-primary btn-block" value="회원가입" style="margin-top: 10px;" onclick="return check_form();">
 				</form:form>
 			</div>
 		</div>

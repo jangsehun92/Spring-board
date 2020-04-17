@@ -18,7 +18,7 @@
 		<form-login login-page="/login" 
 					username-parameter="email"
 					password-parameter="password"/>
-		<!-- <csrf disabled="true"/> -->
+		<csrf disabled="true"/>
     </http>
     
     <context:component-scan base-package="jsh.project.board" />

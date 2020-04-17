@@ -76,11 +76,12 @@ public class Account implements UserDetails{
 		return authentication;
 	}
 	
-	//이메일인증이 되어있는지(여부에 따라 Exception 발생시키기)
-	public void authenticationCheck() {
+	//이메일 인증여부 
+	public boolean authenticationCheck() {
 		if(authentication == 0) {
-			throw new EmailNotCheckedException();
+			return false;
 		}
+		return true;
 	}
 
 }

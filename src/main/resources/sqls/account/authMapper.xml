@@ -21,6 +21,13 @@
 			expired = 0
 	</select>
 	
+	<update id="update" parameterType="AccountEmailDto">
+		UPDATE auth_table
+		SET auth_key = #{authKey}
+		WHERE
+			email = #{email}
+	</update>
+	
 	<update id="expired" parameterType="AccountEmailDto">
 		UPDATE auth_table
 		SET expired = 1

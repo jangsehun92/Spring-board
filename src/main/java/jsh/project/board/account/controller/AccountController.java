@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -66,10 +67,16 @@ public class AccountController {
     	return "join";
     }
     
+//    @PostMapping("/account/join")
+//    public String join(AccountCreateDto dto) throws Exception {
+//    	accountService.register(dto);
+//    	return "login";
+//    }
+    
     @PostMapping("/account/join")
-    public String join(AccountCreateDto dto) throws Exception {
+    public @ResponseBody ResponseEntity<HttpStatus> join(@RequestBody AccountCreateDto dto) throws Exception {
     	accountService.register(dto);
-    	return "login";
+    	return new ResponseEntity<>(HttpStatus.OK);
     }
     
     @GetMapping("/account/info")
@@ -81,6 +88,7 @@ public class AccountController {
     	return "login";
     }
     
+    //email 중복 체크
     @GetMapping("/account/email")
     public @ResponseBody ResponseEntity<HttpStatus> checkEmail(String email){
     	log.info("이메일 중복 체크를 위한 값 : " + email);
@@ -88,6 +96,21 @@ public class AccountController {
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
+    //이메일 인증 페이지 이동
+    @GetMapping("/account/sendEmail")
+    public String emailPage(String email, Model model) {
+    	model.addAttribute("email", email);
+    	return "sendEmail";
+    }
+    
+    //인증이메일 재발송
+    @GetMapping("/account/resendEmail")
+    public @ResponseBody ResponseEntity<HttpStatus> sendEmail(String email) throws Exception{
+    	accountService.resendEmail(email);
+    	return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    //email 인증
     @GetMapping("/account/emailConfirm")
     public String emailConfirm(AccountEmailDto dto) {
     	accountService.emailConfirm(dto);

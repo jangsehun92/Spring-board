@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jsh.project.board.account.dao.AccountDao;
+import jsh.project.board.account.dto.AccountCheckDto;
 import jsh.project.board.account.dto.AccountCreateDto;
 import jsh.project.board.account.dto.AccountEmailDto;
 import jsh.project.board.account.exception.EmailAlreadyUsedException;
@@ -30,16 +31,9 @@ public class AccountService{
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 		dto.setRole("ROLE_USER");
 		
-		//64자리 인증키 생성
-		String authKey = new AuthKey().getKey();
-		
-		//이메일,인증키 dto생성
-		AccountEmailDto accountEmailDto = new AccountEmailDto(dto.getEmail(), authKey);
-		System.out.println("이메일 : " + accountEmailDto.getEmail());
-		System.out.println("인증키 : " + accountEmailDto.getAuthKey());
-		
 		//계정 정보 저장
 		accountDao.save(dto);
+		AccountEmailDto accountEmailDto = getAccountEmailDto(dto.getEmail());
 		//이메일인증관련 테이블에 이메일과 인증키 저장
 		accountDao.create(accountEmailDto);
 		//인증 이메일 발송
@@ -54,8 +48,29 @@ public class AccountService{
 		}
 	}
 	
+	public void resendEmail(String email) throws Exception {
+		//이메일 값 확인(있는지&이메일인증여부 체크)
+		AccountCheckDto accountCheckDto = accountDao.getAccountInfo(email);
+		if(accountCheckDto.check()) {
+			System.out.println("이미 이메일 인증이 완료된 계정입니다.");
+		}
+		//해당 이메일에 대한 인증키 재생성
+		AccountEmailDto accountEmailDto = getAccountEmailDto(email);
+		accountDao.authKeyUpdate(accountEmailDto);
+		//이메일 발송
+		sendEmail(accountEmailDto);
+	}
+	
+	private AccountEmailDto getAccountEmailDto(String email) {
+		//64자리 인증키 생성
+		String authKey = new AuthKey().getKey();
+		//이메일,인증키 dto생성
+		AccountEmailDto accountEmailDto = new AccountEmailDto(email, authKey);
+		return accountEmailDto;
+	}
+	
 	//이메일 발송
-	public void sendEmail(AccountEmailDto dto) throws Exception {
+	private void sendEmail(AccountEmailDto dto) throws Exception {
 		emailService.sendEmail(dto);
 	}
 	

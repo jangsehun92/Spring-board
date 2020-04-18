@@ -14,7 +14,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 
 	@Override
 	public Account loadUserByUsername(String email) throws UsernameNotFoundException {
-		return accountDao.getUserByEmail(email);
+		return accountDao.findByEmail(email);
 	}
 
 }

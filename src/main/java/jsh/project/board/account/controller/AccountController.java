@@ -92,7 +92,7 @@ public class AccountController {
     @GetMapping("/account/email")
     public @ResponseBody ResponseEntity<HttpStatus> checkEmail(String email){
     	log.info("이메일 중복 체크를 위한 값 : " + email);
-    	accountService.checkEmail(email);
+    	accountService.duplicateCheck(email);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
@@ -105,7 +105,7 @@ public class AccountController {
     
     //인증이메일 재발송
     @GetMapping("/account/resendEmail")
-    public @ResponseBody ResponseEntity<HttpStatus> sendEmail(String email) throws Exception{
+    public @ResponseBody ResponseEntity<HttpStatus> resendEmail(String email) throws Exception{
     	accountService.resendEmail(email);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -114,7 +114,7 @@ public class AccountController {
     @GetMapping("/account/emailConfirm")
     public String emailConfirm(AccountEmailDto dto) {
     	accountService.emailConfirm(dto);
-    	return "login";
+    	return "redirect:/login";
     }
     
 

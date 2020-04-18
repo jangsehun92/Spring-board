@@ -35,32 +35,44 @@ public class AccountService{
 		accountDao.save(dto);
 		AccountEmailDto accountEmailDto = getAccountEmailDto(dto.getEmail());
 		//이메일인증관련 테이블에 이메일과 인증키 저장
-		accountDao.create(accountEmailDto);
+		accountDao.authKeyCreate(accountEmailDto);
 		//인증 이메일 발송
 		sendEmail(accountEmailDto);
 		
 	}
 	
 	//이메일 중복 체크
-	public void checkEmail(String email) {
-		if(accountDao.findByEmail(email) == 1) {
+	public void duplicateCheck(String email) {
+		if(accountDao.findEmail(email) == 1) {
 			throw new EmailAlreadyUsedException();
 		}
 	}
 	
+	@Transactional
 	public void resendEmail(String email) throws Exception {
-		//이메일 값 확인(있는지&이메일인증여부 체크)
-		AccountCheckDto accountCheckDto = accountDao.getAccountInfo(email);
+		//이메일&인증여부 체크
+		AccountCheckDto accountCheckDto = accountDao.accountInfo(email);
 		if(accountCheckDto.check()) {
+			//exception 
 			System.out.println("이미 이메일 인증이 완료된 계정입니다.");
 		}
 		//해당 이메일에 대한 인증키 재생성
 		AccountEmailDto accountEmailDto = getAccountEmailDto(email);
+		//인증키 재설정
 		accountDao.authKeyUpdate(accountEmailDto);
 		//이메일 발송
 		sendEmail(accountEmailDto);
 	}
 	
+	//이메일 인증 링크를 통해 인증키 비교 후 상태값 변경 
+	@Transactional
+	public void emailConfirm(AccountEmailDto dto) {
+		if(accountDao.authKeySearch(dto.getEmail()).equals(dto.getAuthKey())) {
+			accountDao.emailChecked(dto.getEmail());
+			accountDao.authKeyExpired(dto);
+		}
+	}
+
 	private AccountEmailDto getAccountEmailDto(String email) {
 		//64자리 인증키 생성
 		String authKey = new AuthKey().getKey();
@@ -72,15 +84,6 @@ public class AccountService{
 	//이메일 발송
 	private void sendEmail(AccountEmailDto dto) throws Exception {
 		emailService.sendEmail(dto);
-	}
-	
-	//이메일 인증 링크를 통해 인증키 비교 후 상태값 변경 
-	@Transactional
-	public void emailConfirm(AccountEmailDto dto) {
-		if(accountDao.authKeySearch(dto.getEmail()).equals(dto.getAuthKey())) {
-			accountDao.emailChecked(dto.getEmail());
-			accountDao.expired(dto);
-		}
 	}
 	
 

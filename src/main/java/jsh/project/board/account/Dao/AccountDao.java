@@ -22,15 +22,15 @@ public class AccountDao{
 		sqlSession.insert("accountMapper.save",dto);
 	}
 	
-	public Account getUserByEmail(String email) {
-		return sqlSession.selectOne("accountMapper.selectByEmail",email);
+	public Account findByEmail(String email) {
+		return sqlSession.selectOne("accountMapper.findByEmail",email);
 	}
 	
-	public int findByEmail(String email) {
+	public int findEmail(String email) {
 		return sqlSession.selectOne("accountMapper.checkEmail",email);
 	}
 	
-	public AccountCheckDto getAccountInfo(String email) {
+	public AccountCheckDto accountInfo(String email) {
 		return sqlSession.selectOne("accountMapper.accountInfo",email);
 	}
 	
@@ -39,19 +39,19 @@ public class AccountDao{
 	}
 	
 	//email 인증 관련 
-	public void create(AccountEmailDto dto) {
+	public void authKeyCreate(AccountEmailDto dto) {
 		sqlSession.insert("authMapper.create",dto);
 	}
 	
 	public String authKeySearch(String email) {
-		return sqlSession.selectOne("authMapper.findByEmail",email);
+		return sqlSession.selectOne("authMapper.search",email);
 	}
 	
 	public void authKeyUpdate(AccountEmailDto dto) {
 		sqlSession.update("authMapper.update",dto);
 	}
 	
-	public void expired(AccountEmailDto dto) {
+	public void authKeyExpired(AccountEmailDto dto) {
 		sqlSession.update("authMapper.expired",dto);
 	}
 	

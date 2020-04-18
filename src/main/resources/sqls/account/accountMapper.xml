@@ -15,7 +15,7 @@
 			user_table values(#{email},#{password},#{nickname},0,1,#{role})
 	</insert>
 
-	<select id="selectByEmail" parameterType="java.lang.String" resultMap="AccountResultMap">
+	<select id="findByEmail" parameterType="java.lang.String" resultMap="AccountResultMap">
 		SELECT 
 			*
 		FROM 

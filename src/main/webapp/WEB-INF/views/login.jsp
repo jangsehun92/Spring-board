@@ -49,17 +49,19 @@ function join(){
 				<!--  <form class="form-signup form-user panel-body" method="post" action="/login" onsubmit="return check_form();">-->
 				<form:form class="form-signup form-user panel-body" method="post" action="/login" onsubmit="return check_form();">
 					<fieldset>
-						<input type="text" class="form-control input-sm" id="email" name="email" placeholder="이메일">
+						<input type="text" class="form-control input-sm" id="email" name="email" placeholder="이메일" value="${email }">
 						
-						<input type="password" class="form-control input-sm" id="password" name="password" placeholder="비밀번호" style="margin-top: 10px;">
+						<input type="password" class="form-control input-sm" id="password" name="password" placeholder="비밀번호" style="margin-top: 10px;" value="${password }">
 					</fieldset>
 					
 					<button class="btn btn-primary btn-block" type="submit" style="margin-top: 10px;">로그인</button>
-				</form:form>
+					
 					<button class="btn btn-primary btn-block" type="button" style="margin-top: 10px;" onclick="join();">회원가입</button>
+				</form:form>
+					
 			</div>
 			<div>
-				<p>${errorMessge }</p>
+				<h5 class="panel-header" style="text-align: center;">${errorMessage }</h5>
 			</div>
 		</div>
 	</div>

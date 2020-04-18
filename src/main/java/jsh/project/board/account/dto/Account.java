@@ -7,8 +7,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jsh.project.board.account.exception.EmailNotCheckedException;
-
 @SuppressWarnings("serial")
 public class Account implements UserDetails{
 	
@@ -79,6 +77,7 @@ public class Account implements UserDetails{
 	//이메일 인증여부 
 	public boolean authenticationCheck() {
 		if(authentication == 0) {
+			System.out.println("exception 발생!!!!=======================");
 			return false;
 		}
 		return true;

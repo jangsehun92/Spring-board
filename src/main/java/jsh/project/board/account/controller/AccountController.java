@@ -36,20 +36,8 @@ public class AccountController {
 		this.accountService = accountService;
 	}
 	
-	//예제 코드
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage(@RequestParam(value = "error", required = false) String error, 
-                            @RequestParam(value = "logout", required = false) String logout,
-                            Model model) {
-        String errorMessge = null;
-        
-        if(error != null) {
-            errorMessge = "Username or Password is incorrect !!";
-        }
-        if(logout != null) {
-            errorMessge = "You have been successfully logged out !!";
-        }
-        model.addAttribute("errorMessge", errorMessge);
+	@RequestMapping("/login")
+    public String loginPage() {
         return "login";
     }
   
@@ -67,18 +55,13 @@ public class AccountController {
     	return "join";
     }
     
-//    @PostMapping("/account/join")
-//    public String join(AccountCreateDto dto) throws Exception {
-//    	accountService.register(dto);
-//    	return "login";
-//    }
-    
     @PostMapping("/account/join")
     public @ResponseBody ResponseEntity<HttpStatus> join(@RequestBody AccountCreateDto dto) throws Exception {
     	accountService.register(dto);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
+    /*  */
     @GetMapping("/account/info")
     public String info(Principal principal, Authentication auth) {
     	//비동기 요청을 통해 정보를 전달해줄 것인지?
@@ -91,13 +74,12 @@ public class AccountController {
     //email 중복 체크
     @GetMapping("/account/email")
     public @ResponseBody ResponseEntity<HttpStatus> checkEmail(String email){
-    	log.info("이메일 중복 체크를 위한 값 : " + email);
     	accountService.duplicateCheck(email);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
     //이메일 인증 페이지 이동
-    @GetMapping("/account/sendEmail")
+    @RequestMapping("/account/sendEmail")
     public String emailPage(String email, Model model) {
     	model.addAttribute("email", email);
     	return "sendEmail";
@@ -110,7 +92,7 @@ public class AccountController {
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
-    //email 인증
+    //email 인증처리
     @GetMapping("/account/emailConfirm")
     public String emailConfirm(AccountEmailDto dto) {
     	accountService.emailConfirm(dto);

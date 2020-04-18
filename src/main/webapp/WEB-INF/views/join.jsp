@@ -77,7 +77,6 @@ function check_form(){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
 			alert(jsonValue.message);
-			//"code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error
 		}
 	});
 	

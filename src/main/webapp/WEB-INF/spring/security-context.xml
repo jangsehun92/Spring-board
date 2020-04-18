@@ -17,7 +17,8 @@
 		<intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
 		<form-login login-page="/login" 
 					username-parameter="email"
-					password-parameter="password"/>
+					password-parameter="password"
+					authentication-failure-handler-ref="loginFailureHandler"/>
 		<csrf disabled="true"/>
     </http>
     
@@ -27,6 +28,7 @@
 	<beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>    
 	<beans:bean id="userService" class="jsh.project.board.account.security.CustomUserDetailsService"/>
 	<beans:bean id="authenticationProvider" class="jsh.project.board.account.security.CustomAuthenticationProvider"/>
+	<beans:bean id="loginFailureHandler" class="jsh.project.board.account.security.CustomAuthenticationFailureHandler"/>
 	
 	<!-- DB를 사용하여 사용자 정보를 가져온다 -->
 	<authentication-manager>

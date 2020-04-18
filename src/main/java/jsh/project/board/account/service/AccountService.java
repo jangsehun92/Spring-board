@@ -8,6 +8,7 @@ import jsh.project.board.account.dao.AccountDao;
 import jsh.project.board.account.dto.AccountCheckDto;
 import jsh.project.board.account.dto.AccountCreateDto;
 import jsh.project.board.account.dto.AccountEmailDto;
+import jsh.project.board.account.exception.EmailAlreadyCheckedException;
 import jsh.project.board.account.exception.EmailAlreadyUsedException;
 import jsh.project.board.global.infra.email.EmailService;
 import jsh.project.board.global.infra.util.AuthKey;
@@ -53,8 +54,7 @@ public class AccountService{
 		//이메일&인증여부 체크
 		AccountCheckDto accountCheckDto = accountDao.accountInfo(email);
 		if(accountCheckDto.check()) {
-			//exception 
-			System.out.println("이미 이메일 인증이 완료된 계정입니다.");
+			throw new EmailAlreadyCheckedException();
 		}
 		//해당 이메일에 대한 인증키 재생성
 		AccountEmailDto accountEmailDto = getAccountEmailDto(email);

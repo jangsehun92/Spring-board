@@ -22,7 +22,10 @@ function resendEmail(){
 			alert("인증 이메일이 재발송 되었습니다.");
 		},
 		error:function(request,status,error){
-			alert("인증 이메일 재발송에 실패하였습니다.");
+			jsonValue = jQuery.parseJSON(request.responseText);
+			code = jsonValue.code;
+			alert(jsonValue.message);
+			location.href="/login";
 		}
 	});
 }

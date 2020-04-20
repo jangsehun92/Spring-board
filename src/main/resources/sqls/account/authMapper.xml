@@ -7,7 +7,8 @@
 		VALUES(
 			#{email},
 			#{authKey},
-			0
+			0,
+			null
 		)
 	</insert>
 	
@@ -30,7 +31,8 @@
 	
 	<update id="expired" parameterType="AccountEmailDto">
 		UPDATE auth_table
-		SET expired = 1
+		SET expired = 1,
+			expired_date = SYSDATE
 		WHERE
 			email = #{email} and
 			auth_key = #{authKey}

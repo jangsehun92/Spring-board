@@ -4,6 +4,8 @@ public class AccountCreateDto {
 	
 	private String email;
 	private String password;
+	private String name;
+	private String birth;
 	private String nickname;
 	private String role;
 	
@@ -11,9 +13,11 @@ public class AccountCreateDto {
 		
 	}
 	
-	public AccountCreateDto(String email, String password, String nickname) {
+	public AccountCreateDto(String email, String password, String name, String birth,String nickname) {
 		this.email = email;
 		this.password = password;
+		this.name = name;
+		this.birth = birth;
 		this.nickname = nickname;
 	}
 
@@ -31,6 +35,22 @@ public class AccountCreateDto {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setBirth(String birth) {
+		this.birth = birth;
+	}
+	
+	public String getBirth() {
+		return birth;
 	}
 
 	public String getNickname() {

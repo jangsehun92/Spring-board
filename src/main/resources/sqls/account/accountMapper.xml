@@ -4,32 +4,45 @@
 	<resultMap type="Account" id="AccountResultMap">
 		<result property="email" column="email"/>
 		<result property="password" column="password"/>
+		<result property="name" column="name"/>
+		<result property="birth" column="birth"/>
 		<result property="nickname" column="nickname"/>
 		<result property="authentication" column="authentication"/>
 		<result property="enabled" column="enabled"/>
 		<result property="role" column="user_role"/>
+		<result property="failureCount" column="failure_count"/>
+		<result property="regdate" column="regdate"/>
+		<result property="lastLoginDate" column="last_login_date"/>
 	</resultMap>
 
 	<insert id="save" parameterType="AccountCreateDto">
 		INSERT INTO 
-			user_table values(#{email},#{password},#{nickname},0,1,#{role})
+			account_table values(#{email},#{password},#{name},#{birth},#{nickname},0,1,#{role},0,SYSDATE, NULL)
 	</insert>
 
 	<select id="findByEmail" parameterType="java.lang.String" resultMap="AccountResultMap">
 		SELECT 
 			*
 		FROM 
-			user_table
+			account_table
 		WHERE 
 			email = #{email}
 	</select>
+	
+	<!-- 로그인 성공 시 마지막로그인날짜 저장 -->
+	
+	<!-- 로그인 실패 시 실패카운트 증가 -->
+	
+	<!-- 로그인 성공 시 실패카운트 0으로 초기화 -->
+	
+	<!-- 계정 비활성화(enabled = 0) -->
 	
 	<select id="accountInfo" parameterType="java.lang.String" resultType="AccountCheckDto">
 		SELECT
 			email,
 			authentication
 		FROM
-			user_table
+			account_table
 		WHERE
 			email = #{email}
 	</select>
@@ -38,14 +51,14 @@
 		SELECT 
 			count(email)
 		FROM 
-			user_table
+			account_table
 		WHERE 
 			email = #{email}
 	</select>
 	
 	<update id="emailChecked" parameterType="java.lang.String">
 		UPDATE 
-			user_table
+			account_table
 		SET
 			authentication = 1
 		WHERE

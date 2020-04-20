@@ -22,6 +22,8 @@ function check_form(){
 	var emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 	var password = inko.ko2en($("#password").val().replace(/\s|/gi,''));
 	var passwordCheck = inko.ko2en($("#password").val().replace(/\s|/gi,''));
+	var name = $("#name").val().replace(/\s|/gi,'');
+	var birth = $("#birth").val().replace(/\s|/gi,'');
 	var nickname = $("#nickname").val().replace(/\s|/gi,'');
 	
 	if(email=="") {
@@ -87,6 +89,8 @@ function check_form(){
 		var accountCreateDto = {
 				email : $("#email").val(),
 				password : $("#password").val(),
+				name : $("#name").val(),
+				birth : $("#birth").val(),
 				nickname : $("#nickname").val()
 		}
 		
@@ -128,6 +132,10 @@ function check_form(){
 						<input type="password" class="form-control input-sm" id="password" name="password" placeholder="비밀번호" style="margin-top: 10px;">
 						
 						<input type="password" class="form-control input-sm" id="passwordCheck" placeholder="비밀번호 확인" style="margin-top: 10px;">
+						
+						<input type="text" class="form-control input-sm" id="name" name="name" placeholder="이름" maxlength="10" style="margin-top: 10px;">
+						
+						<input type="text" class="form-control input-sm" id="birth" name="birth" placeholder="생년월일(ex:920409)" maxlength="6" style="margin-top: 10px;">
 						
 						<input type="text" class="form-control input-sm" id="nickname" name="nickname" placeholder="닉네임" maxlength="10" style="margin-top: 10px;">
 					</fieldset>

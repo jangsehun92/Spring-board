@@ -1,5 +1,8 @@
 package jsh.project.board.account.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +42,16 @@ public class AccountService{
 		accountDao.authKeyCreate(accountEmailDto);
 		//인증 이메일 발송
 		sendEmail(accountEmailDto);
+		
+	}
+	
+	//로그인 실패, 성공에 따른 failure_count 증가 및 초기화(동시에 처리할 것인지, 나눠서 처리할것인지?)
+	public void failureCountUpdate(String email) {
+		Map<String, Object> paramMap = new HashMap<>();
+		
+	}
+	
+	public void failureCountReset(String email) {
 		
 	}
 	

@@ -1,5 +1,7 @@
 package jsh.project.board.account.dao;
 
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -36,6 +38,15 @@ public class AccountDao{
 	
 	public void emailChecked(String email) {
 		sqlSession.update("accountMapper.emailChecked",email);
+	}
+	
+	//두개를 하나로 합쳐서 처리할것인가?
+	public void failureCountUpdate(Map<String, Object> paramMap) {
+		sqlSession.update("accountMapper.failureCountIncrease");
+	}
+	
+	public void failureCountReset(String email) {
+		sqlSession.update("accountMapper.failureCountReset", email);
 	}
 	
 	//email 인증 관련 

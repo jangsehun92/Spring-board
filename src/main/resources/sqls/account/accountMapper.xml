@@ -30,10 +30,34 @@
 	</select>
 	
 	<!-- 로그인 성공 시 마지막로그인날짜 저장 -->
+	<update id="updateLoginDate" parameterType="java.lang.String">
+		UPDATE
+			account_table
+		SET	
+			last_login_date = SYSDATE
+		WHERE
+			email = #{email}
+	</update>
 	
 	<!-- 로그인 실패 시 실패카운트 증가 -->
+	<update id="failureCountUpdate" parameterType="map">
+		UPDATE 
+			account_table
+		SET 
+			failure_count = #{count}
+		WHERE
+			email = #{email}
+	</update>
 	
 	<!-- 로그인 성공 시 실패카운트 0으로 초기화 -->
+	<update id="failureCountReset" parameterType="java.lang.String">
+		UPDATE 
+			account_table
+		SET 
+			failure_count = 0
+		WHERE
+			email = #{email}
+	</update>
 	
 	<!-- 계정 비활성화(enabled = 0) -->
 	

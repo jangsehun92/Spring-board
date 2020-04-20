@@ -18,7 +18,9 @@
 		<form-login login-page="/login" 
 					username-parameter="email"
 					password-parameter="password"
-					authentication-failure-handler-ref="loginFailureHandler"/>
+					authentication-failure-handler-ref="loginFailureHandler"
+					authentication-success-handler-ref="loginSuccessHandler"
+		/>
 		<csrf disabled="true"/>
     </http>
     
@@ -29,6 +31,10 @@
 	<beans:bean id="userService" class="jsh.project.board.account.security.CustomUserDetailsService"/>
 	<beans:bean id="authenticationProvider" class="jsh.project.board.account.security.CustomAuthenticationProvider"/>
 	<beans:bean id="loginFailureHandler" class="jsh.project.board.account.security.CustomAuthenticationFailureHandler"/>
+	<beans:bean id="loginSuccessHandler" class="jsh.project.board.account.security.CustomAuthenticationSuccessHandler">
+		<beans:property name="accountEmail" value="email"/>
+		<beans:property name="defaultUrl" value="/"/>
+	</beans:bean>
 	
 	<!-- DB를 사용하여 사용자 정보를 가져온다 -->
 	<authentication-manager>

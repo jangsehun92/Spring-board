@@ -22,20 +22,12 @@ public class EmailService {
 				.append(dto.getEmail())
 				.append("&authKey=")
 				.append(dto.getAuthKey())
+				.append("&option=")
+				.append(dto.getOption())
 				.append("' target='_blenk'>인증하기</a>")
 				.toString());
 		sendMail.setFrom("jangsehun1992@gmail.com", "관리자");
 		sendMail.setTo(dto.getEmail());
-		sendMail.send();
-	}
-	
-	public void singUpEmail(String email) throws Exception {
-		sendMail.setSubject("[ JSH Board Project ] 이메일 인증 완료");
-		sendMail.setText(new StringBuffer().append("<h1>[ 이메일 인증 완료 ]</h1>")
-				.append("<p>인증이 완료 되었습니다 감사합니다.</p>")
-				.toString());
-		sendMail.setFrom("jangsehun1992@gmail.com", "관리자");
-		sendMail.setTo(email);
 		sendMail.send();
 	}
 }

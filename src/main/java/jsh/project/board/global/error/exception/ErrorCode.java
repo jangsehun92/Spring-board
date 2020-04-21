@@ -14,9 +14,11 @@ public enum ErrorCode {
 	EMAIL_NOT_CHECKED(400, "A002", "이메일 인증이 완료되지 않았습니다."),
 	EMAIL_AREADY_CHECKED(400,"A002", "이메일 인증을 완료한 계정입니다."),
 	ACCOUNT_LOGIN_FAILED(400, "A003", "아이디 또는 비밀번호가 다릅니다"),
-	ACCOUNT_NOT_FOUND(400,"A004", "존재하지 않는 계정입니다.");
+	ACCOUNT_NOT_FOUND(400,"A004", "존재하지 않는 계정입니다."),
+	ACCOUNT_DISABLED(400,"A005","잠긴 계정입니다.");
 	
 	//article
+	
 	
 	private int status;
 	private String code;

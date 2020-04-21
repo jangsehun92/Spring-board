@@ -40,13 +40,16 @@ public class AccountDao{
 		sqlSession.update("accountMapper.emailChecked",email);
 	}
 	
-	//두개를 하나로 합쳐서 처리할것인가?
-	public void failureCountUpdate(Map<String, Object> paramMap) {
-		sqlSession.update("accountMapper.failureCountIncrease");
+	public int failureCount(String email) {
+		return sqlSession.selectOne("accountMapper.failureCount", email);
 	}
 	
-	public void failureCountReset(String email) {
-		sqlSession.update("accountMapper.failureCountReset", email);
+	public void updateFailureCount(Map<String, Object> paramMap) {
+		sqlSession.update("accountMapper.updateFailureCount", paramMap);
+	}
+	
+	public void updateLocked(Map<String, Object> paramMap) {
+		sqlSession.update("accountMapper.updateLocked", paramMap);
 	}
 	
 	//email 인증 관련 
@@ -54,11 +57,11 @@ public class AccountDao{
 		sqlSession.insert("authMapper.create",dto);
 	}
 	
-	public String authKeySearch(String email) {
+	public String findByAuthKey(String email) {
 		return sqlSession.selectOne("authMapper.search",email);
 	}
 	
-	public void authKeyUpdate(AccountEmailDto dto) {
+	public void updateAuthKey(AccountEmailDto dto) {
 		sqlSession.update("authMapper.update",dto);
 	}
 	

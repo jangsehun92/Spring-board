@@ -102,7 +102,8 @@ function check_form(){
 			data: JSON.stringify(accountCreateDto),
 			success:function(data){
 				alert("인증 이메일이 발송 되었습니다.");
-				location.href="/account/sendEmail?email="+$("#email").val();
+				//location.href="/account/sendEmail?email="+$("#email").val();
+				location.href="/account/auth?email="+$("#email").val();
 			},
 			error:function(request,status,error){
 				alert("회원가입에 실패하였습니다.");

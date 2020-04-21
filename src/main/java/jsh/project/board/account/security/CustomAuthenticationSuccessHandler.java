@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
@@ -16,6 +17,8 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 
+import jsh.project.board.account.service.AccountService;
+
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler{
 	
 	//spring security 에서 제공하는 사용자 요청을 저장하고 꺼낼 수 있는 객체
@@ -23,12 +26,17 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 	
 	//login 시도한 값
-	private String accountEmail;
+	private String email;
 	//login 성공시 redirect 해줄 url
 	private String defaultUrl;
+	
+	@Autowired
+	private AccountService accountService;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+		accountService.updateFailureCount(email, 0);
+		clearAuthenticationAttributes(request);
 		resultRedirectStrategy(request, response, authentication);
 	}
 	
@@ -53,12 +61,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		}
 	}
 	
-	public String getAccountEmail() {
-		return accountEmail;
+	public String getEmail() {
+		return email;
 	}
 	
-	public void setAccountEmail(String email) {
-		this.accountEmail = email;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	public String getDefaultUrl() {

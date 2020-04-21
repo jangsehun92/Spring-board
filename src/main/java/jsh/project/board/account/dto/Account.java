@@ -16,7 +16,7 @@ public class Account implements UserDetails{
 	private String name;
 	private String birth;
 	private String nickname;
-	private int authentication;
+	private int locked;
 	private boolean enabled;
 	private String role;
 	private int failureCount;
@@ -56,50 +56,26 @@ public class Account implements UserDetails{
 		this.birth = birth;
 	}
 	
-	public String getBirth() {
-		return birth;
-	}
-	
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
 	
-	public String getNickname() {
-		return nickname;
+	public void setLocked(int locked) {
+		this.locked = locked;
 	}
-	
-	public void setAuthentication(int authentication) {
-		this.authentication = authentication;
-	}
-	
-	public int getAuthentication() {
-		return authentication;
-	}
-	
+
 	public void setFailureCount(int failureCount) {
 		this.failureCount = failureCount;
-	}
-	
-	public int getFailureCount() {
-		return failureCount;
 	}
 	
 	public void setRegdate(Date regdate) {
 		this.regdate = regdate;
 	}
 	
-	public Date getRegdate() {
-		return regdate;
-	}
-	
 	public void setLastLoginDate(Date lastLoginDate) {
 		this.lastLoginDate = lastLoginDate;
 	}
 	
-	public Date getLastLoginDate() {
-		return lastLoginDate;
-	}
-
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
@@ -107,6 +83,9 @@ public class Account implements UserDetails{
 
 	@Override
 	public boolean isAccountNonLocked() {
+		if(locked == 0) {
+			return false;
+		}
 		return true;
 	}
 
@@ -120,12 +99,12 @@ public class Account implements UserDetails{
 		return enabled;
 	}
 	
-	//이메일 인증여부 
-	public boolean authenticationCheck() {
-		if(authentication == 0) {
-			return false;
-		}
-		return true;
-	}
+	//계정 잠김 여부 
+//	public boolean isLocked() {
+//		if(locked == 0) {
+//			return false;
+//		}
+//		return true;
+//	}
 
 }

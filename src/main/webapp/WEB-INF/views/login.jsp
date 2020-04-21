@@ -51,7 +51,7 @@ function join(){
 					<fieldset>
 						<input type="text" class="form-control input-sm" id="email" name="email" placeholder="이메일" value="${email }">
 						
-						<input type="password" class="form-control input-sm" id="password" name="password" placeholder="비밀번호" style="margin-top: 10px;" value="${password }">
+						<input type="password" class="form-control input-sm" id="password" name="password" placeholder="비밀번호" style="margin-top: 10px;">
 					</fieldset>
 					
 					<button class="btn btn-primary btn-block" type="submit" style="margin-top: 10px;">로그인</button>

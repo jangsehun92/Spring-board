@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jsh.project.board.account.dto.AccountCreateDto;
@@ -79,10 +78,16 @@ public class AccountController {
     }
     
     //이메일 인증 페이지 이동
-    @RequestMapping("/account/sendEmail")
-    public String emailPage(String email, Model model) {
+//    @RequestMapping("/account/sendEmail")
+//    public String emailPage(String email, Model model) {
+//    	model.addAttribute("email", email);
+//    	return "sendEmail";
+//    }
+    
+    @RequestMapping("/account/auth")
+    public String authPage(String email, Model model) {
     	model.addAttribute("email", email);
-    	return "sendEmail";
+    	return "authPage";
     }
     
     //인증이메일 재발송

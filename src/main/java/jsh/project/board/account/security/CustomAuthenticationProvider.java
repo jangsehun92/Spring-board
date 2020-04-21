@@ -1,23 +1,19 @@
 package jsh.project.board.account.security;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jsh.project.board.account.dto.Account;
-import jsh.project.board.global.error.exception.ErrorCode;
 
 public class CustomAuthenticationProvider implements AuthenticationProvider {
-	private static final Logger log = LoggerFactory.getLogger(CustomAuthenticationProvider.class);
+	//private static final Logger log = LoggerFactory.getLogger(CustomAuthenticationProvider.class);
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
@@ -32,17 +28,19 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
 		Account account = (Account)userDetailsService.loadUserByUsername(email);
 		
-		//여러가지 상황에 따른 Exception
-		if(account == null) {
-			throw new InternalAuthenticationServiceException(ErrorCode.ACCOUNT_NOT_FOUND.getMessage());
-		}
-		
+		//비밀번호가 맞지 않다면
 		if (!passwordEncoder.matches(password, account.getPassword())) {
-			throw new BadCredentialsException(ErrorCode.ACCOUNT_LOGIN_FAILED.getMessage());
+			throw new BadCredentialsException(email);
 		}
 		
-		if(!account.authenticationCheck()) {
-			throw new AuthenticationCredentialsNotFoundException(ErrorCode.EMAIL_NOT_CHECKED.getMessage());
+		//이메일 인증을 하지않았다면
+		if(!account.isEnabled()) {
+			throw new DisabledException(email);
+		}
+		
+		//계정이 잠겨 있다면
+		if(account.isAccountNonLocked()) {
+			throw new LockedException(email);
 		}
 		//...
 		

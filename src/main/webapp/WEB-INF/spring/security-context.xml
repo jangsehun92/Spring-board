@@ -32,7 +32,7 @@
 	<beans:bean id="authenticationProvider" class="jsh.project.board.account.security.CustomAuthenticationProvider"/>
 	<beans:bean id="loginFailureHandler" class="jsh.project.board.account.security.CustomAuthenticationFailureHandler"/>
 	<beans:bean id="loginSuccessHandler" class="jsh.project.board.account.security.CustomAuthenticationSuccessHandler">
-		<beans:property name="accountEmail" value="email"/>
+		<beans:property name="email" value="email"/>
 		<beans:property name="defaultUrl" value="/"/>
 	</beans:bean>
 	
@@ -40,7 +40,7 @@
 	<authentication-manager>
 		<authentication-provider ref="authenticationProvider"/>
 		<authentication-provider user-service-ref="userService">
-		<password-encoder ref="passwordEncoder"/>
+			<password-encoder ref="passwordEncoder"/>
 		</authentication-provider>
 	</authentication-manager>
 	

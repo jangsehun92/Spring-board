@@ -3,15 +3,15 @@ package jsh.project.board.account.dto;
 public class AccountCheckDto {
 	
 	private String email;
-	private int authentication;
+	private int enabled;
 	
 	public AccountCheckDto() {
 		
 	}
 	
-	public AccountCheckDto(String email, int authentication) {
+	public AccountCheckDto(String email, int enabled) {
 		this.email = email;
-		this.authentication = authentication;
+		this.enabled = enabled;
 	}
 
 	public String getEmail() {
@@ -22,16 +22,16 @@ public class AccountCheckDto {
 		this.email = email;
 	}
 
-	public int getAuthentication() {
-		return authentication;
+	public int getEnalbed() {
+		return enabled;
 	}
 
-	public void setAuthentication(int authentication) {
-		this.authentication = authentication;
+	public void setEnabled(int locked) {
+		this.enabled = locked;
 	}
 	
-	public boolean check() {
-		if(authentication == 0) {
+	public boolean isEnabled() {
+		if(enabled == 0) {
 			return false;
 		}
 		return true;

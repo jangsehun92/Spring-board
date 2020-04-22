@@ -7,11 +7,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jsh.project.board.account.Enum.AuthOption;
 import jsh.project.board.account.dao.AccountDao;
-import jsh.project.board.account.dto.Account;
+import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AccountCreateDto;
-import jsh.project.board.account.dto.AccountEmailDto;
-import jsh.project.board.account.exception.EmailAlreadyCheckedException;
+import jsh.project.board.account.dto.AuthDto;
+import jsh.project.board.account.exception.BadAuthRequestException;
 import jsh.project.board.account.exception.EmailAlreadyUsedException;
 import jsh.project.board.global.infra.email.EmailService;
 import jsh.project.board.global.infra.util.AuthKey;
@@ -37,11 +38,10 @@ public class AccountService{
 		
 		//계정 정보 저장
 		accountDao.save(dto);
-		AccountEmailDto accountEmailDto = getAccountEmailDto(dto.getEmail(), "singup");
 		//이메일인증관련 테이블에 이메일과 인증키 저장
-		accountDao.authKeyCreate(accountEmailDto);
+		AuthDto authDto = createAuth(dto.getEmail(), AuthOption.SIGNUP);
 		//인증 이메일 발송
-		sendEmail(accountEmailDto);
+		sendEmail(authDto);
 	}
 	
 	public int accountFailureCount(String email) {
@@ -65,64 +65,69 @@ public class AccountService{
 	}
 	
 	//이메일 중복 체크
-	public void duplicateCheck(String email) {
+	public void emailCheck(String email) {
 		if(accountDao.findEmail(email) == 1) {
 			throw new EmailAlreadyUsedException();
 		}
 	}
 	
-	@Transactional
+	//인증 이메일 재발송
 	public void resendEmail(String email) throws Exception {
-		//리팩토링 하기
-		
-		//이메일&인증여부 체크
-		Account account = accountDao.findByEmail(email);
-		String option = null;
-		//AccountCheckDto accountCheckDto = accountDao.accountInfo(email);
-		
-		//이미 인증이 완료된 계정
-		if(account.isEnabled()) {
-			throw new EmailAlreadyCheckedException();
-		}
-		
-		//이메일 인증이 안되있는 계정
-		if(!account.isEnabled()) {
-			option = "singup";
-		}
-		
-		//잠긴 계정
-		if(account.isAccountNonLocked()) {
-			option = "locked";
-		}
-		
-		//해당 이메일에 대한 인증키 재생성
-		AccountEmailDto accountEmailDto = getAccountEmailDto(email, option);
-		//인증키 재설정
-		accountDao.updateAuthKey(accountEmailDto);
-		//이메일 발송
-		sendEmail(accountEmailDto);
+		AuthDto authDto = updateAuth(email);
+		sendEmail(authDto);
+	}
+	
+	//비밀번호 재설정을 위한인증 이메일 발송 서비스
+	public void resendFindPassword(String email) throws Exception {
+		AuthDto authDto = createAuth(email, AuthOption.LOCKED);
+		sendEmail(authDto);
 	}
 	
 	//이메일 인증 링크를 통해 인증키 비교 후 상태값 변경 
 	@Transactional
-	public void emailConfirm(AccountEmailDto dto) {
-		if(accountDao.findByAuthKey(dto.getEmail()).equals(dto.getAuthKey())) {
-			accountDao.emailChecked(dto.getEmail());
+	public void emailConfirm(AccountAuthRequestDto dto) {
+		System.out.println(dto.toString());
+		AuthDto authDto = accountDao.findByAuth(dto.getEmail());
+		
+		if(authDto == null) {
+			throw new BadAuthRequestException();
+		}
+		
+		if(authDto.isAuthExpired()) {
+			throw new EmailAlreadyUsedException();
+		}
+
+		//인증키와 인증옵션이 맞아야 한다.
+		if(dto.getAuthKey().equals(authDto.getAuthKey()) && dto.getAuthOption().equals(authDto.isAuthOption())) {
+			accountDao.activetion(dto.getEmail());
 			accountDao.authKeyExpired(dto);
 		}
 	}
 
-	private AccountEmailDto getAccountEmailDto(String email, String option) {
-		//64자리 인증키 생성
+	//회원가입, 비밀번호 재설정 시 auth테이블에 정보를 입력한다.(2군대에서만 이걸 호출)
+	private AuthDto createAuth(String email, AuthOption authOption) {
 		String authKey = new AuthKey().getKey();
-		//이메일,인증키 dto생성
-		AccountEmailDto accountEmailDto = new AccountEmailDto(email, authKey, option);
-		return accountEmailDto;
+		AuthDto authDto = new AuthDto(email, authKey, authOption.getOption());
+		accountDao.authSave(authDto);
+		return authDto;
 	}
 	
-	//이메일 발송
-	private void sendEmail(AccountEmailDto dto) throws Exception {
-		emailService.sendEmail(dto);
+	private AuthDto updateAuth(String email) {
+		AuthDto authDto = accountDao.findByAuth(email);
+		
+		if(authDto == null) {
+			throw new BadAuthRequestException();
+		}
+		
+		String authKey = new AuthKey().getKey();
+		authDto.setAuthKey(authKey);
+		
+		accountDao.updateAuthKey(authDto);
+		return authDto;
+	}
+	
+	private void sendEmail(AuthDto authDto) throws Exception {
+		emailService.sendEmail(authDto);
 	}
 	
 }

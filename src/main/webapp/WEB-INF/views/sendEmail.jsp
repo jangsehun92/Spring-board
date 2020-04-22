@@ -15,7 +15,7 @@
 <script type="text/javascript">
 function resendEmail(){
 	$.ajax({
-		url:"/account/resendEmail?email=${email}",
+		url:"/account/resend?email=${email}",
 		type:"get",
 		dataType : "text",
 		success:function(data){

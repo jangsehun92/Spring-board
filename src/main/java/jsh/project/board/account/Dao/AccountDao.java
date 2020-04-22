@@ -6,9 +6,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import jsh.project.board.account.dto.Account;
-import jsh.project.board.account.dto.AccountCheckDto;
+import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AccountCreateDto;
-import jsh.project.board.account.dto.AccountEmailDto;
+import jsh.project.board.account.dto.AuthDto;
 
 @Repository
 public class AccountDao{
@@ -29,15 +29,11 @@ public class AccountDao{
 	}
 	
 	public int findEmail(String email) {
-		return sqlSession.selectOne("accountMapper.checkEmail",email);
+		return sqlSession.selectOne("accountMapper.emailCheck",email);
 	}
 	
-	public AccountCheckDto accountInfo(String email) {
-		return sqlSession.selectOne("accountMapper.accountInfo",email);
-	}
-	
-	public void emailChecked(String email) {
-		sqlSession.update("accountMapper.emailChecked",email);
+	public void activetion(String email) {
+		sqlSession.update("accountMapper.activetion",email);
 	}
 	
 	public int failureCount(String email) {
@@ -53,19 +49,19 @@ public class AccountDao{
 	}
 	
 	//email 인증 관련 
-	public void authKeyCreate(AccountEmailDto dto) {
+	public void authSave(AuthDto dto) {
 		sqlSession.insert("authMapper.create",dto);
 	}
 	
-	public String findByAuthKey(String email) {
-		return sqlSession.selectOne("authMapper.search",email);
+	public AuthDto findByAuth(String email) {
+		return sqlSession.selectOne("authMapper.findByAuth", email);
 	}
 	
-	public void updateAuthKey(AccountEmailDto dto) {
+	public void updateAuthKey(AuthDto dto) {
 		sqlSession.update("authMapper.update",dto);
 	}
 	
-	public void authKeyExpired(AccountEmailDto dto) {
+	public void authKeyExpired(AccountAuthRequestDto dto) {
 		sqlSession.update("authMapper.expired",dto);
 	}
 	

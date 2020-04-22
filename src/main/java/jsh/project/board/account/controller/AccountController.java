@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AccountCreateDto;
-import jsh.project.board.account.dto.AccountEmailDto;
+import jsh.project.board.account.dto.AccountFindDto;
+import jsh.project.board.account.dto.AccountPasswordChangeDto;
 import jsh.project.board.account.service.AccountService;
 
 @Controller
@@ -73,33 +75,52 @@ public class AccountController {
     //email 중복 체크
     @GetMapping("/account/email")
     public @ResponseBody ResponseEntity<HttpStatus> checkEmail(String email){
-    	accountService.duplicateCheck(email);
+    	accountService.emailCheck(email);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
-    //이메일 인증 페이지 이동
-//    @RequestMapping("/account/sendEmail")
-//    public String emailPage(String email, Model model) {
-//    	model.addAttribute("email", email);
-//    	return "sendEmail";
-//    }
-    
-    @RequestMapping("/account/auth")
-    public String authPage(String email, Model model) {
+    //회원가입 완료 후 이메일 발송 완료 페이지 이동
+    @RequestMapping("/account/sendEmail")
+    public String emailPage(String email, Model model) {
     	model.addAttribute("email", email);
-    	return "authPage";
+    	return "sendEmail";
+    }
+    
+    @RequestMapping("/account/error")
+    public String authPage(String email, Model model) {
+    	return "errorPage";
     }
     
     //인증이메일 재발송
-    @GetMapping("/account/resendEmail")
+    @GetMapping("/account/resend")
     public @ResponseBody ResponseEntity<HttpStatus> resendEmail(String email) throws Exception{
     	accountService.resendEmail(email);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
+    @GetMapping("/account/find-email")
+    public String findEmailPage() throws Exception{
+    	return "";
+    }
+    
+    @PostMapping("/account/find-email")
+    public String findEmail(AccountFindDto dto) throws Exception{
+    	return "";
+    }
+    
+    @GetMapping("/account/find-password")
+    public String findPasswordPage() throws Exception{
+    	//비밀번호 찾기 페이지로 이동한다.
+    	return "";
+    }
+    
+    @PostMapping("/account/password")
+    public @ResponseBody ResponseEntity<HttpStatus> resetPassword(@RequestBody AccountPasswordChangeDto dto) throws Exception{
+    	return new ResponseEntity<>(HttpStatus.OK);
+    }
     //email 인증처리
     @GetMapping("/account/emailConfirm")
-    public String emailConfirm(AccountEmailDto dto) {
+    public String emailConfirm(AccountAuthRequestDto dto) {
     	accountService.emailConfirm(dto);
     	return "redirect:/login";
     }

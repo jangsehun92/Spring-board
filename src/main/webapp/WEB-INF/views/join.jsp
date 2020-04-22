@@ -44,7 +44,7 @@ function check_form(){
 	}
 	
 	if(!/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/.test(password)) { 
-        alert('비밀번호는 숫자와 영문자 조합으로 8~20자를 사용해야 합니다.'); 
+        alert('비밀번호는 숫자/영문자/특수문자 조합으로 8~20자를 사용해야 합니다.'); 
         return false;
     }
 	if(passwordCheck==""){
@@ -84,37 +84,34 @@ function check_form(){
 	
 	if(code == 'A001'){
 		return false;
-	} else{
-		
-		var accountCreateDto = {
-				email : $("#email").val(),
-				password : $("#password").val(),
-				name : $("#name").val(),
-				birth : $("#birth").val(),
-				nickname : $("#nickname").val()
-		}
-		
-		$.ajax({
-			url:"/account/join",
-			type:"post",
-			contentType : "application/json; charset=UTF-8",
-			dataType : "text",
-			data: JSON.stringify(accountCreateDto),
-			success:function(data){
-				alert("인증 이메일이 발송 되었습니다.");
-				//location.href="/account/sendEmail?email="+$("#email").val();
-				location.href="/account/auth?email="+$("#email").val();
-			},
-			error:function(request,status,error){
-				alert("회원가입에 실패하였습니다.");
-				/* jsonValue = jQuery.parseJSON(request.responseText);
-				code = jsonValue.code;
-				alert(jsonValue.message); */
-				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-			}
-		});
-		
+	} 
+	
+	var accountCreateDto = {
+		email : $("#email").val(),
+		password : $("#password").val(),
+		name : $("#name").val(),
+		birth : $("#birth").val(),
+		nickname : $("#nickname").val()
 	}
+	
+	$.ajax({
+		url:"/account/join",
+		type:"post",
+		contentType : "application/json; charset=UTF-8",
+		dataType : "text",
+		data: JSON.stringify(accountCreateDto),
+		success:function(data){
+			alert("인증 이메일이 발송 되었습니다.");
+			location.href="/account/sendEmail?email="+$("#email").val();
+		},
+		error:function(request,status,error){
+			alert("회원가입에 실패하였습니다. 잠시 후 다시 시도해 주세요.");
+			/* jsonValue = jQuery.parseJSON(request.responseText);
+			code = jsonValue.code;
+			alert(jsonValue.message); */
+			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
 }
 </script>
 <div class="container" style="margin-top: 80px;">

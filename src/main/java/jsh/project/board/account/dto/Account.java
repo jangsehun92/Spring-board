@@ -56,8 +56,16 @@ public class Account implements UserDetails{
 		this.birth = birth;
 	}
 	
+	public String getBirth() {
+		return birth;
+	}
+	
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+	
+	public String getNickname() {
+		return nickname;
 	}
 	
 	public void setLocked(int locked) {
@@ -68,12 +76,24 @@ public class Account implements UserDetails{
 		this.failureCount = failureCount;
 	}
 	
+	public int getFailureCount() {
+		return failureCount;
+	}
+	
 	public void setRegdate(Date regdate) {
 		this.regdate = regdate;
 	}
 	
+	public Date getRegdate() {
+		return regdate;
+	}
+	
 	public void setLastLoginDate(Date lastLoginDate) {
 		this.lastLoginDate = lastLoginDate;
+	}
+	
+	public Date getLastLoginDate() {
+		return lastLoginDate;
 	}
 	
 	@Override
@@ -99,12 +119,4 @@ public class Account implements UserDetails{
 		return enabled;
 	}
 	
-	//계정 잠김 여부 
-//	public boolean isLocked() {
-//		if(locked == 0) {
-//			return false;
-//		}
-//		return true;
-//	}
-
 }

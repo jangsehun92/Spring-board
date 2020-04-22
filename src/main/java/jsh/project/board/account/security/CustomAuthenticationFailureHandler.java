@@ -25,16 +25,11 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 		String email = request.getParameter("email");
-		String url = null;
-		
 		String loginUrl = "/login";
-		String authPage = "/account/auth";
-		
-		String errorMessage = null;
+		String errorUrl = "/account/error";
 		
 		if(exception instanceof InternalAuthenticationServiceException) {
-			url = loginUrl;
-			errorMessage = ErrorCode.ACCOUNT_NOT_FOUND.getMessage();
+			dispatcherForward(request,response, loginUrl, ErrorCode.ACCOUNT_NOT_FOUND);
 		}
 		
 		if(exception instanceof BadCredentialsException) {
@@ -44,34 +39,30 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 			//로그인실패 횟수가 3이면 계정을 잠구고, 계정이 잠겼다는 페이지로 이동한다.
 			if(failureCount==3) {
 				accountLocked(email);
-				url = authPage;
-				request.setAttribute("errorCode", ErrorCode.ACCOUNT_DISABLED.getCode());
-				errorMessage = ErrorCode.ACCOUNT_DISABLED.getMessage();
+				dispatcherForward(request,response, errorUrl, ErrorCode.ACCOUNT_LOCKED);
 			}else {
 				accountService.updateFailureCount(email, failureCount);
-				url = loginUrl;
-				errorMessage = ErrorCode.ACCOUNT_LOGIN_FAILED.getMessage();
+				dispatcherForward(request,response, loginUrl, ErrorCode.ACCOUNT_LOGIN_FAILED);
 			}
 		}
 		
 		if(exception instanceof DisabledException) {
-			url = authPage;
-			request.setAttribute("errorCode", ErrorCode.EMAIL_NOT_CHECKED.getCode());
-			errorMessage = ErrorCode.EMAIL_NOT_CHECKED.getMessage();
+			dispatcherForward(request,response, errorUrl, ErrorCode.ACCOUNT_DISABLED);
 		}
 		
 		if(exception instanceof LockedException) {
-			url = authPage;
-			request.setAttribute("errorCode", ErrorCode.ACCOUNT_DISABLED.getCode());
-			errorMessage = ErrorCode.ACCOUNT_DISABLED.getMessage();
+			dispatcherForward(request,response, errorUrl, ErrorCode.ACCOUNT_LOCKED);
 		}
-		
-		request.setAttribute("email", email);
-		request.setAttribute("errorMessage",errorMessage);
+	}
+	
+	private void dispatcherForward(HttpServletRequest request, HttpServletResponse response, String url, ErrorCode errorCode) throws IOException, ServletException  {
+		request.setAttribute("email", request.getParameter("email"));
+		request.setAttribute("errorCode", errorCode.getCode());
+		request.setAttribute("errorMessage",errorCode.getMessage());
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 	
-	public void accountLocked(String email) {
+	private void accountLocked(String email) {
 		accountService.updateLocked(email, 1);
 	}
 	

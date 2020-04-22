@@ -16,7 +16,7 @@
 <script type="text/javascript">
 function resendEmail(){
 	$.ajax({
-		url:"/account/resendEmail?email=${email}",
+		url:"/account/resend?email=${email}",
 		type:"get",
 		dataType : "text",
 		success:function(data){
@@ -37,10 +37,9 @@ function resendEmail(){
 	<div class="container" style="margin-top: 80px; align-items: center;">
 		<div class="row">
 		<div class="form-group">
-			<c:if test="${errorCode eq 'A002'">
+			<c:if test="${errorCode eq 'A005'}">
 				<div class="number font-red"> 
-					<h1 style="color: red;">${errorMessage } ${errorCode }</h1>
-					<h1 style="color: black;">이메일 인증을 완료해주세요!</h1> 
+					<h1 style="color: red;">${errorMessage } ${errorCode }</h1> 
 				</div>
 				
 				<div class="details">
@@ -52,9 +51,8 @@ function resendEmail(){
 				</div>
 			</c:if>
 			
-			<c:if test="${errorCode eq 'A005' }">
+			<c:if test="${errorCode eq 'A006' }">
 				<div class="number font-red"> 
-					
 					<h1 style="color: red;">${errorMessage } ${errorCode }</h1> 
 				</div>
 				
@@ -65,8 +63,6 @@ function resendEmail(){
 					</p>
 				</div>
 			</c:if>
-			
-			<!-- errorCode가 없다면 -->
 		</div>
 	</div>
 	</div>

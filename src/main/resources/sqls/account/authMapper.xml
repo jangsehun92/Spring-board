@@ -1,16 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="authMapper">
-	<insert id="create" parameterType="AccountEmailDto">
+	<resultMap type="AuthDto" id="AuthDtoResultMap">
+		<result property="email" column="email"/>
+		<result property="authKey" column="auth_key"/>
+		<result property="authOption" column="auth_option"/>
+		<result property="expired" column="expired"/>
+		<result property="expiredDate" column="expried_date"/>
+	</resultMap>
+	<!-- <insert id="create" parameterType="AccountEmailDto"> -->
+	<insert id="create" parameterType="AuthDto">
 		INSERT INTO 
 			auth_table
 		VALUES(
 			#{email},
 			#{authKey},
+			#{authOption},
 			0,
 			null
 		)
 	</insert>
+	
+	<select id="findByAuth" parameterType="java.lang.String" resultMap="AuthDtoResultMap">
+		SELECT
+			email,
+			auth_key,
+			auth_option,
+			expired,
+			expired_date
+		FROM
+			auth_table
+		WHERE
+			email = #{email} AND
+			expired = 0
+			
+	</select>
 	
 	<select id="search" parameterType="java.lang.String" resultType="java.lang.String">
 		SELECT
@@ -22,19 +46,21 @@
 			expired = 0
 	</select>
 	
-	<update id="update" parameterType="AccountEmailDto">
+	<update id="update" parameterType="AuthDto">
 		UPDATE auth_table
 		SET auth_key = #{authKey}
 		WHERE
-			email = #{email}
+			email = #{email} AND
+			auth_option = #{authOption}
 	</update>
 	
-	<update id="expired" parameterType="AccountEmailDto">
+	<update id="expired" parameterType="AccountAuthRequestDto">
 		UPDATE auth_table
 		SET expired = 1,
 			expired_date = SYSDATE
 		WHERE
-			email = #{email} and
-			auth_key = #{authKey}
+			email = #{email} AND
+			auth_key = #{authKey} AND
+			auth_option = #{authOption}
 	</update>
 </mapper>

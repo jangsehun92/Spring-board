@@ -78,17 +78,7 @@
 			email = #{email}
 	</update>
 	
-	<select id="accountInfo" parameterType="java.lang.String" resultType="AccountCheckDto">
-		SELECT
-			email,
-			enabled
-		FROM
-			account_table
-		WHERE
-			email = #{email}
-	</select>
-	
-	<select id="checkEmail" parameterType="java.lang.String" resultType="int">
+	<select id="emailCheck" parameterType="java.lang.String" resultType="int">
 		SELECT 
 			count(email)
 		FROM 
@@ -97,7 +87,7 @@
 			email = #{email}
 	</select>
 	
-	<update id="emailChecked" parameterType="java.lang.String">
+	<update id="activetion" parameterType="java.lang.String">
 		UPDATE 
 			account_table
 		SET

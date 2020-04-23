@@ -1,5 +1,6 @@
 package jsh.project.board.account.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import jsh.project.board.account.dto.Account;
 import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AccountCreateDto;
+import jsh.project.board.account.dto.AccountFindRequestDto;
+import jsh.project.board.account.dto.AccountFindResponseDto;
 import jsh.project.board.account.dto.AuthDto;
 
 @Repository
@@ -28,8 +31,16 @@ public class AccountDao{
 		return sqlSession.selectOne("accountMapper.findByEmail",email);
 	}
 	
+	public void updatePassword(Account account) {
+		sqlSession.update("accountMapper.updatePassword", account);
+	}
+	
 	public int findEmail(String email) {
 		return sqlSession.selectOne("accountMapper.emailCheck",email);
+	}
+	
+	public List<AccountFindResponseDto> findAccount(AccountFindRequestDto dto){
+		return sqlSession.selectList("accountMapper.findAccount", dto);
 	}
 	
 	public void activetion(String email) {
@@ -55,6 +66,10 @@ public class AccountDao{
 	
 	public AuthDto findByAuth(String email) {
 		return sqlSession.selectOne("authMapper.findByAuth", email);
+	}
+	
+	public int authCheck(Map<String, String> paramMap) {
+		return sqlSession.selectOne("authMapper.authCheck", paramMap);
 	}
 	
 	public void updateAuthKey(AuthDto dto) {

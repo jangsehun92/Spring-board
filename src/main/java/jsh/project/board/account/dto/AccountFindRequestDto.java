@@ -1,15 +1,15 @@
 package jsh.project.board.account.dto;
 
-public class AccountFindDto {
+public class AccountFindRequestDto {
 	
 	private String name;
 	private String birth;
 	
-	public AccountFindDto() {
+	public AccountFindRequestDto() {
 		
 	}
 	
-	public AccountFindDto(String name, String birth) {
+	public AccountFindRequestDto(String name, String birth) {
 		this.name = name;
 		this.birth = birth;
 	}

@@ -59,7 +59,7 @@ function resendEmail(){
 				<div class="details">
 					<h3>이메일 정보 : ${email }</h3>
 					<p>
-						<input class="btn btn-primary" type="button" value="계정 활성화" onclick="enable()">
+						<input class="btn btn-primary" type="button" value="비밀번호 재설정" onclick="location.href='/account/find-password'">
 					</p>
 				</div>
 			</c:if>

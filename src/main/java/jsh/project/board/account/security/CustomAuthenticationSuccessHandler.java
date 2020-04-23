@@ -35,6 +35,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+		email = request.getParameter("email");
 		accountService.updateFailureCount(email, 0);
 		clearAuthenticationAttributes(request);
 		resultRedirectStrategy(request, response, authentication);

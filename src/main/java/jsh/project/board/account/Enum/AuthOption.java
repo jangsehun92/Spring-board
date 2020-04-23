@@ -3,7 +3,8 @@ package jsh.project.board.account.Enum;
 public enum AuthOption {
 	
 	SIGNUP("signup"),
-	LOCKED("lock");
+	LOCKED("lock"),
+	RESET("reset");
 	
 	private final String option;
 	

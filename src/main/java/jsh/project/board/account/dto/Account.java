@@ -101,12 +101,13 @@ public class Account implements UserDetails{
 		return true;
 	}
 
+	//true = 계정이 잠겨 있지않다.
 	@Override
 	public boolean isAccountNonLocked() {
 		if(locked == 0) {
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	@Override

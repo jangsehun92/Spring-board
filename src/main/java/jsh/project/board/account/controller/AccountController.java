@@ -1,6 +1,7 @@
 package jsh.project.board.account.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,8 +24,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AccountCreateDto;
-import jsh.project.board.account.dto.AccountFindDto;
-import jsh.project.board.account.dto.AccountPasswordChangeDto;
+import jsh.project.board.account.dto.AccountFindRequestDto;
+import jsh.project.board.account.dto.AccountFindResponseDto;
+import jsh.project.board.account.dto.AccountPasswordResetDto;
+import jsh.project.board.account.dto.AccountPasswordResetRequestDto;
 import jsh.project.board.account.service.AccountService;
 
 @Controller
@@ -79,7 +82,7 @@ public class AccountController {
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
-    //회원가입 완료 후 이메일 발송 완료 페이지 이동
+    //이메일 발송 완료 페이지 이동
     @RequestMapping("/account/sendEmail")
     public String emailPage(String email, Model model) {
     	model.addAttribute("email", email);
@@ -99,33 +102,58 @@ public class AccountController {
     }
     
     @GetMapping("/account/find-email")
-    public String findEmailPage() throws Exception{
-    	return "";
+    public String findEmailPage(){
+    	return "findPage";
     }
     
     @PostMapping("/account/find-email")
-    public String findEmail(AccountFindDto dto) throws Exception{
-    	return "";
+    public @ResponseBody ResponseEntity<List<AccountFindResponseDto>> findEmail(@RequestBody AccountFindRequestDto dto) throws Exception{
+    	return new ResponseEntity<>(accountService.findAccount(dto), HttpStatus.OK);
     }
     
     @GetMapping("/account/find-password")
-    public String findPasswordPage() throws Exception{
-    	//비밀번호 찾기 페이지로 이동한다.
-    	return "";
+    public String findPasswordPage(){
+    	return "findPasswordPage";
     }
     
-    @PostMapping("/account/password")
-    public @ResponseBody ResponseEntity<HttpStatus> resetPassword(@RequestBody AccountPasswordChangeDto dto) throws Exception{
+    //계정 정보를 입력 후 비밀번호 리셋요청
+    @PostMapping("/account/reset")
+    public @ResponseBody ResponseEntity<HttpStatus> findPassword(@RequestBody AccountPasswordResetRequestDto dto) throws Exception{
+    	accountService.sendResetEmail(dto);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
-    //email 인증처리
+    
+    //비밀번호 리셋 이메일 인증
+    @GetMapping("/account/resetConfirm")
+    public String resetRequest(AccountAuthRequestDto dto, Model model) {
+    	accountService.resetPasswordConfirm(dto);
+    	model.addAttribute("dto",dto);
+    	return "passwordResetPage";
+    }
+    
+    //비밀번호 변경
+    @PostMapping("/account/resetPassword")
+    public @ResponseBody ResponseEntity<HttpStatus> resetPassword(@RequestBody AccountPasswordResetDto dto) throws Exception{
+    	accountService.resetPassword(dto);
+    	return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    //로그인상태에서 비밀번호 재설정 요청
+    @GetMapping("/account/passwordChange")
+    public String passwordChangePage(Principal principal) {
+    	return "passwordChangePage";
+    }
+    
+    @PostMapping("/account/passwordChange")
+    public String passwordChange(Principal principal) {
+    	
+    	return "login";
+    }
+    
+    //회원가입(계정 활성화) 이메일 인증
     @GetMapping("/account/emailConfirm")
     public String emailConfirm(AccountAuthRequestDto dto) {
     	accountService.emailConfirm(dto);
     	return "redirect:/login";
     }
-    
-
-	
-
 }

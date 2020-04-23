@@ -39,6 +39,26 @@
 			email = #{email}
 	</select>
 	
+	<update id="updatePassword" parameterType="Account">
+		UPDATE 
+			account_table
+		SET 
+			locked = 0,
+			password = #{password}
+		WHERE
+			email = #{email}
+	</update>
+	
+	<select id="findAccount" parameterType="AccountFindRequestDto" resultType="AccountFindResponseDto">
+		SELECT
+			email,
+			regdate
+		FROM 
+			account_table
+		WHERE
+			name = #{name} AND
+			birth = #{birth}
+	</select>
 	<!-- 로그인 성공 시 마지막로그인날짜 저장 -->
 	<update id="updateLoginDate" parameterType="java.lang.String">
 		UPDATE

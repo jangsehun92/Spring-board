@@ -24,7 +24,6 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-		String email = request.getParameter("email");
 		String loginUrl = "/login";
 		String errorUrl = "/account/error";
 		
@@ -33,6 +32,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 		}
 		
 		if(exception instanceof BadCredentialsException) {
+			String email = request.getParameter("email");
 			//해당 계정의 로그인실패 횟수를 가져온다.
 			int failureCount = accountService.accountFailureCount(email);
 			failureCount += 1;

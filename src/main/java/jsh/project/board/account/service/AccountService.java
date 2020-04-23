@@ -1,7 +1,10 @@
 package jsh.project.board.account.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.security.auth.login.AccountNotFoundException;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -9,8 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jsh.project.board.account.Enum.AuthOption;
 import jsh.project.board.account.dao.AccountDao;
+import jsh.project.board.account.dto.Account;
 import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AccountCreateDto;
+import jsh.project.board.account.dto.AccountFindRequestDto;
+import jsh.project.board.account.dto.AccountFindResponseDto;
+import jsh.project.board.account.dto.AccountPasswordResetDto;
+import jsh.project.board.account.dto.AccountPasswordResetRequestDto;
 import jsh.project.board.account.dto.AuthDto;
 import jsh.project.board.account.exception.BadAuthRequestException;
 import jsh.project.board.account.exception.EmailAlreadyUsedException;
@@ -44,6 +52,7 @@ public class AccountService{
 		sendEmail(authDto);
 	}
 	
+	//로그인 실패(비밀번호 틀림) 횟수 가져오기
 	public int accountFailureCount(String email) {
 		return accountDao.failureCount(email);
 	}
@@ -56,7 +65,7 @@ public class AccountService{
 		accountDao.updateFailureCount(paramMap);
 	}
 	
-	//계정 Lock 및 해제
+	//계정 잠금 및 해제
 	public void updateLocked(String email, int locked) {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("email", email);
@@ -64,11 +73,20 @@ public class AccountService{
 		accountDao.updateLocked(paramMap);
 	}
 	
-	//이메일 중복 체크
+	//회원가입 시 이메일 중복 체크
 	public void emailCheck(String email) {
-		if(accountDao.findEmail(email) == 1) {
+		if(accountDao.findEmail(email) != 0) {
 			throw new EmailAlreadyUsedException();
 		}
+	}
+	
+	//계정 찾기
+	public List<AccountFindResponseDto> findAccount(AccountFindRequestDto dto) throws AccountNotFoundException {
+		List<AccountFindResponseDto> list = accountDao.findAccount(dto);
+		if(list.isEmpty()) {
+			throw new AccountNotFoundException();
+		}
+		return list;
 	}
 	
 	//인증 이메일 재발송
@@ -77,10 +95,25 @@ public class AccountService{
 		sendEmail(authDto);
 	}
 	
-	//비밀번호 재설정을 위한인증 이메일 발송 서비스
-	public void resendFindPassword(String email) throws Exception {
-		AuthDto authDto = createAuth(email, AuthOption.LOCKED);
+	public void sendResetEmail(AccountPasswordResetRequestDto dto) throws Exception {
+		AuthDto authDto = createAuth(dto.getEmail(), AuthOption.RESET);
 		sendEmail(authDto);
+	}
+	
+	//비밀번호 재설정(초기화)
+	public void resetPassword(AccountPasswordResetDto dto) {
+		System.out.println(dto.toString());
+		AuthDto authDto = accountDao.findByAuth(dto.getEmail());
+		
+		if(authDto == null || authDto.isAuthExpired() || !dto.getAuthKey().equals(authDto.getAuthKey()) || !dto.getAuthOption().equals(AuthOption.RESET.getOption())) {
+			throw new BadAuthRequestException();
+		}
+		//비밀번호 재설정 
+		Account account = accountDao.findByEmail(dto.getEmail());
+		account.setPassword(passwordEncoder.encode(dto.getPassword()));
+		accountDao.updatePassword(account);
+		//인증키 파기
+		accountDao.authKeyExpired(dto.toAuthDto());
 	}
 	
 	//이메일 인증 링크를 통해 인증키 비교 후 상태값 변경 
@@ -89,26 +122,38 @@ public class AccountService{
 		System.out.println(dto.toString());
 		AuthDto authDto = accountDao.findByAuth(dto.getEmail());
 		
-		if(authDto == null) {
+		if(authDto == null || authDto.isAuthExpired() || !dto.getAuthKey().equals(authDto.getAuthKey()) || !dto.getAuthOption().equals(AuthOption.SIGNUP.getOption())) {
 			throw new BadAuthRequestException();
 		}
+		accountDao.activetion(dto.getEmail());
+		accountDao.authKeyExpired(dto);
+	}
+	
+	// 비밀번호 재설정을 위한 이메일을 통한 인증
+	public void resetPasswordConfirm(AccountAuthRequestDto dto) {
+		System.out.println(dto.toString());
+		AuthDto authDto = accountDao.findByAuth(dto.getEmail());
 		
-		if(authDto.isAuthExpired()) {
-			throw new EmailAlreadyUsedException();
-		}
-
-		//인증키와 인증옵션이 맞아야 한다.
-		if(dto.getAuthKey().equals(authDto.getAuthKey()) && dto.getAuthOption().equals(authDto.isAuthOption())) {
-			accountDao.activetion(dto.getEmail());
-			accountDao.authKeyExpired(dto);
+		if (authDto == null || authDto.isAuthExpired() || !dto.getAuthKey().equals(authDto.getAuthKey()) || !dto.getAuthOption().equals(AuthOption.RESET.getOption())) {
+			throw new BadAuthRequestException();
 		}
 	}
 
-	//회원가입, 비밀번호 재설정 시 auth테이블에 정보를 입력한다.(2군대에서만 이걸 호출)
+
 	private AuthDto createAuth(String email, AuthOption authOption) {
-		String authKey = new AuthKey().getKey();
-		AuthDto authDto = new AuthDto(email, authKey, authOption.getOption());
-		accountDao.authSave(authDto);
+		Map<String, String> paramMap = new HashMap<>();
+		paramMap.put("email", email);
+		paramMap.put("authOption", authOption.getOption());
+		
+		AuthDto authDto = null;
+		
+		if(accountDao.authCheck(paramMap) == 0) {
+			String authKey = new AuthKey().getKey();
+			authDto = new AuthDto(email, authKey, authOption.getOption());
+			accountDao.authSave(authDto);
+		}else {
+			authDto = updateAuth(email);
+		}
 		return authDto;
 	}
 	

@@ -37,7 +37,7 @@ function resendEmail(){
 		<div class="row">
 		<div class="form-group">
 			<div class="number font-red"> 
-				<h1 style="color: red;">이메일 인증을 완료해 주세요!</h1> 
+				<h1 style="color: red;">인증 이메일이 발송되었습니다.</h1> 
 			</div>
 			
 			<div class="details">

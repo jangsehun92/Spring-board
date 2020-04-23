@@ -33,7 +33,17 @@
 		WHERE
 			email = #{email} AND
 			expired = 0
-			
+	</select>
+	
+	<select id="authCheck" parameterType="map" resultType="int">
+		SELECT
+			count(email)
+		FROM
+			auth_table
+		WHERE
+			email = #{email} AND
+			expired = 0 AND
+			auth_option = #{authOption}
 	</select>
 	
 	<select id="search" parameterType="java.lang.String" resultType="java.lang.String">
@@ -42,7 +52,7 @@
 		FROM
 			auth_table
 		WHERE
-			email = #{email} and
+			email = #{email} AND
 			expired = 0
 	</select>
 	

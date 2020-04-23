@@ -46,6 +46,7 @@ function check_form(){
 		return false;
 	}
 	
+	//해당 email로 가입된 회원은 있는지 체크
 	/* var code;
 	$.ajax({
 		url:"/account/email?email="+email,
@@ -77,7 +78,6 @@ function check_form(){
 		url:"/account/reset",
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
-		dataType : "text",
 		data: JSON.stringify(AccountPasswordResetRequestDto),
 		success:function(data){
 			alert("비밀번호 초기화 인증 이메일을 보냈습니다.");

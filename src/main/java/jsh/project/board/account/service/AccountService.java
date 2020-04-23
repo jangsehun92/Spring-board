@@ -101,6 +101,7 @@ public class AccountService{
 	}
 	
 	//비밀번호 재설정(초기화)
+	@Transactional
 	public void resetPassword(AccountPasswordResetDto dto) {
 		System.out.println(dto.toString());
 		AuthDto authDto = accountDao.findByAuth(dto.getEmail());
@@ -139,7 +140,7 @@ public class AccountService{
 		}
 	}
 
-
+	@Transactional
 	private AuthDto createAuth(String email, AuthOption authOption) {
 		Map<String, String> paramMap = new HashMap<>();
 		paramMap.put("email", email);
@@ -157,6 +158,7 @@ public class AccountService{
 		return authDto;
 	}
 	
+	@Transactional
 	private AuthDto updateAuth(String email) {
 		AuthDto authDto = accountDao.findByAuth(email);
 		

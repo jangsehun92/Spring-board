@@ -55,7 +55,6 @@ function check_form(){
 		url:"/account/find-email",
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
-		dataType : "JSON",
 		data: JSON.stringify(AccountFindRequestDto),
 		success:function(data){
 			
@@ -83,9 +82,11 @@ function check_form(){
 					<div id="view">
 						<form:form method="post" action="/account/find-email" class="form-signup form-user panel-body">
 							<fieldset>
-								<input type="text" class="form-control input-sm" id="password" name="password" placeholder="비밀번호" maxlength="20" style="margin-top: 10px;">
+								<input type="password" class="form-control input-sm" id="beforePassword" name="beforePassword" placeholder="현재 비밀번호" maxlength="20" style="margin-top: 10px;">
 								
-								<input type="text" class="form-control input-sm" id="passwordCheck" placeholder="비밀번호 재입력" maxlength="20" style="margin-top: 10px;">
+								<input type="password" class="form-control input-sm" id="afterPassword" name="afterPassword" placeholder="변경할 비밀번호" maxlength="20" style="margin-top: 10px;">
+								
+								<input type="password" class="form-control input-sm" id="passwordCheck" placeholder="변경할 비밀번호 재입력" maxlength="20" style="margin-top: 10px;">
 							</fieldset>
 							<input type="button" class="btn btn-primary btn-block" value="변경하기" style="margin-top: 10px;" onclick="return check_form();">
 						</form:form>

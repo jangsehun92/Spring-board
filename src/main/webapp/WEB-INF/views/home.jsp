@@ -13,6 +13,7 @@
 	<h1>Hello world!</h1>
 
 	<P>The time on the server is ${serverTime}.</P>
+	<input type="button" class="btn btn-primary btn-block" value="test" style="margin-top: 10px;" onclick="ajaxTest();">
 	
 	<sec:authorize access="isAuthenticated()">
     	<sec:authentication property="principal" var="principal" />

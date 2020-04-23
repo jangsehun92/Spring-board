@@ -18,7 +18,6 @@ function resendEmail(){
 	$.ajax({
 		url:"/account/resend?email=${email}",
 		type:"get",
-		dataType : "text",
 		success:function(data){
 			alert("인증 이메일이 재발송 되었습니다.");
 		},

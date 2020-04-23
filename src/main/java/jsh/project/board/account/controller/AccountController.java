@@ -29,6 +29,7 @@ import jsh.project.board.account.dto.AccountFindResponseDto;
 import jsh.project.board.account.dto.AccountPasswordResetDto;
 import jsh.project.board.account.dto.AccountPasswordResetRequestDto;
 import jsh.project.board.account.service.AccountService;
+import jsh.project.board.global.error.ErrorResponse;
 
 @Controller
 public class AccountController {
@@ -89,9 +90,11 @@ public class AccountController {
     	return "sendEmail";
     }
     
-    @RequestMapping("/account/error")
-    public String authPage(String email, Model model) {
-    	return "errorPage";
+    //회원가입(계정 활성화) 이메일 인증
+    @GetMapping("/account/emailConfirm")
+    public String emailConfirm(AccountAuthRequestDto dto) {
+    	accountService.emailConfirm(dto);
+    	return "redirect:/login";
     }
     
     //인증이메일 재발송
@@ -103,7 +106,7 @@ public class AccountController {
     
     @GetMapping("/account/find-email")
     public String findEmailPage(){
-    	return "findPage";
+    	return "findAccountPage";
     }
     
     @PostMapping("/account/find-email")
@@ -150,10 +153,9 @@ public class AccountController {
     	return "login";
     }
     
-    //회원가입(계정 활성화) 이메일 인증
-    @GetMapping("/account/emailConfirm")
-    public String emailConfirm(AccountAuthRequestDto dto) {
-    	accountService.emailConfirm(dto);
-    	return "redirect:/login";
+    @RequestMapping("/account/error")
+    public String authPage(String email, Model model) {
+    	return "errorPage";
     }
+    
 }

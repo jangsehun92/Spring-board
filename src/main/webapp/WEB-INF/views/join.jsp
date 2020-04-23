@@ -98,7 +98,6 @@ function check_form(){
 		url:"/account/join",
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
-		dataType : "text",
 		data: JSON.stringify(accountCreateDto),
 		success:function(data){
 			alert("인증 이메일이 발송 되었습니다.");
@@ -106,10 +105,10 @@ function check_form(){
 		},
 		error:function(request,status,error){
 			alert("회원가입에 실패하였습니다. 잠시 후 다시 시도해 주세요.");
-			/* jsonValue = jQuery.parseJSON(request.responseText);
+			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			alert(jsonValue.message); */
-			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			alert(jsonValue.message);
+			//alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 }

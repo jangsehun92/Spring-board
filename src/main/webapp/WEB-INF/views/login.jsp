@@ -22,7 +22,7 @@ function check_form(){
 	var password = inko.ko2en($("#password").val().replace(/\s|/gi,''));
 	//alert(password);
 	$("#password").val(password);
-	//alert($("#password").val());
+	//galert($("#password").val());
 	if(email==""){
 		alert("이메일을 입력해주세요.");
 		$("#password").focus();

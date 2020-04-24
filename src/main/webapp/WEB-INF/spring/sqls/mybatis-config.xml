@@ -11,6 +11,7 @@
   	<typeAlias type="jsh.project.board.account.dto.AccountFindResponseDto" alias="AccountFindResponseDto"/>
   	<typeAlias type="jsh.project.board.account.dto.AccountAuthRequestDto" alias="AccountAuthRequestDto"/>
   	<typeAlias type="jsh.project.board.account.dto.AccountPasswordResetRequestDto" alias="AccountPasswordResetRequestDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.AccountPasswordDto" alias="AccountPasswordDto"/>
   	<typeAlias type="jsh.project.board.account.dto.AuthDto" alias="AuthDto"/>
   	
   	

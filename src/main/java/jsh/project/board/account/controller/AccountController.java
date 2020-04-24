@@ -143,14 +143,15 @@ public class AccountController {
     }
     
     //로그인상태에서 비밀번호 재설정 요청
-    @GetMapping("/account/passwordChange")
+    @GetMapping("/account/info/password")
     public String passwordChangePage(Principal principal) {
+    	log.info(principal.getName());
     	return "passwordChangePage";
     }
     
     @PostMapping("/account/passwordChange")
     public String passwordChange(Principal principal) {
-    	
+    	log.info(principal.getName());
     	return "login";
     }
     

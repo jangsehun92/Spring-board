@@ -13,6 +13,7 @@ import jsh.project.board.account.dto.AccountPasswordResetRequestDto;
 
 public interface AccountService {
 	
+	//회원가입
 	public void register(AccountCreateDto dto) throws Exception;
 	
 	//로그인 실패(비밀번호 틀림) 횟수 가져오기
@@ -39,10 +40,10 @@ public interface AccountService {
 	//비밀번호 재설정(초기화)
 	public void resetPassword(AccountPasswordResetDto dto);
 	
-	//이메일 인증 링크를 통해 인증키 비교 후 상태값 변경 
+	//이메일 인증 링크를 통해 인증키 비교 후 계정 상태값(enabled) 변경 
 	public void emailConfirm(AccountAuthRequestDto dto);
 	
-	// 비밀번호 재설정을 위한 이메일을 통한 인증
+	//비밀번호 재설정을 위한 이메일을 통한 인증
 	public void resetPasswordConfirm(AccountAuthRequestDto dto);
 
 }

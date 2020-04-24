@@ -21,7 +21,7 @@
 		)
 	</insert>
 	
-	<select id="findByAuth" parameterType="java.lang.String" resultMap="AuthDtoResultMap">
+	<select id="findByEmail" parameterType="java.lang.String" resultMap="AuthDtoResultMap">
 		SELECT
 			email,
 			auth_key,
@@ -44,16 +44,6 @@
 			email = #{email} AND
 			expired = 0 AND
 			auth_option = #{authOption}
-	</select>
-	
-	<select id="search" parameterType="java.lang.String" resultType="java.lang.String">
-		SELECT
-			auth_key
-		FROM
-			auth_table
-		WHERE
-			email = #{email} AND
-			expired = 0
 	</select>
 	
 	<update id="update" parameterType="AuthDto">

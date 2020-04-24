@@ -29,7 +29,6 @@ import jsh.project.board.account.dto.AccountFindResponseDto;
 import jsh.project.board.account.dto.AccountPasswordResetDto;
 import jsh.project.board.account.dto.AccountPasswordResetRequestDto;
 import jsh.project.board.account.service.AccountService;
-import jsh.project.board.global.error.ErrorResponse;
 
 @Controller
 public class AccountController {
@@ -118,6 +117,8 @@ public class AccountController {
     public String findPasswordPage(){
     	return "findPasswordPage";
     }
+    
+    //비밀번호 리셋 요청 전 해당 정보로된 계정이 있는지 체크하는 API
     
     //계정 정보를 입력 후 비밀번호 리셋요청
     @PostMapping("/account/reset")

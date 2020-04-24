@@ -18,46 +18,47 @@
 //한 > 영 & 영 > 한 변환 자바스크립트 오픈소스 라이브러리
 var inko = new Inko();
 function check_form(){
-	var email = $("#email").val().replace(/\s|/gi,'');
-	var emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-	var name = $("#name").val().replace(/\s|/gi,'');
-	var birth = $("#birth").val().replace(/\s|/gi,'');
+	var beforePassword = inko.ko2en($("#beforePassword").val().replace(/\s|/gi,''));
+	var afterPassword inko.ko2en($("#afterPassword").val().replace(/\s|/gi,''));
+	var passwordCheck = inko.ko2en($("#afterPassword").val().replace(/\s|/gi,''));
 	
-	if(email=="") {
-		alert("이메일을 입력해주세요.");
-		$("#email").focus();
-		return false;
-	}
-	
-	if (!emailCheck.test(email)) {
-		alert("email 형식에 맞지않습니다.");
-		return false;
-	}
-	
-	if(name=="") {
-		alert("이름을 입력해주세요.");
+	if(beforePassword=="") {
+		alert("비밀번호를 입력해주세요.");
 		$("#password").focus();
 		return false;
 	}
 	
-	if(birth==""){
-		alert("생년월일을 입력해주세요.");
+	if(!/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/.test(afterPassword)) { 
+        alert('비밀번호는 숫자/영문자/특수문자 조합으로 8~20자를 사용해야 합니다.'); 
+        return false;
+    }
+	if(passwordCheck==""){
+		alert("비밀번호를 재입력해주세요.");
 		$("#passwordCheck").focus();
 		return false;
 	}
 	
-	var AccountFindRequestDto = {
-		name : $("#name").val(),
-		birth : $("#birth").val(),
+	if(afterPassword != passwordCheck){
+		alert("바꿀 비밀번호가 서로 다릅니다.");
+		$("#password").focus();
+		return false;
 	}
 	
+	var AccountPasswordUpdateDto = {
+		beforePassword : $("#beforePassword").val(),
+		afterPassword : $("#afterPassword").val()
+	}
+	
+	//현재 비밀번호가 맞는지 체크할것.
+	
 	$.ajax({
-		url:"/account/find-email",
+		url:"/account/passwordChange",
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
-		data: JSON.stringify(AccountFindRequestDto),
+		data: JSON.stringify(AccountPasswordUpdateDto),
 		success:function(data){
-			
+			alert("비밀번호 변경을 완료하였습니다. 다시 로그인해주세요.");
+			location.href="/logout";
 		}, 
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);

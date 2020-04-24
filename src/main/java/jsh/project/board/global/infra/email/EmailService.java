@@ -41,23 +41,6 @@ public class EmailService {
 		sendMail.send();
 	}
 	
-	public void lockEmail(AuthDto dto) throws Exception{
-		sendMail.setSubject("[ JSH Board Project ] 계정 활성화 이메일 인증");
-		sendMail.setText(new StringBuffer().append("<h1>[계정 활성화 이메일 인증]</h1>")
-				.append("<p>아래 링크를 클릭하시면 인증이 완료됩니다.</p>")
-				.append("<a href='http://localhost:8081/account/emailConfirm?email=")
-				.append(dto.getEmail())
-				.append("&authKey=")
-				.append(dto.getAuthKey())
-				.append("&authOption=")
-				.append(dto.isAuthOption())
-				.append("' target='_blenk'>인증하기</a>")
-				.toString());
-		sendMail.setFrom("jangsehun1992@gmail.com", "관리자");
-		sendMail.setTo(dto.getEmail());
-		sendMail.send();
-	}
-	
 	public void passwordResetEmail(AuthDto dto) throws Exception{
 		sendMail.setSubject("[ JSH Board Project ] 비밀번호 재설정 이메일 인증");
 		sendMail.setText(new StringBuffer().append("<h1>[비밀번호 변경 이메일 인증]</h1>")

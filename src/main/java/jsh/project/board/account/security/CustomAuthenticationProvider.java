@@ -1,5 +1,6 @@
 package jsh.project.board.account.security;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import jsh.project.board.account.dto.Account;
 
 public class CustomAuthenticationProvider implements AuthenticationProvider {
-	//private static final Logger log = LoggerFactory.getLogger(CustomAuthenticationProvider.class);
+	private static final org.slf4j.Logger log = LoggerFactory.getLogger(CustomAuthenticationProvider.class);
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
@@ -26,6 +27,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		String email = (String) authentication.getPrincipal();
 		String password = (String) authentication.getCredentials();
 
+		log.info("====== 로그인 시도 정보 {email : "+email +" password : " + password + " }");
 		Account account = (Account)userDetailsService.loadUserByUsername(email);
 		
 		//비밀번호가 맞지 않다면

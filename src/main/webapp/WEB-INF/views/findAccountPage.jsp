@@ -8,31 +8,14 @@
 <title>계정 찾기</title>
 </head>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.5.0.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/inko@1.1.0/inko.min.js"></script>
-
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <body>
 <script type="text/javascript">
-//한 > 영 & 영 > 한 변환 자바스크립트 오픈소스 라이브러리
-var inko = new Inko();
 function check_form(){
-	//var email = $("#email").val().replace(/\s|/gi,'');
-	//var emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 	var name = $("#name").val().replace(/\s|/gi,'');
 	var birth = $("#birth").val().replace(/\s|/gi,'');
-	
-/* 	if(email=="") {
-		alert("이메일을 입력해주세요.");
-		$("#email").focus();
-		return false;
-	}
-	
-	if (!emailCheck.test(email)) {
-		alert("email 형식에 맞지않습니다.");
-		return false;
-	} */
 	
 	if(name=="") {
 		alert("이름을 입력해주세요.");
@@ -59,24 +42,32 @@ function check_form(){
 		data: JSON.stringify(AccountFindRequestDto),
 		success:function(data){
 			$("#main").empty();
-			$.each(data, function(index, value) {
+			
+			if(data.lenght==0){
+				alert("가입한 계정이 없습니다.");
+			}else{
 				$("#main").append(
-					"<h1>가입한 계정</h1>"+
-					"<table class='col-md-6 table table-hover'>"+
-						"<thead class='thead-dark'>"+
-								"<tr>"+
-									"<td class='col-md-5'>email</td>"+
-									"<td class='col-md-1'>가입날짜</td>"+
-								"</tr>"+
-							"</thead>"+
-							"<tbody>"+
-								 "<tr>"+
-									 "<td>"+value.email+"</td>"+
-									 "<td>"+value.unix_timestamp(regdate)+"</td>"+
-							    "</tr>"+
-							"</tbody>"+
-					"</table>"+
-					"<input type='button' class='btn btn-primary btn-block' value='비밀번호 찾기' style='margin-top: 10px;' onclick='find_password();'>"
+				"<h1>가입한 계정</h1>"+
+				"<table class='col-md-6 table table-hover'>"+
+					"<thead class='thead-dark'>"+
+							"<tr>"+
+								"<td class='col-md-5'>email</td>"+
+								"<td class='col-md-1'>가입날짜</td>"+
+							"</tr>"+
+						"</thead>"+
+						"<tbody id='accountList'>"+
+						"</tbody>"+
+				"</table>"+
+				"<input type='button' class='btn btn-primary btn-block' value='비밀번호 찾기' style='margin-top: 10px;' onclick='find_password();'>"
+				);
+			}
+			
+			$.each(data, function(index, value) {
+				$("#accountList").append(
+					"<tr>"+
+						"<td>"+value.email+"</td>"+
+						"<td>"+unix_timestamp(value.regdate)+"</td>"+
+					"</tr>"
 				);
 			});
 		}, 
@@ -84,7 +75,6 @@ function check_form(){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
 			alert(jsonValue.message);
-			//alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 }
@@ -94,10 +84,10 @@ function unix_timestamp(time){
 	var year = date.getFullYear();
 	var month = "0" + (date.getMonth()+1);
 	var day = "0" + date.getDate();
-	var hour = "0" + date.getHours();
-	var minute = "0" + date.getMinutes();
+	//var hour = "0" + date.getHours();
+	//var minute = "0" + date.getMinutes();
 	//var second = "0" + date.getSeconds();
-	return year + "-" + month.substr(-2) + "-" + day.substr(-2) + " " + hour.substr(-2) + ":" + minute.substr(-2);
+	return year + "-" + month.substr(-2) + "-" + day.substr(-2);// + " " + hour.substr(-2) + ":" + minute.substr(-2);
 }
 
 function find_password(){

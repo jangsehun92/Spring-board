@@ -20,6 +20,9 @@ var inko = new Inko();
 function check_form(){
 	var email = $("#email").val().replace(/\s|/gi,'');
 	var password = inko.ko2en($("#password").val().replace(/\s|/gi,''));
+	//alert(password);
+	$("#password").val(password);
+	//alert($("#password").val());
 	if(email==""){
 		alert("이메일을 입력해주세요.");
 		$("#password").focus();
@@ -31,6 +34,12 @@ function check_form(){
 		$("#password").focus();
 		return false;
 	}
+	
+	if(!/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/.test(password)) { 
+        alert('비밀번호 서식에 맞지 않습니다. 다시 입력해주세요.'); 
+        $("#password").focus();
+        return false;
+    }
 }
 
 function join(){

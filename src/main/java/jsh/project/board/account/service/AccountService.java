@@ -4,10 +4,12 @@ import java.util.List;
 
 import javax.security.auth.login.AccountNotFoundException;
 
+import jsh.project.board.account.dto.Account;
 import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AccountCreateDto;
 import jsh.project.board.account.dto.AccountFindRequestDto;
 import jsh.project.board.account.dto.AccountFindResponseDto;
+import jsh.project.board.account.dto.AccountPasswordDto;
 import jsh.project.board.account.dto.AccountPasswordResetDto;
 import jsh.project.board.account.dto.AccountPasswordResetRequestDto;
 
@@ -15,6 +17,8 @@ public interface AccountService {
 	
 	//회원가입
 	public void register(AccountCreateDto dto) throws Exception;
+	
+	public void passwordChange(Account account, AccountPasswordDto dto);
 	
 	//로그인 실패(비밀번호 틀림) 횟수 가져오기
 	public int accountFailureCount(String email);

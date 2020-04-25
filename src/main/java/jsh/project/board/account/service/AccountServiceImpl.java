@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.security.auth.login.AccountNotFoundException;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,11 +17,14 @@ import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AccountCreateDto;
 import jsh.project.board.account.dto.AccountFindRequestDto;
 import jsh.project.board.account.dto.AccountFindResponseDto;
+import jsh.project.board.account.dto.AccountPasswordDto;
 import jsh.project.board.account.dto.AccountPasswordResetDto;
 import jsh.project.board.account.dto.AccountPasswordResetRequestDto;
 import jsh.project.board.account.dto.AuthDto;
+import jsh.project.board.account.exception.AccountNotFoundException;
 import jsh.project.board.account.exception.BadAuthRequestException;
 import jsh.project.board.account.exception.EmailAlreadyUsedException;
+import jsh.project.board.account.exception.PasswordNotMatch;
 import jsh.project.board.global.infra.email.EmailService;
 import jsh.project.board.global.infra.util.AuthKey;
 
@@ -54,6 +56,15 @@ public class AccountServiceImpl implements AccountService{
 		AuthDto authDto = createAuth(dto.getEmail(), AuthOption.SIGNUP);
 		//인증 이메일 발송
 		sendEmail(authDto);
+	}
+	
+	@Override
+	public void passwordChange(Account account, AccountPasswordDto dto) {
+		if(!passwordEncoder.matches(account.getPassword(), dto.getBeforePassword())) {
+			throw new PasswordNotMatch();
+		}
+		//비밀번호 업데이트
+		
 	}
 	
 	//로그인 실패(비밀번호 틀림) 횟수 가져오기
@@ -93,7 +104,6 @@ public class AccountServiceImpl implements AccountService{
 	public List<AccountFindResponseDto> findAccount(AccountFindRequestDto dto) throws AccountNotFoundException {
 		List<AccountFindResponseDto> list = accountDao.findAccount(dto);
 		if(list.isEmpty()) {
-			//계정을 찾을수 없다는 Exception 발생시키기
 			throw new AccountNotFoundException();
 		}
 		return list;
@@ -157,6 +167,7 @@ public class AccountServiceImpl implements AccountService{
 
 	@Transactional
 	private AuthDto createAuth(String email, AuthOption authOption) {
+		//인증 객채를 생성하기 전 체크하기(해당 요청에 맞는 인증객체가 있는지)
 		Map<String, String> paramMap = new HashMap<>();
 		paramMap.put("email", email);
 		paramMap.put("authOption", authOption.getOption());
@@ -191,5 +202,5 @@ public class AccountServiceImpl implements AccountService{
 	private void sendEmail(AuthDto authDto) throws Exception {
 		emailService.sendEmail(authDto);
 	}
-	
+
 }

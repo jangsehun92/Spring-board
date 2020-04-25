@@ -15,8 +15,8 @@ public enum ErrorCode {
 	ACCOUNT_LOGIN_FAILED(400, "A003", " 아이디 또는 비밀번호가 다릅니다"),
 	ACCOUNT_NOT_FOUND(400,"A004", " 존재하지 않는 계정입니다."),
 	ACCOUNT_DISABLED(400,"A005"," 계정이 활성화 되지 않았습니다. 이메일 인증을 완료해 주세요."),
-	ACCOUNT_LOCKED(400, "A006", " 계정이 잠겼습니다.");
-	
+	ACCOUNT_LOCKED(400, "A006", " 계정이 잠겼습니다."),
+	PASSWORD_NOT_MATCH(400, "A007", "기존 비밀번호가 맞지 않습니다.");
 	
 	//article
 	

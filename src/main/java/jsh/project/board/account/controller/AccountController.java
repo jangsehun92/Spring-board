@@ -26,6 +26,7 @@ import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AccountCreateDto;
 import jsh.project.board.account.dto.AccountFindRequestDto;
 import jsh.project.board.account.dto.AccountFindResponseDto;
+import jsh.project.board.account.dto.AccountPasswordDto;
 import jsh.project.board.account.dto.AccountPasswordResetDto;
 import jsh.project.board.account.dto.AccountPasswordResetRequestDto;
 import jsh.project.board.account.service.AccountService;
@@ -145,9 +146,15 @@ public class AccountController {
     //로그인상태에서 비밀번호 재설정 요청
     @GetMapping("/account/info/password")
     public String passwordChangePage(Principal principal) {
-    	log.info(principal.getName());
     	return "passwordChangePage";
     }
+    
+    @PostMapping("/account/info/password")
+    public @ResponseBody ResponseEntity<HttpStatus> passwordChange(Principal principal, AccountPasswordDto dto) {
+    	return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    
     
     @PostMapping("/account/passwordChange")
     public String passwordChange(Principal principal) {

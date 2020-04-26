@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import jsh.project.board.account.dto.Account;
 import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AccountCreateDto;
 import jsh.project.board.account.dto.AccountFindRequestDto;
@@ -151,6 +152,8 @@ public class AccountController {
     
     @PostMapping("/account/info/password")
     public @ResponseBody ResponseEntity<HttpStatus> passwordChange(Principal principal, AccountPasswordDto dto) {
+    	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	accountService.passwordChange(account, dto);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
@@ -158,6 +161,7 @@ public class AccountController {
     
     @PostMapping("/account/passwordChange")
     public String passwordChange(Principal principal) {
+//    	log.info(principal.toString());
     	log.info(principal.getName());
     	return "login";
     }

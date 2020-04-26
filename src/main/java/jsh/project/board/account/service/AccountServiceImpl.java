@@ -64,7 +64,8 @@ public class AccountServiceImpl implements AccountService{
 			throw new PasswordNotMatch();
 		}
 		//비밀번호 업데이트
-		
+		account.setPassword(passwordEncoder.encode(dto.getAfterPassowrd()));
+		accountDao.updatePassword(account);
 	}
 	
 	//로그인 실패(비밀번호 틀림) 횟수 가져오기

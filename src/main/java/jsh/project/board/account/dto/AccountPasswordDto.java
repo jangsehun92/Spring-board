@@ -2,7 +2,7 @@ package jsh.project.board.account.dto;
 
 public class AccountPasswordDto {
 	private String beforePassword;
-	private String afterPassowrd;
+	private String afterPassword;
 	
 	public AccountPasswordDto() {
 		
@@ -16,12 +16,12 @@ public class AccountPasswordDto {
 		this.beforePassword = beforePassword;
 	}
 
-	public String getAfterPassowrd() {
-		return afterPassowrd;
+	public String getAfterPassword() {
+		return afterPassword;
 	}
 
-	public void setAfterPassowrd(String afterPassowrd) {
-		this.afterPassowrd = afterPassowrd;
+	public void setAfterPassword(String afterPassword) {
+		this.afterPassword = afterPassword;
 	}
 	
 	

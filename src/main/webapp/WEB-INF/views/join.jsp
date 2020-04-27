@@ -26,6 +26,8 @@ function check_form(){
 	var birth = $("#birth").val().replace(/\s|/gi,'');
 	var nickname = $("#nickname").val().replace(/\s|/gi,'');
 	
+	
+	
 	if(email=="") {
 		alert("이메일을 입력해주세요.");
 		$("#email").focus();
@@ -85,6 +87,8 @@ function check_form(){
 	if(code == 'A001'){
 		return false;
 	} 
+	
+	$("#password").val(password);
 	
 	var accountCreateDto = {
 		email : $("#email").val(),

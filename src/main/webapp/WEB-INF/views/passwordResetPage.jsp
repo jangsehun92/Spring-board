@@ -45,6 +45,8 @@ function check_form(){
 		return false;
 	}
 	
+	$("#password").val(password);
+	
 	var AccountPasswordResetDto = {
 		email : "${dto.email}",
 		password : $("#password").val(),
@@ -65,7 +67,6 @@ function check_form(){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
 			alert(jsonValue.message);
-			//alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 }

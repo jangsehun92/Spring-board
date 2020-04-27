@@ -51,7 +51,8 @@
 		SET auth_key = #{authKey}
 		WHERE
 			email = #{email} AND
-			auth_option = #{authOption}
+			auth_option = #{authOption} AND
+			expired = 0
 	</update>
 	
 	<update id="expired" parameterType="AccountAuthRequestDto">

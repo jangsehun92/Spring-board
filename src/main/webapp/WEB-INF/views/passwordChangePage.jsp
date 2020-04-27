@@ -19,8 +19,10 @@
 var inko = new Inko();
 function check_form(){
 	var beforePassword = inko.ko2en($("#beforePassword").val().replace(/\s|/gi,''));
-	var afterPassword inko.ko2en($("#afterPassword").val().replace(/\s|/gi,''));
+	var afterPassword = inko.ko2en($("#afterPassword").val().replace(/\s|/gi,''));
 	var passwordCheck = inko.ko2en($("#afterPassword").val().replace(/\s|/gi,''));
+	
+	
 	
 	if(beforePassword=="") {
 		alert("비밀번호를 입력해주세요.");
@@ -44,18 +46,19 @@ function check_form(){
 		return false;
 	}
 	
-	var AccountPasswordUpdateDto = {
+	$("#beforePassword").val(beforePassword);
+	$("#afterPassword").val(afterPassword);
+	
+	var AccountPasswordDto = {
 		beforePassword : $("#beforePassword").val(),
 		afterPassword : $("#afterPassword").val()
 	}
 	
-	//현재 비밀번호가 맞는지 체크할것.
-	
 	$.ajax({
-		url:"/account/passwordChange",
+		url:"/account/info/password",
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
-		data: JSON.stringify(AccountPasswordUpdateDto),
+		data: JSON.stringify(AccountPasswordDto),
 		success:function(data){
 			alert("비밀번호 변경을 완료하였습니다. 다시 로그인해주세요.");
 			location.href="/logout";
@@ -64,7 +67,6 @@ function check_form(){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
 			alert(jsonValue.message);
-			//alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 }
@@ -81,7 +83,7 @@ function check_form(){
 						</h5>
 					</div>
 					<div id="view">
-						<form:form method="post" action="/account/find-email" class="form-signup form-user panel-body">
+						<form:form method="post" action="/account/info/password" class="form-signup form-user panel-body">
 							<fieldset>
 								<input type="password" class="form-control input-sm" id="beforePassword" name="beforePassword" placeholder="현재 비밀번호" maxlength="20" style="margin-top: 10px;">
 								
@@ -89,7 +91,7 @@ function check_form(){
 								
 								<input type="password" class="form-control input-sm" id="passwordCheck" placeholder="변경할 비밀번호 재입력" maxlength="20" style="margin-top: 10px;">
 							</fieldset>
-							<input type="button" class="btn btn-primary btn-block" value="변경하기" style="margin-top: 10px;" onclick="return check_form();">
+							<input type="button" class="btn btn-primary btn-block" value="변경하기" style="margin-top: 10px;" onclick="check_form();">
 						</form:form>
 					</div>
 				</div>

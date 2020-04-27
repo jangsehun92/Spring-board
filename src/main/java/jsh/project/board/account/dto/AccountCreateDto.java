@@ -69,6 +69,11 @@ public class AccountCreateDto {
 		this.role = role;
 	}
 	
+	@Override
+	public String toString() {
+		return "회원 가입 Dto 정보 : { email : + " + email + "password : " + password + " name : + " + name + " birth : " + birth + " nickname : " + nickname + "} ";
+	}
+	
 	
 
 }

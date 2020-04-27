@@ -94,7 +94,7 @@ public class AccountController {
     //회원가입(계정 활성화) 이메일 인증
     @GetMapping("/account/emailConfirm")
     public String emailConfirm(AccountAuthRequestDto dto) {
-    	accountService.emailConfirm(dto);
+    	accountService.signUpConfirm(dto);
     	return "redirect:/login";
     }
     
@@ -144,26 +144,18 @@ public class AccountController {
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
-    //로그인상태에서 비밀번호 재설정 요청
+    //로그인상태에서 비밀번호 재설정 페이지 요청
     @GetMapping("/account/info/password")
-    public String passwordChangePage(Principal principal) {
+    public String passwordChangePage() {
     	return "passwordChangePage";
     }
     
+    //로그인상태에서 비밀번호 재설정 
     @PostMapping("/account/info/password")
-    public @ResponseBody ResponseEntity<HttpStatus> passwordChange(Principal principal, AccountPasswordDto dto) {
+    public @ResponseBody ResponseEntity<HttpStatus> passwordChange(Principal principal, @RequestBody AccountPasswordDto dto) {
     	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	accountService.passwordChange(account, dto);
     	return new ResponseEntity<>(HttpStatus.OK);
-    }
-    
-    
-    
-    @PostMapping("/account/passwordChange")
-    public String passwordChange(Principal principal) {
-//    	log.info(principal.toString());
-    	log.info(principal.getName());
-    	return "login";
     }
     
     @RequestMapping("/account/error")

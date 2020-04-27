@@ -46,28 +46,6 @@ function check_form(){
 		return false;
 	}
 	
-	//해당 email로 가입된 회원은 있는지 체크
-	/* var code;
-	$.ajax({
-		url:"/account/email?email="+email,
-		type:"get",
-		async : false,
-		contentType : "application/json; charset=UTF-8",
-		dataType : "text",
-		success:function(data){
-			
-		},
-		error:function(request,status,error){
-			jsonValue = jQuery.parseJSON(request.responseText);
-			code = jsonValue.code;
-			alert(jsonValue.message);
-		}
-	});
-	
-	if(code == 'A001'){
-		return false;
-	}  */
-	
 	var AccountPasswordResetRequestDto = {
 		email : $("#email").val(),
 		name : $("#name").val(),
@@ -87,7 +65,9 @@ function check_form(){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
 			alert(jsonValue.message);
-			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			if(code == 'A005'){
+				location.href="/account/sendEmail?email="+$("#email").val();
+			}
 		}
 	});
 }

@@ -32,20 +32,20 @@ public interface AccountService {
 	//회원가입 시 이메일 중복 체크
 	public void emailCheck(String email);
 	
-	//계정 찾기 (처음 두글자 마지막 두글째 빼고 *처리하기)
-	public List<AccountFindResponseDto> findAccount(AccountFindRequestDto dto) throws AccountNotFoundException ;
+	//계정 찾기
+	public List<AccountFindResponseDto> findAccount(AccountFindRequestDto dto) throws AccountNotFoundException;
 	
-	//인증 이메일 재발송
-	public void resendEmail(String email) throws Exception ;
+	//회원가입 인증 이메일 재발송
+	public void resendEmail(String email) throws Exception;
 	
 	//비밀번호 초기화 인증 이메일 발송
-	public void sendResetEmail(AccountPasswordResetRequestDto dto) throws Exception ;
+	public void sendResetEmail(AccountPasswordResetRequestDto dto) throws Exception;
 	
 	//비밀번호 재설정(초기화)
 	public void resetPassword(AccountPasswordResetDto dto);
 	
 	//이메일 인증 링크를 통해 인증키 비교 후 계정 상태값(enabled) 변경 
-	public void emailConfirm(AccountAuthRequestDto dto);
+	public void signUpConfirm(AccountAuthRequestDto dto);
 	
 	//비밀번호 재설정을 위한 이메일을 통한 인증
 	public void resetPasswordConfirm(AccountAuthRequestDto dto);

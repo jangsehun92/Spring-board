@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jsh.project.board.account.Enum.AuthOption;
+import jsh.project.board.account.controller.AccountController;
 import jsh.project.board.account.dao.AccountDao;
 import jsh.project.board.account.dao.AuthDao;
 import jsh.project.board.account.dto.Account;
@@ -21,15 +23,18 @@ import jsh.project.board.account.dto.AccountPasswordDto;
 import jsh.project.board.account.dto.AccountPasswordResetDto;
 import jsh.project.board.account.dto.AccountPasswordResetRequestDto;
 import jsh.project.board.account.dto.AuthDto;
+import jsh.project.board.account.exception.AccountNotEmailChecked;
 import jsh.project.board.account.exception.AccountNotFoundException;
 import jsh.project.board.account.exception.BadAuthRequestException;
 import jsh.project.board.account.exception.EmailAlreadyUsedException;
+import jsh.project.board.account.exception.FindAccountBadRequestException;
 import jsh.project.board.account.exception.PasswordNotMatch;
 import jsh.project.board.global.infra.email.EmailService;
 import jsh.project.board.global.infra.util.AuthKey;
 
 @Service
 public class AccountServiceImpl implements AccountService{
+	private static final Logger log = LoggerFactory.getLogger(AccountServiceImpl.class);
 	
 	private AccountDao accountDao;
 	private AuthDao authDao;
@@ -47,6 +52,7 @@ public class AccountServiceImpl implements AccountService{
 	@Transactional
 	public void register(AccountCreateDto dto) throws Exception {
 		//DB에 저장하기 전에 권한 설정 과 비밀번호 암호화 처리
+		log.info(dto.toString());
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 		dto.setRole("ROLE_USER");
 		
@@ -60,11 +66,11 @@ public class AccountServiceImpl implements AccountService{
 	
 	@Override
 	public void passwordChange(Account account, AccountPasswordDto dto) {
-		if(!passwordEncoder.matches(account.getPassword(), dto.getBeforePassword())) {
+		if(!passwordEncoder.matches(dto.getBeforePassword(), account.getPassword())) {
 			throw new PasswordNotMatch();
 		}
 		//비밀번호 업데이트
-		account.setPassword(passwordEncoder.encode(dto.getAfterPassowrd()));
+		account.setPassword(passwordEncoder.encode(dto.getAfterPassword()));
 		accountDao.updatePassword(account);
 	}
 	
@@ -119,6 +125,18 @@ public class AccountServiceImpl implements AccountService{
 	
 	@Override
 	public void sendResetEmail(AccountPasswordResetRequestDto dto) throws Exception {
+		Account account = accountDao.findByEmail(dto.getEmail());
+		if(account==null) {
+			throw new AccountNotFoundException();
+		}
+		
+		if(account.findAccountCheck(dto)) {
+			throw new FindAccountBadRequestException();
+		}
+		
+		if(!account.isEnabled()) {
+			throw new AccountNotEmailChecked();
+		}
 		AuthDto authDto = createAuth(dto.getEmail(), AuthOption.RESET);
 		sendEmail(authDto);
 	}
@@ -129,23 +147,23 @@ public class AccountServiceImpl implements AccountService{
 	public void resetPassword(AccountPasswordResetDto dto) {
 		System.out.println(dto.toString());
 		AuthDto authDto = authDao.findByEmail(dto.getEmail());
-		
 		if(authDto == null || authDto.isAuthExpired() || !dto.getAuthKey().equals(authDto.getAuthKey()) || !dto.getAuthOption().equals(AuthOption.RESET.getOption())) {
 			throw new BadAuthRequestException();
 		}
-		//비밀번호 재설정 
 		Account account = accountDao.findByEmail(dto.getEmail());
+		if(account == null) {
+			throw new AccountNotFoundException();
+		}
 		account.setPassword(passwordEncoder.encode(dto.getPassword()));
 		accountDao.updatePassword(account);
-		//인증키 파기
 		authDao.authKeyExpired(dto.toAuthDto());
 	}
 	
 	//이메일 인증 링크를 통해 인증키 비교 후 상태값 변경 
 	@Transactional
 	@Override
-	public void emailConfirm(AccountAuthRequestDto dto) {
-		System.out.println(dto.toString());
+	public void signUpConfirm(AccountAuthRequestDto dto) {
+		log.info("accountService.resetPasswordConfirm(AccountAuthRequestDto dto) : "+dto.toString());
 		AuthDto authDto = authDao.findByEmail(dto.getEmail());
 		
 		if(authDto == null || authDto.isAuthExpired() || !dto.getAuthKey().equals(authDto.getAuthKey()) || !dto.getAuthOption().equals(AuthOption.SIGNUP.getOption())) {
@@ -158,7 +176,7 @@ public class AccountServiceImpl implements AccountService{
 	// 비밀번호 재설정을 위한 이메일을 통한 인증
 	@Override
 	public void resetPasswordConfirm(AccountAuthRequestDto dto) {
-		System.out.println(dto.toString());
+		log.info("accountService.resetPasswordConfirm(AccountAuthRequestDto dto) : "+dto.toString());
 		AuthDto authDto = authDao.findByEmail(dto.getEmail());
 		
 		if (authDto == null || authDto.isAuthExpired() || !dto.getAuthKey().equals(authDto.getAuthKey()) || !dto.getAuthOption().equals(AuthOption.RESET.getOption())) {
@@ -189,7 +207,7 @@ public class AccountServiceImpl implements AccountService{
 	private AuthDto updateAuth(String email) {
 		AuthDto authDto = authDao.findByEmail(email);
 		
-		if(authDto == null) {
+		if(authDto == null || authDto.isAuthExpired()) {
 			throw new BadAuthRequestException();
 		}
 		

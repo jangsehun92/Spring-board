@@ -13,10 +13,11 @@ public enum ErrorCode {
 	EMAIL_AREADY_USED(400, "A001", " 이미 사용중인 이메일입니다."),
 	BAD_AUTH_REQUEST(400,"A002", " 유효하지 않은 인증 요청 입니다."),
 	ACCOUNT_LOGIN_FAILED(400, "A003", " 아이디 또는 비밀번호가 다릅니다"),
-	ACCOUNT_NOT_FOUND(400,"A004", " 존재하지 않는 계정입니다."),
+	ACCOUNT_NOT_FOUND(400,"A004", " 계정을 찾을 수 없습니다."),
 	ACCOUNT_DISABLED(400,"A005"," 계정이 활성화 되지 않았습니다. 이메일 인증을 완료해 주세요."),
 	ACCOUNT_LOCKED(400, "A006", " 계정이 잠겼습니다."),
-	PASSWORD_NOT_MATCH(400, "A007", "기존 비밀번호가 맞지 않습니다.");
+	PASSWORD_NOT_MATCH(400, "A007", " 기존 비밀번호가 맞지 않습니다."),
+	ACCOUNT_BAD_REQUEST(400, "A008", " 계정 정보가 올바르지 않습니다.");
 	
 	//article
 	

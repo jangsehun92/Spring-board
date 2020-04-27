@@ -7,11 +7,18 @@ import jsh.project.board.account.dto.Account;
 import jsh.project.board.account.dto.AccountCreateDto;
 import jsh.project.board.account.dto.AccountFindRequestDto;
 import jsh.project.board.account.dto.AccountFindResponseDto;
+import jsh.project.board.account.dto.AccountResponseDto;
 
 public interface AccountDao {
 	public void save(AccountCreateDto dto);
 	
 	public Account findByEmail(String email);
+	
+	public void edit(Account dto);
+	
+	public AccountResponseDto findById(int id);
+	
+	public void updateLoginDate(String email);
 	
 	public void updatePassword(Account account);
 	

@@ -10,6 +10,7 @@ import jsh.project.board.account.dto.Account;
 import jsh.project.board.account.dto.AccountCreateDto;
 import jsh.project.board.account.dto.AccountFindRequestDto;
 import jsh.project.board.account.dto.AccountFindResponseDto;
+import jsh.project.board.account.dto.AccountResponseDto;
 
 @Repository
 public class AccountDaoImpl implements AccountDao{
@@ -28,6 +29,21 @@ public class AccountDaoImpl implements AccountDao{
 	@Override
 	public Account findByEmail(String email) {
 		return sqlSession.selectOne("accountMapper.findByEmail",email);
+	}
+	
+	@Override
+	public AccountResponseDto findById(int id) {
+		return sqlSession.selectOne("accountMapper.findById", id);
+	}
+	
+	@Override
+	public void edit(Account dto) {
+		sqlSession.update("accountMapper.edit", dto);
+	}
+	
+	@Override
+	public void updateLoginDate(String email) {
+		sqlSession.update("accountMapper.updateLoginDate",email);
 	}
 	
 	@Override
@@ -64,4 +80,10 @@ public class AccountDaoImpl implements AccountDao{
 	public void updateLocked(Map<String, Object> paramMap) {
 		sqlSession.update("accountMapper.updateLocked", paramMap);
 	}
+
+	
+
+	
+
+	
 }

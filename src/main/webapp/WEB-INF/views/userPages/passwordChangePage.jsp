@@ -55,7 +55,7 @@ function check_form(){
 	}
 	
 	$.ajax({
-		url:"/account/info/password",
+		url:"/account/passwordChange",
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
 		data: JSON.stringify(AccountPasswordDto),

@@ -61,6 +61,18 @@ function check_form(){
 		return false;
 	}
 	
+	if(name==""){
+		alert("이름을 입력해주세요.");
+		$("#name").focus();
+		return false;
+	}
+	
+	if(birth==""){
+		alert("생년월일을 입력해주세요.");
+		$("#birth").focus();
+		return false;
+	}
+	
 	if(nickname==""){
 		alert("닉네임을 입력해주세요.");
 		$("#nickname").focus();
@@ -88,14 +100,12 @@ function check_form(){
 		return false;
 	} 
 	
-	$("#password").val(password);
-	
 	var accountCreateDto = {
-		email : $("#email").val(),
-		password : $("#password").val(),
-		name : $("#name").val(),
-		birth : $("#birth").val(),
-		nickname : $("#nickname").val()
+		email : email,
+		password : password,
+		name : name,
+		birth : birth,
+		nickname : nickname
 	}
 	
 	$.ajax({
@@ -112,10 +122,11 @@ function check_form(){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
 			alert(jsonValue.message);
-			//alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
+	
 }
+
 </script>
 <div class="container" style="margin-top: 80px;">
 		<div class="col-md-6 main-block-left" style="align-items: center;">
@@ -125,14 +136,13 @@ function check_form(){
 						회원가입
 					</h5>
 				</div>
-				<!-- <form method="post" action="/account/join" class="form-signup form-user panel-body" onsubmit="return check_form();"> -->
 				<form:form method="post" action="/account/join" class="form-signup form-user panel-body">
 					<fieldset>
 						<input type="text" class="form-control input-sm" id="email" name="email" placeholder="이메일" maxlength="30" style="margin-top: 10px;">
 						
-						<input type="password" class="form-control input-sm" id="password" name="password" placeholder="비밀번호" style="margin-top: 10px;">
+						<input type="password" class="form-control input-sm" id="password" name="password" placeholder="비밀번호" style="margin-top: 10px;" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9!@#$%^&*()-_]/g,'');">
 						
-						<input type="password" class="form-control input-sm" id="passwordCheck" placeholder="비밀번호 확인" style="margin-top: 10px;">
+						<input type="password" class="form-control input-sm" id="passwordCheck" placeholder="비밀번호 확인" style="margin-top: 10px;" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9!@#$%^&*()-_]/g,'');">
 						
 						<input type="text" class="form-control input-sm" id="name" name="name" placeholder="이름" maxlength="10" style="margin-top: 10px;">
 						
@@ -140,8 +150,7 @@ function check_form(){
 						
 						<input type="text" class="form-control input-sm" id="nickname" name="nickname" placeholder="닉네임" maxlength="10" style="margin-top: 10px;">
 					</fieldset>
-					<!-- <input type="submit" class="btn btn-primary btn-block" value="회원가입" style="margin-top: 10px;"> -->
-					<input type="button" class="btn btn-primary btn-block" value="회원가입" style="margin-top: 10px;" onclick="return check_form();">
+					<input type="button" class="btn btn-primary btn-block" value="회원가입" style="margin-top: 10px;" onclick="check_form();">
 				</form:form>
 			</div>
 		</div>

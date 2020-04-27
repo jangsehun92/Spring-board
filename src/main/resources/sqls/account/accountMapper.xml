@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="accountMapper">	
 	<resultMap type="Account" id="AccountResultMap">
+		<result property="id" column="id"/>
 		<result property="email" column="email"/>
 		<result property="password" column="password"/>
 		<result property="name" column="name"/>
@@ -17,11 +18,12 @@
 
 	<insert id="save" parameterType="AccountCreateDto">
 		INSERT INTO 
-			account_table values(#{email},#{password},#{name},#{birth},#{nickname},0,0,#{role},0,SYSDATE, NULL)
+			account_table values(account_seq.NEXTVAL,#{email},#{password},#{name},#{birth},#{nickname},0,0,#{role},0,SYSDATE, NULL)
 	</insert>
 
 	<select id="findByEmail" parameterType="java.lang.String" resultMap="AccountResultMap">
 		SELECT 
+			id,
 			email,
 			password,
 			name,
@@ -38,6 +40,27 @@
 		WHERE 
 			email = #{email}
 	</select>
+	
+	<select id="findById" parameterType="int" resultType="AccountResponseDto">
+		SELECT 
+			id,
+			email,
+			nickname
+		FROM 
+			account_table
+		WHERE 
+			id = #{id}
+	</select>
+	
+	<update id="edit" parameterType="Account">
+		UPDATE 
+			account_table
+		SET 
+			nickname = #{nickname}
+		WHERE
+			id = #{id} AND
+			email = #{email}
+	</update>
 	
 	<update id="updatePassword" parameterType="Account">
 		UPDATE 

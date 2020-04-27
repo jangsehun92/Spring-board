@@ -15,8 +15,13 @@
 	<P>The time on the server is ${serverTime}.</P>
 	
 	<sec:authorize access="isAuthenticated()">
-    	<sec:authentication property="principal" var="principal" />
-        <div id="nickname">${principal.nickname }님 안녕하세요. </div>
+    	<sec:authentication property="principal" var="principal" /> 
+        <div id="nickname">
+        	<p>${principal.nickname }님 안녕하세요.</p>
+        	<p>${principal.password }
+        	<p>${principal.name }
+        	<p>${principal.username }
+         </div>
     </sec:authorize>
     
 	

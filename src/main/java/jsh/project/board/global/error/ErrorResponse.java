@@ -1,11 +1,5 @@
 package jsh.project.board.global.error;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.validation.BindingResult;
-
 import jsh.project.board.global.error.exception.ErrorCode;
 
 public class ErrorResponse{

@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import jsh.project.board.article.service.ArticleService;
 
 @Controller
-public class BoardController {
+public class ArticleController {
 	
 	private ArticleService articleService;
 	
-	public BoardController(ArticleService articleService) {
+	public ArticleController(ArticleService articleService) {
 		this.articleService = articleService;
 	}
 	

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jsh.project.board.account.Enum.AuthOption;
-import jsh.project.board.account.controller.AccountController;
 import jsh.project.board.account.dao.AccountDao;
 import jsh.project.board.account.dao.AuthDao;
 import jsh.project.board.account.dto.Account;
@@ -19,9 +18,11 @@ import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AccountCreateDto;
 import jsh.project.board.account.dto.AccountFindRequestDto;
 import jsh.project.board.account.dto.AccountFindResponseDto;
+import jsh.project.board.account.dto.AccountInfoResponseDto;
 import jsh.project.board.account.dto.AccountPasswordDto;
 import jsh.project.board.account.dto.AccountPasswordResetDto;
 import jsh.project.board.account.dto.AccountPasswordResetRequestDto;
+import jsh.project.board.account.dto.AccountResponseDto;
 import jsh.project.board.account.dto.AuthDto;
 import jsh.project.board.account.exception.AccountNotEmailChecked;
 import jsh.project.board.account.exception.AccountNotFoundException;
@@ -29,6 +30,7 @@ import jsh.project.board.account.exception.BadAuthRequestException;
 import jsh.project.board.account.exception.EmailAlreadyUsedException;
 import jsh.project.board.account.exception.FindAccountBadRequestException;
 import jsh.project.board.account.exception.PasswordNotMatch;
+import jsh.project.board.article.dto.Article;
 import jsh.project.board.global.infra.email.EmailService;
 import jsh.project.board.global.infra.util.AuthKey;
 
@@ -65,6 +67,19 @@ public class AccountServiceImpl implements AccountService{
 	}
 	
 	@Override
+	public AccountInfoResponseDto accountInfo(int id) {
+		AccountResponseDto accountResponseDto = accountDao.findById(id);
+		List<Article> articles = null;
+		AccountInfoResponseDto dto = new AccountInfoResponseDto(accountResponseDto, articles);
+		return dto;
+	}
+	
+	@Override
+	public void accountEdit(Account dto) {
+		accountDao.edit(dto);
+	}
+	
+	@Override
 	public void passwordChange(Account account, AccountPasswordDto dto) {
 		if(!passwordEncoder.matches(dto.getBeforePassword(), account.getPassword())) {
 			throw new PasswordNotMatch();
@@ -87,6 +102,11 @@ public class AccountServiceImpl implements AccountService{
 		paramMap.put("email", email);
 		paramMap.put("failureCount", failureCount);
 		accountDao.updateFailureCount(paramMap);
+	}
+	
+	@Override
+	public void updateLoginDate(String email) {
+		accountDao.updateLoginDate(email);
 	}
 	
 	//계정 잠금 및 해제
@@ -221,5 +241,11 @@ public class AccountServiceImpl implements AccountService{
 	private void sendEmail(AuthDto authDto) throws Exception {
 		emailService.sendEmail(authDto);
 	}
+
+	
+
+	
+
+	
 
 }

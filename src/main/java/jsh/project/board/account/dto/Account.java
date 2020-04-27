@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @SuppressWarnings("serial")
 public class Account implements UserDetails{
-	
+	private int id;
 	private String email;
 	private String password;
 	private String name;
@@ -28,6 +28,14 @@ public class Account implements UserDetails{
 		ArrayList<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
 		auth.add(new SimpleGrantedAuthority(role));
 		return auth;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	@Override
@@ -125,6 +133,11 @@ public class Account implements UserDetails{
 			return false;
 		}
 		return true;
+	}
+	
+	public AccountResponseDto toResponseDto() {
+		AccountResponseDto dto = new AccountResponseDto(id,email,nickname);
+		return dto;
 	}
 	
 }

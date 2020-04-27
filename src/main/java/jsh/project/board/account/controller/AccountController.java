@@ -10,21 +10,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jsh.project.board.account.dto.Account;
 import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AccountCreateDto;
+import jsh.project.board.account.dto.AccountEditRequestDto;
 import jsh.project.board.account.dto.AccountFindRequestDto;
 import jsh.project.board.account.dto.AccountFindResponseDto;
 import jsh.project.board.account.dto.AccountPasswordDto;
@@ -44,10 +46,10 @@ public class AccountController {
 	
 	@RequestMapping("/login")
     public String loginPage() {
-        return "login";
+        return "userPages/login";
     }
   
-    @RequestMapping(value="/logout", method = RequestMethod.GET)
+    @GetMapping("/logout")
     public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null){    
@@ -58,23 +60,37 @@ public class AccountController {
     
     @GetMapping("/account/join")
     public String joinPage() {
-    	return "join";
+    	return "userPages/join";
     }
     
     @PostMapping("/account/join")
     public @ResponseBody ResponseEntity<HttpStatus> join(@RequestBody AccountCreateDto dto) throws Exception {
+    	log.info("회원가입 요청 정보 : " + dto.toString());
     	accountService.register(dto);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
     /*  */
-    @GetMapping("/account/info")
-    public String info(Principal principal, Authentication auth) {
-    	//비동기 요청을 통해 정보를 전달해줄 것인지?
-    	log.info(principal.getName());//null을 유발할수 있다.
-    	//이렇게도 인증한 정보를 얻어올 수 있다.
-    	//Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	return "login";
+    @GetMapping("/account/info/{id}")
+    public String infoPage(@PathVariable("id")int id, Model model) {
+    	model.addAttribute("accountInfoDto",accountService.accountInfo(id));
+    	return "userPages/info";
+    }
+    
+    @GetMapping("/account/edit")
+    public String accountEditPage() {
+    	return "userPages/edit";
+    }
+    
+    @PostMapping("/account/edit")
+    public @ResponseBody ResponseEntity<HttpStatus> edit(Principal principal, Authentication auth, Model model, @RequestBody AccountEditRequestDto dto) {
+    	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	account.setNickname(dto.getNickname());
+    	accountService.accountEdit(account);
+    	
+    	Authentication newAuth = new UsernamePasswordAuthenticationToken(account, auth.getCredentials(), account.getAuthorities());
+    	SecurityContextHolder.getContext().setAuthentication(newAuth);
+    	return new ResponseEntity<>(HttpStatus.OK);
     }
     
     //email 중복 체크
@@ -88,7 +104,7 @@ public class AccountController {
     @RequestMapping("/account/sendEmail")
     public String emailPage(String email, Model model) {
     	model.addAttribute("email", email);
-    	return "sendEmail";
+    	return "userPages/sendEmail";
     }
     
     //회원가입(계정 활성화) 이메일 인증
@@ -105,24 +121,25 @@ public class AccountController {
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
+    //계정 찾기 페이지 요청
     @GetMapping("/account/find-email")
     public String findEmailPage(){
-    	return "findAccountPage";
+    	return "userPages/findAccountPage";
     }
     
+    //계정 찾기
     @PostMapping("/account/find-email")
     public @ResponseBody ResponseEntity<List<AccountFindResponseDto>> findEmail(@RequestBody AccountFindRequestDto dto) throws Exception{
     	return new ResponseEntity<>(accountService.findAccount(dto), HttpStatus.OK);
     }
     
+    //비밀번호 찾기 페이지 요청 
     @GetMapping("/account/find-password")
     public String findPasswordPage(){
-    	return "findPasswordPage";
+    	return "userPages/findPasswordPage";
     }
     
-    //비밀번호 리셋 요청 전 해당 정보로된 계정이 있는지 체크하는 API
-    
-    //계정 정보를 입력 후 비밀번호 리셋요청
+    //계정 정보를 입력 후 비밀번호 리셋요청(인증이메일 발송)
     @PostMapping("/account/reset")
     public @ResponseBody ResponseEntity<HttpStatus> findPassword(@RequestBody AccountPasswordResetRequestDto dto) throws Exception{
     	accountService.sendResetEmail(dto);
@@ -134,7 +151,7 @@ public class AccountController {
     public String resetRequest(AccountAuthRequestDto dto, Model model) {
     	accountService.resetPasswordConfirm(dto);
     	model.addAttribute("dto",dto);
-    	return "passwordResetPage";
+    	return "userPages/passwordResetPage";
     }
     
     //비밀번호 변경
@@ -145,13 +162,13 @@ public class AccountController {
     }
     
     //로그인상태에서 비밀번호 재설정 페이지 요청
-    @GetMapping("/account/info/password")
+    @GetMapping("/account/passwordChange")
     public String passwordChangePage() {
-    	return "passwordChangePage";
+    	return "userPages/passwordChangePage";
     }
     
     //로그인상태에서 비밀번호 재설정 
-    @PostMapping("/account/info/password")
+    @PostMapping("/account/passwordChange")
     public @ResponseBody ResponseEntity<HttpStatus> passwordChange(Principal principal, @RequestBody AccountPasswordDto dto) {
     	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	accountService.passwordChange(account, dto);
@@ -160,7 +177,7 @@ public class AccountController {
     
     @RequestMapping("/account/error")
     public String authPage(String email, Model model) {
-    	return "errorPage";
+    	return "commonPages/errorPage";
     }
     
 }

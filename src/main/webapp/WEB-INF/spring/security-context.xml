@@ -5,26 +5,31 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd"> 
-    
-    <http auto-config="true" use-expressions="true">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		 
+    <http auto-config="true" use-expressions="true"  >
         <intercept-url pattern="/articles" access="permitAll" />
         <intercept-url pattern="/account/join" method="POST" access="permitAll" />
         <intercept-url pattern="/account/passwordChange" method="GET" access="hasRole('ROLE_USER')" />
         <intercept-url pattern="/account/edit" method="GET" access="hasRole('ROLE_USER')" />
         <intercept-url pattern="/account/edit" method="POST" access="hasRole('ROLE_USER')" />
+        <intercept-url pattern="/account/test" method="GET" access="hasRole('ROLE_USER')" />
         <intercept-url pattern="/article" method="GET" access="permitAll" />
         <intercept-url pattern="/article" method="POST" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/article" method="PUT" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/article" method="DELETE" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
 		<intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
+		
 		<form-login login-page="/login"
 					username-parameter="email"
 					password-parameter="password"
 					authentication-failure-handler-ref="loginFailureHandler"
 					authentication-success-handler-ref="loginSuccessHandler"
+					
 		/>
+		<access-denied-handler error-page="/account/denied"/>
 		<csrf disabled="true"/>
+		
     </http>
     
     <context:component-scan base-package="jsh.project.board" />
@@ -38,7 +43,6 @@
 		<beans:property name="email" value="email"/>
 		<beans:property name="defaultUrl" value="/"/>
 	</beans:bean>
-	
 	<!-- DB를 사용하여 사용자 정보를 가져온다 -->
 	<authentication-manager>
 		<authentication-provider ref="authenticationProvider"/>

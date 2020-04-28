@@ -70,7 +70,7 @@ function join(){
 					
 			</div>
 			<div>
-				<h5 class="panel-header" style="text-align: center;">${errorMessage }</h5>
+				<h5 class="panel-header" style="text-align: center;">${errorResponse.message }</h5>
 			</div>
 		</div>
 	</div>

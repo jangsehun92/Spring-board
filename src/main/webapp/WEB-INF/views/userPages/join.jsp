@@ -118,10 +118,14 @@ function check_form(){
 			location.href="/account/sendEmail?email="+$("#email").val();
 		},
 		error:function(request,status,error){
-			alert("회원가입에 실패하였습니다. 잠시 후 다시 시도해 주세요.");
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			alert(jsonValue.message);
+			if(code == 'C004'){
+				alert("인증 이메일 발송에 실패하였습니다. (" + jsonValue.message + ")");
+			}else{
+				alert(jsonValue.message);
+			}
+			
 		}
 	});
 	

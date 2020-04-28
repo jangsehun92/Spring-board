@@ -15,6 +15,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import jsh.project.board.account.service.AccountService;
+import jsh.project.board.global.error.ErrorResponse;
 import jsh.project.board.global.error.exception.ErrorCode;
 
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler{
@@ -25,7 +26,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 		String loginUrl = "/login";
-		String errorUrl = "/account/error";
+		String errorUrl = "/account/status";
 		
 		if(exception instanceof InternalAuthenticationServiceException) {
 			dispatcherForward(request,response, loginUrl, ErrorCode.ACCOUNT_NOT_FOUND);
@@ -57,8 +58,10 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 	
 	private void dispatcherForward(HttpServletRequest request, HttpServletResponse response, String url, ErrorCode errorCode) throws IOException, ServletException  {
 		request.setAttribute("email", request.getParameter("email"));
-		request.setAttribute("errorCode", errorCode.getCode());
-		request.setAttribute("errorMessage",errorCode.getMessage());
+		final ErrorResponse errorResponse = ErrorResponse.to(errorCode);
+		request.setAttribute("errorResponse", errorResponse);
+//		request.setAttribute("errorCode", errorCode.getCode());
+//		request.setAttribute("errorMessage",errorCode.getMessage());
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 	

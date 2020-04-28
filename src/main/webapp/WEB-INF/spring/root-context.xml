@@ -12,7 +12,7 @@
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
-
+	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
@@ -21,6 +21,7 @@
 			</list>
 		</property>
 	</bean>
+	
 	
 	<!-- 기존에 사용하던 dataSource -->
 	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">

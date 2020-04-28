@@ -24,8 +24,13 @@ function resendEmail(){
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			alert(jsonValue.message);
-			location.href="/login";
+			if(code == 'C004'){
+				alert("인증 이메일 발송에 실패하였습니다. (" + jsonValue.message + ")");
+			}else{
+				alert(jsonValue.message);
+				location.href="/login";
+			}
+			
 		}
 	});
 }

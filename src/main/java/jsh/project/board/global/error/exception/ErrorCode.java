@@ -7,7 +7,7 @@ public enum ErrorCode {
     ENTITY_NOT_FOUND(400, "C003", " Entity Not Found"),
     INTERNAL_SERVER_ERROR(500, "C004", "Server Error"),
     INVALID_TYPE_VALUE(400, "C005", " Invalid Type Value"),
-    HANDLE_ACCESS_DENIED(403, "C006", "Access is Denied"),
+    HANDLE_ACCESS_DENIED(403, "C006", "접근 권한이 없습니다."),
 
 	//account
 	EMAIL_AREADY_USED(400, "A001", " 이미 사용중인 이메일입니다."),

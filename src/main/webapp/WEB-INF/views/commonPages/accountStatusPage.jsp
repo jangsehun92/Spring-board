@@ -24,8 +24,13 @@ function resendEmail(){
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			alert(jsonValue.message);
-			location.href="/login";
+			if(code == 'C004'){
+				alert("인증 이메일 발송에 실패하였습니다. (" + jsonValue.message +")");
+			}else{
+				alert(jsonValue.message);
+				location.href="/login";
+			}
+			
 		}
 	});
 }
@@ -35,35 +40,35 @@ function resendEmail(){
 
 	<div class="container" style="margin-top: 80px; align-items: center;">
 		<div class="row">
-		<div class="form-group">
-			<c:if test="${errorCode eq 'A005'}">
-				<div class="number font-red"> 
-					<h1 style="color: red;">${errorMessage } ${errorCode }</h1> 
-				</div>
+			<div class="form-group">
+				<c:if test="${errorResponse.code eq 'A005'}">
+					<div class="number font-red"> 
+						<h1 style="color: red;">${errorResponse.message }</h1> 
+					</div>
+					
+					<div class="details">
+						<h3>이메일 정보 : ${email }</h3>
+						<p>
+							<input class="btn btn-primary" type="button" value="재발송" onclick="resendEmail()">
+							<input class="btn btn-primary" type="button" value="로그인" onclick="location.href='/login'">
+						</p>
+					</div>
+				</c:if>
 				
-				<div class="details">
-					<h3>이메일 정보 : ${email }</h3>
-					<p>
-						<input class="btn btn-primary" type="button" value="재발송" onclick="resendEmail()">
-						<input class="btn btn-primary" type="button" value="로그인" onclick="location.href='/login'">
-					</p>
-				</div>
-			</c:if>
-			
-			<c:if test="${errorCode eq 'A006' }">
-				<div class="number font-red"> 
-					<h1 style="color: red;">${errorMessage } ${errorCode }</h1> 
-				</div>
-				
-				<div class="details">
-					<h3>이메일 정보 : ${email }</h3>
-					<p>
-						<input class="btn btn-primary" type="button" value="비밀번호 재설정" onclick="location.href='/account/find-password'">
-					</p>
-				</div>
-			</c:if>
+				<c:if test="${errorResponse.code eq 'A006' }">
+					<div class="number font-red"> 
+						<h1 style="color: red;">${errorResponse.message }</h1> 
+					</div>
+					
+					<div class="details">
+						<h3>이메일 정보 : ${email }</h3>
+						<p>
+							<input class="btn btn-primary" type="button" value="비밀번호 재설정" onclick="location.href='/account/find-password'">
+						</p>
+					</div>
+				</c:if>
+			</div>
 		</div>
-	</div>
 	</div>
 </body>
 </html>

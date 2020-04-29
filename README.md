@@ -8,7 +8,7 @@ Spring Framework를 사용하여 게시판을 구현한다.
 ## Back-end
 * Language : JAVA 1.8
 * WEB Server : Apache
-* WAS Server : Tomcat 8
+* WAS Server : Tomcat 8.5
 * Framework : Spring 5.1.3
 * build tool : Maven 3.5.1
 * ORM : mybatis 3.4.6
@@ -16,6 +16,7 @@ Spring Framework를 사용하여 게시판을 구현한다.
 
 # 기능 목록
 공통 사항
+  - spring security를 적용한다.
   - 발생할 수 있는 예외케이스에 대한 처리를 한다.
   - 목적에 맞는 DTO 객체를 사용한다.
   - 공통된 ErrorResponse를 리턴한다.
@@ -30,14 +31,14 @@ Spring Framework를 사용하여 게시판을 구현한다.
 5. 조건에 맞지 않을 경우 사용자에게 알려준다.
 6. 인증 이메일이 발송되어야 한다.
 
-  * **[spring security5] 회원가입**
+  * **회원가입**
     - 회원가입 페이지에서 POST요청 전에 이메일 서식에 맞는지, 비밀번호 조건이 맞는지 확인한다.
     - 비밀번호가 한글이면 영어로 치환한다.
     - 이메일 중복 여부를 확인한다.
     - 정보를 DB에 저장 후 인증 이메일을 발송 한다.
     - 인증 링크 클릭 시 인증 테이블에서 인증키를 확인 후 계정을 활성화 한다.
   
-  * **[spring security5] 로그인/로그아웃**
+  * **로그인/로그아웃**
     - 계정 존재 여부를 확인한다.
     - 비밀번호를 확인한다.
     - 이메일 인증 여부를 확인한다.

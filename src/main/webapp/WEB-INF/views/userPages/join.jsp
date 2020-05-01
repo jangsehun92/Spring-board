@@ -4,10 +4,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>회원가입</title>
+	<meta id="_csrf" name="_csrf" content="${_csrf.token}"/>
+	<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}"/>
+	<meta charset="UTF-8">
+	<title>회원가입</title>
 </head>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.5.0.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/ajax_header.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/inko@1.1.0/inko.min.js"></script>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
@@ -18,6 +21,9 @@
 //한 > 영 & 영 > 한 변환 자바스크립트 오픈소스 라이브러리
 var inko = new Inko();
 function check_form(){
+	/* var header = "${_csrf.headerName}";
+	var token = "${_csrf.token}"; */
+	
 	var email = $("#email").val().replace(/\s|/gi,'');
 	var emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 	var password = inko.ko2en($("#password").val().replace(/\s|/gi,''));
@@ -113,6 +119,9 @@ function check_form(){
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
 		data: JSON.stringify(accountCreateDto),
+		/* beforeSend:function(xhr){
+			xhr.setRequestHeader(header, token);	
+		}, */
 		success:function(data){
 			alert("인증 이메일이 발송 되었습니다.");
 			location.href="/account/sendEmail?email="+$("#email").val();

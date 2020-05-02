@@ -47,7 +47,17 @@ $(function(){
 				<ul class="nav navbar-nav navbar-right">
 					<sec:authorize access="isAuthenticated()">
 						<sec:authentication property="principal" var="principal" />
-						<div id="nickname">${principal.nickname }님안녕하세요.</div>
+						<li id="info"><a href="/account/info">${principal.nickname }</a></li>
+						<li id="logout"><a href="/logout">로그아웃</a></li>
+					</sec:authorize>
+					
+					<sec:authorize access="isAnonymous()">
+						<div>
+							<ul class="nav navbar-nav navbar-right">
+								<li id="login"><a href="/login">로그인</a></li>
+								<li id="join"><a href="/account/join">회원가입</a></li>
+							</ul>
+						</div>
 					</sec:authorize>
 				</ul>
 			</div>

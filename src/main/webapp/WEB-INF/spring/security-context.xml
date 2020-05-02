@@ -27,6 +27,11 @@
 					authentication-success-handler-ref="loginSuccessHandler"
 					
 		/>
+		
+		<logout
+			logout-success-url="/"
+			invalidate-session="true"
+		/>
 		<access-denied-handler error-page="/account/denied"/>
 		<csrf disabled="false"/>
 		

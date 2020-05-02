@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ include file="/WEB-INF/views/commonPages/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +26,7 @@ function check_form(){
 	//galert($("#password").val());
 	if(email==""){
 		alert("이메일을 입력해주세요.");
-		$("#password").focus();
+		$("#email").focus();
 		return false;
 	}
 	

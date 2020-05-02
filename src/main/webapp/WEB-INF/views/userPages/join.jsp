@@ -5,8 +5,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta id="_csrf" name="_csrf" content="${_csrf.token}"/>
-	<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}"/>
 	<meta charset="UTF-8">
 	<title>회원가입</title>
 </head>

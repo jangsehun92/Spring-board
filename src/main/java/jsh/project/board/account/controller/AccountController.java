@@ -50,14 +50,14 @@ public class AccountController {
         return "userPages/login";
     }
   
-    @GetMapping("/logout")
-    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){    
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-        return "redirect:/login?logout=true";
-    }
+//    @GetMapping("/logout")
+//    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        if (auth != null){    
+//            new SecurityContextLogoutHandler().logout(request, response, auth);
+//        }
+//        return "redirect:/login?logout=true";
+//    }
     
     @GetMapping("/account/join")
     public String joinPage() {
@@ -195,7 +195,4 @@ public class AccountController {
     public String denied() {
     	return "commonPages/accessDenied";
     }
-    
-    
-    
 }

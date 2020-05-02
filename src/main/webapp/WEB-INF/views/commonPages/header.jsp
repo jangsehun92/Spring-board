@@ -5,6 +5,8 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<meta id="_csrf" name="_csrf" content="${_csrf.token}"/>
+	<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}"/>
 	<title>Board Project</title>
 </head>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.5.0.min.js"></script>
@@ -48,7 +50,11 @@ $(function(){
 					<sec:authorize access="isAuthenticated()">
 						<sec:authentication property="principal" var="principal" />
 						<li id="info"><a href="/account/info">${principal.nickname }</a></li>
-						<li id="logout"><a href="/logout">로그아웃</a></li>
+						<!-- <li id="logout"><a href="/logout">로그아웃</a></li> -->
+						<li><a href="javascript:;" onclick="document.getElementById('logout-form').submit();">로그아웃</a></li>
+						<form method="POST" id="logout-form" action="/logout">
+						   <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
+						</form>
 					</sec:authorize>
 					
 					<sec:authorize access="isAnonymous()">

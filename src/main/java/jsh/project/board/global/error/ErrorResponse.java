@@ -1,25 +1,48 @@
 package jsh.project.board.global.error;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.validation.BindingResult;
+
 import jsh.project.board.global.error.exception.ErrorCode;
+import jsh.project.board.global.error.exception.FieldError;
 
 public class ErrorResponse{
 	private String message;
 	private int status;
 	private String code;
+	private List<FieldError> errors;
 	
 	public ErrorResponse() {
 		
 	}
 	
-	ErrorResponse(ErrorCode errorCode) {
+	public ErrorResponse(ErrorCode errorCode) {
 		this.message = errorCode.getMessage();
 		this.status = errorCode.getStatus();
 		this.code = errorCode.getCode();
+		this.errors = new ArrayList<>();
 	}
 	
-	public static ErrorResponse to(final ErrorCode code) {
-        return new ErrorResponse(code);
-    }
+	public ErrorResponse(ErrorCode errorCode, BindingResult bingingResult) {
+		this.message = errorCode.getMessage();
+		this.status = errorCode.getStatus();
+		this.code = errorCode.getCode();
+		this.errors = bingingResultErrors(bingingResult);
+	}
+	
+	public List<FieldError> bingingResultErrors(BindingResult bindingResult){
+		List<FieldError> errors = new ArrayList<FieldError>();
+		for(int i = 0; i < bindingResult.getFieldErrors().size(); i++) {
+			errors.add(new FieldError(
+								bindingResult.getFieldErrors().get(i).getField(), 
+								bindingResult.getFieldErrors().get(i).getRejectedValue().toString(), 
+								bindingResult.getFieldErrors().get(i).getDefaultMessage()));
+		}
+		return errors;
+	}
+	
 
 	public String getMessage() {
 		return message;
@@ -34,53 +57,8 @@ public class ErrorResponse{
 	public String getCode() {
 		return code;
 	}
-
 	
-//	public static class FieldError{
-//		private String field;
-//		private String value;
-//		private String reason;
-//		
-//		private FieldError(String field, String value, String reason) {
-//			this.field = field;
-//			this.value = value;
-//			this.reason = reason;
-//		}
-//		
-//		public static List<FieldError> result(final String field, final String value, final String reason) {
-//            List<FieldError> fieldErrors = new ArrayList<>();
-//            fieldErrors.add(new FieldError(field, value, reason));
-//            return fieldErrors;
-//        }
-//		
-//		public static List<FieldError> result(BindingResult bindingResult) {
-//			List<org.springframework.validation.FieldError> filedErrors = bindingResult.getFieldErrors();
-//			return filedErrors.stream().map(error -> new FieldError(
-//					error.getField(),
-//					error.getRejectedValue() == null ? "" : error.getRejectedValue().toString(),
-//					error.getDefaultMessage())).collect(Collectors.toList());
-//		}
-//		
-//		
-//		public String getField() {
-//			return field;
-//		}
-//		public void setField(String field) {
-//			this.field = field;
-//		}
-//		public String getValue() {
-//			return value;
-//		}
-//		public void setValue(String value) {
-//			this.value = value;
-//		}
-//		public String getReason() {
-//			return reason;
-//		}
-//		public void setReason(String reason) {
-//			this.reason = reason;
-//		}
-//		
-//	}
-
+	public List<FieldError> getErrors(){
+		return errors;
+	}
 }

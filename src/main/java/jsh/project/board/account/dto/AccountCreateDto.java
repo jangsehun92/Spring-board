@@ -1,11 +1,20 @@
 package jsh.project.board.account.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 public class AccountCreateDto {
 	
+	@NotBlank(message = "이메일을 입력해주세요.")
+	@Email
 	private String email;
+	@NotBlank(message = "비밀번호를 입력해주세요.")
 	private String password;
+	@NotBlank(message = "이름을 입력해주세요.")
 	private String name;
+	@NotBlank(message = "생년월일을 입력해주세요.")
 	private String birth;
+	@NotBlank(message = "닉네임을 입력해주세요.")
 	private String nickname;
 	private String role;
 	
@@ -71,7 +80,7 @@ public class AccountCreateDto {
 	
 	@Override
 	public String toString() {
-		return "회원 가입 Dto 정보 : { email : + " + email + "password : " + password + " name : + " + name + " birth : " + birth + " nickname : " + nickname + "} ";
+		return "AccountCreateDto { email : + " + email + "password : " + password + " name : + " + name + " birth : " + birth + " nickname : " + nickname + "} ";
 	}
 	
 	

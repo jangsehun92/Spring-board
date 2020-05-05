@@ -1,5 +1,7 @@
 package jsh.project.board.article.controller;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jsh.project.board.article.dto.Article;
+import jsh.project.board.article.dto.ArticleCreateDto;
 import jsh.project.board.article.dto.ResponseArticles;
 import jsh.project.board.article.service.ArticleService;
 
@@ -42,8 +45,16 @@ public class ArticleController {
 		return new ResponseEntity<>( HttpStatus.OK);
 	}
 	
+	@GetMapping("/article/create")
+	public String articleCreateForm() {
+		return "articlePages/articleCreate";
+	}
+	
+	
 	@PostMapping("/article")
-	public ResponseEntity<HttpStatus> create(){
+	public ResponseEntity<HttpStatus> create(@RequestBody ArticleCreateDto dto){
+		logger.info("dto.getDate : "+dto.getTitle());
+		logger.info("POST /article");
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	

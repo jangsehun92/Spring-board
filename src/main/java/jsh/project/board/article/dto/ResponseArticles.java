@@ -5,7 +5,7 @@ import java.util.List;
 import jsh.project.board.global.infra.util.Pagination;
 
 public class ResponseArticles {
-	private List<Article> articles;
+	private List<ArticleResponseDto> articles;
 	private Pagination pagination;
 	private String category;
 	private String query;
@@ -14,11 +14,11 @@ public class ResponseArticles {
 		
 	}
 	
-	public List<Article> getArticles() {
+	public List<ArticleResponseDto> getArticles() {
 		return articles;
 	}
 
-	public void setArticles(List<Article> articles) {
+	public void setArticles(List<ArticleResponseDto> articles) {
 		this.articles = articles;
 	}
 

@@ -118,9 +118,6 @@ function check_form(){
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
 		data: JSON.stringify(accountCreateDto),
-		/* beforeSend:function(xhr){
-			xhr.setRequestHeader(header, token);	
-		}, */
 		success:function(data){
 			alert("인증 이메일이 발송 되었습니다.");
 			location.href="/account/sendEmail?email="+$("#email").val();
@@ -130,10 +127,13 @@ function check_form(){
 			code = jsonValue.code;
 			if(code == 'C004'){
 				alert("인증 이메일 발송에 실패하였습니다. (" + jsonValue.message + ")");
-			}else{
-				alert(jsonValue.message);
 			}
-			
+			if(code == 'C003'){
+				$(".error").empty();
+				for(var i in jsonValue.errors){
+					$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
+				}
+			}
 		}
 	});
 	
@@ -151,16 +151,21 @@ function check_form(){
 				<form:form method="post" action="/account/join" class="form-signup form-user panel-body">
 					<fieldset>
 						<input type="text" class="form-control input-sm" id="email" name="email" placeholder="이메일" maxlength="30" style="margin-top: 10px;">
+						<small id="error_email" class="error"></small>
 						
 						<input type="password" class="form-control input-sm" id="password" name="password" placeholder="비밀번호" style="margin-top: 10px;" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9!@#$%^&*()-_]/g,'');">
+						<small id="error_password" class="error"></small>
 						
 						<input type="password" class="form-control input-sm" id="passwordCheck" placeholder="비밀번호 확인" style="margin-top: 10px;" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9!@#$%^&*()-_]/g,'');">
 						
 						<input type="text" class="form-control input-sm" id="name" name="name" placeholder="이름" maxlength="10" style="margin-top: 10px;">
+						<small id="error_name" class="error"></small>
 						
 						<input type="text" class="form-control input-sm" id="birth" name="birth" placeholder="생년월일(ex:920409)" maxlength="6" style="margin-top: 10px;">
+						<small id="error_birth" class="error"></small>
 						
 						<input type="text" class="form-control input-sm" id="nickname" name="nickname" placeholder="닉네임" maxlength="10" style="margin-top: 10px;">
+						<small id="error_nickname" class="error"></small>
 					</fieldset>
 					<input type="button" class="btn btn-primary btn-block" value="회원가입" style="margin-top: 10px;" onclick="check_form();">
 				</form:form>

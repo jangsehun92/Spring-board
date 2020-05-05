@@ -2,21 +2,20 @@ package jsh.project.board.article.dto;
 
 import java.sql.Date;
 
-public class Article {
-	
+public class ArticleResponseDto {
 	private int id;
-	private int accountId;
+	private String nickname;
 	private String title;
 	private String content;
 	private Date regdate;
 	
-	public Article() {
+	public ArticleResponseDto() {
 		
 	}
 	
-	public Article(int id, int accountId, String title, String content, Date regdate) {
+	public ArticleResponseDto(int id, String nickname, String title, String content, Date regdate) {
 		this.id = id;
-		this.accountId = accountId;
+		this.nickname = nickname;
 		this.title = title;
 		this.content = content;
 		this.regdate = regdate;
@@ -30,12 +29,12 @@ public class Article {
 		this.id = id;
 	}
 
-	public int getAccountId() {
-		return accountId;
+	public String getNickname() {
+		return nickname;
 	}
 
-	public void setAccountId(int accountId) {
-		this.accountId = accountId;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public String getTitle() {
@@ -61,6 +60,6 @@ public class Article {
 	public void setRegdate(Date regdate) {
 		this.regdate = regdate;
 	}
-
 	
+
 }

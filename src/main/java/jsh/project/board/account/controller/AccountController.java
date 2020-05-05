@@ -3,8 +3,7 @@ package jsh.project.board.account.controller;
 import java.security.Principal;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,23 +48,14 @@ public class AccountController {
         return "userPages/login";
     }
   
-//    @GetMapping("/logout")
-//    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        if (auth != null){    
-//            new SecurityContextLogoutHandler().logout(request, response, auth);
-//        }
-//        return "redirect:/login?logout=true";
-//    }
-    
     @GetMapping("/account/join")
     public String joinPage() {
     	return "userPages/join";
     }
     
     @PostMapping("/account/join")
-    public @ResponseBody ResponseEntity<HttpStatus> join(@RequestBody AccountCreateDto dto) throws Exception {
-    	log.info("회원가입 요청 정보 : " + dto.toString());
+    public @ResponseBody ResponseEntity<HttpStatus> join(@RequestBody @Valid AccountCreateDto dto) throws Exception {
+    	log.info("AccountCreateDto : " + dto.toString());
     	accountService.register(dto);
     	return new ResponseEntity<>(HttpStatus.OK);
     }

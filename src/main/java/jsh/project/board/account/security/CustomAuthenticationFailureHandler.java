@@ -58,7 +58,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 	
 	private void dispatcherForward(HttpServletRequest request, HttpServletResponse response, String url, ErrorCode errorCode) throws IOException, ServletException  {
 		request.setAttribute("email", request.getParameter("email"));
-		final ErrorResponse errorResponse = ErrorResponse.to(errorCode);
+		final ErrorResponse errorResponse = new ErrorResponse(errorCode);
 		request.setAttribute("errorResponse", errorResponse);
 //		request.setAttribute("errorCode", errorCode.getCode());
 //		request.setAttribute("errorMessage",errorCode.getMessage());

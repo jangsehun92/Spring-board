@@ -33,13 +33,13 @@ public class GlobalExceptionHandler {
 	}
 
 	/**
-	 * @ModelAttribut 으로 binding error 발생시 BindException 발생한다. ref
-	 *                https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-modelattrib-method-args
+	 * @ModelAttribut 으로 binding error 발생시 BindException 발생한다. 
+	 * ref https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-modelattrib-method-args
 	 */
 	@ExceptionHandler(BindException.class)
 	protected ResponseEntity<ErrorResponse> handleBindException(BindException e) {
 		log.error("handleBindException", e);
-		final ErrorResponse response = new ErrorResponse(ErrorCode.INVALID_INPUT_VALUE);
+		final ErrorResponse response = new ErrorResponse(ErrorCode.INVALID_INPUT_VALUE, e.getBindingResult());
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 

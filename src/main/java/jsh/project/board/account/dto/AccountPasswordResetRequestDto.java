@@ -1,8 +1,16 @@
 package jsh.project.board.account.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 public class AccountPasswordResetRequestDto {
+	
+	@NotBlank(message = "이메일을 입력해 주세요.")
+	@Email
 	private String email;
+	@NotBlank(message = "이름을 입력해주세요.")
 	private String name;
+	@NotBlank(message = "생년월일을 입력해주세요.")
 	private String birth;
 	
 	public AccountPasswordResetRequestDto() {

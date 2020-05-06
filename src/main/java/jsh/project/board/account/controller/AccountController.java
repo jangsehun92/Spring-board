@@ -72,10 +72,10 @@ public class AccountController {
     }
     
     @PostMapping("/account/edit")
-    public @ResponseBody ResponseEntity<HttpStatus> edit(Principal principal, Authentication auth, Model model, @RequestBody AccountEditRequestDto dto) {
+    public @ResponseBody ResponseEntity<HttpStatus> edit(Principal principal, Authentication auth, Model model, @RequestBody @Valid AccountEditRequestDto dto) {
     	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	account.setNickname(dto.getNickname());
     	accountService.accountEdit(account);
+    	account.setNickname(dto.getNickname());
     	
     	Authentication newAuth = new UsernamePasswordAuthenticationToken(account, auth.getCredentials(), account.getAuthorities());
     	SecurityContextHolder.getContext().setAuthentication(newAuth);
@@ -118,7 +118,7 @@ public class AccountController {
     
     //계정 찾기
     @PostMapping("/account/find-email")
-    public @ResponseBody ResponseEntity<List<AccountFindResponseDto>> findEmail(@RequestBody AccountFindRequestDto dto) throws Exception{
+    public @ResponseBody ResponseEntity<List<AccountFindResponseDto>> findEmail(@RequestBody @Valid AccountFindRequestDto dto) throws Exception{
     	return new ResponseEntity<>(accountService.findAccount(dto), HttpStatus.OK);
     }
     
@@ -130,7 +130,7 @@ public class AccountController {
     
     //계정 정보를 입력 후 비밀번호 리셋요청(인증이메일 발송)
     @PostMapping("/account/reset")
-    public @ResponseBody ResponseEntity<HttpStatus> findPassword(@RequestBody AccountPasswordResetRequestDto dto) throws Exception{
+    public @ResponseBody ResponseEntity<HttpStatus> findPassword(@RequestBody @Valid AccountPasswordResetRequestDto dto) throws Exception{
     	accountService.sendResetEmail(dto);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -158,7 +158,7 @@ public class AccountController {
     
     //로그인상태에서 비밀번호 재설정 
     @PostMapping("/account/passwordChange")
-    public @ResponseBody ResponseEntity<HttpStatus> passwordChange(Principal principal, @RequestBody AccountPasswordDto dto) {
+    public @ResponseBody ResponseEntity<HttpStatus> passwordChange(Principal principal, @RequestBody @Valid AccountPasswordDto dto) {
     	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	accountService.passwordChange(account, dto);
     	return new ResponseEntity<>(HttpStatus.OK);

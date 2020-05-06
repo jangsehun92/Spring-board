@@ -34,6 +34,7 @@ function check_form(){
         alert('비밀번호는 숫자/영문자/특수문자 조합으로 8~20자를 사용해야 합니다.'); 
         return false;
     }
+	
 	if(passwordCheck==""){
 		alert("비밀번호를 재입력해주세요.");
 		$("#passwordCheck").focus();

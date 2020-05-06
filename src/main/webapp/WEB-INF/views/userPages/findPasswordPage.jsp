@@ -25,7 +25,7 @@ function check_form(){
 	var name = $("#name").val().replace(/\s|/gi,'');
 	var birth = $("#birth").val().replace(/\s|/gi,'');
 	
-	if(email=="") {
+	/* if(email=="") {
 		alert("이메일을 입력해주세요.");
 		$("#email").focus();
 		return false;
@@ -46,7 +46,7 @@ function check_form(){
 		alert("생년월일을 입력해주세요.");
 		$("#passwordCheck").focus();
 		return false;
-	}
+	} */
 	
 	var AccountPasswordResetRequestDto = {
 		email : $("#email").val(),
@@ -66,9 +66,25 @@ function check_form(){
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			alert(jsonValue.message);
+			$(".error").empty();
+			
+			if(code == 'A004'){
+				$("#error_account").append(jsonValue.message);
+			}
+			
+			if(code == 'A008'){
+				$("#error_account").append(jsonValue.message);
+			}
+			
 			if(code == 'A005'){
+				alert(jsonValue.message);
 				location.href="/account/sendEmail?email="+$("#email").val();
+			}
+			
+			if(code == 'C003'){
+				for(var i in jsonValue.errors){
+					$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
+				}
 			}
 		}
 	});
@@ -89,12 +105,14 @@ function check_form(){
 						<form:form method="post" action="/account/find-email" class="form-signup form-user panel-body">
 							<fieldset>
 								<input type="text" class="form-control input-sm" id="email" name="email" placeholder="email" maxlength="30" style="margin-top: 10px;">
-								
+								<small id="error_email" class="error"></small>
 								<input type="text" class="form-control input-sm" id="name" name="name" placeholder="이름" maxlength="10" style="margin-top: 10px;">
-								
+								<small id="error_name" class="error"></small>
 								<input type="text" class="form-control input-sm" id="birth" name="birth" placeholder="생년월일(ex:920409)" maxlength="6" style="margin-top: 10px;">
+								<small id="error_birth" class="error"></small>
 							</fieldset>
 							<input type="button" class="btn btn-primary btn-block" value="찾기" style="margin-top: 10px;" onclick="return check_form();">
+							<small id="error_account" class="error"></small>
 						</form:form>
 					</div>
 				</div>

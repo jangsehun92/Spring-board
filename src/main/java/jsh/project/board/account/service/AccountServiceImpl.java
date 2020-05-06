@@ -150,7 +150,7 @@ public class AccountServiceImpl implements AccountService{
 			throw new AccountNotFoundException();
 		}
 		
-		if(account.findAccountCheck(dto)) {
+		if(!account.findAccountCheck(dto)) {
 			throw new FindAccountBadRequestException();
 		}
 		

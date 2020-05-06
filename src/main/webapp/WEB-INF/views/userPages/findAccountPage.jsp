@@ -19,7 +19,7 @@ function check_form(){
 	var name = $("#name").val().replace(/\s|/gi,'');
 	var birth = $("#birth").val().replace(/\s|/gi,'');
 	
-	if(name=="") {
+	/* if(name=="") {
 		alert("이름을 입력해주세요.");
 		$("#password").focus();
 		return false;
@@ -29,7 +29,7 @@ function check_form(){
 		alert("생년월일을 입력해주세요.");
 		$("#passwordCheck").focus();
 		return false;
-	}
+	} */
 	
 	var AccountFindRequestDto = {
 		name : $("#name").val(),
@@ -44,16 +44,12 @@ function check_form(){
 		data: JSON.stringify(AccountFindRequestDto),
 		success:function(data){
 			$("#main").empty();
-			
-			if(data.lenght==0){
-				alert("가입한 계정이 없습니다.");
-			}else{
 				$("#main").append(
 				"<h1>가입한 계정</h1>"+
 				"<table class='col-md-6 table table-hover'>"+
 					"<thead class='thead-dark'>"+
 							"<tr>"+
-								"<td class='col-md-5'>email</td>"+
+								"<td class='col-md-5'>가입한 Email</td>"+
 								"<td class='col-md-1'>가입날짜</td>"+
 							"</tr>"+
 						"</thead>"+
@@ -62,8 +58,6 @@ function check_form(){
 				"</table>"+
 				"<input type='button' class='btn btn-primary btn-block' value='비밀번호 찾기' style='margin-top: 10px;' onclick='find_password();'>"
 				);
-			}
-			
 			$.each(data, function(index, value) {
 				$("#accountList").append(
 					"<tr>"+
@@ -76,7 +70,16 @@ function check_form(){
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			alert(jsonValue.message);
+			$(".error").empty();
+			if(code == 'A004'){
+				$("#error_account").append(jsonValue.message);
+			}
+				
+			if(code == 'C003'){
+				for(var i in jsonValue.errors){
+					$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
+				}
+			}
 		}
 	});
 }
@@ -109,10 +112,12 @@ function find_password(){
 						<form:form method="post" action="/account/find-email" class="form-signup form-user panel-body">
 							<fieldset>
 								<input type="text" class="form-control input-sm" id="name" name="name" placeholder="이름" maxlength="10" style="margin-top: 10px;">
-								
+								<small id="error_name" class="error"></small>
 								<input type="text" class="form-control input-sm" id="birth" name="birth" placeholder="생년월일(ex:920409)" maxlength="6" style="margin-top: 10px;">
+								<small id="error_birth" class="error"></small>
 							</fieldset>
 							<input type="button" class="btn btn-primary btn-block" value="이메일 찾기" style="margin-top: 10px;" onclick="return check_form();">
+							<small id="error_account" class="error"></small>
 						</form:form>
 					</div>
 				</div>

@@ -1,8 +1,12 @@
 package jsh.project.board.account.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class AccountFindRequestDto {
 	
+	@NotBlank(message = "이름을 입력해주세요.")
 	private String name;
+	@NotBlank(message = "생년월일을 입력해주세요.")
 	private String birth;
 	
 	public AccountFindRequestDto() {

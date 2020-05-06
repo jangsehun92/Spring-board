@@ -10,6 +10,7 @@
 </head>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.5.0.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/inko@1.1.0/inko.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/ajax_header.js"></script>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
@@ -22,8 +23,6 @@ function check_form(){
 	var beforePassword = inko.ko2en($("#beforePassword").val().replace(/\s|/gi,''));
 	var afterPassword = inko.ko2en($("#afterPassword").val().replace(/\s|/gi,''));
 	var passwordCheck = inko.ko2en($("#afterPassword").val().replace(/\s|/gi,''));
-	
-	
 	
 	if(beforePassword=="") {
 		alert("비밀번호를 입력해주세요.");
@@ -67,7 +66,15 @@ function check_form(){
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			alert(jsonValue.message);
+			if(code =='A007'){
+				alert(jsonValue.message);
+			}
+			if(code == 'C003'){
+				$(".error").empty();
+				for(var i in jsonValue.errors){
+					$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
+				}
+			}
 		}
 	});
 }
@@ -87,10 +94,11 @@ function check_form(){
 						<form:form method="post" action="/account/info/password" class="form-signup form-user panel-body">
 							<fieldset>
 								<input type="password" class="form-control input-sm" id="beforePassword" name="beforePassword" placeholder="현재 비밀번호" maxlength="20" style="margin-top: 10px;">
-								
+								<small id="error_beforePassword" class="error"></small>
 								<input type="password" class="form-control input-sm" id="afterPassword" name="afterPassword" placeholder="변경할 비밀번호" maxlength="20" style="margin-top: 10px;">
-								
+								<small id="error_afterPassword" class="error"></small>
 								<input type="password" class="form-control input-sm" id="passwordCheck" placeholder="변경할 비밀번호 재입력" maxlength="20" style="margin-top: 10px;">
+								
 							</fieldset>
 							<input type="button" class="btn btn-primary btn-block" value="변경하기" style="margin-top: 10px;" onclick="check_form();">
 						</form:form>

@@ -129,7 +129,7 @@ public class Account implements UserDetails{
 	}
 	
 	public boolean findAccountCheck(AccountPasswordResetRequestDto dto) {
-		if(!this.name.equals(dto.getName()) || this.birth.equals(dto.getBirth())) {
+		if(!this.name.equals(dto.getName()) || !this.birth.equals(dto.getBirth())) {
 			return false;
 		}
 		return true;

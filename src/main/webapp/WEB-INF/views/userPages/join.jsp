@@ -20,8 +20,6 @@
 //한 > 영 & 영 > 한 변환 자바스크립트 오픈소스 라이브러리
 var inko = new Inko();
 function check_form(){
-	/* var header = "${_csrf.headerName}";
-	var token = "${_csrf.token}"; */
 	
 	var email = $("#email").val().replace(/\s|/gi,'');
 	var emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
@@ -30,8 +28,6 @@ function check_form(){
 	var name = $("#name").val().replace(/\s|/gi,'');
 	var birth = $("#birth").val().replace(/\s|/gi,'');
 	var nickname = $("#nickname").val().replace(/\s|/gi,'');
-	
-	
 	
 	if(email=="") {
 		alert("이메일을 입력해주세요.");
@@ -54,6 +50,7 @@ function check_form(){
         alert('비밀번호는 숫자/영문자/특수문자 조합으로 8~20자를 사용해야 합니다.'); 
         return false;
     }
+	
 	if(passwordCheck==""){
 		alert("비밀번호를 재입력해주세요.");
 		$("#passwordCheck").focus();

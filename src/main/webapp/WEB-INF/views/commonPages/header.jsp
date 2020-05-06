@@ -49,7 +49,7 @@ $(function(){
 				<ul class="nav navbar-nav navbar-right">
 					<sec:authorize access="isAuthenticated()">
 						<sec:authentication property="principal" var="principal" />
-						<li id="info"><a href="/account/info">${principal.nickname }</a></li>
+						<li id="info"><a href="/account/info/${principal.id}">${principal.nickname }</a></li>
 						<!-- <li id="logout"><a href="/logout">로그아웃</a></li> -->
 						<li><a href="javascript:;" onclick="document.getElementById('logout-form').submit();">로그아웃</a></li>
 						<form method="POST" id="logout-form" action="/logout">

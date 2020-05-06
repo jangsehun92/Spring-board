@@ -69,6 +69,14 @@ function check_form(){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
 			alert(jsonValue.message);
+			
+			if(code == 'C003'){
+				$(".error").empty();
+				for(var i in jsonValue.errors){
+					$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
+				}
+			}
+			
 		}
 	});
 }
@@ -89,8 +97,9 @@ function check_form(){
 							
 							<fieldset>
 								<input type="password" class="form-control input-sm" id="password" name="password" placeholder="비밀번호" maxlength="20" style="margin-top: 10px;">
-								
+								<small id="error_password" class="error"></small>
 								<input type="password" class="form-control input-sm" id="passwordCheck" placeholder="비밀번호 재입력" maxlength="20" style="margin-top: 10px;">
+								<small id="error_passwordCheck" class="error"></small>
 							</fieldset>
 							<input type="button" class="btn btn-primary btn-block" value="변경하기" style="margin-top: 10px;" onclick="return check_form();">
 						</form:form>

@@ -1,7 +1,11 @@
 package jsh.project.board.account.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class AccountPasswordResetDto {
+	
 	private String email;
+	@NotBlank(message = "비밀번호를 입력해주세요.")
 	private String password;
 	private String authKey;
 	private String authOption;

@@ -60,6 +60,7 @@ public class AccountController {
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
+    //여기를 어떻게 해줄것인제 메모장에 있음.
     @GetMapping("/account/info/{id}")
     public String infoPage(@PathVariable("id")int id, Model model) {
     	model.addAttribute("accountInfoDto",accountService.accountInfo(id));

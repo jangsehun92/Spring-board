@@ -50,6 +50,7 @@ public class AccountServiceImpl implements AccountService{
 		this.emailService = emailService;
 	}
 	
+	//회원가입
 	@Override
 	@Transactional
 	public void register(AccountCreateDto dto) throws Exception {
@@ -62,6 +63,7 @@ public class AccountServiceImpl implements AccountService{
 		sendEmail(authDto);
 	}
 	
+	//계정 정보 찾기
 	@Override
 	public AccountInfoResponseDto accountInfo(int id) {
 		AccountResponseDto accountResponseDto = accountDao.findById(id);
@@ -70,11 +72,13 @@ public class AccountServiceImpl implements AccountService{
 		return dto;
 	}
 	
+	//회원정보 수정
 	@Override
 	public void accountEdit(Account dto) {
 		accountDao.edit(dto);
 	}
 	
+	//비밀번호 변경
 	@Override
 	public void passwordChange(Account account, AccountPasswordDto dto) {
 		dto.checkPassword();
@@ -101,6 +105,7 @@ public class AccountServiceImpl implements AccountService{
 		accountDao.updateFailureCount(paramMap);
 	}
 	
+	//로그인 성공시 마지막로그인날짜 업데이트
 	@Override
 	public void updateLoginDate(String email) {
 		accountDao.updateLoginDate(email);
@@ -123,6 +128,7 @@ public class AccountServiceImpl implements AccountService{
 		}
 	}
 	
+	//가입한 계정 찾기
 	@Override
 	public List<AccountFindResponseDto> findAccount(AccountFindRequestDto dto) throws AccountNotFoundException {
 		List<AccountFindResponseDto> list = accountDao.findAccount(dto);
@@ -139,6 +145,7 @@ public class AccountServiceImpl implements AccountService{
 		sendEmail(authDto);
 	}
 	
+	//비밀번호 초기화 인증이메일 발송
 	@Override
 	public void sendResetEmail(AccountPasswordResetRequestDto dto) throws Exception {
 		Account account = accountDao.findByEmail(dto.getEmail());
@@ -177,7 +184,7 @@ public class AccountServiceImpl implements AccountService{
 		authDao.authKeyExpired(dto.toAuthDto());
 	}
 	
-	//이메일 인증
+	//회원가입 이메일 인증
 	@Transactional
 	@Override
 	public void signUpConfirm(AccountAuthRequestDto dto) {
@@ -191,7 +198,7 @@ public class AccountServiceImpl implements AccountService{
 		authDao.authKeyExpired(dto);
 	}
 	
-	//비밀번호 재설정을 위한 이메일을 통한 인증
+	//비밀번호 초기화 이메일 인증
 	@Override
 	public void resetPasswordConfirm(AccountAuthRequestDto dto) {
 		log.info("accountService.resetPasswordConfirm(AccountAuthRequestDto dto) : "+dto.toString());
@@ -221,21 +228,20 @@ public class AccountServiceImpl implements AccountService{
 		return authDto;
 	}
 	
+	//인증키 업데이트
 	@Transactional
 	private AuthDto updateAuth(String email) {
 		AuthDto authDto = authDao.findByEmail(email);
-		
 		if(authDto == null || authDto.isAuthExpired()) {
 			throw new BadAuthRequestException();
 		}
-		
 		String authKey = new AuthKey().getKey();
 		authDto.setAuthKey(authKey);
-		
 		authDao.updateAuthKey(authDto);
 		return authDto;
 	}
 	
+	//이메일 발송
 	private void sendEmail(AuthDto authDto) throws Exception {
 		emailService.sendEmail(authDto);
 	}

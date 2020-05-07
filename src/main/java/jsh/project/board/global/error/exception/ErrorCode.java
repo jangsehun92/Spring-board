@@ -17,11 +17,10 @@ public enum ErrorCode {
 	ACCOUNT_DISABLED(400,"A005"," 계정이 활성화 되지 않았습니다. 이메일 인증을 완료해 주세요."),
 	ACCOUNT_LOCKED(400, "A006", " 계정이 잠겼습니다."),
 	PASSWORD_NOT_MATCH(400, "A007", " 기존 비밀번호가 맞지 않습니다."),
-	ACCOUNT_BAD_REQUEST(400, "A008", " 계정 정보가 올바르지 않습니다.");
+	ACCOUNT_BAD_REQUEST(400, "A008", " 계정 정보가 올바르지 않습니다."),
+	PASSWORD_CHECK_FAILED(400, "A009", " 비밀번호가 서로 다릅니다.");
 	
 	//article
-	
-	
 	private int status;
 	private String code;
 	private String message;

@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 public class AccountPasswordResetRequestDto {
 	
 	@NotBlank(message = "이메일을 입력해 주세요.")
-	@Email
+	@Email(message = "올바른 형식의 이메일 주소여야합니다. ")
 	private String email;
 	@NotBlank(message = "이름을 입력해주세요.")
 	private String name;

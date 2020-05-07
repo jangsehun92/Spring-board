@@ -1,12 +1,17 @@
 package jsh.project.board.account.dto;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
+import jsh.project.board.account.exception.PasswordCheckFailedException;
 
 public class AccountPasswordResetDto {
 	
 	private String email;
-	@NotBlank(message = "비밀번호를 입력해주세요.")
+	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?=\\S+$).{8,20}$", message = "최소 8자리의 소문자,대문자,숫자,특수문자가 포함되어야합니다. ")
 	private String password;
+	@NotBlank(message = "비밀번호를 재입력해주세요.")
+	private String passwordCheck;
 	private String authKey;
 	private String authOption;
 	
@@ -29,6 +34,14 @@ public class AccountPasswordResetDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public String getPasswordCheck() {
+		return passwordCheck;
+	}
+	
+	public void setPasswordCheck(String passwordCheck) {
+		this.passwordCheck = passwordCheck;
+	}
 
 	public String getAuthKey() {
 		return authKey;
@@ -49,6 +62,12 @@ public class AccountPasswordResetDto {
 	public AccountAuthRequestDto toAuthDto() {
 		AccountAuthRequestDto accountAuthRequestDto = new AccountAuthRequestDto(email, authKey, authOption);
 		return accountAuthRequestDto;
+	}
+	
+	public void checkPassword() {
+		if(!password.equals(passwordCheck)) {
+			throw new PasswordCheckFailedException();
+		}
 	}
 	
 	@Override

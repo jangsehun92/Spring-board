@@ -9,7 +9,6 @@
 <title>계정 찾기</title>
 </head>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.5.0.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/inko@1.1.0/inko.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/ajax_header.js"></script>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
@@ -17,41 +16,11 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <body>
 <script type="text/javascript">
-//한 > 영 & 영 > 한 변환 자바스크립트 오픈소스 라이브러리
-var inko = new Inko();
 function check_form(){
-	var beforePassword = inko.ko2en($("#beforePassword").val().replace(/\s|/gi,''));
-	var afterPassword = inko.ko2en($("#afterPassword").val().replace(/\s|/gi,''));
-	var passwordCheck = inko.ko2en($("#afterPassword").val().replace(/\s|/gi,''));
-	
-	if(beforePassword=="") {
-		alert("비밀번호를 입력해주세요.");
-		$("#password").focus();
-		return false;
-	}
-	
-	if(!/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/.test(afterPassword)) { 
-        alert('비밀번호는 숫자/영문자/특수문자 조합으로 8~20자를 사용해야 합니다.'); 
-        return false;
-    }
-	if(passwordCheck==""){
-		alert("비밀번호를 재입력해주세요.");
-		$("#passwordCheck").focus();
-		return false;
-	}
-	
-	if(afterPassword != passwordCheck){
-		alert("바꿀 비밀번호가 서로 다릅니다.");
-		$("#password").focus();
-		return false;
-	}
-	
-	$("#beforePassword").val(beforePassword);
-	$("#afterPassword").val(afterPassword);
-	
 	var AccountPasswordDto = {
 		beforePassword : $("#beforePassword").val(),
-		afterPassword : $("#afterPassword").val()
+		afterPassword : $("#afterPassword").val(),
+		afterPasswordCheck : $("#afterPasswordCheck").val()
 	}
 	
 	$.ajax({
@@ -66,11 +35,14 @@ function check_form(){
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			if(code =='A007'){
-				alert(jsonValue.message);
+			$(".error").empty();
+			if(code =='A007'){  
+				$("#error_passwordCheck").append(jsonValue.message);
+			}
+			if(code =='A009'){ 
+				$("#error_passwordCheck").append(jsonValue.message);
 			}
 			if(code == 'C003'){
-				$(".error").empty();
 				for(var i in jsonValue.errors){
 					$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
 				}
@@ -95,10 +67,12 @@ function check_form(){
 							<fieldset>
 								<input type="password" class="form-control input-sm" id="beforePassword" name="beforePassword" placeholder="현재 비밀번호" maxlength="20" style="margin-top: 10px;">
 								<small id="error_beforePassword" class="error"></small>
-								<input type="password" class="form-control input-sm" id="afterPassword" name="afterPassword" placeholder="변경할 비밀번호" maxlength="20" style="margin-top: 10px;">
-								<small id="error_afterPassword" class="error"></small>
-								<input type="password" class="form-control input-sm" id="passwordCheck" placeholder="변경할 비밀번호 재입력" maxlength="20" style="margin-top: 10px;">
 								
+								<input type="password" class="form-control input-sm" id="afterPassword" name="afterPassword" placeholder="변경할 비밀번호" maxlength="20" style="margin-top: 10px;">
+								<small id="error_afterPasswordCheck" class="error"></small>
+								
+								<input type="password" class="form-control input-sm" id="afterPasswordCheck" placeholder="변경할 비밀번호 재입력" maxlength="20" style="margin-top: 10px;">
+								<small id="error_passwordCheck" class="error"></small>
 							</fieldset>
 							<input type="button" class="btn btn-primary btn-block" value="변경하기" style="margin-top: 10px;" onclick="check_form();">
 						</form:form>

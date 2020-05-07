@@ -20,13 +20,13 @@ public interface AccountService {
 	public void register(AccountCreateDto dto) throws Exception;
 	//해당 유저 정보 가져오기
 	public AccountInfoResponseDto accountInfo(int id);
-	//사용자 정보(닉네임) 수정
+	//사용자 정보 수정
 	public void accountEdit(Account account);
 	//비밀번호 변경
 	public void passwordChange(Account account, AccountPasswordDto dto);
 	//로그인 실패(비밀번호 틀림) 횟수 가져오기
 	public int accountFailureCount(String email);
-	//로그인 실패, 성공에 따른 failure_count 증가 및 초기화
+	//로그인 실패, 성공에 따른 실패 카운트 증가 및 초기화
 	public void updateFailureCount(String email, int failureCount);
 	//로그인 성공시 마지막 로그인 날짜 업데이트
 	public void updateLoginDate(String email);

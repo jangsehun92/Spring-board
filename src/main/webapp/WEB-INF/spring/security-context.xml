@@ -11,9 +11,9 @@
         <intercept-url pattern="/articles" access="permitAll" />
         <intercept-url pattern="/account/join" method="POST" access="permitAll" />
         <intercept-url pattern="/account/passwordChange" method="GET" access="hasRole('ROLE_USER')" />
+        <intercept-url pattern="/account/passwordChange" method="POST" access="hasRole('ROLE_USER')" />
         <intercept-url pattern="/account/edit" method="GET" access="hasRole('ROLE_USER')" />
         <intercept-url pattern="/account/edit" method="POST" access="hasRole('ROLE_USER')" />
-        <intercept-url pattern="/account/test" method="GET" access="hasRole('ROLE_USER')" />
         <intercept-url pattern="/article" method="GET" access="permitAll" />
         <intercept-url pattern="/article" method="POST" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/article" method="PUT" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
@@ -25,7 +25,6 @@
 					password-parameter="password"
 					authentication-failure-handler-ref="loginFailureHandler"
 					authentication-success-handler-ref="loginSuccessHandler"
-					
 		/>
 		
 		<logout
@@ -39,7 +38,7 @@
     
     <context:component-scan base-package="jsh.project.board" />
     
-    <!--  passwordEncoder bean 만들기 -->
+    <!--  bean 선언 -->
 	<beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>    
 	<beans:bean id="userService" class="jsh.project.board.account.security.CustomUserDetailsService"/>
 	<beans:bean id="authenticationProvider" class="jsh.project.board.account.security.CustomAuthenticationProvider"/>
@@ -57,8 +56,4 @@
 		</authentication-provider>
 	</authentication-manager>
 	
-	
-	
-	
-    
 </beans:beans>

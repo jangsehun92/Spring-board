@@ -20,34 +20,6 @@
 //한 > 영 & 영 > 한 변환 자바스크립트 오픈소스 라이브러리
 var inko = new Inko();
 function check_form(){
-	var email = $("#email").val().replace(/\s|/gi,'');
-	var emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-	var name = $("#name").val().replace(/\s|/gi,'');
-	var birth = $("#birth").val().replace(/\s|/gi,'');
-	
-	/* if(email=="") {
-		alert("이메일을 입력해주세요.");
-		$("#email").focus();
-		return false;
-	}
-	
-	if (!emailCheck.test(email)) {
-		alert("email 형식에 맞지않습니다.");
-		return false;
-	}
-	
-	if(name=="") {
-		alert("이름을 입력해주세요.");
-		$("#password").focus();
-		return false;
-	}
-	
-	if(birth==""){
-		alert("생년월일을 입력해주세요.");
-		$("#passwordCheck").focus();
-		return false;
-	} */
-	
 	var AccountPasswordResetRequestDto = {
 		email : $("#email").val(),
 		name : $("#name").val(),
@@ -85,6 +57,9 @@ function check_form(){
 				for(var i in jsonValue.errors){
 					$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
 				}
+			}
+			if(code == 'C004'){
+				alert("인증이메일 발송에 실패하였습니다.("+jsonValue.message+")");
 			}
 		}
 	});

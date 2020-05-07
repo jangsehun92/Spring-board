@@ -21,15 +21,15 @@
 var inko = new Inko();
 function check_form(){
 	
-	var email = $("#email").val().replace(/\s|/gi,'');
+	/* var email = $("#email").val().replace(/\s|/gi,'');
 	var emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 	var password = inko.ko2en($("#password").val().replace(/\s|/gi,''));
-	var passwordCheck = inko.ko2en($("#password").val().replace(/\s|/gi,''));
+	var passwordCheck = inko.ko2en($("#passwordCheck").val().replace(/\s|/gi,''));
 	var name = $("#name").val().replace(/\s|/gi,'');
 	var birth = $("#birth").val().replace(/\s|/gi,'');
-	var nickname = $("#nickname").val().replace(/\s|/gi,'');
+	var nickname = $("#nickname").val().replace(/\s|/gi,''); */
 	
-	if(email=="") {
+	/* if(email=="") {
 		alert("이메일을 입력해주세요.");
 		$("#email").focus();
 		return false;
@@ -79,11 +79,11 @@ function check_form(){
 		alert("닉네임을 입력해주세요.");
 		$("#nickname").focus();
 		return false;
-	}
+	} */
 	
 	var code;
 	$.ajax({
-		url:"/account/email?email="+email,
+		url:"/account/email?email="+$("#email").val(),
 		type:"get",
 		async : false,
 		contentType : "application/json; charset=UTF-8",
@@ -102,13 +102,23 @@ function check_form(){
 		return false;
 	} 
 	
+	/* var accountCreateDto = {
+			email : email,
+			password : password,
+			passwordCheck : passwordCheck,
+			name : name,
+			birth : birth,
+			nickname : nickname
+		} */
 	var accountCreateDto = {
-		email : email,
-		password : password,
-		name : name,
-		birth : birth,
-		nickname : nickname
-	}
+			email : $("#email").val(),
+			password : $("#password").val(),
+			passwordCheck : $("#passwordCheck").val(),
+			name : $("#name").val(),
+			birth : $("#birth").val(),
+			nickname : $("#nickname").val()
+		}
+	
 	
 	$.ajax({
 		url:"/account/join",
@@ -122,14 +132,17 @@ function check_form(){
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
+			$(".error").empty();
 			if(code == 'C004'){
 				alert("인증 이메일 발송에 실패하였습니다. (" + jsonValue.message + ")");
 			}
 			if(code == 'C003'){
-				$(".error").empty();
 				for(var i in jsonValue.errors){
 					$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
 				}
+			}
+			if(code =='A009'){
+				$("#error_passwordCheck").append(jsonValue.message);
 			}
 		}
 	});
@@ -154,6 +167,7 @@ function check_form(){
 						<small id="error_password" class="error"></small>
 						
 						<input type="password" class="form-control input-sm" id="passwordCheck" placeholder="비밀번호 확인" style="margin-top: 10px;" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9!@#$%^&*()-_]/g,'');">
+						<small id="error_passwordCheck" class="error"></small>
 						
 						<input type="text" class="form-control input-sm" id="name" name="name" placeholder="이름" maxlength="10" style="margin-top: 10px;">
 						<small id="error_name" class="error"></small>

@@ -9,6 +9,7 @@
 <title>계정 찾기</title>
 </head>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.5.0.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/ajax_header.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/inko@1.1.0/inko.min.js"></script>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
@@ -16,42 +17,11 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <body>
 <script type="text/javascript">
-//한 > 영 & 영 > 한 변환 자바스크립트 오픈소스 라이브러리
-var inko = new Inko();
 function check_form(){
-	var email = "${dto.email}";
-	var authKey = "${dto.authKey}";
-	var password = inko.ko2en($("#password").val().replace(/\s|/gi,''));
-	var passwordCheck = inko.ko2en($("#password").val().replace(/\s|/gi,''));
-	
-	if(password=="") {
-		alert("비밀번호를 입력해주세요.");
-		$("#password").focus();
-		return false;
-	}
-	
-	if(!/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/.test(password)) { 
-        alert('비밀번호는 숫자/영문자/특수문자 조합으로 8~20자를 사용해야 합니다.'); 
-        return false;
-    }
-	
-	if(passwordCheck==""){
-		alert("비밀번호를 재입력해주세요.");
-		$("#passwordCheck").focus();
-		return false;
-	}
-	
-	if(password != passwordCheck){
-		alert("비밀번호가 일치하지 않습니다.");
-		$("#password").focus();
-		return false;
-	}
-	
-	$("#password").val(password);
-	
 	var AccountPasswordResetDto = {
 		email : "${dto.email}",
 		password : $("#password").val(),
+		passwordCheck : $("#passwordCheck").val(),
 		authKey : "${dto.authKey}",
 		authOption : "${dto.authOption}"
 	}
@@ -68,13 +38,14 @@ function check_form(){
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			alert(jsonValue.message);
-			
+			$(".error").empty();
 			if(code == 'C003'){
-				$(".error").empty();
 				for(var i in jsonValue.errors){
 					$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
 				}
+			}
+			if(code == 'A009'){
+				$("#error_passwordCheck").append(jsonValue.message);
 			}
 			
 		}

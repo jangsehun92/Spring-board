@@ -3,10 +3,10 @@ package jsh.project.board.account.exception;
 import jsh.project.board.global.error.exception.BusinessException;
 import jsh.project.board.global.error.exception.ErrorCode;
 
-public class PasswordNotMatch extends BusinessException{
+public class PasswordCheckFailedException extends BusinessException{
 
-	public PasswordNotMatch() {
-		super(ErrorCode.PASSWORD_NOT_MATCH);
+	public PasswordCheckFailedException() {
+		super(ErrorCode.PASSWORD_CHECK_FAILED);
 	}
 
 }

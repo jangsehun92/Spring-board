@@ -66,13 +66,11 @@ public class AccountController {
     	return "userPages/info";
     }
     
-    @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping("/account/edit")
     public String accountEditPage() {
     	return "userPages/edit";
     }
     
-    @PreAuthorize("hasAuthority('ROLE_USER')")
     @PostMapping("/account/edit")
     public @ResponseBody ResponseEntity<HttpStatus> edit(Principal principal, Authentication auth, Model model, @RequestBody @Valid AccountEditRequestDto dto) {
     	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -146,7 +144,6 @@ public class AccountController {
     }
     
     //비밀번호 변경
-    @PreAuthorize("hasAuthority('ROLE_USER')")
     @PostMapping("/account/resetPassword")
     public @ResponseBody ResponseEntity<HttpStatus> resetPassword(@RequestBody @Valid AccountPasswordResetDto dto) throws Exception{
     	accountService.resetPassword(dto);
@@ -154,14 +151,12 @@ public class AccountController {
     }
     
     //로그인상태에서 비밀번호 재설정 페이지 요청
-    @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping("/account/passwordChange")
     public String passwordChangePage() {
     	return "userPages/passwordChangePage";
     }
     
     //로그인상태에서 비밀번호 재설정 
-    @PreAuthorize("hasAuthority('ROLE_USER')")
     @PostMapping("/account/passwordChange")
     public @ResponseBody ResponseEntity<HttpStatus> passwordChange(Principal principal, @RequestBody @Valid AccountPasswordDto dto) {
     	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();

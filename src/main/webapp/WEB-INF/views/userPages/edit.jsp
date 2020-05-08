@@ -25,8 +25,8 @@ function edit(){
 	}
 		
 		$.ajax({
-			url:"/account/edit",
-			type:"post",
+			url:"/account/"+${principal.id },
+			type:"patch",
 			contentType : "application/json; charset=UTF-8",
 			data: JSON.stringify(accountEditRequestDto),
 			success:function(data){
@@ -42,6 +42,10 @@ function edit(){
 						$("#user_nickname").focus();
 						$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
 					}
+				}
+				if(code == 'C006'){
+					alert(jsonValue.message);
+					console.log("code : " + jsonValue.code + " message : " + jsonValue.message);
 				}
 				//alert(jsonValue.message);
 			}

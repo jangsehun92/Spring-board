@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +29,7 @@ import jsh.project.board.account.dto.AccountCreateDto;
 import jsh.project.board.account.dto.AccountEditRequestDto;
 import jsh.project.board.account.dto.AccountFindRequestDto;
 import jsh.project.board.account.dto.AccountFindResponseDto;
+import jsh.project.board.account.dto.AccountInfoResponseDto;
 import jsh.project.board.account.dto.AccountPasswordDto;
 import jsh.project.board.account.dto.AccountPasswordResetDto;
 import jsh.project.board.account.dto.AccountPasswordResetRequestDto;
@@ -60,11 +62,15 @@ public class AccountController {
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
-    //여기를 어떻게 해줄것인제 메모장에 있음.
     @GetMapping("/account/info/{id}")
-    public String infoPage(@PathVariable("id")int id, Model model) {
-    	model.addAttribute("accountInfoDto",accountService.accountInfo(id));
+    public String accountInfoPage(@PathVariable("id")int id, Model model) {
+    	model.addAttribute("id",id);
     	return "userPages/info";
+    }
+    
+    @GetMapping("/account/{id}")
+    public @ResponseBody ResponseEntity<AccountInfoResponseDto> accountInfo(@PathVariable("id")int id) {
+    	return new ResponseEntity<>(accountService.accountInfo(id),HttpStatus.OK);
     }
     
     @GetMapping("/account/edit")
@@ -72,8 +78,9 @@ public class AccountController {
     	return "userPages/edit";
     }
     
-    @PostMapping("/account/edit")
-    public @ResponseBody ResponseEntity<HttpStatus> edit(Principal principal, Authentication auth, Model model, @RequestBody @Valid AccountEditRequestDto dto) {
+    @PreAuthorize("(#id == principal.id)")
+    @PatchMapping("/account/{id}")
+    public @ResponseBody ResponseEntity<HttpStatus> accountEdit(Principal principal, Authentication auth, Model model, @PathVariable("id")int id, @RequestBody @Valid AccountEditRequestDto dto) {
     	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	accountService.accountEdit(account);
     	account.setNickname(dto.getNickname());

@@ -112,8 +112,8 @@ function check_form(){
 		} */
 	var accountCreateDto = {
 			email : $("#email").val(),
-			password : $("#password").val(),
-			passwordCheck : $("#passwordCheck").val(),
+			password : inko.ko2en($("#password").val(),
+			passwordCheck : inko.ko2en($("#passwordCheck").val(),
 			name : $("#name").val(),
 			birth : $("#birth").val(),
 			nickname : $("#nickname").val()

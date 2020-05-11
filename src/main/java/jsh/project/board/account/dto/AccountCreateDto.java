@@ -34,7 +34,18 @@ public class AccountCreateDto {
 		this.birth = birth;
 		this.nickname = nickname;
 	}
-
+	
+	/*
+	public AccountCreateDto(String email, String password, String passwordCheck, String name, String year, String month, String day,String nickname) {
+		this.email = email;
+		this.password = password;
+		this.passwordCheck = passwordCheck;
+		this.name = name;
+		this.birth = birth(year, month, day);
+		this.nickname = nickname;
+	}
+	*/
+	
 	public String getEmail() {
 		return email;
 	}
@@ -97,6 +108,10 @@ public class AccountCreateDto {
 			throw new PasswordCheckFailedException();
 		}
 	}
+	
+//	public String birth(String year, String month, String day) {
+//		return year+"-"+month+"-"+day;
+//	}
 	
 	@Override
 	public String toString() {

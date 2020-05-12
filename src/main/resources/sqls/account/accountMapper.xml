@@ -18,7 +18,20 @@
 
 	<insert id="save" parameterType="AccountCreateDto">
 		INSERT INTO 
-			account_table values(account_seq.NEXTVAL,#{email},#{password},#{name},#{birth},#{nickname},0,0,#{role},0,SYSDATE, NULL)
+			account_table values(
+				account_seq.NEXTVAL,
+				#{email},
+				#{password},
+				#{name},
+				#{birth},
+				#{nickname},
+				0,
+				0,
+				#{role},
+				0,
+				SYSDATE,
+				NULL
+			)
 	</insert>
 
 	<select id="findByEmail" parameterType="java.lang.String" resultMap="AccountResultMap">
@@ -44,7 +57,6 @@
 	<select id="findById" parameterType="int" resultType="AccountResponseDto">
 		SELECT 
 			id,
-			email,
 			nickname
 		FROM 
 			account_table
@@ -122,7 +134,7 @@
 			email = #{email}
 	</update>
 	
-	<select id="emailCheck" parameterType="java.lang.String" resultType="int">
+	<select id="emailCheck" parameterType="AccountEmailDto" resultType="int">
 		SELECT 
 			count(email)
 		FROM 

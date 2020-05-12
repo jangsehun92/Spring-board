@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import jsh.project.board.account.dto.Account;
 import jsh.project.board.account.dto.AccountCreateDto;
+import jsh.project.board.account.dto.AccountEmailDto;
 import jsh.project.board.account.dto.AccountFindRequestDto;
 import jsh.project.board.account.dto.AccountFindResponseDto;
 import jsh.project.board.account.dto.AccountResponseDto;
@@ -52,8 +53,8 @@ public class AccountDaoImpl implements AccountDao{
 	}
 	
 	@Override
-	public int findEmail(String email) {
-		return sqlSession.selectOne("accountMapper.emailCheck",email);
+	public int findEmail(AccountEmailDto dto) {
+		return sqlSession.selectOne("accountMapper.emailCheck",dto);
 	}
 	
 	@Override

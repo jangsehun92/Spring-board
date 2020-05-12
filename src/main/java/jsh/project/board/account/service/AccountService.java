@@ -7,19 +7,20 @@ import javax.security.auth.login.AccountNotFoundException;
 import jsh.project.board.account.dto.Account;
 import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AccountCreateDto;
+import jsh.project.board.account.dto.AccountEmailDto;
 import jsh.project.board.account.dto.AccountFindRequestDto;
 import jsh.project.board.account.dto.AccountFindResponseDto;
-import jsh.project.board.account.dto.AccountInfoResponseDto;
 import jsh.project.board.account.dto.AccountPasswordDto;
 import jsh.project.board.account.dto.AccountPasswordResetDto;
 import jsh.project.board.account.dto.AccountPasswordResetRequestDto;
+import jsh.project.board.account.dto.AccountResponseDto;
 
 public interface AccountService {
 	
 	//회원가입
 	public void register(AccountCreateDto dto) throws Exception;
 	//해당 유저 정보 가져오기
-	public AccountInfoResponseDto accountInfo(int id);
+	public AccountResponseDto accountInfo(int id);
 	//사용자 정보 수정
 	public void accountEdit(Account account);
 	//비밀번호 변경
@@ -33,11 +34,11 @@ public interface AccountService {
 	//계정 잠금 및 해제
 	public void updateLocked(String email, int locked);
 	//회원가입 시 이메일 중복 체크
-	public void emailCheck(String email);
+	public void emailCheck(AccountEmailDto dto);
 	//계정 찾기
 	public List<AccountFindResponseDto> findAccount(AccountFindRequestDto dto) throws AccountNotFoundException;
 	//회원가입 인증 이메일 재발송
-	public void resendEmail(String email) throws Exception;
+	public void resendEmail(AccountEmailDto dto) throws Exception;
 	//비밀번호 초기화 인증 이메일 발송
 	public void sendResetEmail(AccountPasswordResetRequestDto dto) throws Exception;
 	//비밀번호 재설정(초기화)

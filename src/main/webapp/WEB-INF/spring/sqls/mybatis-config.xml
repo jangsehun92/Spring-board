@@ -7,6 +7,7 @@
   	<!-- Account 관련  -->
   	<typeAlias type="jsh.project.board.account.dto.Account" alias="Account"/>
   	<typeAlias type="jsh.project.board.account.dto.AccountResponseDto" alias="AccountResponseDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.AccountEmailDto" alias="AccountEmailDto"/>
   	<typeAlias type="jsh.project.board.account.dto.AccountCreateDto" alias="AccountCreateDto"/>
   	<typeAlias type="jsh.project.board.account.dto.AccountFindRequestDto" alias="AccountFindRequestDto"/>
   	<typeAlias type="jsh.project.board.account.dto.AccountFindResponseDto" alias="AccountFindResponseDto"/>

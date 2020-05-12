@@ -20,108 +20,45 @@
 //한 > 영 & 영 > 한 변환 자바스크립트 오픈소스 라이브러리
 var inko = new Inko();
 function check_form(){
-	
-	/* var email = $("#email").val().replace(/\s|/gi,'');
-	var emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-	var password = inko.ko2en($("#password").val().replace(/\s|/gi,''));
-	var passwordCheck = inko.ko2en($("#passwordCheck").val().replace(/\s|/gi,''));
-	var name = $("#name").val().replace(/\s|/gi,'');
-	var birth = $("#birth").val().replace(/\s|/gi,'');
-	var nickname = $("#nickname").val().replace(/\s|/gi,''); */
-	
-	/* if(email=="") {
-		alert("이메일을 입력해주세요.");
-		$("#email").focus();
-		return false;
-	}
-	
-	if (!emailCheck.test(email)) {
-		alert("email 형식에 맞지않습니다.");
-		return false;
-	}
-	
-	if(password=="") {
-		alert("비밀번호를 입력해주세요.");
-		$("#password").focus();
-		return false;
-	}
-	
-	if(!/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/.test(password)) { 
-        alert('비밀번호는 숫자/영문자/특수문자 조합으로 8~20자를 사용해야 합니다.'); 
-        return false;
-    }
-	
-	if(passwordCheck==""){
-		alert("비밀번호를 재입력해주세요.");
-		$("#passwordCheck").focus();
-		return false;
-	}
-	
-	if(password != passwordCheck){
-		alert("비밀번호가 일치하지 않습니다.");
-		$("#password").focus();
-		return false;
-	}
-	
-	if(name==""){
-		alert("이름을 입력해주세요.");
-		$("#name").focus();
-		return false;
-	}
-	
-	if(birth==""){
-		alert("생년월일을 입력해주세요.");
-		$("#birth").focus();
-		return false;
-	}
-	
-	if(nickname==""){
-		alert("닉네임을 입력해주세요.");
-		$("#nickname").focus();
-		return false;
-	} */
-	
 	var code;
+	
 	$.ajax({
 		url:"/account/email?email="+$("#email").val(),
 		type:"get",
 		async : false,
 		contentType : "application/json; charset=UTF-8",
-		dataType : "text",
 		success:function(data){
-			
+			$(".ok").empty();
+			$("#ok_email").append("사용가능한 이메일 주소 입니다.");
 		},
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			alert(jsonValue.message);
+			$(".error").empty();
+			$(".ok").empty();
+			if(code == 'C001'){
+				for(var i in jsonValue.errors){
+					$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
+				}
+			}
 		}
 	});
 	
-	if(code == 'A001'){
+	if(code == 'A001' || code == 'C001'){
 		return false;
 	} 
 	
-	/* var accountCreateDto = {
-			email : email,
-			password : password,
-			passwordCheck : passwordCheck,
-			name : name,
-			birth : birth,
-			nickname : nickname
-		} */
 	var accountCreateDto = {
 			email : $("#email").val(),
-			password : inko.ko2en($("#password").val(),
-			passwordCheck : inko.ko2en($("#passwordCheck").val(),
+			password : inko.ko2en($("#password").val()),
+			passwordCheck : inko.ko2en($("#passwordCheck").val()),
 			name : $("#name").val(),
 			birth : $("#birth").val(),
 			nickname : $("#nickname").val()
 		}
 	
-	
 	$.ajax({
-		url:"/account/join",
+		url:"/account",
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
 		data: JSON.stringify(accountCreateDto),
@@ -162,17 +99,18 @@ function check_form(){
 					<fieldset>
 						<input type="text" class="form-control input-sm" id="email" name="email" placeholder="이메일" maxlength="30" style="margin-top: 10px;">
 						<small id="error_email" class="error"></small>
+						<small id="ok_email" class="ok"></small>
 						
 						<input type="password" class="form-control input-sm" id="password" name="password" placeholder="비밀번호" style="margin-top: 10px;" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9!@#$%^&*()-_]/g,'');">
 						<small id="error_password" class="error"></small>
 						
-						<input type="password" class="form-control input-sm" id="passwordCheck" placeholder="비밀번호 확인" style="margin-top: 10px;" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9!@#$%^&*()-_]/g,'');">
+						<input type="password" class="form-control input-sm" id="passwordCheck" placeholder="비밀번호 재입력" style="margin-top: 10px;" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9!@#$%^&*()-_]/g,'');">
 						<small id="error_passwordCheck" class="error"></small>
 						
 						<input type="text" class="form-control input-sm" id="name" name="name" placeholder="이름" maxlength="10" style="margin-top: 10px;">
 						<small id="error_name" class="error"></small>
 						
-						<input type="text" class="form-control input-sm" id="birth" name="birth" placeholder="생년월일(ex:920409)" maxlength="6" style="margin-top: 10px;">
+						<input type="text" class="form-control input-sm" id="birth" name="birth" placeholder="주민번호 앞자리" maxlength="6" style="margin-top: 10px;">
 						<small id="error_birth" class="error"></small>
 						
 						<input type="text" class="form-control input-sm" id="nickname" name="nickname" placeholder="닉네임" maxlength="10" style="margin-top: 10px;">

@@ -16,9 +16,9 @@ import jsh.project.board.account.dao.AuthDao;
 import jsh.project.board.account.dto.Account;
 import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AccountCreateDto;
+import jsh.project.board.account.dto.AccountEmailDto;
 import jsh.project.board.account.dto.AccountFindRequestDto;
 import jsh.project.board.account.dto.AccountFindResponseDto;
-import jsh.project.board.account.dto.AccountInfoResponseDto;
 import jsh.project.board.account.dto.AccountPasswordDto;
 import jsh.project.board.account.dto.AccountPasswordResetDto;
 import jsh.project.board.account.dto.AccountPasswordResetRequestDto;
@@ -30,7 +30,6 @@ import jsh.project.board.account.exception.BadAuthRequestException;
 import jsh.project.board.account.exception.EmailAlreadyUsedException;
 import jsh.project.board.account.exception.FindAccountBadRequestException;
 import jsh.project.board.account.exception.PasswordNotMatchException;
-import jsh.project.board.article.dto.Article;
 import jsh.project.board.global.infra.email.EmailService;
 import jsh.project.board.global.infra.util.AuthKey;
 
@@ -65,11 +64,9 @@ public class AccountServiceImpl implements AccountService{
 	
 	//계정 정보 찾기
 	@Override
-	public AccountInfoResponseDto accountInfo(int id) {
+	public AccountResponseDto accountInfo(int id) {
 		AccountResponseDto accountResponseDto = accountDao.findById(id);
-		List<Article> articles = null;
-		AccountInfoResponseDto dto = new AccountInfoResponseDto(accountResponseDto, articles);
-		return dto;
+		return accountResponseDto;
 	}
 	
 	//회원정보 수정
@@ -85,7 +82,6 @@ public class AccountServiceImpl implements AccountService{
 		if(!passwordEncoder.matches(dto.getBeforePassword(), account.getPassword())) {
 			throw new PasswordNotMatchException();
 		}
-		//비밀번호 업데이트
 		account.setPassword(passwordEncoder.encode(dto.getAfterPassword()));
 		accountDao.updatePassword(account);
 	}
@@ -122,8 +118,8 @@ public class AccountServiceImpl implements AccountService{
 	
 	//회원가입 시 이메일 중복 체크
 	@Override
-	public void emailCheck(String email) {
-		if(accountDao.findEmail(email) != 0) {
+	public void emailCheck(AccountEmailDto dto) {
+		if(accountDao.findEmail(dto) != 0) {
 			throw new EmailAlreadyUsedException();
 		}
 	}
@@ -140,8 +136,8 @@ public class AccountServiceImpl implements AccountService{
 	
 	//인증 이메일 재발송
 	@Override
-	public void resendEmail(String email) throws Exception {
-		AuthDto authDto = updateAuth(email);
+	public void resendEmail(AccountEmailDto dto) throws Exception {
+		AuthDto authDto = updateAuth(dto.getEmail());
 		sendEmail(authDto);
 	}
 	
@@ -149,6 +145,7 @@ public class AccountServiceImpl implements AccountService{
 	@Override
 	public void sendResetEmail(AccountPasswordResetRequestDto dto) throws Exception {
 		Account account = accountDao.findByEmail(dto.getEmail());
+		
 		if(account==null) {
 			throw new AccountNotFoundException();
 		}
@@ -160,6 +157,7 @@ public class AccountServiceImpl implements AccountService{
 		if(!account.isEnabled()) {
 			throw new AccountNotEmailChecked();
 		}
+		updateLocked(dto.getEmail(), 1);
 		AuthDto authDto = createAuth(dto.getEmail(), AuthOption.RESET);
 		sendEmail(authDto);
 	}

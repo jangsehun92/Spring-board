@@ -19,18 +19,6 @@ function check_form(){
 	var name = $("#name").val().replace(/\s|/gi,'');
 	var birth = $("#birth").val().replace(/\s|/gi,'');
 	
-	/* if(name=="") {
-		alert("이름을 입력해주세요.");
-		$("#password").focus();
-		return false;
-	}
-	
-	if(birth==""){
-		alert("생년월일을 입력해주세요.");
-		$("#passwordCheck").focus();
-		return false;
-	} */
-	
 	var AccountFindRequestDto = {
 		name : $("#name").val(),
 		birth : $("#birth").val(),
@@ -113,7 +101,7 @@ function find_password(){
 							<fieldset>
 								<input type="text" class="form-control input-sm" id="name" name="name" placeholder="이름" maxlength="10" style="margin-top: 10px;">
 								<small id="error_name" class="error"></small>
-								<input type="text" class="form-control input-sm" id="birth" name="birth" placeholder="생년월일(ex:920409)" maxlength="6" style="margin-top: 10px;">
+								<input type="text" class="form-control input-sm" id="birth" name="birth" placeholder="주민번호 앞자리" maxlength="6" style="margin-top: 10px;">
 								<small id="error_birth" class="error"></small>
 							</fieldset>
 							<input type="button" class="btn btn-primary btn-block" value="이메일 찾기" style="margin-top: 10px;" onclick="return check_form();">

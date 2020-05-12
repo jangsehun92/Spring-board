@@ -19,9 +19,36 @@ window.onload = function() {
 		type:"get",
 		success:function(data){
 			console.log("회원정보 가져오기 : " + ${id });
-			$("#nickname").html(data.accountResponseDto.nickname);
-			if(data.accountResponseDto.articles != null){
-				$("#main").append(
+			$("#nickname").html(data.nickname);
+			
+		},
+		error:function(request,status,error){
+			jsonValue = jQuery.parseJSON(request.responseText);
+			code = jsonValue.code;
+			if(code == 'C003'){
+				$(".error").empty();
+				for(var i in jsonValue.errors){
+					$("#user_nickname").focus();
+					$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
+				}
+			}
+			if(code == 'C006'){
+				alert(jsonValue.message);
+				console.log("code : " + jsonValue.code + " message : " + jsonValue.message);
+			}
+		}
+	});
+};
+
+//회원정보 가져오기 성공 후 
+function article_list(id){
+	$.ajax({
+		url:"/articles/"+id,
+		type:"get",
+		success:function(data){
+			console.log("회원정보 글 가져오기 : " + id);
+			if(data.articles != null){
+				$("#articles").append(
 					"<div>"+
 						"<div style='margin-top: 40px'>"+
 							"<span>작성한 글 내역</span>"+
@@ -52,7 +79,7 @@ window.onload = function() {
 						"</nav>"+
 					"</div>"
 				);
-				for(var i in data.accountResponseDto.articles){
+				for(var i in data.articles){
 					$("#article_list").append(
 							"<tr>"+
 							"<td><a href='/article/'>제목</a></td>"+
@@ -62,8 +89,8 @@ window.onload = function() {
 					);
 				}
 			}
-			if(data.accountResponseDto.articles == null){
-				$("#main").append("<p align='center'>작성한 글이 없습니다.</p>");
+			if(data.articles == null){
+				$("#articles").append("<p align='center'>작성한 글이 없습니다.</p>");
 			}
 		},
 		error:function(request,status,error){
@@ -82,7 +109,8 @@ window.onload = function() {
 			}
 		}
 	});
-};
+	
+}
 </script>
 <body>
 	<div class="container" style="margin-top: 80px;">
@@ -96,7 +124,7 @@ window.onload = function() {
 				</div>
 			</div>
 			<div class="panel-body" style="text-align: left;">
-				<div id="main">
+				<div id="articles">
 					
 				</div>
 			</div>

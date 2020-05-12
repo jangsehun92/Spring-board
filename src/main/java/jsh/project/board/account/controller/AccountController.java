@@ -27,12 +27,13 @@ import jsh.project.board.account.dto.Account;
 import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AccountCreateDto;
 import jsh.project.board.account.dto.AccountEditRequestDto;
+import jsh.project.board.account.dto.AccountEmailDto;
 import jsh.project.board.account.dto.AccountFindRequestDto;
 import jsh.project.board.account.dto.AccountFindResponseDto;
-import jsh.project.board.account.dto.AccountInfoResponseDto;
 import jsh.project.board.account.dto.AccountPasswordDto;
 import jsh.project.board.account.dto.AccountPasswordResetDto;
 import jsh.project.board.account.dto.AccountPasswordResetRequestDto;
+import jsh.project.board.account.dto.AccountResponseDto;
 import jsh.project.board.account.service.AccountService;
 
 @Controller
@@ -55,7 +56,7 @@ public class AccountController {
     	return "userPages/join";
     }
     
-    @PostMapping("/account/join")
+    @PostMapping("/account")
     public @ResponseBody ResponseEntity<HttpStatus> join(@RequestBody @Valid AccountCreateDto dto) throws Exception {
     	log.info("AccountCreateDto : " + dto.toString());
     	accountService.register(dto);
@@ -69,7 +70,7 @@ public class AccountController {
     }
     
     @GetMapping("/account/{id}")
-    public @ResponseBody ResponseEntity<AccountInfoResponseDto> accountInfo(@PathVariable("id")int id) {
+    public @ResponseBody ResponseEntity<AccountResponseDto> accountInfo(@PathVariable("id")int id) {
     	return new ResponseEntity<>(accountService.accountInfo(id),HttpStatus.OK);
     }
     
@@ -82,8 +83,8 @@ public class AccountController {
     @PatchMapping("/account/{id}")
     public @ResponseBody ResponseEntity<HttpStatus> accountEdit(Principal principal, Authentication auth, Model model, @PathVariable("id")int id, @RequestBody @Valid AccountEditRequestDto dto) {
     	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	accountService.accountEdit(account);
     	account.setNickname(dto.getNickname());
+    	accountService.accountEdit(account);
     	
     	Authentication newAuth = new UsernamePasswordAuthenticationToken(account, auth.getCredentials(), account.getAuthorities());
     	SecurityContextHolder.getContext().setAuthentication(newAuth);
@@ -92,15 +93,15 @@ public class AccountController {
     
     //email 중복 체크
     @GetMapping("/account/email")
-    public @ResponseBody ResponseEntity<HttpStatus> checkEmail(String email){
-    	accountService.emailCheck(email);
+    public @ResponseBody ResponseEntity<HttpStatus> checkEmail(@Valid AccountEmailDto dto){
+    	accountService.emailCheck(dto);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
     //이메일 발송 완료 페이지 이동
     @RequestMapping("/account/sendEmail")
-    public String emailPage(String email, Model model) {
-    	model.addAttribute("email", email);
+    public String emailPage(AccountEmailDto dto, Model model) {
+    	model.addAttribute("email", dto.getEmail());
     	return "userPages/sendEmail";
     }
     
@@ -113,8 +114,8 @@ public class AccountController {
     
     //인증이메일 재발송
     @GetMapping("/account/resend")
-    public @ResponseBody ResponseEntity<HttpStatus> resendEmail(String email) throws Exception{
-    	accountService.resendEmail(email);
+    public @ResponseBody ResponseEntity<HttpStatus> resendEmail(AccountEmailDto dto) throws Exception{
+    	accountService.resendEmail(dto);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
@@ -192,4 +193,5 @@ public class AccountController {
     public String denied() {
     	return "commonPages/accessDenied";
     }
+    
 }

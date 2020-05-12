@@ -5,6 +5,7 @@ import java.util.Map;
 
 import jsh.project.board.account.dto.Account;
 import jsh.project.board.account.dto.AccountCreateDto;
+import jsh.project.board.account.dto.AccountEmailDto;
 import jsh.project.board.account.dto.AccountFindRequestDto;
 import jsh.project.board.account.dto.AccountFindResponseDto;
 import jsh.project.board.account.dto.AccountResponseDto;
@@ -22,7 +23,7 @@ public interface AccountDao {
 	
 	public void updatePassword(Account account);
 	
-	public int findEmail(String email);
+	public int findEmail(AccountEmailDto dto);
 	
 	public List<AccountFindResponseDto> findAccount(AccountFindRequestDto dto);
 	

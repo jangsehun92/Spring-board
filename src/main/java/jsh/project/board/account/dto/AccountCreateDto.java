@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern;
 import jsh.project.board.account.exception.PasswordCheckFailedException;
 
 public class AccountCreateDto {
-	@NotBlank(message = "이메일을 입력해주세요.")
+	@NotBlank(message = "이메일을 입력해주세요. ")
 	@Email(message = "올바른 형식의 이메일 주소여야합니다. ")
 	private String email;
 	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?=\\S+$).{8,20}$", message = "최소 8자리의 소문자,대문자,숫자,특수문자가 포함되어야합니다. ")
@@ -16,7 +16,8 @@ public class AccountCreateDto {
 	private String passwordCheck;
 	@NotBlank(message = "이름을 입력해주세요.")
 	private String name;
-	@NotBlank(message = "생년월일을 입력해주세요.")
+	@NotBlank(message = "주민번호 앞자리를 입력해주세요. ")
+	@Pattern(regexp ="[0-9]{6,6}", message = "6자리의 숫자만 입력가능합니다. ")
 	private String birth;
 	@NotBlank(message = "닉네임을 입력해주세요.")
 	private String nickname;
@@ -25,27 +26,7 @@ public class AccountCreateDto {
 	public AccountCreateDto() {
 		
 	}
-	
-	public AccountCreateDto(String email, String password, String passwordCheck, String name, String birth,String nickname) {
-		this.email = email;
-		this.password = password;
-		this.passwordCheck = passwordCheck;
-		this.name = name;
-		this.birth = birth;
-		this.nickname = nickname;
-	}
-	
-	/*
-	public AccountCreateDto(String email, String password, String passwordCheck, String name, String year, String month, String day,String nickname) {
-		this.email = email;
-		this.password = password;
-		this.passwordCheck = passwordCheck;
-		this.name = name;
-		this.birth = birth(year, month, day);
-		this.nickname = nickname;
-	}
-	*/
-	
+
 	public String getEmail() {
 		return email;
 	}
@@ -108,10 +89,6 @@ public class AccountCreateDto {
 			throw new PasswordCheckFailedException();
 		}
 	}
-	
-//	public String birth(String year, String month, String day) {
-//		return year+"-"+month+"-"+day;
-//	}
 	
 	@Override
 	public String toString() {

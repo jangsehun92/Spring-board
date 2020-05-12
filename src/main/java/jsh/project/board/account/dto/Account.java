@@ -135,9 +135,4 @@ public class Account implements UserDetails{
 		return true;
 	}
 	
-	public AccountResponseDto toResponseDto() {
-		AccountResponseDto dto = new AccountResponseDto(id,email,nickname);
-		return dto;
-	}
-	
 }

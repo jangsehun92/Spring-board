@@ -32,6 +32,9 @@
 			logout-success-url="/"
 			invalidate-session="true"
 		/>
+		<session-management invalid-session-url="/login">
+			<concurrency-control max-sessions="1" expired-url="/login" />
+		</session-management>
 		<access-denied-handler error-page="/account/denied"/>
 		<csrf disabled="false"/>
 		

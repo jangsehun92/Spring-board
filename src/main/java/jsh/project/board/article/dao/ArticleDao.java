@@ -16,11 +16,15 @@ public class ArticleDao {
 		this.sqlSession = sqlSession;
 	}
 	
-	public List<Article>getList(){
+	public List<Article>selectArticleList(){
 		return sqlSession.selectList("boardMapper.articleList");
 	}
 	
-	public Article getArticle(int id) {
+	public List<Article>selectAccountArticleList(int id){
+		return sqlSession.selectList("boardMapper.accountArticleList");
+	}
+	
+	public Article selectArticle(int id) {
 		return sqlSession.selectOne("boardMapper.article", id);
 	}
 	

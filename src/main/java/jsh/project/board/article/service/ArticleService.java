@@ -17,10 +17,15 @@ public class ArticleService {
 	}
 	
 	public List<Article> getArticleList(){
-		return articleDao.getList();
+		return articleDao.selectArticleList();
 	}
 	
+	public List<Article> getAccountArticleList(int id){
+		return articleDao.selectAccountArticleList(id);
+	} 
+	
 	public Article getArticle(int id) {
-		return articleDao.getArticle(id);
+		return articleDao.selectArticle(id);
 	}
+	
 }

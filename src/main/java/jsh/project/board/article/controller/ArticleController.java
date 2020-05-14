@@ -33,8 +33,14 @@ public class ArticleController {
 	}
 	
 	@GetMapping("/articles")
-	public @ResponseBody ResponseEntity<ResponseArticles> list(@RequestParam(required = false, defaultValue="1")int page){
+	public @ResponseBody ResponseEntity<ResponseArticles> articleList(@RequestParam(required = false, defaultValue="1")int page){
 		logger.info("GET /articles/"+page);
+		return new ResponseEntity<ResponseArticles>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/articles/{id}")
+	public @ResponseBody ResponseEntity<ResponseArticles> accountArticleList(@PathVariable int id, @RequestParam(required = false, defaultValue="1")int page){
+		logger.info("GET /articles/"+id+"?page="+page);
 		return new ResponseEntity<ResponseArticles>(HttpStatus.OK);
 	}
 	

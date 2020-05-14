@@ -20,7 +20,7 @@ window.onload = function() {
 		success:function(data){
 			console.log("회원정보 가져오기 : " + ${id });
 			$("#nickname").html(data.nickname);
-			
+			accountArticleList(${id });
 		},
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
@@ -41,7 +41,7 @@ window.onload = function() {
 };
 
 //회원정보 가져오기 성공 후 
-function article_list(id){
+function accountArticleList(id){
 	$.ajax({
 		url:"/articles/"+id,
 		type:"get",

@@ -16,12 +16,12 @@ public class ArticleService {
 		this.articleDao = articleDao;
 	}
 	
-	public List<Article> getArticleList(){
-		return articleDao.selectArticleList();
+	public List<Article> getArticles(int page){
+		return articleDao.selectArticles();
 	}
 	
-	public List<Article> getAccountArticleList(int id){
-		return articleDao.selectAccountArticleList(id);
+	public List<Article> getAccountArticles(int id){
+		return articleDao.selectAccountArticles(id);
 	} 
 	
 	public Article getArticle(int id) {

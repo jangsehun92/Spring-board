@@ -1,7 +1,5 @@
 package jsh.project.board.article.controller;
 
-import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -32,31 +30,34 @@ public class ArticleController {
 		this.articleService = articleService;
 	}
 	
+	// Aritcles 
 	@GetMapping("/articles")
 	public @ResponseBody ResponseEntity<ResponseArticles> articleList(@RequestParam(required = false, defaultValue="1")int page){
 		logger.info("GET /articles/"+page);
 		return new ResponseEntity<ResponseArticles>(HttpStatus.OK);
 	}
 	
+	// 해당 유저의 Aritcles
 	@GetMapping("/articles/{id}")
 	public @ResponseBody ResponseEntity<ResponseArticles> accountArticleList(@PathVariable int id, @RequestParam(required = false, defaultValue="1")int page){
 		logger.info("GET /articles/"+id+"?page="+page);
 		return new ResponseEntity<ResponseArticles>(HttpStatus.OK);
 	}
 	
-	
+	// Article 보기 
 	@GetMapping("/article/{id}")
 	public ResponseEntity<Article> article(@PathVariable("id") int id) {
 		articleService.getArticle(id);
 		return new ResponseEntity<>( HttpStatus.OK);
 	}
 	
+	// 글쓰기페이지 요청
 	@GetMapping("/article/create")
 	public String articleCreateForm() {
 		return "articlePages/articleCreate";
 	}
 	
-	
+	// Article 생성
 	@PostMapping("/article")
 	public ResponseEntity<HttpStatus> create(@RequestBody ArticleCreateDto dto){
 		logger.info("dto.getDate : "+dto.getTitle());
@@ -64,13 +65,14 @@ public class ArticleController {
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
+	// Article 수정
 	@PatchMapping("/article/{id}")
 	public ResponseEntity<HttpStatus> create(@PathVariable("id") int id) {
 		logger.info("PATCH /article/" + id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 
-	// Article DELETE
+	// Article 삭제
 	@DeleteMapping("/article/{id}")
 	public ResponseEntity<HttpStatus> delete(@PathVariable("id") int id) {
 		logger.info("DELETE /article/" + id);

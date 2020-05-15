@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import jsh.project.board.article.dto.Article;
 import jsh.project.board.article.dto.ArticleCreateDto;
-import jsh.project.board.article.dto.ResponseArticles;
+import jsh.project.board.article.dto.RequestArticlesDto;
+import jsh.project.board.article.dto.ResponseArticlesDto;
 import jsh.project.board.article.service.ArticleService;
 
 @Controller
@@ -32,24 +33,26 @@ public class ArticleController {
 	
 	// All Aritcles 
 	@GetMapping("/articles")
-	public @ResponseBody ResponseEntity<ResponseArticles> articleList(@RequestParam(required = false, defaultValue="1")int page){
-		logger.info("GET /articles/"+page);
-		ResponseArticles responseArticles = articleService.getArticles(page);
-		return new ResponseEntity<ResponseArticles>(responseArticles, HttpStatus.OK);
+	public @ResponseBody ResponseEntity<ResponseArticlesDto> articleList(RequestArticlesDto dto){
+			//@RequestParam(required = false, defaultValue="1")int page){
+		logger.info("GET /articles/"+dto.getPage());
+		logger.info(dto.toString());
+		ResponseArticlesDto responseArticles = articleService.getArticles(dto.getPage());
+		return new ResponseEntity<ResponseArticlesDto>(responseArticles, HttpStatus.OK);
 	}
 	
 	// category Aritcles 
 	@GetMapping("/articles/{category}")
-	public @ResponseBody ResponseEntity<ResponseArticles> articleListByCategory(@PathVariable String category, @RequestParam(required = false, defaultValue="1")int page){
+	public @ResponseBody ResponseEntity<ResponseArticlesDto> articleListByCategory(@PathVariable String category, @RequestParam(required = false, defaultValue="1")int page){
 		logger.info("GET /articles/"+category+"?page="+page);
-		return new ResponseEntity<ResponseArticles>(HttpStatus.OK);
+		return new ResponseEntity<ResponseArticlesDto>(HttpStatus.OK);
 	}
 		
 	// 해당 유저의 Aritcles
 	@GetMapping("/articles/{id}")
-	public @ResponseBody ResponseEntity<ResponseArticles> articleListByAccount(@PathVariable int id, @RequestParam(required = false, defaultValue="1")int page){
+	public @ResponseBody ResponseEntity<ResponseArticlesDto> articleListByAccount(@PathVariable int id, @RequestParam(required = false, defaultValue="1")int page){
 		logger.info("GET /articles/"+id+"?page="+page);
-		return new ResponseEntity<ResponseArticles>(HttpStatus.OK);
+		return new ResponseEntity<ResponseArticlesDto>(HttpStatus.OK);
 	}
 	
 	// Article 보기 

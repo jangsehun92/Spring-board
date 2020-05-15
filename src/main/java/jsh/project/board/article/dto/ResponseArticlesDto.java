@@ -4,13 +4,13 @@ import java.util.List;
 
 import jsh.project.board.global.infra.util.Pagination;
 
-public class ResponseArticles {
+public class ResponseArticlesDto {
 	private List<ArticleResponseDto> articles;
 	private Pagination pagination;
 	private String category;
 	private String query;
 	
-	public ResponseArticles() {
+	public ResponseArticlesDto() {
 		
 	}
 	

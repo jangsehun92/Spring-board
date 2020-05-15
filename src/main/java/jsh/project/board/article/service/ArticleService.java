@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import jsh.project.board.article.dao.ArticleDao;
 import jsh.project.board.article.dto.Article;
-import jsh.project.board.article.dto.ResponseArticles;
+import jsh.project.board.article.dto.ResponseArticlesDto;
 import jsh.project.board.global.infra.util.Pagination;
 
 @Service
@@ -20,8 +20,8 @@ public class ArticleService {
 		this.articleDao = articleDao;
 	}
 	
-	public ResponseArticles getArticles(int page){
-		ResponseArticles responseArticles = new ResponseArticles();
+	public ResponseArticlesDto getArticles(int page){
+		ResponseArticlesDto responseArticles = new ResponseArticlesDto();
 		Pagination pagination = new Pagination(articleDao.getTotalCount(), page);
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("startCount", pagination.getStartCount());

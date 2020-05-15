@@ -4,21 +4,15 @@ import java.sql.Date;
 
 public class ArticleResponseDto {
 	private int id;
-	private String nickname;
 	private String title;
-	private String content;
+	private String nickname;
+	private int viewCount;
+	private int replyCount;
+	private int likeCount;
 	private Date regdate;
 	
 	public ArticleResponseDto() {
 		
-	}
-	
-	public ArticleResponseDto(int id, String nickname, String title, String content, Date regdate) {
-		this.id = id;
-		this.nickname = nickname;
-		this.title = title;
-		this.content = content;
-		this.regdate = regdate;
 	}
 
 	public int getId() {
@@ -29,14 +23,6 @@ public class ArticleResponseDto {
 		this.id = id;
 	}
 
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
 	public String getTitle() {
 		return title;
 	}
@@ -45,12 +31,36 @@ public class ArticleResponseDto {
 		this.title = title;
 	}
 
-	public String getContent() {
-		return content;
+	public String getNickname() {
+		return nickname;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public int getViewCount() {
+		return viewCount;
+	}
+
+	public void setViewCount(int viewCount) {
+		this.viewCount = viewCount;
+	}
+
+	public int getReplyCount() {
+		return replyCount;
+	}
+
+	public void setReplyCount(int replyCount) {
+		this.replyCount = replyCount;
+	}
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
 	}
 
 	public Date getRegdate() {
@@ -61,5 +71,6 @@ public class ArticleResponseDto {
 		this.regdate = regdate;
 	}
 	
-
+	
+	
 }

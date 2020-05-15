@@ -1,18 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="boardMapper">	
+	<resultMap type="ArticleResponseDto" id="articleResponseResultMap">
+		<result property="id" column="id"/>
+		<result property="title" column="title"/>
+		<result property="nickname" column="nickname"/>
+		<result property="viewCount" column="view_count"/>
+		<result property="replyCount" column="reply_count"/>
+		<result property="likeCount" column="like_count"/>
+		<result property="regdate" column="regdate"/>
+	</resultMap>
+	
+	<select id="totalCount" resultType="int">
+		SELECT
+			count(id)
+		FROM
+			article_table
+	</select>
 
 	<select id="article" resultType="Article">
 		SELECT 
 			*
 		FROM 
-			board_table
+			article_table
 		WHERE 
 			id = #{id}
 	</select>
 	
-	<select id="articleList" resultType="Article">
-	
+	<select id="articles" parameterType="map" resultMap="articleResponseResultMap">
+		<![CDATA[
+		SELECT 
+			c.id,
+			c.title,
+			c.nickname,
+			c.view_count,
+			reply_count,
+			count(article_like_table.id) AS like_count,
+			c.regdate
+		FROM 
+			(SELECT 
+				b.id,
+				b.title,
+				b.nickname,
+				b.view_count,
+				count(reply_table.id) AS reply_count,
+				b.regdate
+			FROM
+				(SELECT 
+					rownum AS rnum,
+					a.id,
+					a.title,
+					a.nickname,
+					a.view_count,
+					a.regdate
+				FROM
+					(SELECT 
+						article_table.id,
+						article_table.title,
+						account_table.nickname,
+						article_table.view_count,
+						article_table.regdate
+					FROM 
+						article_table JOIN account_table ON article_table.account_id = account_table.id)a
+				WHERE rownum <= #{endCount})b LEFT JOIN reply_table ON b.id = reply_table.article_id
+			WHERE b.rnum >= #{startCount}
+			GROUP BY b.id, b.title, b.nickname,b.view_count, b.regdate)c LEFT JOIN article_like_table ON c.id = article_like_table.article_id
+		GROUP BY c.id, c.title, c.nickname,c.view_count ,c.regdate, reply_count
+		ORDER BY c.regdate DESC
+		]]>
 	</select>
 	
 	

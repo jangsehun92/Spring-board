@@ -1,11 +1,15 @@
 package jsh.project.board.article.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import jsh.project.board.article.dao.ArticleDao;
 import jsh.project.board.article.dto.Article;
+import jsh.project.board.article.dto.ResponseArticles;
+import jsh.project.board.global.infra.util.Pagination;
 
 @Service
 public class ArticleService {
@@ -16,8 +20,16 @@ public class ArticleService {
 		this.articleDao = articleDao;
 	}
 	
-	public List<Article> getArticles(int page){
-		return articleDao.selectArticles();
+	public ResponseArticles getArticles(int page){
+		ResponseArticles responseArticles = new ResponseArticles();
+		Pagination pagination = new Pagination(articleDao.getTotalCount(), page);
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("startCount", pagination.getStartCount());
+		paramMap.put("endCount", pagination.getEndCount());
+		
+		responseArticles.setArticles(articleDao.selectArticles(paramMap));
+		responseArticles.setPagination(pagination);
+		return responseArticles;
 	}
 	
 	public List<Article> getAccountArticles(int id){

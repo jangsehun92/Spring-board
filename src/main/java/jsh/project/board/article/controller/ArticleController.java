@@ -30,16 +30,24 @@ public class ArticleController {
 		this.articleService = articleService;
 	}
 	
-	// Aritcles 
+	// All Aritcles 
 	@GetMapping("/articles")
 	public @ResponseBody ResponseEntity<ResponseArticles> articleList(@RequestParam(required = false, defaultValue="1")int page){
 		logger.info("GET /articles/"+page);
-		return new ResponseEntity<ResponseArticles>(HttpStatus.OK);
+		ResponseArticles responseArticles = articleService.getArticles(page);
+		return new ResponseEntity<ResponseArticles>(responseArticles, HttpStatus.OK);
 	}
 	
+	// category Aritcles 
+	@GetMapping("/articles/{category}")
+	public @ResponseBody ResponseEntity<ResponseArticles> articleListByCategory(@PathVariable String category, @RequestParam(required = false, defaultValue="1")int page){
+		logger.info("GET /articles/"+category+"?page="+page);
+		return new ResponseEntity<ResponseArticles>(HttpStatus.OK);
+	}
+		
 	// 해당 유저의 Aritcles
 	@GetMapping("/articles/{id}")
-	public @ResponseBody ResponseEntity<ResponseArticles> accountArticleList(@PathVariable int id, @RequestParam(required = false, defaultValue="1")int page){
+	public @ResponseBody ResponseEntity<ResponseArticles> articleListByAccount(@PathVariable int id, @RequestParam(required = false, defaultValue="1")int page){
 		logger.info("GET /articles/"+id+"?page="+page);
 		return new ResponseEntity<ResponseArticles>(HttpStatus.OK);
 	}

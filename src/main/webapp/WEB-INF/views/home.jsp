@@ -25,19 +25,17 @@ function page(page){
 		dataType : "json", 
 		
 		success:function(data){
-			if(data.articleList[0] != null){
-				for(var ele in data.articleList){
+			if(data.articles[0] != null){
+				for(var i in data.articles){
 					$("#boardBody").append(
 						"<tr>"+
-							"<td>"+data.articleList[ele].id+"</td>"+
-							"<td><a href='/article/"+data.articleList[ele].id+"'>"+data.articleList[ele].title+"</a></td>"+
-							"<td align='right'>"+data.articleList[ele].writer+"</td>"+
-							"<td align='right'>"+uxin_timestamp(data.articleList[ele].regDate)+"</td>"+
+							"<td>"+data.articles[i].id+"</td>"+
+							"<td><a href='/article/"+data.articles[i].id+"'>"+data.articles[i].title+"</a></td>"+
+							"<td align='right'>"+data.articles[i].nickname+"</td>"+
+							"<td align='right'>"+uxin_timestamp(data.articles[i].regdate)+"</td>"+
 						"</tr>"
 					);
 				}
-				
-				console.log("pagination",data.pagination);
 				
 				if(data.pagination.startPage > 1){
 					$("#pagination").append("<li class=''><a href='#' onclick='page(1)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>");
@@ -94,30 +92,10 @@ function uxin_timestamp(time){
 	return year + "-" + month.substr(-2) + "-" + day.substr(-2) + " " + hour.substr(-2) + ":" + minute.substr(-2);
 }
 
-function test(){
-	$.ajax({
-		url:"/account/test/2",
-		type:"get",
-		beforeSend: function(xhr){
-			xhr.setRequestHeader("ajax-call","true");	
-		},
-		success:function(data){
-			alert("성공.");
-		},
-		error:function(request,status,error){
-			jsonValue = jQuery.parseJSON(request.responseText);
-			code = jsonValue.code;
-			alert(jsonValue.message);
-			
-		}
-	});
-}
-
-
 </script>
 <body>
 <div class="container" style="margin-top: 80px;">
-	<h1>Hello world!</h1>
+	<h1>전체 게시글</h1>
 
 	<div class="main">
 		<div id="board">

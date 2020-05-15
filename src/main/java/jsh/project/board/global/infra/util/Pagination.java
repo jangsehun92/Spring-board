@@ -21,7 +21,7 @@ public class Pagination {
 	public Pagination(int totalCount, int page) {
 		this.totalCount = totalCount;
 		this.page = page;
-		make();
+		init();
 	}
 	
 	public int getCountList() {
@@ -72,7 +72,7 @@ public class Pagination {
 		this.endPage = endPage;
 	}
 	
-	public void make() {
+	public void init() {
 		totalPage = (totalCount / countList);
 		/*
 		총 게시글(totalCount)를 한페이지당 보여줄 게시글 수(countList)로 나눴을때 나머지가 0 보다크다는것은
@@ -103,7 +103,15 @@ public class Pagination {
 		}
 	}
 	
-	public Map<String, Integer> scope(){
+	public int getStartCount() {
+		return startCount = (page - 1) * countList + 1;
+	}
+	
+	public int getEndCount() {
+		return endCount = page * countList; 
+	}
+	
+	public Map<String, Integer> getScope(){
 		Map<String, Integer> resultMap = new HashMap<String, Integer>();
 		this.startCount = (page - 1) * countList + 1;
 		this.endCount = page * countList; 

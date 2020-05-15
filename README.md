@@ -78,15 +78,30 @@ Spring Framework를 사용하여 게시판을 구현한다.
 ## 게시판
 공통 사항
   - 처음 페이지 이동을 제외한 모든 요청은 Ajax를 이용하여 통신하며 필요에 따라 json타입으로 받아와 처리한다.
-  
+  - Oracle + Mybatis환경 에서 Date값을 다루기 위해 CumstomDateHandler 등록
+
   * **게시글 목록 조회**
+    - 일정 범위의 게시글을 가져온다.
     - 페이징 처리를 한다.
+    - 작성날짜를 분단위까지 표시한다.
+    
   * **게시글 조회**
+  
   * **게시글 작성**
+  
   * **게시글 수정**
+  
   * **게시글 삭제**
 
 
 * 댓글 CRUD
 * 추천 기능
 * 검색 기능
+
+
+
+
+--------------
+(java.sql.Date 타입은 org.apache.ibatis.type.SqlDateTypeHandler를 통해 date 값을 yyyy-mm-dd로 반환)
+
+[ 참고 : https://taetaetae.github.io/2017/03/23/oracle-mybatis-date/ ]

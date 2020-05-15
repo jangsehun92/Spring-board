@@ -11,11 +11,24 @@
 		<result property="regdate" column="regdate"/>
 	</resultMap>
 	
-	<select id="totalCount" resultType="int">
+	<select id="totalCount" parameterType="RequestArticlesDto" resultType="int">
 		SELECT
 			count(id)
 		FROM
 			article_table
+		<if test='query != null and category != null'>
+		WHERE 
+			title LIKE '%'||#{query}||'%' AND
+			category = #{category}
+		</if>
+		<if test='query == null and category != null'>
+		WHERE 
+		  	category = #{category}
+		</if>
+		<if test='accountId != 0'>
+		WHERE 
+			 account_id = #{accountId}
+		</if>
 	</select>
 
 	<select id="article" resultType="Article">
@@ -27,15 +40,15 @@
 			id = #{id}
 	</select>
 	
-	<select id="articles" parameterType="map" resultMap="articleResponseResultMap">
+	<select id="articles" parameterType="RequestArticlesDto" resultType="ArticleResponseDto">
 		<![CDATA[
 		SELECT 
 			c.id,
 			c.title,
 			c.nickname,
-			c.view_count,
-			reply_count,
-			count(article_like_table.id) AS like_count,
+			c.view_count AS viewCount,
+			replyCount,
+			count(article_like_table.id) AS likeCount,
 			c.regdate
 		FROM 
 			(SELECT 
@@ -43,7 +56,7 @@
 				b.title,
 				b.nickname,
 				b.view_count,
-				count(reply_table.id) AS reply_count,
+				count(reply_table.id) AS replyCount,
 				b.regdate
 			FROM
 				(SELECT 
@@ -61,12 +74,29 @@
 						article_table.view_count,
 						article_table.regdate
 					FROM 
-						article_table JOIN account_table ON article_table.account_id = account_table.id)a
+						article_table JOIN account_table ON article_table.account_id = account_table.id
+					]]>
+					<if test='query != null and category != null'>
+					WHERE 
+						article_table.title LIKE '%'||#{query}||'%' AND
+						article_table.category = #{category}
+					</if>
+					<if test='query == null and category != null'>
+					WHERE 
+					  	article_table.category = #{category}
+					</if>
+					<if test='accountId != 0'>
+					WHERE 
+					  	article_table.account_id = #{accountId}
+					</if>
+					
+			<![CDATA[	
+					)a
 				WHERE rownum <= #{endCount})b LEFT JOIN reply_table ON b.id = reply_table.article_id
 			WHERE b.rnum >= #{startCount}
 			GROUP BY b.id, b.title, b.nickname,b.view_count, b.regdate)c LEFT JOIN article_like_table ON c.id = article_like_table.article_id
-		GROUP BY c.id, c.title, c.nickname,c.view_count ,c.regdate, reply_count
-		ORDER BY c.regdate DESC
+		GROUP BY c.id, c.title, c.nickname,c.view_count ,c.regdate, replyCount
+		ORDER BY ${sort} DESC
 		]]>
 	</select>
 	

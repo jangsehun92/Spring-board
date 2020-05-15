@@ -20,6 +20,11 @@ public class Pagination {
 	
 	public Pagination(int totalCount, int page) {
 		this.totalCount = totalCount;
+		
+		if(page == 0) {
+			this.page = 1;
+		}
+		
 		this.page = page;
 		init();
 	}

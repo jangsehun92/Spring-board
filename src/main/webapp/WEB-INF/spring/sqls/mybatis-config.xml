@@ -20,6 +20,7 @@
   	<!-- Article 관련 -->
   	<typeAlias type="jsh.project.board.article.dto.Article" alias="Article"/>
   	<typeAlias type="jsh.project.board.article.dto.ArticleResponseDto" alias="ArticleResponseDto"/>
+  	<typeAlias type="jsh.project.board.article.dto.RequestArticlesDto" alias="RequestArticlesDto"/>
   	
   </typeAliases>
   <typeHandlers>

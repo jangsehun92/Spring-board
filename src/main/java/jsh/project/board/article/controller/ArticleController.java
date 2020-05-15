@@ -31,29 +31,36 @@ public class ArticleController {
 		this.articleService = articleService;
 	}
 	
-	// All Aritcles 
+	//Aritcles
 	@GetMapping("/articles")
 	public @ResponseBody ResponseEntity<ResponseArticlesDto> articleList(RequestArticlesDto dto){
 			//@RequestParam(required = false, defaultValue="1")int page){
 		logger.info("GET /articles/"+dto.getPage());
 		logger.info(dto.toString());
-		ResponseArticlesDto responseArticles = articleService.getArticles(dto.getPage());
-		return new ResponseEntity<ResponseArticlesDto>(responseArticles, HttpStatus.OK);
+		ResponseArticlesDto responseArticlesDto = articleService.getArticles(dto);
+		return new ResponseEntity<ResponseArticlesDto>(responseArticlesDto, HttpStatus.OK);
 	}
 	
-	// category Aritcles 
-	@GetMapping("/articles/{category}")
-	public @ResponseBody ResponseEntity<ResponseArticlesDto> articleListByCategory(@PathVariable String category, @RequestParam(required = false, defaultValue="1")int page){
-		logger.info("GET /articles/"+category+"?page="+page);
-		return new ResponseEntity<ResponseArticlesDto>(HttpStatus.OK);
-	}
-		
-	// 해당 유저의 Aritcles
-	@GetMapping("/articles/{id}")
-	public @ResponseBody ResponseEntity<ResponseArticlesDto> articleListByAccount(@PathVariable int id, @RequestParam(required = false, defaultValue="1")int page){
-		logger.info("GET /articles/"+id+"?page="+page);
-		return new ResponseEntity<ResponseArticlesDto>(HttpStatus.OK);
-	}
+//	// category Aritcles 
+//	@GetMapping("/articles/{category}")
+//	public @ResponseBody ResponseEntity<ResponseArticlesDto> articleListByCategory(@PathVariable String category, @RequestParam(required = false, defaultValue="1")int page){
+//		logger.info("GET /articles/"+category+"?page="+page);
+//		RequestArticlesDto dto = new RequestArticlesDto();
+//		dto.setCategory(category);
+//		dto.setPage(page);
+//		ResponseArticlesDto responseArticlesDto = articleService.getArticles(dto);
+//		return new ResponseEntity<ResponseArticlesDto>(responseArticlesDto, HttpStatus.OK);
+//	}
+//		
+//	// 해당 유저의 Aritcles
+//	@GetMapping("/articles/{id}")
+//	public @ResponseBody ResponseEntity<ResponseArticlesDto> articleListByAccount(@PathVariable int id, @RequestParam(required = false, defaultValue="1")int page){
+//		logger.info("GET /articles/"+id+"?page="+page);
+//		RequestArticlesDto dto = new RequestArticlesDto();
+//		dto.setPage(page);
+//		ResponseArticlesDto responseArticlesDto = articleService.getArticles(dto);
+//		return new ResponseEntity<ResponseArticlesDto>(responseArticlesDto, HttpStatus.OK);
+//	}
 	
 	// Article 보기 
 	@GetMapping("/article/{id}")

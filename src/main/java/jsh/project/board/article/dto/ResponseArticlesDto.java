@@ -9,9 +9,10 @@ public class ResponseArticlesDto {
 	private Pagination pagination;
 	private String category;
 	private String query;
+	private String sort;
 	
 	public ResponseArticlesDto() {
-		
+		this.sort = "regdate";
 	}
 	
 	public List<ArticleResponseDto> getArticles() {
@@ -45,5 +46,15 @@ public class ResponseArticlesDto {
 	public void setQuery(String query) {
 		this.query = query;
 	}
+	
+	public String getSort() {
+		return sort;
+	}
+	
+	public void setSort(String sort) {
+		this.sort = sort;
+	}
+	
+	
 	
 }

@@ -1,8 +1,6 @@
 package jsh.project.board.article.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -22,18 +20,11 @@ public class ArticleService {
 	}
 	
 	public ResponseArticlesDto getArticles(RequestArticlesDto dto){
-		ResponseArticlesDto responseArticles = new ResponseArticlesDto();
 		Pagination pagination = new Pagination(articleDao.getTotalCount(dto), dto.getPage());
-		for(int i = 0; i < 10; i++) {
-			System.out.println((i - 1) * 10 + 1);
-		}
-		System.out.println("페이지네이션 만들고나서의 page 값 : " + dto.getPage() + dto.getStartCount() + dto.getEndCount());
-//		Map<String, Object> paramMap = new HashMap<>();
-//		paramMap.put("startCount", pagination.getStartCount());
-//		paramMap.put("endCount", pagination.getEndCount());
 		dto.setStartCount(pagination.getStartCount());
 		dto.setEndCount(pagination.getEndCount());
 		
+		ResponseArticlesDto responseArticles = dto.toResponseDto();
 		responseArticles.setArticles(articleDao.selectArticles(dto));
 		responseArticles.setPagination(pagination);
 		return responseArticles;

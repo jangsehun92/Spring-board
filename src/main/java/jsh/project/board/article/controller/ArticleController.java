@@ -5,13 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jsh.project.board.article.dto.Article;
@@ -32,35 +32,33 @@ public class ArticleController {
 	}
 	
 	//Aritcles
-	@GetMapping("/articles")
-	public @ResponseBody ResponseEntity<ResponseArticlesDto> articleList(RequestArticlesDto dto){
-			//@RequestParam(required = false, defaultValue="1")int page){
+	@GetMapping("/")
+	public String articleList(RequestArticlesDto dto, Model model){
 		logger.info("GET /articles/"+dto.getPage());
 		logger.info(dto.toString());
 		ResponseArticlesDto responseArticlesDto = articleService.getArticles(dto);
-		return new ResponseEntity<ResponseArticlesDto>(responseArticlesDto, HttpStatus.OK);
+		model.addAttribute("responseArticlesDto", responseArticlesDto);
+		return "articlePages/articles";
 	}
 	
-//	// category Aritcles 
-//	@GetMapping("/articles/{category}")
-//	public @ResponseBody ResponseEntity<ResponseArticlesDto> articleListByCategory(@PathVariable String category, @RequestParam(required = false, defaultValue="1")int page){
-//		logger.info("GET /articles/"+category+"?page="+page);
-//		RequestArticlesDto dto = new RequestArticlesDto();
-//		dto.setCategory(category);
-//		dto.setPage(page);
-//		ResponseArticlesDto responseArticlesDto = articleService.getArticles(dto);
-//		return new ResponseEntity<ResponseArticlesDto>(responseArticlesDto, HttpStatus.OK);
-//	}
-//		
-//	// 해당 유저의 Aritcles
-//	@GetMapping("/articles/{id}")
-//	public @ResponseBody ResponseEntity<ResponseArticlesDto> articleListByAccount(@PathVariable int id, @RequestParam(required = false, defaultValue="1")int page){
-//		logger.info("GET /articles/"+id+"?page="+page);
-//		RequestArticlesDto dto = new RequestArticlesDto();
-//		dto.setPage(page);
-//		ResponseArticlesDto responseArticlesDto = articleService.getArticles(dto);
-//		return new ResponseEntity<ResponseArticlesDto>(responseArticlesDto, HttpStatus.OK);
-//	}
+	// category Aritcles 
+	@GetMapping("/articles/{category}")
+	public String articleListByCategory(@PathVariable String category, RequestArticlesDto dto, Model model){
+		logger.info("GET /articles/"+category+"?page="+dto.getPage());
+		dto.setCategory(category);
+		ResponseArticlesDto responseArticlesDto = articleService.getArticles(dto);
+		model.addAttribute("responseArticlesDto", responseArticlesDto);
+		return "articlePages/articles";
+	}
+		
+	// 해당 유저의 Aritcles
+	@GetMapping("/articles/account/{id}")
+	public @ResponseBody ResponseEntity<ResponseArticlesDto> articleListByAccount(@PathVariable int id, RequestArticlesDto dto){
+		logger.info("GET /articles/account/"+id+"?page="+dto.getPage());
+		dto.setAccountId(id);
+		ResponseArticlesDto responseArticlesDto = articleService.getArticles(dto);
+		return new ResponseEntity<ResponseArticlesDto>(responseArticlesDto, HttpStatus.OK);
+	}
 	
 	// Article 보기 
 	@GetMapping("/article/{id}")

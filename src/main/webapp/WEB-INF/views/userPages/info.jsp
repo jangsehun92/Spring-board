@@ -15,12 +15,11 @@
 <script type="text/javascript">
 window.onload = function() {
 	$.ajax({
-		url:"/account/"+${id },
+		url:"/account/${id }",
 		type:"get",
 		success:function(data){
-			console.log("회원정보 가져오기 : " + ${id });
 			$("#nickname").html(data.nickname);
-			accountArticleList(${id });
+			accountArticleList("${id }", 1);
 		},
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
@@ -41,14 +40,15 @@ window.onload = function() {
 };
 
 //회원정보 가져오기 성공 후 
-function accountArticleList(id){
+function accountArticleList(id, page){
 	$.ajax({
-		url:"/articles/"+id,
+		url:"/articles/account/"+id+"?page="+page,
 		type:"get",
 		success:function(data){
 			console.log("회원정보 글 가져오기 : " + id);
-			if(data.articles != null){
-				$("#articles").append(
+			$("#main").empty();
+			if(data.articles != ""){
+				$("#main").append(
 					"<div>"+
 						"<div style='margin-top: 40px'>"+
 							"<span>작성한 글 내역</span>"+
@@ -56,19 +56,14 @@ function accountArticleList(id){
 						"<table class='table table-hover'>"+
 							"<thead>"+
 								"<tr>"+
-									"<td class='col-md-3'><b>제목</b></td>"+
-									"<td class='col-md-6' align='right'><b>작성자</b></td>"+
+									"<td class='col-md-6'><b>제목</b></td>"+
+									"<td class='col-md-1' align='right'><b>추천</b></td>"+
+									//"<td class='col-md-1' align='right'><b>작성자</b></td>"+
 									"<td class='col-md-1' align='right'><b>작성 날짜</b></td>"+
 								"</tr>"+
 							"</thead>"+
-							"<tbody id='article_list'>"+
+							"<tbody id='articles'>"+
 							
-								"<tr>"+
-									"<td><a href='/article/'>제목</a></td>"+
-									"<td align='right'>작성자</td>"+
-									"<td align='right'>작성날짜</td>"+
-								"</tr>"+
-								
 							"</tbody>"+
 						"</table>"+
 					"</div>"+
@@ -80,16 +75,48 @@ function accountArticleList(id){
 					"</div>"
 				);
 				for(var i in data.articles){
-					$("#article_list").append(
-							"<tr>"+
-							"<td><a href='/article/'>제목</a></td>"+
-							"<td align='right'>작성자</td>"+
-							"<td align='right'>작성날짜</td>"+
+					$("#articles").append(
+						"<tr>"+
+							"<td><a href='/article/"+data.articles[i].id+"'>"+data.articles[i].title+"</a></td>"+
+							"<td align='right'>"+data.articles[i].likeCount+"</td>"+
+							//"<td align='right'>"+data.articles[i].nickname+"</td>"+
+							"<td align='right'>"+uxin_timestamp(data.articles[i].regdate)+"</td>"+
 						"</tr>"
 					);
 				}
+				if(data.pagination.startPage > 1){
+					$("#pagination").append("<li class=''><a href='javascript:void(0)' onclick='accountArticleList(1)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>");
+				}else{
+					$("#pagination").append("<li class='disabled'><a href='javascript:void(0)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>");
+				}
+				
+				if(data.pagination.page > 1){
+					$("#pagination").append("<li class=''><a href='javascript:void(0)' onclick='accountArticleList("+id+","+(data.pagination.page-1)+")' aria-label='Previous'><span aria-hidden='true'>&lang;</span></a></li>");
+				}else{
+					$("#pagination").append("<li class='disabled'><a href='javascript:void(0)' aria-label='Previous'><span aria-hidden='true'>&lang;</span></a></li>");
+				}
+				
+				for(var iCount = data.pagination.startPage; iCount <= data.pagination.endPage; iCount++) {
+					if (iCount == data.pagination.page) {
+				       $("#pagination").append("<li class='active'><a href='javascript:void(0)'>"+iCount+"<span class='sr-only'></span></a></li>");
+				    } else {
+				    	$("#pagination").append("<li class=''><a href='javascript:void(0)' onclick='accountArticleList("+id+","+iCount+")'>" + iCount + "<span class='sr-only'></span></a></li>");
+				    }
+				}
+				
+				if(data.pagination.page < data.pagination.totalPage){
+					$("#pagination").append("<li class=''><a a href='javascript:void(0)' onclick='accountArticleList("+id+","+(data.pagination.page+1)+")' aria-label='Next'><span aria-hidden='true'>&rang;</span></a></li>");
+				}else{
+					$("#pagination").append("<li class='disabled'><a href='javascript:void(0)' aria-label='Next'><span aria-hidden='true'>&rang;</span></a></li>");
+				}
+				
+				if(data.pagination.endPage < data.pagination.totalPage){
+					$("#pagination").append("<li class=''><a href='javascript:void(0)' onclick='accountArticleList("+id+","+data.pagination.totalPage+")' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>");
+				}else{
+					$("#pagination").append("<li class='disabled'><a href='javascript:void(0)' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>");
+				}
 			}
-			if(data.articles == null){
+			else{
 				$("#articles").append("<p align='center'>작성한 글이 없습니다.</p>");
 			}
 		},
@@ -111,6 +138,17 @@ function accountArticleList(id){
 	});
 	
 }
+
+function uxin_timestamp(time){
+	var date = new Date(time);
+	var year = date.getFullYear();
+	var month = "0" + (date.getMonth()+1);
+	var day = "0" + date.getDate();
+	var hour = "0" + date.getHours();
+	var minute = "0" + date.getMinutes();
+	//var second = "0" + date.getSeconds();
+	return year + "-" + month.substr(-2) + "-" + day.substr(-2) + " " + hour.substr(-2) + ":" + minute.substr(-2);
+}
 </script>
 <body>
 	<div class="container" style="margin-top: 80px;">
@@ -124,7 +162,7 @@ function accountArticleList(id){
 				</div>
 			</div>
 			<div class="panel-body" style="text-align: left;">
-				<div id="articles">
+				<div id="main">
 					
 				</div>
 			</div>

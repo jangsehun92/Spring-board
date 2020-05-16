@@ -25,7 +25,7 @@ function edit(){
 	}
 		
 		$.ajax({
-			url:"/account/"+${principal.id },
+			url:"/account/${principal.id }",
 			type:"patch",
 			contentType : "application/json; charset=UTF-8",
 			data: JSON.stringify(accountEditRequestDto),

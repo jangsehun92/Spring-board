@@ -11,7 +11,7 @@ public class RequestArticlesDto {
 	
 	public RequestArticlesDto() {
 		this.page = 1;
-		this.sort = "regdate";
+		this.sort = "id";
 	}
 
 	public int getPage() {
@@ -68,6 +68,14 @@ public class RequestArticlesDto {
 
 	public void setEndCount(int endCount) {
 		this.endCount = endCount;
+	}
+	
+	public ResponseArticlesDto toResponseDto() {
+		ResponseArticlesDto dto = new ResponseArticlesDto();
+		dto.setCategory(this.category);
+		dto.setQuery(this.query);
+		dto.setSort(this.sort);
+		return dto;
 	}
 
 	@Override

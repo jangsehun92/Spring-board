@@ -31,17 +31,17 @@ public class ArticleController {
 		this.articleService = articleService;
 	}
 	
-	//Aritcles
+	// 공지사항 Aritcles
 	@GetMapping("/")
 	public String articleList(RequestArticlesDto dto, Model model){
 		logger.info("GET /articles/"+dto.getPage());
-		logger.info(dto.toString());
+		dto.setCategory("notice");
 		ResponseArticlesDto responseArticlesDto = articleService.getArticles(dto);
 		model.addAttribute("responseArticlesDto", responseArticlesDto);
 		return "articlePages/articles";
 	}
 	
-	// category Aritcles 
+	// category별 Aritcles 
 	@GetMapping("/articles/{category}")
 	public String articleListByCategory(@PathVariable String category, RequestArticlesDto dto, Model model){
 		logger.info("GET /articles/"+category+"?page="+dto.getPage());
@@ -60,17 +60,23 @@ public class ArticleController {
 		return new ResponseEntity<ResponseArticlesDto>(responseArticlesDto, HttpStatus.OK);
 	}
 	
-	// Article 보기 
+	// 단일 Article 보기 
 	@GetMapping("/article/{id}")
 	public ResponseEntity<Article> article(@PathVariable("id") int id) {
 		articleService.getArticle(id);
 		return new ResponseEntity<>( HttpStatus.OK);
 	}
 	
-	// 글쓰기페이지 요청
+	// 글쓰기 페이지 요청
 	@GetMapping("/article/create")
 	public String articleCreateForm() {
 		return "articlePages/articleCreate";
+	}
+	
+	// 글수정 페이지 요청
+	@GetMapping("/article/update")
+	public String articleUpdateForm() {
+		return "articlePages/articleUpdate";
 	}
 	
 	// Article 생성

@@ -20,7 +20,6 @@ import org.springframework.security.web.savedrequest.SavedRequest;
 import jsh.project.board.account.service.AccountService;
 
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler{
-	
 	//spring security 에서 제공하는 사용자 요청을 저장하고 꺼낼 수 있는 객체
 	private RequestCache requestCahe = new HttpSessionRequestCache();
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();

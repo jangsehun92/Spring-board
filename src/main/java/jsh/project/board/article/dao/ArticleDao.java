@@ -18,6 +18,14 @@ public class ArticleDao {
 		this.sqlSession = sqlSession;
 	}
 	
+	public int getNoticeTotalCount() {
+		return sqlSession.selectOne("boardMapper.noticeTotalCount");
+	}
+	
+	public List<ArticleResponseDto> selectNoticeArticles(){
+		return sqlSession.selectList("boardMapper.noticeArticles");
+	}
+	
 	public int getTotalCount(RequestArticlesDto dto) {
 		return sqlSession.selectOne("boardMapper.totalCount", dto);
 	}

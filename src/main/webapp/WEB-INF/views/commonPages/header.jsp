@@ -19,13 +19,17 @@ $(document).ready(function(){
 	  
 });
 $(function(){
+	if($("#category").val()=="notice"){
+		$("#main_category").append("<h3>공지사항</h3>");
+	}
+	
 	if($("#category").val()=="community"){
-		$("#main").append("<h3>커뮤니티</h3>");
+		$("#main_category").append("<h3>커뮤니티</h3>");
 		$("#community").addClass("active");
 	}
 	
 	if($("#category").val()=="questions"){
-		$("#main").append("<h3>질문</h3>");
+		$("#main_category").append("<h3>질문</h3>");
 		$("#questions").addClass("active");
 	}
 });

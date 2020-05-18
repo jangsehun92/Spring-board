@@ -85,7 +85,7 @@ function accountArticleList(id, page){
 					);
 				}
 				if(data.pagination.startPage > 1){
-					$("#pagination").append("<li class=''><a href='javascript:void(0)' onclick='accountArticleList(1)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>");
+					$("#pagination").append("<li class=''><a href='javascript:void(0)' onclick='accountArticleList("+id+",1)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>");
 				}else{
 					$("#pagination").append("<li class='disabled'><a href='javascript:void(0)' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>");
 				}

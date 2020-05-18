@@ -31,69 +31,86 @@ window.onload = function() {
 
 	<div class="container" style="margin-top: 50px">
 		<div id="main">
-		</div>
-		<hr>
-		<div>
-			<form class="form-search" method="get" action="/articles/${responseArticlesDto.category }">
-				<div class="input-append" style="float:left" align="center">
-					<a id="sort-id" href="/articles/${responseArticlesDto.category }?sort=id&query=${responseArticlesDto.query}" style="font: italic bold;">최신순</a>
-					<a id="sort-likeCount" href="/articles/${responseArticlesDto.category }?sort=likeCount&query=${responseArticlesDto.query}">추천순</a>
-					<a id="sort-replyCount" href="/articles/${responseArticlesDto.category }?sort=replyCount&query=${responseArticlesDto.query}">댓글순</a>
-					<a id="sort-viewCount" href="/articles/${responseArticlesDto.category }?sort=viewCount&query=${responseArticlesDto.query}">조회순</a>
-				</div>
-				<div class="input-append" style="float:right">
-					<input type="hidden" id="sort" name="sort" value="${responseArticlesDto.sort }">
-					<input type="text" id="query" name="query" class="span2 search-query">
-					<button type="submit" class="btn">검색</button>
-				</div>
-			</form>
-		</div>
-		<table class="table table-hover">
-
-			<thead>
-				<tr>
-					<td class="col-md-7"><b>제목</b></td>
-					<td class="col-md-1" align="right"><b>추천</b></td>
-					<td class="col-md-1" align="right"><b>작성자</b></td>
-					<td class="col-md-1" align="right"><b>작성 날짜</b></td>
-				</tr>
-			</thead>
-
-			<c:choose>
-				<c:when test="${empty responseArticlesDto.articles}">
-					<tr>
-						<td colspan="4" align="center">--- 등록된 글이 없습니다 ---</td>
-					</tr>
-				</c:when>
-				<c:otherwise>
-
-					<c:forEach items="${responseArticlesDto.articles }" var="article">
-						<tr>
-							<td><a href="/article/${article.id }">${article.title } (${article.replyCount })</a></td>
-							<td align="right">${article.likeCount }</td>
-							<td align="right">${article.nickname }</td>
-							<td align="right"><fmt:formatDate pattern="yy-MM-dd HH:mm" value="${article.regdate }"/></td>
-						</tr>
-					</c:forEach>
-				</c:otherwise>
-			</c:choose>
-		</table>
-		<hr>
-		
-		<sec:authorize access="isAuthenticated()">
-			<sec:authentication property="principal" var="principal" />
-			<div style="float: right">
-				<a href="/articles/${category }/create" class="btn btn-primary">글쓰기</a>
+			<div id = "main_category"></div>
+			<hr>
+			<div>
+				<c:if test="${responseArticlesDto.category != 'notice'}">
+					<form class="form-search" method="get" action="/articles/${responseArticlesDto.category }">		
+						<div class="input-append" style="float:left" align="center">
+							<a id="sort-id" href="/articles/${responseArticlesDto.category }?sort=id&query=${responseArticlesDto.query}" style="font: italic bold;">최신순</a>
+							<a id="sort-likeCount" href="/articles/${responseArticlesDto.category }?sort=likeCount&query=${responseArticlesDto.query}">추천순</a>
+							<a id="sort-replyCount" href="/articles/${responseArticlesDto.category }?sort=replyCount&query=${responseArticlesDto.query}">댓글순</a>
+							<a id="sort-viewCount" href="/articles/${responseArticlesDto.category }?sort=viewCount&query=${responseArticlesDto.query}">조회순</a>
+						</div>
+						<div class="input-append" style="float:right">
+							<input type="hidden" id="sort" name="sort" value="${responseArticlesDto.sort }">
+							<input type="text" id="query" name="query" class="span2 search-query">
+							<button type="submit" class="btn">검색</button>
+						</div>
+					</form>
+				</c:if>
+				
 			</div>
-		</sec:authorize>
-		
-		<div>
-			<nav aria-label="..." style="text-align: center;">
-				<ul class="pagination" id="pagination">
-				</ul>
-			</nav>
+			<table class="table table-hover">
+	
+				<thead>
+					<tr>
+						<td class="col-md-7"><b>제목</b></td>
+						<td class="col-md-1" align="right"><b>추천</b></td>
+						<td class="col-md-1" align="right"><b>작성자</b></td>
+						<td class="col-md-1" align="right"><b>작성 날짜</b></td>
+					</tr>
+				</thead>
+				
+				<c:choose>
+					<c:when test="${empty responseArticlesDto.articles}">
+						<tr>
+							<td colspan="4" align="center">--- 등록된 글이 없습니다 ---</td>
+						</tr>
+					</c:when>
+					<c:otherwise>
+						<c:choose>
+							<c:when test="${responseArticlesDto.category != 'notice'}">
+								<c:forEach items="${responseArticlesDto.articles }" var="article">
+								<tr>
+									<td><a href="/article/${article.id }">${article.title } (${article.replyCount })</a></td>
+									<td align="right">${article.likeCount }</td>
+									<td align="right">${article.nickname }</td>
+									<td align="right"><fmt:formatDate pattern="yy-MM-dd HH:mm" value="${article.regdate }"/></td>
+								</tr>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+							<c:forEach items="${responseArticlesDto.articles }" var="article">
+								<tr>
+									<td><a href="/article/${article.id }">${article.title } (${article.replyCount })</a></td>
+									<td align="right">${article.likeCount }</td>
+									<td align="right">${article.nickname }</td>
+									<td align="right"><fmt:formatDate pattern="yy-MM-dd HH:mm" value="${article.regdate }"/></td>
+								</tr>
+							</c:forEach>
+						</c:otherwise>
+						</c:choose>
+					</c:otherwise>
+				</c:choose>
+			</table>
+			<hr>
+			<!-- admin일 경우 공지사항 내에서도 글쓰기 버튼이 보여야함. -->
+			<c:if test="${responseArticlesDto.category != 'notice'}">
+				<sec:authorize access="isAuthenticated()">
+					<sec:authentication property="principal" var="principal" />
+					<div style="float: right">
+						<a href="/articles/${category }/create" class="btn btn-primary">글쓰기</a>
+					</div>
+				</sec:authorize>
+			</c:if>
+			<div>
+				<nav aria-label="..." style="text-align: center;">
+					<ul class="pagination" id="pagination">
+					</ul>
+				</nav>
+			</div>
 		</div>
-
 	</div>
 </body>
 </html>

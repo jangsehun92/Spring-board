@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class ArticleResponseDto {
 	private int id;
+	private String category;
 	private String title;
 	private String nickname;
 	private int viewCount;
@@ -21,6 +22,14 @@ public class ArticleResponseDto {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public String getCategory() {
+		return category;
+	}
+	
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public String getTitle() {

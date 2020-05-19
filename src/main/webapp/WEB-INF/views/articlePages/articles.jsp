@@ -52,7 +52,6 @@ window.onload = function() {
 				
 			</div>
 			<table class="table table-hover">
-	
 				<thead>
 					<tr>
 						<td class="col-md-7"><b>제목</b></td>
@@ -61,7 +60,6 @@ window.onload = function() {
 						<td class="col-md-1" align="right"><b>작성 날짜</b></td>
 					</tr>
 				</thead>
-				
 				<c:choose>
 					<c:when test="${empty responseArticlesDto.articles}">
 						<tr>
@@ -69,41 +67,47 @@ window.onload = function() {
 						</tr>
 					</c:when>
 					<c:otherwise>
+						<c:forEach items="${responseArticlesDto.articles }" var="article">
 						<c:choose>
-							<c:when test="${responseArticlesDto.category != 'notice'}">
-								<c:forEach items="${responseArticlesDto.articles }" var="article">
+							<c:when test="${article.category  eq 'notice'}">
 								<tr>
-									<td><a href="/article/${article.id }">${article.title } (${article.replyCount })</a></td>
-									<td align="right">${article.likeCount }</td>
+									<td><a href="/article/${article.id }"><b><font color="black">${article.title }</font></b></a></td>
+									<td align="right"></td>
 									<td align="right">${article.nickname }</td>
 									<td align="right"><fmt:formatDate pattern="yy-MM-dd HH:mm" value="${article.regdate }"/></td>
 								</tr>
-								</c:forEach>
 							</c:when>
 							<c:otherwise>
-							<c:forEach items="${responseArticlesDto.articles }" var="article">
 								<tr>
 									<td><a href="/article/${article.id }">${article.title } (${article.replyCount })</a></td>
 									<td align="right">${article.likeCount }</td>
 									<td align="right">${article.nickname }</td>
 									<td align="right"><fmt:formatDate pattern="yy-MM-dd HH:mm" value="${article.regdate }"/></td>
 								</tr>
-							</c:forEach>
-						</c:otherwise>
+							</c:otherwise>
 						</c:choose>
+						</c:forEach>
 					</c:otherwise>
 				</c:choose>
 			</table>
 			<hr>
-			<!-- admin일 경우 공지사항 내에서도 글쓰기 버튼이 보여야함. -->
-			<c:if test="${responseArticlesDto.category != 'notice'}">
-				<sec:authorize access="isAuthenticated()">
-					<sec:authentication property="principal" var="principal" />
-					<div style="float: right">
-						<a href="/articles/${category }/create" class="btn btn-primary">글쓰기</a>
-					</div>
-				</sec:authorize>
-			</c:if>
+			<c:choose>
+					<c:when test="${responseArticlesDto.category != 'notice'}">
+						<sec:authorize access="isAuthenticated()">
+							<div style="float: right">
+								<a href="/articles/${category }/create" class="btn btn-primary">글쓰기</a>
+							</div>
+						</sec:authorize>
+					</c:when>
+					<c:otherwise>
+						<sec:authorize access="hasRole('ROLE_ADMIN')">
+							<div style="float: right">
+								<a href="/articles/${responseArticlesDto.category }/create" class="btn btn-primary">글쓰기</a>
+							</div>
+						</sec:authorize>
+					</c:otherwise>
+			</c:choose>
+				
 			<div>
 				<nav aria-label="..." style="text-align: center;">
 					<ul class="pagination" id="pagination">

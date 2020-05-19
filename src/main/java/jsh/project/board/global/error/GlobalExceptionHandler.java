@@ -64,7 +64,9 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.HANDLE_ACCESS_DENIED.getStatus()));
 	}
 
-	
+	/**
+	 * 서비스단에서 발생 할 수 있는 에러들을 처리한다.
+	 */
 	@ExceptionHandler(BusinessException.class)
 	protected ResponseEntity<ErrorResponse> handleBusinessException(final BusinessException e) {
 		log.error("handleEntityNotFoundException", e);

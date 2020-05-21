@@ -183,15 +183,18 @@ public class AccountController {
     @PreAuthorize("(#id == principal.id)")
     @GetMapping("/account/test/{id}")
     public String test(@PathVariable("id")int id) {
-    	
     	System.out.println(id);
-    	
     	return "login";
     }
     
     @GetMapping("/account/denied")
-    public String denied() {
+    public String accountDenied() {
     	return "commonPages/accessDenied";
+    }
+    
+    @GetMapping("/auth/denied")
+    public String authDenied() {
+    	return "commonPages/authDenied";
     }
     
 }

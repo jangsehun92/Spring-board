@@ -44,7 +44,7 @@ window.onload = function() {
 						</div>
 						<div class="input-append" style="float:right">
 							<input type="hidden" id="sort" name="sort" value="${responseArticlesDto.sort }">
-							<input type="text" id="query" name="query" class="span2 search-query">
+							<input type="text" id="query" name="query" class="span2 search-query" value="${responseArticlesDto.query }">
 							<button type="submit" class="btn">검색</button>
 						</div>
 					</form>
@@ -54,8 +54,9 @@ window.onload = function() {
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<td class="col-md-7"><b>제목</b></td>
+						<td class="col-md-6"><b>제목</b></td>
 						<td class="col-md-1" align="right"><b>추천</b></td>
+						<td class="col-md-1" align="right"><b>조회</b></td>
 						<td class="col-md-1" align="right"><b>작성자</b></td>
 						<td class="col-md-1" align="right"><b>작성 날짜</b></td>
 					</tr>
@@ -71,18 +72,19 @@ window.onload = function() {
 						<c:choose>
 							<c:when test="${article.category  eq 'notice'}">
 								<tr>
-									<td><a href="/article/${article.id }"><b><font color="black">${article.title }</font></b></a></td>
-									<td align="right"></td>
+									<td colspan="2"><a href="/article/${article.id }"><b><font color="black">[공지사항] ${article.title }</font></b></a></td>
+									<td align="right">${article.viewCount }</td>
 									<td align="right">${article.nickname }</td>
-									<td align="right"><fmt:formatDate pattern="yy-MM-dd HH:mm" value="${article.regdate }"/></td>
+									<td align="right"><small><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${article.regdate }"/></small></td>
 								</tr>
 							</c:when>
 							<c:otherwise>
 								<tr>
 									<td><a href="/article/${article.id }">${article.title } (${article.replyCount })</a></td>
 									<td align="right">${article.likeCount }</td>
+									<td align="right">${article.viewCount }</td>
 									<td align="right">${article.nickname }</td>
-									<td align="right"><fmt:formatDate pattern="yy-MM-dd HH:mm" value="${article.regdate }"/></td>
+									<td align="right"><small><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${article.regdate }"/></small></td>
 								</tr>
 							</c:otherwise>
 						</c:choose>

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import jsh.project.board.global.error.exception.BusinessException;
+import jsh.project.board.global.error.exception.EmailException;
 import jsh.project.board.global.error.exception.ErrorCode;
 
 @ControllerAdvice
@@ -74,7 +75,18 @@ public class GlobalExceptionHandler {
 		final ErrorResponse response = new ErrorResponse(errorCode);
 		return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
 	}
-
+	
+	/**
+	 * 이메일 인증에서 발생 할 수 있는 에러를 처리한다.
+	 */
+	@ExceptionHandler(EmailException.class)
+	protected String handleBusinessException(final EmailException e) {
+		log.error("handleEntityNotFoundException", e);
+//		final ErrorCode errorCode = e.getErrorCode();
+//		final ErrorResponse response = new ErrorResponse(errorCode);
+		return "redirect:/auth/denied";
+	}
+	
 	
 	@ExceptionHandler(Exception.class)
 	protected ResponseEntity<ErrorResponse> handleException(HttpServletRequest request, Exception e) {

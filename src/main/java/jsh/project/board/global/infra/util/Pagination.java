@@ -14,17 +14,19 @@ public class Pagination {
 	//DB 검색 조건
 	private int startCount; 
 	private int endCount;	
+	private int noticeCount;
 	
 	private int startPage; //하단 페이지네이션의 시작 숫자 
 	private int endPage; //하단 페이지네이션의 마지막 숫자
 	
 	public Pagination(int totalCount, int page, int noticeCount) {
-		this.totalCount = totalCount;
-		if(page == 0) {
-			page = 1;
+		if(totalCount == 0) {
+			totalCount = 1;
 		}
+		this.totalCount = totalCount;
 		this.page = page;
-		this.countList -= noticeCount;
+		this.noticeCount = noticeCount;
+		this.countList -= this.noticeCount;
 		init();
 	}
 	
@@ -115,12 +117,10 @@ public class Pagination {
 		return endCount = page * countList; 
 	}
 	
-	public Map<String, Integer> getScope(){
+	public Map<String, Integer> getNoticeScope(){
 		Map<String, Integer> resultMap = new HashMap<String, Integer>();
-		this.startCount = (page - 1) * countList + 1;
-		this.endCount = page * countList; 
-		resultMap.put("startCount", startCount);
-		resultMap.put("endCount", endCount);
+		resultMap.put("startCount", 1);
+		resultMap.put("endCount", noticeCount);
 		return resultMap;
 	}
 }

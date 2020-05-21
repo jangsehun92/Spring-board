@@ -12,7 +12,7 @@ public class ResponseArticlesDto {
 	private String sort;
 	
 	public ResponseArticlesDto() {
-		this.sort = "regdate";
+		
 	}
 	
 	public List<ArticleResponseDto> getArticles() {

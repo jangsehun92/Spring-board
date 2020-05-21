@@ -1,6 +1,7 @@
 package jsh.project.board.article.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -22,8 +23,8 @@ public class ArticleDao {
 		return sqlSession.selectOne("boardMapper.noticeTotalCount");
 	}
 	
-	public List<ArticleResponseDto> selectNoticeArticles(){
-		return sqlSession.selectList("boardMapper.noticeArticles");
+	public List<ArticleResponseDto> selectNoticeArticles(Map<String, Integer> paramMap){
+		return sqlSession.selectList("boardMapper.noticeArticles", paramMap);
 	}
 	
 	public int getTotalCount(RequestArticlesDto dto) {
@@ -32,10 +33,6 @@ public class ArticleDao {
 	
 	public List<ArticleResponseDto> selectArticles(RequestArticlesDto dto){
 		return sqlSession.selectList("boardMapper.articles", dto);
-	}
-	
-	public List<Article> selectAccountArticles(int id){
-		return sqlSession.selectList("boardMapper.accountArticleList");
 	}
 	
 	public Article selectArticle(int id) {

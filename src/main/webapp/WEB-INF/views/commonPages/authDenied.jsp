@@ -5,11 +5,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>404</title>
+<title>authDenied</title>
 </head>
 <body>
 	<div class="container" style="margin-top: 80px; align-items: center;">
-		<h1 style="color: red;">해당 페이지를 찾을 수 없습니다.</h1> 
+		<h1 style="color: red;">잘못된 인증 요청입니다.</h1> 
 	</div>
 </body>
 </html>

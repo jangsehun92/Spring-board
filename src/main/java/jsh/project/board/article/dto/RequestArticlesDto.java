@@ -11,6 +11,8 @@ public class RequestArticlesDto {
 	
 	public RequestArticlesDto() {
 		this.page = 1;
+		this.category = "";
+		this.query = "";
 		this.sort = "id";
 	}
 
@@ -43,7 +45,7 @@ public class RequestArticlesDto {
 	}
 
 	public void setQuery(String query) {
-		this.query = query;
+		this.query = query.trim();
 	}
 
 	public String getSort() {

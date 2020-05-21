@@ -23,7 +23,7 @@ import jsh.project.board.article.service.ArticleService;
 @Controller
 public class ArticleController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
+	private static final Logger log = LoggerFactory.getLogger(ArticleController.class);
 	
 	private ArticleService articleService;
 	
@@ -34,7 +34,7 @@ public class ArticleController {
 	// 공지사항 Aritcles
 	@GetMapping("/")
 	public String articleList(RequestArticlesDto dto, Model model){
-		logger.info("GET /articles/"+dto.getPage());
+		log.info("GET /articles/"+dto.getPage());
 		dto.setCategory("notice");
 		ResponseArticlesDto responseArticlesDto = articleService.getArticles(dto);
 		model.addAttribute("responseArticlesDto", responseArticlesDto);
@@ -44,7 +44,7 @@ public class ArticleController {
 	// category별 Aritcles 
 	@GetMapping("/articles/{category}")
 	public String articleListByCategory(@PathVariable String category, RequestArticlesDto dto, Model model){
-		logger.info("GET /articles/"+category+"?page="+dto.getPage());
+		log.info("GET /articles/"+category+"?page="+dto.getPage());
 		dto.setCategory(category);
 		ResponseArticlesDto responseArticlesDto = articleService.getArticles(dto);
 		model.addAttribute("responseArticlesDto", responseArticlesDto);
@@ -54,10 +54,10 @@ public class ArticleController {
 	// 해당 유저의 Aritcles
 	@GetMapping("/articles/account/{id}")
 	public @ResponseBody ResponseEntity<ResponseArticlesDto> articleListByAccount(@PathVariable int id, RequestArticlesDto dto){
-		logger.info("GET /articles/account/"+id+"?page="+dto.getPage());
+		log.info("GET /articles/account/"+id+"?page="+dto.getPage());
 		dto.setAccountId(id);
-		ResponseArticlesDto responseArticlesDto = articleService.getArticles(dto);
-		return new ResponseEntity<ResponseArticlesDto>(responseArticlesDto, HttpStatus.OK);
+		ResponseArticlesDto responseArticlesDto = articleService.getAccountArticles(dto);
+		return new ResponseEntity<>(responseArticlesDto, HttpStatus.OK);
 	}
 	
 	// 단일 Article 보기 
@@ -82,22 +82,22 @@ public class ArticleController {
 	// Article 생성
 	@PostMapping("/article")
 	public ResponseEntity<HttpStatus> create(@RequestBody ArticleCreateDto dto){
-		logger.info("dto.getDate : "+dto.getTitle());
-		logger.info("POST /article");
+		log.info("dto.getDate : "+dto.getTitle());
+		log.info("POST /article");
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
 	// Article 수정
 	@PatchMapping("/article/{id}")
 	public ResponseEntity<HttpStatus> create(@PathVariable("id") int id) {
-		logger.info("PATCH /article/" + id);
+		log.info("PATCH /article/" + id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 
 	// Article 삭제
 	@DeleteMapping("/article/{id}")
 	public ResponseEntity<HttpStatus> delete(@PathVariable("id") int id) {
-		logger.info("DELETE /article/" + id);
+		log.info("DELETE /article/" + id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 

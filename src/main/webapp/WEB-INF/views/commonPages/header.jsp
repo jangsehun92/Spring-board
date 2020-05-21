@@ -35,7 +35,6 @@ $(function(){
 });
 </script>
 <body>
-<!--  <input type="hidden" name="category" id="category" value="${category }">-->
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
@@ -47,14 +46,13 @@ $(function(){
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<li id="community"><a href="/articles/community">커뮤니티</a></li>
-					<li id="questions"><a href="/articles/questions">질문</a></li>
+					<li id="questions" ><a href="/articles/questions">질문</a></li>
 					<li><hr></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<sec:authorize access="isAuthenticated()">
 						<sec:authentication property="principal" var="principal" />
 						<li id="info"><a href="/account/info/${principal.id}">${principal.nickname }</a></li>
-						<!-- <li id="logout"><a href="/logout">로그아웃</a></li> -->
 						<li><a href="javascript:;" onclick="document.getElementById('logout-form').submit();">로그아웃</a></li>
 						<form method="POST" id="logout-form" action="/logout">
 						   <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>

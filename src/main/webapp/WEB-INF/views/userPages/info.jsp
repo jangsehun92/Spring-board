@@ -19,6 +19,14 @@ window.onload = function() {
 		type:"get",
 		success:function(data){
 			$("#nickname").html(data.nickname);
+			if("${principal.id }" == "${id}"){
+				$("#account_btn").append(
+					"<div style='float: right'>"+
+						"<a href='/account/edit' class='btn btn-primary'>정보 수정</a>"+
+						"<a href='/account/passwordChange' class='btn btn-primary'>비밀번호 변경</a>"+
+					"</div>"
+				);
+			}
 			accountArticleList("${id }", 1);
 		},
 		error:function(request,status,error){
@@ -161,7 +169,11 @@ function uxin_timestamp(time){
 					</div>
 				</div>
 			</div>
-			<div class="panel-body" style="text-align: left;">
+			<div class="panel-body" id="panel-body"style="text-align: left;">
+				<div id="account_btn">
+				
+				
+				</div>
 				<div id="main">
 					
 				</div>

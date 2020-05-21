@@ -129,23 +129,6 @@
 					LEFT JOIN reply_table ON article_table.id = reply_table.article_id 
 					LEFT JOIN article_like_table ON article_table.id = article_like_table.article_id
 				]]>
-					<!-- <if test='query != null'>
-					WHERE 
-						article_table.title LIKE '%'||#{query}||'%' AND
-						article_table.category = #{category} AND
-						article_table.importance = 0
-					</if>
-					<if test='query == null'>
-					WHERE 
-					  	article_table.category = #{category} AND
-					  	article_table.importance = 0
-					</if>
-					<if test='accountId != 0'>
-					WHERE 
-					  	article_table.account_id = #{accountId} AND
-					  	article_table.category != 'notice'
-					</if> -->
-					
 				<choose>
 					<when test="query != null and query != ''">
 					WHERE 

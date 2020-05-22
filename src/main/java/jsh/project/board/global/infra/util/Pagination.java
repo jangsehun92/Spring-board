@@ -30,6 +30,15 @@ public class Pagination {
 		init();
 	}
 	
+	public Pagination(int totalCount, int page) {
+		if(totalCount == 0) {
+			totalCount = 1;
+		}
+		this.totalCount = totalCount;
+		this.page = page;
+		init();
+	}
+	
 	public int getCountList() {
 		return countList;
 	}

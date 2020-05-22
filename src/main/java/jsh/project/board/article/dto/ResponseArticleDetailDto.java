@@ -111,11 +111,4 @@ public class ResponseArticleDetailDto {
 		}
 	}
 	
-	public ArticleViewCountDto toViewCountDto() {
-		ArticleViewCountDto dto = new ArticleViewCountDto();
-		dto.setId(this.id);
-		dto.setViewCount((this.viewCount + 1));
-		return dto;
-	}
-
 }

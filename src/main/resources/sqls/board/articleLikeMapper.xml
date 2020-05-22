@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="articleLikeMapper">	
+	
+	<select id="likeCheck" parameterType="RequestLikeDto" resultType="int">
+		SELECT 
+			count(id)
+		FROM 	
+			article_like_table
+		WHERE 
+			article_id = #{articleId} AND 
+			account_id = #{accountId}
+	</select>
+	
+	<insert id="like" parameterType="RequestLikeDto" >
+		INSERT 
+		INTO 
+			article_like_table 
+		VALUES(
+			article_like_seq.nextval,
+			#{articleId},
+			#{accountId},
+			sysdate
+		)
+	</insert>
+	
+	<delete id="likeCancel" parameterType="RequestLikeDto">
+		DELETE 
+		FROM 
+			article_like_table 
+		WHERE 
+			article_id = #{articleId} AND 
+			account_id = #{accountId}
+	</delete>
+	
+	
+	
+</mapper>

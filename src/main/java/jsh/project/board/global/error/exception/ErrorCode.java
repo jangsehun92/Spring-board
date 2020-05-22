@@ -18,9 +18,12 @@ public enum ErrorCode {
 	ACCOUNT_LOCKED(400, "A006", " 계정이 잠겼습니다."),
 	PASSWORD_NOT_MATCH(400, "A007", " 기존 비밀번호가 맞지 않습니다."),
 	ACCOUNT_BAD_REQUEST(400, "A008", " 계정 정보가 올바르지 않습니다."),
-	PASSWORD_CHECK_FAILED(400, "A009", " 비밀번호가 서로 다릅니다.");
+	PASSWORD_CHECK_FAILED(400, "A009", " 비밀번호가 서로 다릅니다."),
 	
 	//article
+	NOT_LOGIN(400, "B001", " 로그인이 필요한 서비스입니다.");
+	
+	
 	private int status;
 	private String code;
 	private String message;

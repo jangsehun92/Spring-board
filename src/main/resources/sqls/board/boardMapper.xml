@@ -27,11 +27,11 @@
 		</choose>
 	</select>
 	
-	<update id="viewCount" parameterType="ArticleViewCountDto">
+	<!-- <update id="viewCount" parameterType="int">
 		UPDATE
 			article_table
 		SET
-			view_count = #{viewCount}
+			view_count = view_count + 1
 		WHERE
 			id = #{id}
 	</update>
@@ -56,7 +56,7 @@
 			article_table.id  = #{id}
 		GROUP BY 
 			article_table.id, article_table.account_id, article_table.category, account_table.nickname, article_table.title, article_table.content, article_table.view_count, article_table.regdate
-	</select>
+	</select> -->
 	
 	<select id="noticeTotalCount" resultType="int">
 		SELECT

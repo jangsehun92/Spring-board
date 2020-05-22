@@ -3,7 +3,7 @@
 
 <configuration >
 	
-  <!-- 패키지.domain클래스 까지 입력 -->
+  <!-- 패키지.클래스 까지 입력 -->
   <typeAliases>
   	<!-- Account 관련  -->
   	<typeAlias type="jsh.project.board.account.dto.Account" alias="Account"/>
@@ -24,6 +24,13 @@
   	<typeAlias type="jsh.project.board.article.dto.RequestArticlesDto" alias="RequestArticlesDto"/>
   	<typeAlias type="jsh.project.board.article.dto.ArticleViewCountDto" alias="ArticleViewCountDto"/>
   	
+  	<!-- Article Like 관련 -->
+  	<typeAlias type="jsh.project.board.article.dto.like.RequestLikeDto" alias="RequestLikeDto"/>
+  	
+  	<!-- Article Reply 관련 -->
+  	<typeAlias type="jsh.project.board.reply.dto.Reply" alias="Reply"/>
+  	<typeAlias type="jsh.project.board.reply.dto.ResponseReplyDto" alias="ResponseReplyDto"/>
+  	
   </typeAliases>
   <typeHandlers>
   	<typeHandler handler="jsh.project.board.global.handler.CustomDateHandler"/>
@@ -33,6 +40,9 @@
   <mappers>
     <!-- 게시판 관련 -->
   	<mapper resource="/sqls/board/boardMapper.xml"/>
+  	<mapper resource="/sqls/board/articleMapper.xml"/>
+  	<mapper resource="/sqls/board/articleLikeMapper.xml"/>
+  	<mapper resource="/sqls/board/replyMapper.xml"/>
   	<mapper resource="/sqls/account/accountMapper.xml"/>
   	<mapper resource="/sqls/account/authMapper.xml"/>
   </mappers>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="replyMapper">
+
+	<select id="replys" parameterType="int" resultType="ResponseReplyDto">
+		SELECT 
+			reply_table.id,
+			reply_table.article_id AS articleId,
+			reply_table.account_id AS accountId,
+			account_table.nickname,
+			reply_table.content,
+			reply_table.regdate
+		FROM
+			reply_table JOIN account_table ON reply_table.account_id = account_table.id
+		WHERE 
+			reply_table.article_id = #{articleId}
+	</select>
+	
+	<insert id="reply" parameterType="Reply">
+		INSERT 
+		INTO 
+			reply_table 
+		VALUES(
+			reply_seq.nextval,
+			#{articleId},
+			#{accountId},
+			#{content},
+			sysdate
+		)
+	</insert>
+	
+</mapper>

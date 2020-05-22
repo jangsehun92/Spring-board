@@ -13,6 +13,7 @@ import jsh.project.board.article.dto.RequestArticleDetailDto;
 import jsh.project.board.article.dto.RequestArticlesDto;
 import jsh.project.board.article.dto.ResponseArticleDetailDto;
 import jsh.project.board.article.dto.ResponseArticlesDto;
+import jsh.project.board.article.dto.like.RequestLikeDto;
 import jsh.project.board.global.infra.util.Pagination;
 
 @Service
@@ -35,7 +36,7 @@ public class ArticleService {
 		articles.addAll(articleDao.selectNoticeArticles(pagination.getNoticeScope()));
 		articles.addAll(articleDao.selectArticles(dto));
 		
-		ResponseArticlesDto responseArticles = dto.toResponseDto();
+		ResponseArticlesDto responseArticles = dto.getResponseDto();
 		responseArticles.setArticles(articles);
 		responseArticles.setPagination(pagination);
 		return responseArticles;
@@ -43,21 +44,29 @@ public class ArticleService {
 	
 	public ResponseArticlesDto getAccountArticles(RequestArticlesDto dto){
 		log.info(dto.toString());
-		Pagination pagination = new Pagination(articleDao.getTotalCount(dto), dto.getPage(), 0);
+		Pagination pagination = new Pagination(articleDao.getTotalCount(dto), dto.getPage());
 		dto.setStartCount(pagination.getStartCount());
 		dto.setEndCount(pagination.getEndCount());
 		
-		ResponseArticlesDto responseArticles = dto.toResponseDto();
+		ResponseArticlesDto responseArticles = dto.getResponseDto();
 		responseArticles.setArticles(articleDao.selectArticles(dto));
 		responseArticles.setPagination(pagination);
 		return responseArticles;
-	} 
+	}
 	
 	public ResponseArticleDetailDto getArticle(RequestArticleDetailDto dto) {
+		articleDao.updateViewCount(dto.getId());
 		ResponseArticleDetailDto responseDto = articleDao.selectArticle(dto.getId());
-		articleDao.updateViewCount(responseDto.toViewCountDto()); //조회수 먼저 올려주자
-		responseDto.setLikeCheck(0);//like_table에서 조회
+		responseDto.setLikeCheck(articleDao.articleLikeCheck(dto.getLikeDto()));
 		return responseDto;
+	}
+	
+	public void like(RequestLikeDto dto) {
+		if(articleDao.articleLikeCheck(dto)==0) {
+			articleDao.insertLike(dto);
+		}else {
+			articleDao.deleteLike(dto);
+		}
 	}
 	
 }

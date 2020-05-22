@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+
 function replyCreate(){
 	var content = $("#replyContent").val().replace(/\s|/gi,'');
 	
@@ -28,7 +29,7 @@ function replyCreate(){
 	}
 	
 	var replyCreateRequest = {
-			articleId : "${resultMap.article.id}",
+			articleId : "${responseDto.id}",
 			content : $("#replyContent").val(),
 	}
 	
@@ -51,9 +52,8 @@ function replyCreate(){
 }
 
 function replyList(){
-	
 	$.ajax({
-		url:"/reply/${resultMap.article.id}",
+		url:"/reply/${responsDto.id}",
 		type:"GET",
 		contentType : "application/json; charset=UTF-8",
 		dataType: "JSON",
@@ -168,11 +168,12 @@ function replyUpdate(id){
 	});
 	return false;
 }
+
 function replyDelete(id){
 	$.ajax({
 		url:"/reply/"+id,
 		type:"delete",
-		success:function(entity){
+		success:function(data){
 			alert("댓글이 삭제되었습니다.");
 			replyList();
 		},
@@ -182,6 +183,7 @@ function replyDelete(id){
 	});
 	return false;
 }
+
 function uxin_timestamp(time){
 	var date = new Date(time);
 	var year = date.getFullYear();
@@ -192,6 +194,7 @@ function uxin_timestamp(time){
 	//var second = "0" + date.getSeconds();
 	return year + "-" + month.substr(-2) + "-" + day.substr(-2) + " " + hour.substr(-2) + ":" + minute.substr(-2);
 }
+
 function listConfirm(){
 	if(confirm("새로고침 하시겠습니까?")){
 		replyList();
@@ -199,6 +202,7 @@ function listConfirm(){
 		return;
 	}
 }
+
 function deleteConfirm(id){
 	if(confirm("삭제하시겠습니까?")){
 		replyDelete(id);
@@ -206,31 +210,33 @@ function deleteConfirm(id){
 		return;
 	}
 }
+
 //추천
-//눌렀다면 버튼 바꾸고, 다시 누르면 추천 취소
 function like(accountId){
-	var accountId = accountId;
-	var id = ${responseDto.id};
-	
 	$.ajax({
-		url:"/article/like/"+id,
+		url:"/article/like/${responseDto.id}",
 		type:"post",
 		success:function(data){
 			var likeCount = Number($("#likeCount").text());
-			if(data=="DELETE"){
-				if(likeCount != 0){
-					$("#likeCount").html(Number(likeCount)-1);	
-					$("#like").val("추천 하기");
-					alert("추천을 취소하였습니다.");
-				}
+			if($("#likeCheck").val() == "true"){
+				alert("추천을 취소하였습니다.");
+				$("#likeCount").html(Number(likeCount)-1);
+				$("#likeCheck").val(false);
+				$("#like").val("추천 하기");
 			}else{
-				$("#likeCount").html(Number(likeCount)+1);
-				$("#like").val("추천 취소");
 				alert("추천하였습니다.");
+				$("#likeCount").html(Number(likeCount)+1);
+				$("#likeCheck").val(true);
+				$("#like").val("추천 취소");
 			}
 		},
 		error:function(request,status,error){
-			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			jsonValue = jQuery.parseJSON(request.responseText);
+			code = jsonValue.code;
+			$(".error").empty();
+			if(code == 'B001'){
+				alert(jsonValue.message);
+			}
 		}
 	});
 }
@@ -246,6 +252,7 @@ function login(){
 <body>
 <div class="container" style="margin-top: 50px">
 	<input type="hidden" id ="category" value="${responseDto.category }">
+	<input type="hidden" id ="likeCheck" value="${responseDto.likeCheck }">
 	<div class="header">
 		<h2>글보기</h2>
 		<hr>

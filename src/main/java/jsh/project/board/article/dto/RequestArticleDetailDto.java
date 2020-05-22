@@ -1,5 +1,7 @@
 package jsh.project.board.article.dto;
 
+import jsh.project.board.article.dto.like.RequestLikeDto;
+
 public class RequestArticleDetailDto {
 	private int id;
 	private int accountId;
@@ -22,6 +24,13 @@ public class RequestArticleDetailDto {
 
 	public void setAccountId(int accountId) {
 		this.accountId = accountId;
+	}
+	
+	public RequestLikeDto getLikeDto() {
+		RequestLikeDto dto = new RequestLikeDto();
+		dto.setArticleId(this.id);
+		dto.setAccountId(this.accountId);
+		return dto;
 	}
 	
 }

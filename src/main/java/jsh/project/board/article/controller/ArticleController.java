@@ -22,6 +22,8 @@ import jsh.project.board.article.dto.RequestArticleCreateDto;
 import jsh.project.board.article.dto.RequestArticleDetailDto;
 import jsh.project.board.article.dto.RequestArticlesDto;
 import jsh.project.board.article.dto.ResponseArticlesDto;
+import jsh.project.board.article.dto.like.RequestLikeDto;
+import jsh.project.board.article.exception.NonLoginException;
 import jsh.project.board.article.service.ArticleService;
 
 @Controller
@@ -69,12 +71,23 @@ public class ArticleController {
 	public String article(@PathVariable("id") int id, Model model, Principal principal, RequestArticleDetailDto dto) {
 		if(principal != null) {
 			Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			log.info("/article/"+id+" 유저 정보 : "+account.getId());
 			dto.setAccountId(account.getId());
 		}
 		dto.setId(id);
 		model.addAttribute("responseDto",articleService.getArticle(dto));
 		return "articlePages/articleDetail";
+	}
+	
+	@PostMapping("/article/like/{id}")
+	public @ResponseBody ResponseEntity<HttpStatus> like(@PathVariable("id")int id, Principal principal, RequestLikeDto dto){
+		if(principal == null) {
+			throw new NonLoginException();
+		}
+		Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		dto.setArticleId(id);
+		dto.setAccountId(account.getId());
+		articleService.like(dto);
+		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
 	// 글쓰기 페이지 요청

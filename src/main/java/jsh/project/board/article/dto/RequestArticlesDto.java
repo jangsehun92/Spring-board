@@ -72,7 +72,7 @@ public class RequestArticlesDto {
 		this.endCount = endCount;
 	}
 	
-	public ResponseArticlesDto toResponseDto() {
+	public ResponseArticlesDto getResponseDto() {
 		ResponseArticlesDto dto = new ResponseArticlesDto();
 		dto.setCategory(this.category);
 		dto.setQuery(this.query);

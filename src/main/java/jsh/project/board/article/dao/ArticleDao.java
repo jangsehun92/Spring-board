@@ -7,9 +7,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import jsh.project.board.article.dto.ArticleResponseDto;
-import jsh.project.board.article.dto.ArticleViewCountDto;
 import jsh.project.board.article.dto.RequestArticlesDto;
 import jsh.project.board.article.dto.ResponseArticleDetailDto;
+import jsh.project.board.article.dto.like.RequestLikeDto;
 
 @Repository
 public class ArticleDao {
@@ -36,12 +36,28 @@ public class ArticleDao {
 		return sqlSession.selectList("boardMapper.articles", dto);
 	}
 	
-	public ResponseArticleDetailDto selectArticle(int id) {
-		return sqlSession.selectOne("boardMapper.article", id);
+	public void updateViewCount(int id) {
+		sqlSession.update("articleMapper.viewCount", id);
 	}
 	
-	public void updateViewCount(ArticleViewCountDto dto) {
-		sqlSession.update("viewCount", dto);
+	public ResponseArticleDetailDto selectArticle(int id) {
+		return sqlSession.selectOne("articleMapper.article", id);
 	}
+	
+	public int articleLikeCheck(RequestLikeDto dto) {
+		return sqlSession.selectOne("articleLikeMapper.likeCheck", dto);
+	}
+	
+	public void insertLike(RequestLikeDto dto) {
+		sqlSession.insert("articleLikeMapper.like", dto);
+	}
+	
+	public void deleteLike(RequestLikeDto dto) {
+		sqlSession.insert("articleLikeMapper.likeCancel", dto);
+	}
+	
+	
+	
+	
 	
 }

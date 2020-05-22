@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="articleMapper">	
+
+	
+	<update id="viewCount" parameterType="int">
+		UPDATE
+			article_table
+		SET
+			view_count = view_count + 1
+		WHERE
+			id = #{id}
+	</update>
+
+	<select id="article" resultType="ResponseArticleDetailDto">
+		SELECT 
+			article_table.id,
+			article_table.account_id AS accountId,
+			article_table.category,
+			account_table.nickname,
+			article_table.title,
+			article_table.content,
+			article_table.view_count AS viewCount,
+			count(reply_table.id) AS replyCount,
+			count(article_like_table.id) AS likeCount,
+			article_table.regdate
+		FROM 
+			article_table JOIN account_table ON article_table.account_id = account_table.id 
+					 LEFT JOIN reply_table ON article_table.id = reply_table.article_id 
+					 LEFT JOIN article_like_table ON article_table.id = article_like_table.article_id
+		WHERE 
+			article_table.id  = #{id}
+		GROUP BY 
+			article_table.id, article_table.account_id, article_table.category, account_table.nickname, article_table.title, article_table.content, article_table.view_count, article_table.regdate
+	</select>
+	
+</mapper>

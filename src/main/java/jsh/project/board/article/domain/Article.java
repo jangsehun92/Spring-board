@@ -1,4 +1,4 @@
-package jsh.project.board.article.dto;
+package jsh.project.board.article.domain;
 
 import java.sql.Date;
 
@@ -6,6 +6,8 @@ public class Article {
 	
 	private int id;
 	private int accountId;
+	private String category;
+	private int importance;
 	private String title;
 	private String content;
 	private Date regdate;
@@ -14,14 +16,6 @@ public class Article {
 		
 	}
 	
-	public Article(int id, int accountId, String title, String content, Date regdate) {
-		this.id = id;
-		this.accountId = accountId;
-		this.title = title;
-		this.content = content;
-		this.regdate = regdate;
-	}
-
 	public int getId() {
 		return id;
 	}
@@ -36,6 +30,22 @@ public class Article {
 
 	public void setAccountId(int accountId) {
 		this.accountId = accountId;
+	}
+	
+	public String getCategory() {
+		return category;
+	}
+	
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	
+	public int getImportance() {
+		return importance;
+	}
+	
+	public void setImportance(int importance) {
+		this.importance = importance;
 	}
 
 	public String getTitle() {

@@ -1,9 +1,12 @@
 package jsh.project.board.article.controller;
 
+import java.security.Principal;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,8 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import jsh.project.board.article.dto.Article;
-import jsh.project.board.article.dto.ArticleCreateDto;
+import jsh.project.board.account.dto.Account;
+import jsh.project.board.article.dto.RequestArticleCreateDto;
 import jsh.project.board.article.dto.RequestArticlesDto;
 import jsh.project.board.article.dto.ResponseArticlesDto;
 import jsh.project.board.article.service.ArticleService;
@@ -62,9 +65,13 @@ public class ArticleController {
 	
 	// 단일 Article 보기 
 	@GetMapping("/article/{id}")
-	public ResponseEntity<Article> article(@PathVariable("id") int id) {
-		articleService.getArticle(id);
-		return new ResponseEntity<>( HttpStatus.OK);
+	public String article(@PathVariable("id") int id, Model model, Principal principal) {
+		if(principal != null) {
+			Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			log.info("/article/"+id+" 유저 정보 : "+account.getId());
+		}
+		model.addAttribute("responseDto",articleService.getArticle(id));
+		return "articlePages/articleDetail";
 	}
 	
 	// 글쓰기 페이지 요청
@@ -81,7 +88,7 @@ public class ArticleController {
 	
 	// Article 생성
 	@PostMapping("/article")
-	public ResponseEntity<HttpStatus> create(@RequestBody ArticleCreateDto dto){
+	public ResponseEntity<HttpStatus> create(@RequestBody RequestArticleCreateDto dto){
 		log.info("dto.getDate : "+dto.getTitle());
 		log.info("POST /article");
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);

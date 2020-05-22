@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import jsh.project.board.article.dao.ArticleDao;
-import jsh.project.board.article.dto.Article;
 import jsh.project.board.article.dto.ArticleResponseDto;
 import jsh.project.board.article.dto.RequestArticlesDto;
+import jsh.project.board.article.dto.ResponseArticleDetialDto;
 import jsh.project.board.article.dto.ResponseArticlesDto;
 import jsh.project.board.global.infra.util.Pagination;
 
@@ -52,7 +52,7 @@ public class ArticleService {
 		return responseArticles;
 	} 
 	
-	public Article getArticle(int id) {
+	public ResponseArticleDetialDto getArticle(int id) {
 		return articleDao.selectArticle(id);
 	}
 	

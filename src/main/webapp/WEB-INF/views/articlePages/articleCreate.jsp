@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>board_insert</title>
+<title>articleCreate</title>
 </head>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.5.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/ajax_header.js"></script>
@@ -41,7 +41,7 @@ function resize(obj){
 }
 function check_form(){
 	//replace 로 공백 제거
-	var inputForm_title = $("#title").val().replace(/\s|/gi,'');
+	/* var inputForm_title = $("#title").val().replace(/\s|/gi,'');
 	var inputForm_content = $("#content").val().replace(/\s|/gi,'');
 	
 	if(inputForm_title==""){
@@ -63,26 +63,33 @@ function check_form(){
 		$("#content").val("");
 		$("#content").focus();
 		return false;
-	}
+	} */
 	
 	//var articleCreateRequest = $("form[name=articleCreateForm]").serializeObject();
 	var articleCreateDto = {
 			title : $("#title").val(),
 			content : $("#content").val(),
-			writer : $("#writer").val()
 		}
 	
 	$.ajax({
 		url:"/article",
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
-		dataType : "text",
 		data: JSON.stringify(articleCreateDto),
 		success:function(data){
-			window.location.href = "/";
+			alert(data);
+			location.href = "/article/"+data;
 		},
 		error:function(request,status,error){
-			alert("글쓰기 실패");
+			jsonValue = jQuery.parseJSON(request.responseText);
+			code = jsonValue.code;
+			if(code == 'C003'){
+				$(".error").empty();
+				for(var i in jsonValue.errors){
+					$("#user_nickname").focus();
+					$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
+				}
+			}
 		}
 	});
 }
@@ -94,12 +101,13 @@ function check_form(){
 		<h2>글쓰기</h2>
 		<form name = "articleCreateForm" id = "articleCreateForm">
 			<table class="table">
-				
 				<tr>
 					<td><input id="title" name="title" type="text" class="form-control" placeholder="제목" maxlength="50"></td>
+					<td><small id="error_title" class="error"></small></td>
 				</tr>
 				<tr>
 					<td><textarea id="content" name="content" class="form-control" placeholder="내용" onkeydown="resize(this)"></textarea>
+					<td><small id="error_content" class="error"></small></td>
 				</tr>
 			</table>
 		</form>

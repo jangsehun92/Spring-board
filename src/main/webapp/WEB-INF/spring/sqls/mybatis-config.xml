@@ -18,8 +18,9 @@
   	<typeAlias type="jsh.project.board.account.dto.AuthDto" alias="AuthDto"/>
   	
   	<!-- Article 관련 -->
-  	<typeAlias type="jsh.project.board.article.dto.Article" alias="Article"/>
+  	<typeAlias type="jsh.project.board.article.domain.Article" alias="Article"/>
   	<typeAlias type="jsh.project.board.article.dto.ArticleResponseDto" alias="ArticleResponseDto"/>
+  	<typeAlias type="jsh.project.board.article.dto.ResponseArticleDetialDto" alias="ResponseArticleDetialDto"/>
   	<typeAlias type="jsh.project.board.article.dto.RequestArticlesDto" alias="RequestArticlesDto"/>
   	
   </typeAliases>

@@ -6,9 +6,9 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import jsh.project.board.article.dto.Article;
 import jsh.project.board.article.dto.ArticleResponseDto;
 import jsh.project.board.article.dto.RequestArticlesDto;
+import jsh.project.board.article.dto.ResponseArticleDetialDto;
 
 @Repository
 public class ArticleDao {
@@ -35,7 +35,7 @@ public class ArticleDao {
 		return sqlSession.selectList("boardMapper.articles", dto);
 	}
 	
-	public Article selectArticle(int id) {
+	public ResponseArticleDetialDto selectArticle(int id) {
 		return sqlSession.selectOne("boardMapper.article", id);
 	}
 	

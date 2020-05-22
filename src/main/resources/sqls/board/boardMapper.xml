@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="boardMapper">	
-	<resultMap type="ArticleResponseDto" id="articleResponseResultMap">
-		<result property="id" column="id"/>
-		<result property="title" column="title"/>
-		<result property="nickname" column="nickname"/>
-		<result property="viewCount" column="view_count"/>
-		<result property="replyCount" column="reply_count"/>
-		<result property="likeCount" column="like_count"/>
-		<result property="regdate" column="regdate"/>
-	</resultMap>
 	
 	<select id="totalCount" parameterType="RequestArticlesDto" resultType="int">
 		SELECT
@@ -36,13 +27,26 @@
 		</choose>
 	</select>
 
-	<select id="article" resultType="Article">
+	<select id="article" resultType="ResponseArticleDetialDto">
 		SELECT 
-			*
+			article_table.id,
+			article_table.account_id AS accountId,
+			article_table.category,
+			account_table.nickname,
+			article_table.title,
+			article_table.content,
+			article_table.view_count AS viewCount,
+			count(reply_table.id) AS replyCount,
+			count(article_like_table.id) AS likeCount,
+			article_table.regdate
 		FROM 
-			article_table
+			article_table JOIN account_table ON article_table.account_id = account_table.id 
+					 LEFT JOIN reply_table ON article_table.id = reply_table.article_id 
+					 LEFT JOIN article_like_table ON article_table.id = article_like_table.article_id
 		WHERE 
-			id = #{id}
+			article_table.id  = #{id}
+		GROUP BY 
+			article_table.id, article_table.account_id, article_table.category, account_table.nickname, article_table.title, article_table.content, article_table.view_count, article_table.regdate
 	</select>
 	
 	<select id="noticeTotalCount" resultType="int">
@@ -126,34 +130,38 @@
 					article_table.regdate
 				FROM 
 					article_table JOIN account_table ON article_table.account_id = account_table.id 
-					LEFT JOIN reply_table ON article_table.id = reply_table.article_id 
-					LEFT JOIN article_like_table ON article_table.id = article_like_table.article_id
+							 LEFT JOIN reply_table ON article_table.id = reply_table.article_id 
+							 LEFT JOIN article_like_table ON article_table.id = article_like_table.article_id
 				]]>
 				<choose>
 					<when test="query != null and query != ''">
-					WHERE 
-						article_table.title LIKE '%'||#{query}||'%' AND
-						article_table.category = #{category} AND
-						article_table.importance = 0
+				WHERE 
+					article_table.title LIKE '%'||#{query}||'%' AND
+					article_table.category = #{category} AND
+					article_table.importance = 0
 					</when>
 					<when test="accountId != 0">
-					WHERE 
-					  	article_table.account_id = #{accountId} AND
-					  	article_table.category != 'notice'
+				WHERE 
+					  article_table.account_id = #{accountId} AND
+					  article_table.category != 'notice'
 					</when>
 					<otherwise>
-					WHERE 
-					  	article_table.category = #{category} AND
-					  	article_table.importance = 0
+				WHERE 
+					  article_table.category = #{category} AND
+					  article_table.importance = 0
 					</otherwise>
 				</choose>
 		<![CDATA[
-				GROUP BY article_table.id, article_table.category, article_table.title, account_table.nickname,article_table.view_count, article_table.regdate
-				ORDER BY ${sort} DESC
+				GROUP BY 
+					article_table.id, article_table.category, article_table.title, account_table.nickname,article_table.view_count, article_table.regdate
+				ORDER BY 
+					${sort} DESC
 				)a
-			WHERE rownum <= #{endCount}
+			WHERE 
+				rownum <= #{endCount}
 			)b
-		WHERE b.rnum >= #{startCount}
+		WHERE 
+			b.rnum >= #{startCount}
 		]]>
 
 	</select>

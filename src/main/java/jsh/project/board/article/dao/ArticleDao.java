@@ -7,8 +7,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import jsh.project.board.article.dto.ArticleResponseDto;
+import jsh.project.board.article.dto.ArticleViewCountDto;
 import jsh.project.board.article.dto.RequestArticlesDto;
-import jsh.project.board.article.dto.ResponseArticleDetialDto;
+import jsh.project.board.article.dto.ResponseArticleDetailDto;
 
 @Repository
 public class ArticleDao {
@@ -35,8 +36,12 @@ public class ArticleDao {
 		return sqlSession.selectList("boardMapper.articles", dto);
 	}
 	
-	public ResponseArticleDetialDto selectArticle(int id) {
+	public ResponseArticleDetailDto selectArticle(int id) {
 		return sqlSession.selectOne("boardMapper.article", id);
+	}
+	
+	public void updateViewCount(ArticleViewCountDto dto) {
+		sqlSession.update("viewCount", dto);
 	}
 	
 }

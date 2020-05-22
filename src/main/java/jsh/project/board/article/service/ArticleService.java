@@ -9,8 +9,9 @@ import org.springframework.stereotype.Service;
 
 import jsh.project.board.article.dao.ArticleDao;
 import jsh.project.board.article.dto.ArticleResponseDto;
+import jsh.project.board.article.dto.RequestArticleDetailDto;
 import jsh.project.board.article.dto.RequestArticlesDto;
-import jsh.project.board.article.dto.ResponseArticleDetialDto;
+import jsh.project.board.article.dto.ResponseArticleDetailDto;
 import jsh.project.board.article.dto.ResponseArticlesDto;
 import jsh.project.board.global.infra.util.Pagination;
 
@@ -52,8 +53,11 @@ public class ArticleService {
 		return responseArticles;
 	} 
 	
-	public ResponseArticleDetialDto getArticle(int id) {
-		return articleDao.selectArticle(id);
+	public ResponseArticleDetailDto getArticle(RequestArticleDetailDto dto) {
+		ResponseArticleDetailDto responseDto = articleDao.selectArticle(dto.getId());
+		articleDao.updateViewCount(responseDto.toViewCountDto()); //조회수 먼저 올려주자
+		responseDto.setLikeCheck(0);//like_table에서 조회
+		return responseDto;
 	}
 	
 }

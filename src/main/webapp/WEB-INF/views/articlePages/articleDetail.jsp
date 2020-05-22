@@ -287,7 +287,8 @@ function login(){
 						</c:if> 
 					</div>
 <!-- 추천버튼 -->
-<%-- 				<div style="float: right">
+		<!-- if category값이 notice가 아니면 추천,댓글작성,댓글리스트를 볼수 있어야한다. -->
+				<div style="float: right">
 					<sec:authorize access="isAuthenticated()">
 						<c:choose>
 							<c:when test="${responseDto.likeCheck == 'true'}">
@@ -298,17 +299,19 @@ function login(){
 							</c:otherwise>
 						</c:choose>
 					</sec:authorize>
-				</div> --%>
+					<sec:authorize access="isAnonymous()">
+						<input type="button" class="btn btn-primary" id="like" value="추천 하기" onclick="login();">
+					</sec:authorize>
+				</div>
 			</div>
-			<hr style="margin-top: 50px">
+			<hr >
 
 <!-- 댓글 입력란 -->
-<%-- 			<div class="form-group shadow-textarea">
-			  	<c:choose>
-					<c:when test="${empty member}">
+			<div class="form-group shadow-textarea">
+					<sec:authorize access="isAnonymous()">
 						<span>로그인을 하시면 댓글을 등록할 수 있습니다.</span>
-					</c:when>
-					<c:otherwise>
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
 						<label>댓글</label>
 						<div style="position: relative; height: 100%">
 							<div>
@@ -317,16 +320,13 @@ function login(){
 								<input type="submit" class="btn btn-success" style="width:100%;" value="작성">
 							</form>
 							</div>
-							<div>
-							</div>
 						</div>
-					</c:otherwise>
-				</c:choose>
-			</div> --%>
+					</sec:authorize>
+			</div>
 			
 <!-- 새로고침(댓글) -->			
-			<!-- <hr>
-				<input type="button" class="btn btn-primary" value="새로고침" onclick="listConfirm();"> -->
+			<hr>
+				<input type="button" class="btn btn-primary" value="새로고침" onclick="listConfirm();">
 				
 <!-- 댓글 리스트 -->
 			<%-- <div>

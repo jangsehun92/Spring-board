@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import jsh.project.board.account.dto.Account;
 import jsh.project.board.article.dto.RequestArticleCreateDto;
+import jsh.project.board.article.dto.RequestArticleDetailDto;
 import jsh.project.board.article.dto.RequestArticlesDto;
 import jsh.project.board.article.dto.ResponseArticlesDto;
 import jsh.project.board.article.service.ArticleService;
@@ -65,12 +66,14 @@ public class ArticleController {
 	
 	// 단일 Article 보기 
 	@GetMapping("/article/{id}")
-	public String article(@PathVariable("id") int id, Model model, Principal principal) {
+	public String article(@PathVariable("id") int id, Model model, Principal principal, RequestArticleDetailDto dto) {
 		if(principal != null) {
 			Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			log.info("/article/"+id+" 유저 정보 : "+account.getId());
+			dto.setAccountId(account.getId());
 		}
-		model.addAttribute("responseDto",articleService.getArticle(id));
+		dto.setId(id);
+		model.addAttribute("responseDto",articleService.getArticle(dto));
 		return "articlePages/articleDetail";
 	}
 	

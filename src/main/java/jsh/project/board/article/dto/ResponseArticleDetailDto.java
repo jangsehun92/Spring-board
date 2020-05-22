@@ -2,7 +2,7 @@ package jsh.project.board.article.dto;
 
 import java.sql.Date;
 
-public class ResponseArticleDetialDto {
+public class ResponseArticleDetailDto {
 	private int id;
 	private int accountId;
 	private String category;
@@ -13,8 +13,9 @@ public class ResponseArticleDetialDto {
 	private int replyCount;
 	private int likeCount;
 	private Date regdate;
+	private boolean likeCheck;
 	
-	public ResponseArticleDetialDto() {
+	public ResponseArticleDetailDto() {
 		
 	}
 
@@ -96,6 +97,25 @@ public class ResponseArticleDetialDto {
 
 	public void setRegdate(Date regdate) {
 		this.regdate = regdate;
+	}
+	
+	public boolean getLikeCheck() {
+		return likeCheck;
+	}
+	
+	public void setLikeCheck(int likeCheck) {
+		if(likeCheck == 0) {
+			this.likeCheck = false;
+		}else {
+			this.likeCheck = true;
+		}
+	}
+	
+	public ArticleViewCountDto toViewCountDto() {
+		ArticleViewCountDto dto = new ArticleViewCountDto();
+		dto.setId(this.id);
+		dto.setViewCount((this.viewCount + 1));
+		return dto;
 	}
 
 }

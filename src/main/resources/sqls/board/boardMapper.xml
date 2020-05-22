@@ -26,8 +26,17 @@
 			</otherwise>
 		</choose>
 	</select>
+	
+	<update id="viewCount" parameterType="ArticleViewCountDto">
+		UPDATE
+			article_table
+		SET
+			view_count = #{viewCount}
+		WHERE
+			id = #{id}
+	</update>
 
-	<select id="article" resultType="ResponseArticleDetialDto">
+	<select id="article" resultType="ResponseArticleDetailDto">
 		SELECT 
 			article_table.id,
 			article_table.account_id AS accountId,

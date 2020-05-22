@@ -55,6 +55,7 @@ public class ArticleService {
 	}
 	
 	public ResponseArticleDetailDto getArticle(RequestArticleDetailDto dto) {
+		log.info(dto.toString());
 		articleDao.updateViewCount(dto.getId());
 		ResponseArticleDetailDto responseDto = articleDao.selectArticle(dto.getId());
 		responseDto.setLikeCheck(articleDao.articleLikeCheck(dto.getLikeDto()));

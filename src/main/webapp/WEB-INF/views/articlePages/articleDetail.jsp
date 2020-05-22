@@ -18,6 +18,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 
+//2.
 function replyCreate(){
 	var content = $("#replyContent").val().replace(/\s|/gi,'');
 	
@@ -50,7 +51,7 @@ function replyCreate(){
 	});
 	return false;
 }
-
+//1.
 function replyList(){
 	$.ajax({
 		url:"/reply/${responsDto.id}",
@@ -125,6 +126,7 @@ function replyList(){
 	});
 	return false;
 }
+//3.
 function replyUpdateForm(id){
 	var dropdownForm = $("#dropdownForm-"+id);
 	var replyForm = $("#replyForm-"+id);

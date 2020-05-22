@@ -45,7 +45,7 @@ public class RequestArticleCreateDto {
 		this.content = content;
 	}
 	
-	public Article toArticle() {
+	public Article getArticle() {
 		Article article = new Article();
 		article.setAccountId(this.accountId);
 		article.setCategory(category);

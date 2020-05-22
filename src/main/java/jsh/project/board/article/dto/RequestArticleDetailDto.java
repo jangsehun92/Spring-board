@@ -33,4 +33,9 @@ public class RequestArticleDetailDto {
 		return dto;
 	}
 	
+	@Override
+	public String toString() {
+		return "RequestArticleDetailDto { id : " + id + " accountId : "+ accountId + " }";
+	}
+	
 }

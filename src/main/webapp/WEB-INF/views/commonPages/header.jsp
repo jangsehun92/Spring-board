@@ -55,7 +55,7 @@ $(function(){
 						<li id="info"><a href="/account/info/${principal.id}">${principal.nickname }</a></li>
 						<li><a href="javascript:;" onclick="document.getElementById('logout-form').submit();">로그아웃</a></li>
 						<form method="POST" id="logout-form" action="/logout">
-						   <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
+						   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 						</form>
 					</sec:authorize>
 					

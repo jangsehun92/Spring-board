@@ -279,6 +279,7 @@ function login(){
 							<input type="button" class="btn btn-primary" value="수정" onclick="location.href='/article/edit/${responseDto.id}'">
 							<div style="float: left">
 								<form method="post" action="/article/${responseDto.id }">
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 									<input type="hidden" name="_method" value="delete"/>
 									<input type="submit" class="btn btn-primary" value="삭제">
 								</form>
@@ -297,8 +298,8 @@ function login(){
 							</c:otherwise>
 						</c:choose>
 					</sec:authorize>
-				</div>
-			</div> --%>
+				</div> --%>
+			</div>
 			<hr style="margin-top: 50px">
 
 <!-- 댓글 입력란 -->

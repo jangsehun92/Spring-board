@@ -9,14 +9,16 @@
 			reply_table.account_id AS accountId,
 			account_table.nickname,
 			reply_table.content,
-			reply_table.regdate
+			reply_table.regdate,
+			reply_table.modify_date AS modifyDate,
+			reply_table.enabled
 		FROM
 			reply_table JOIN account_table ON reply_table.account_id = account_table.id
 		WHERE 
 			reply_table.article_id = #{articleId}
 	</select>
 	
-	<insert id="reply" parameterType="Reply">
+	<insert id="insertReply" parameterType="Reply">
 		INSERT 
 		INTO 
 			reply_table 
@@ -25,8 +27,41 @@
 			#{articleId},
 			#{accountId},
 			#{content},
-			sysdate
+			SYSDATE,
+			NULL,
+			#{enabled}
 		)
 	</insert>
+	
+	<update id="updateReply" parameterType="Reply">
+		UPDATE
+			reply_table
+		SET
+			content = #{content},
+			modify_date = SYSDATE
+		WHERE
+			id = #{id} AND
+			article_id = #{articleId} AND
+			account_id = #{accountId}
+	</update>
+	
+	<update id="deleteReply" parameterType="Reply">
+		UPDATE
+			reply_table
+		SET
+			enabled = #{enabled}
+		WHERE
+			id = #{id} AND
+			article_id = #{articleId} AND
+			account_id = #{accountId}
+	</update>
+	
+	<delete id="deleteReplys" parameterType="int">
+		DELETE
+		FROM
+			reply_table
+		WHERE
+			article_id = #{articleId}
+	</delete>
 	
 </mapper>

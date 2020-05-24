@@ -10,6 +10,8 @@ public class ResponseReplyDto {
 	private String nickname;
 	private String content;
 	private Date regdate;
+	private Date modifyDate;
+	private boolean enabled;
 	
 	public ResponseReplyDto() {
 		
@@ -61,6 +63,27 @@ public class ResponseReplyDto {
 
 	public void setRegdate(Date regdate) {
 		this.regdate = regdate;
+	}
+	
+	public Date getModifyDate() {
+		return modifyDate;
+	}
+	
+	public void setModifyDate(Date modifyDate) {
+		this.modifyDate = modifyDate;
+	}
+	
+	public boolean getEnabled() {
+		return enabled;
+	}
+	
+	public void setEnabled(int enabled) {
+		if(enabled == 0) {
+			this.content = "삭제된 댓글입니다.";
+			this.enabled = false;
+		}else {
+			this.enabled = true;
+		}
 	}
 	
 }

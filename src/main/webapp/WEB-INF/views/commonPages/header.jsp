@@ -33,6 +33,7 @@ $(function(){
 		$("#questions").addClass("active");
 	}
 });
+
 </script>
 <body>
 	<nav class="navbar navbar-default navbar-fixed-top">

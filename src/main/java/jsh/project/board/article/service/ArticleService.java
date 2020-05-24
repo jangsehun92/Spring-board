@@ -28,7 +28,7 @@ public class ArticleService {
 	
 	public ResponseArticlesDto getArticles(RequestArticlesDto dto){
 		log.info(dto.toString());
-		Pagination pagination = new Pagination(articleDao.getTotalCount(dto), dto.getPage(),articleDao.getNoticeTotalCount());
+		Pagination pagination = new Pagination(articleDao.selectTotalCount(dto), dto.getPage(),articleDao.selectNoticeTotalCount());
 		dto.setStartCount(pagination.getStartCount());
 		dto.setEndCount(pagination.getEndCount());
 		
@@ -44,7 +44,7 @@ public class ArticleService {
 	
 	public ResponseArticlesDto getAccountArticles(RequestArticlesDto dto){
 		log.info(dto.toString());
-		Pagination pagination = new Pagination(articleDao.getTotalCount(dto), dto.getPage());
+		Pagination pagination = new Pagination(articleDao.selectTotalCount(dto), dto.getPage());
 		dto.setStartCount(pagination.getStartCount());
 		dto.setEndCount(pagination.getEndCount());
 		

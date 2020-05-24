@@ -17,7 +17,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-
+$(document).ready(function(){
+	replyList("${responseDto.id}");
+});
 //2.
 function replyCreate(){
 	var content = $("#replyContent").val().replace(/\s|/gi,'');
@@ -29,7 +31,7 @@ function replyCreate(){
 		return false;
 	}
 	
-	var replyCreateRequest = {
+	var requestReplyCreateDto = {
 			articleId : "${responseDto.id}",
 			content : $("#replyContent").val(),
 	}
@@ -39,11 +41,11 @@ function replyCreate(){
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
 		dataType : "text",
-		data: JSON.stringify(replyCreateRequest), 
+		data: JSON.stringify(requestReplyCreateDto), 
 		
 		success:function(data){
 			alert("댓글이 입력되었습니다.");
-			replyList();
+			replyList("${responseDto.id}");
 		},
 		error:function(request,status,error){
 			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -52,16 +54,13 @@ function replyCreate(){
 	return false;
 }
 //1.
-function replyList(){
+function replyList(id){
 	$.ajax({
-		url:"/reply/${responsDto.id}",
+		url:"/replys/${responseDto.id}",
 		type:"GET",
 		contentType : "application/json; charset=UTF-8",
 		dataType: "JSON",
 		success:function(data){
-			if($("#noComments").length){
-				$("#noComments").empty();
-			}
 			$("#replyList").empty();
 			$("#replyContent").val("");
 			
@@ -81,13 +80,18 @@ function replyList(){
 				);
 			}
 			$.each(data, function(index, value) {
+				/* if(value.modify == null){
+				"<small>"+uxin_timestamp(value.regdate)+"</small></span>"+
+			} */
 				if(value.accountId == "${principal.id}"){
 					$("#replyList").append(
 					"<li class='list-group-item'>"+
 						"<div style='position: relative; height: 100%'>"+
 							"<div>"+
 								"<div>"+
-									"<span>"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+"</small></span>"+
+									"<span>"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>");
+					
+					
 										"<div id='dropdownForm-"+value.id+"' style='float: right;'>"+
 											"<div class='btn-group'>"+
 												"<button type='button' class='btn btn-default btn-xs dropdown-toggle' data-toggle='dropdown' aria-expanded='false'>"+
@@ -99,8 +103,9 @@ function replyList(){
 												"</ul>"+
 										"</div>"+
 								"</div>"+
-							"<div id='replyForm-"+value.id+"' style='white-space : pre-wrap;height: 100%'><p>"+value.content+
-							"</p></div>"+
+							"<div id='replyForm-"+value.id+"' style='white-space : pre-wrap;height: 100%'>"+
+								"<p id='reply-"+value.id+"'>"+value.content+"</p>"+
+							"</div>"+
 							"</div>"+
 								"<div id='updateForm-"+value.id+"' style='display: none;'>"+
 									"<form method='post' action='/reply/"+value.id+"' onsubmit='return replyUpdate("+value.id+");'>"+
@@ -115,7 +120,7 @@ function replyList(){
 					"</li>");
 					$('.dropdown-toggle').dropdown();
 				}else{
-					$("#replyList").append("<li class='list-group-item'><span>"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+"</small></span>"+
+					$("#replyList").append("<li class='list-group-item'><span>"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>"+
 											"<div style='white-space : pre-wrap;height: 100%'>"+value.content+"</div></li>");
 				}
 			});
@@ -132,6 +137,7 @@ function replyUpdateForm(id){
 	var replyForm = $("#replyForm-"+id);
 	var updateForm = $("#updateForm-"+id);
 	
+	$("#replyContent-"+id).val($("#reply-"+id).text());
 	replyForm.hide();
 	dropdownForm.hide();
 	updateForm.show();
@@ -148,21 +154,22 @@ function replyForm(id){
 	updateForm.hide();
 	$("#replyForm-"+id).focus();
 }
+
 function replyUpdate(id){
-	var replyUpdateRequest = {
-		content : $("#replyContent-"+id).val(),
+	
+	var requestReplyUpdateDto = {
+		articleId : "${responseDto.id}",	
+		content : $("#replyContent-"+id).val()
 	}
 	
 	$.ajax({
 		url:"/reply/"+id,
 		type:"patch",
 		contentType : "application/json; charset=UTF-8",
-		//dataType : "text",
-		data: JSON.stringify(replyUpdateRequest), 
-		
+		data: JSON.stringify(requestReplyUpdateDto), 
 		success:function(data){
 			alert("댓글이 수정되었습니다.");
-			replyList();
+			replyList("${responseDto.id}");
 		},
 		error:function(request,status,error){
 			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -172,12 +179,18 @@ function replyUpdate(id){
 }
 
 function replyDelete(id){
+	var requestReplyDeleteDto = {
+			articleId : "${responseDto.id}"
+		}
+	
 	$.ajax({
 		url:"/reply/"+id,
 		type:"delete",
+		contentType : "application/json; charset=UTF-8",
+		data: JSON.stringify(requestReplyDeleteDto),
 		success:function(data){
 			alert("댓글이 삭제되었습니다.");
-			replyList();
+			replyList("${responseDto.id}");
 		},
 		error:function(request,status,error){
 			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -197,9 +210,9 @@ function uxin_timestamp(time){
 	return year + "-" + month.substr(-2) + "-" + day.substr(-2) + " " + hour.substr(-2) + ":" + minute.substr(-2);
 }
 
-function listConfirm(){
+function listConfirm(id){
 	if(confirm("새로고침 하시겠습니까?")){
-		replyList();
+		replyList(id);
 	}else{
 		return;
 	}
@@ -335,13 +348,13 @@ function login(){
 			
 <!-- 새로고침(댓글) -->			
 			<hr>
-				<input type="button" class="btn btn-primary" value="새로고침" onclick="listConfirm();">
+				<input type="button" class="btn btn-primary" value="새로고침" onclick="listConfirm(${responseDto.id});">
 				
 <!-- 댓글 리스트 -->
-			<%-- <div>
+			<div>
 				<ul class="list-group" id="replyList">
 					
-					<c:choose>
+					<%-- <c:choose>
 						<c:when test="${empty responseDto.replyList}">
 							<li class="list-group-item" id="noComments">
 								<div>
@@ -391,9 +404,9 @@ function login(){
 								</li>		
 							</c:forEach>
 						</c:otherwise>
-					</c:choose>
+					</c:choose> --%>
 				</ul>
-			</div> --%>
+			</div>
 	</div>
 </div>
 </body>

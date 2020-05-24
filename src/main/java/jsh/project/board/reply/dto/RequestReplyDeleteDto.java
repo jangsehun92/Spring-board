@@ -1,22 +1,21 @@
 package jsh.project.board.reply.dto;
 
-public class Reply {
+import jsh.project.board.reply.dto.Reply.toReply;
+
+public class RequestReplyDeleteDto implements toReply{
 	
 	private int id;
 	private int articleId;
 	private int accountId;
-	private String content;
-	private int enabled;
 	
-	public Reply(int articleId, int accountId) {
-		this.articleId = articleId;
-		this.accountId = accountId;
+	public RequestReplyDeleteDto() {
+		
 	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -36,25 +35,20 @@ public class Reply {
 	public void setAccountId(int accountId) {
 		this.accountId = accountId;
 	}
+	
+	@Override
+	public String toString() {
+		return "RequestReplyDeleleteDto {id : " + id + " articleId : " + articleId + " accountId : " + accountId +" }";
+	}
 
-	public String getContent() {
-		return content;
+	@Override
+	public Reply getReply() {
+		final Reply reply = new Reply(this.articleId, this.accountId);
+		reply.setId(this.id);
+		reply.setEnabled(0);
+		return reply;
 	}
+	
+	
 
-	public void setContent(String content) {
-		this.content = content;
-	}
-	
-	public int getEnabled() {
-		return enabled;
-	}
-	
-	public void setEnabled(int enabled) {
-		this.enabled= enabled;
-	}
-	
-	interface toReply{
-		Reply getReply();
-	}
-	
 }

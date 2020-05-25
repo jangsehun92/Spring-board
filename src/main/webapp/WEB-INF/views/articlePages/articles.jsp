@@ -72,7 +72,8 @@ window.onload = function() {
 						<c:choose>
 							<c:when test="${article.category  eq 'notice'}">
 								<tr>
-									<td colspan="2"><a href="/article/${article.id }"><b><font color="black">[공지사항] ${article.title }</font></b></a></td>
+									<td><a href="/article/${article.id }"><b><font color="black">[공지사항] ${article.title }</font></b></a></td>
+									<td align="right">${article.likeCount }</td>
 									<td align="right">${article.viewCount }</td>
 									<td align="right">${article.nickname }</td>
 									<td align="right"><small><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${article.regdate }"/></small></td>

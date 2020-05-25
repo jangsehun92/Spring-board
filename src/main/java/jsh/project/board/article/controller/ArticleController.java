@@ -97,8 +97,8 @@ public class ArticleController {
 	}
 	
 	// 글수정 페이지 요청
-	@GetMapping("/article/update")
-	public String articleUpdateForm() {
+	@GetMapping("/article/edit/{id}")
+	public String articleUpdateForm(@PathVariable("id") int id, Model model) {
 		return "articlePages/articleUpdate";
 	}
 	

@@ -24,6 +24,7 @@ import jsh.project.board.reply.dto.RequestReplyCreateDto;
 import jsh.project.board.reply.dto.RequestReplyDeleteDto;
 import jsh.project.board.reply.dto.RequestReplyUpdateDto;
 import jsh.project.board.reply.dto.ResponseReplyDto;
+import jsh.project.board.reply.exception.AccessDeniedException;
 import jsh.project.board.reply.service.ReplyService;
 
 @Controller
@@ -47,13 +48,8 @@ public class ReplyController {
 	//해당 게시글 댓글 입력
 	@PostMapping("/reply")
 	public ResponseEntity<HttpStatus> createReply(@RequestBody @Valid RequestReplyCreateDto dto, Principal principal){
-		if(principal == null) {
-			throw new NonLoginException();
-		}
-		Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		dto.setAccountId(account.getId());
+		isPrincipal(principal, dto.getAccountId());
 		log.info("POST /reply "+ dto.toString());
-		//principal값과 dto의 accountId값이 같아야하는지 확인해야하는데 어캐하징
 		replyService.saveReply(dto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -61,13 +57,8 @@ public class ReplyController {
 	//해당 게시글 댓글 수정
 	@PatchMapping("/reply/{id}")
 	public ResponseEntity<HttpStatus> updateReply(@PathVariable("id")int id, @RequestBody @Valid RequestReplyUpdateDto dto, Principal principal){
-		if(principal == null) {
-			throw new NonLoginException();
-		}
-		Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
+		isPrincipal(principal, dto.getAccountId());
 		dto.setId(id);
-		dto.setAccountId(account.getId());
 		log.info("PATCH /reply/"+id + " " + dto.toString());
 		replyService.modifyReply(dto);
 		return new ResponseEntity<>(HttpStatus.OK);
@@ -76,16 +67,21 @@ public class ReplyController {
 	//해당 게시글 댓글 삭제(비활성화)
 	@DeleteMapping("/reply/{id}")
 	public ResponseEntity<HttpStatus> deleteReply(@PathVariable("id")int id,@RequestBody RequestReplyDeleteDto dto, Principal principal){
+		isPrincipal(principal, dto.getAccountId());
+		dto.setId(id);
+		log.info("DELETE /reply/"+id + " " + dto.toString());
+		replyService.enabledReply(dto);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	public void isPrincipal(Principal principal, int accountId) {
 		if(principal == null) {
 			throw new NonLoginException();
 		}
 		Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
-		dto.setId(id);
-		dto.setAccountId(account.getId());
-		log.info("DELETE /reply/"+id + " " + dto.toString());
-		replyService.enabledReply(dto);
-		return new ResponseEntity<>(HttpStatus.OK);
+		if(account.getId() != accountId) {
+			throw new AccessDeniedException();
+		}
 	}
 	
 

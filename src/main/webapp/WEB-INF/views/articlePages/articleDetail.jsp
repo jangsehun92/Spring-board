@@ -20,27 +20,12 @@
 $(document).ready(function(){
 	replyList("${responseDto.id}");
 });
-//2.
-function replyCreate(){
-	var content = $("#replyContent").val().replace(/\s|/gi,'');
-	
-	if(content==""){
-		alert("댓글을 입력해주세요.");
-		$("#replyContent").val("");
-		$("#replyContent").focus();
-		return false;
-	}
-	
-	var requestReplyCreateDto = {
-			articleId : "${responseDto.id}",
-			content : $("#replyContent").val(),
-	}
-	
+
+function articleDelete(id){
 	$.ajax({
-		url:"/reply",
-		type:"post",
+		url:"/article",
+		type:"delete",
 		contentType : "application/json; charset=UTF-8",
-		dataType : "text",
 		data: JSON.stringify(requestReplyCreateDto), 
 		
 		success:function(data){
@@ -48,12 +33,18 @@ function replyCreate(){
 			replyList("${responseDto.id}");
 		},
 		error:function(request,status,error){
-			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			jsonValue = jQuery.parseJSON(request.responseText);
+			code = jsonValue.code;
+			console.log("errorCode : " + code);
+			alert(jsonValue.message);
 		}
 	});
-	return false;
 }
-//1.
+
+function articleUpdate(){
+	
+}
+
 function replyList(id){
 	$.ajax({
 		url:"/replys/${responseDto.id}",
@@ -63,7 +54,7 @@ function replyList(id){
 		success:function(data){
 			$("#replyList").empty();
 			$("#replyContent").val("");
-			
+			var html = "";
 			if(data.length == 0){
 				$("#replyList").append(
 					"<li class='list-group-item'>"+
@@ -80,49 +71,45 @@ function replyList(id){
 				);
 			}
 			$.each(data, function(index, value) {
-				/* if(value.modify == null){
-				"<small>"+uxin_timestamp(value.regdate)+"</small></span>"+
-			} */
 				if(value.accountId == "${principal.id}"){
-					$("#replyList").append(
-					"<li class='list-group-item'>"+
-						"<div style='position: relative; height: 100%'>"+
-							"<div>"+
-								"<div>"+
-									"<span>"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>");
-					
-					
-										"<div id='dropdownForm-"+value.id+"' style='float: right;'>"+
-											"<div class='btn-group'>"+
-												"<button type='button' class='btn btn-default btn-xs dropdown-toggle' data-toggle='dropdown' aria-expanded='false'>"+
-													"<span class='caret'></span>"+
-												"</button>"+
-												"<ul class='dropdown-menu' role='menu'>"+
-													"<li><a onClick='replyUpdateForm("+value.id+")'>수정</a></li>"+
-													"<li><a onClick='deleteConfirm("+value.id+")'>삭제</a></li>"+
-												"</ul>"+
+					html += "<li class='list-group-item'>"+
+							 	"<div style='position: relative; height: 100%'>"+
+							  		"<div>"+
+										"<div>"+
+											"<span>"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>";
+									if(value.modifyDate != null){
+										html +="<span class='text-muted'><small> ᛫ "+uxin_timestamp(value.modifyDate)+" 수정</small></span>";
+									}
+									if(value.enabled != 0){
+										html +=	"<div id='dropdownForm-"+value.id+"' style='float: right;'>"+
+														"<a onClick='replyUpdateForm("+value.id+")'>수정</a> ᛫ "+
+														"<a onClick='deleteConfirm("+value.id+")'>삭제</a>";
+									}
+									html += "</div>"+
+												"<div id='replyForm-"+value.id+"' style='white-space : pre-wrap;height: 100%'>"+
+													"<p id='reply-"+value.id+"'>"+value.content+"</p>"+
+												"</div>"+
 										"</div>"+
+										"<div id='updateForm-"+value.id+"' style='display: none;'>"+
+											"<form method='post' action='/reply/"+value.id+"' onsubmit='return replyUpdate("+value.id+");'>"+
+												"<input type='hidden' name='_method' value='PUT'>"+
+												"<textarea id='replyContent-"+value.id+"' name='content' class='form-control z-depth-1' rows='3' maxlength='1000' placeholder='댓글을 입력해주세요.'>"+value.content+"</textarea>"+
+												"<input type='submit' style='width:50%' class='btn btn-success' value='수정'>"+
+												"<input type='button' style='width:50%' class='btn btn-primary' value='취소' onclick='replyForm("+value.id+")'>"+
+												"</form>"+
+										"</div>"+
+									"</div>"+
 								"</div>"+
-							"<div id='replyForm-"+value.id+"' style='white-space : pre-wrap;height: 100%'>"+
-								"<p id='reply-"+value.id+"'>"+value.content+"</p>"+
-							"</div>"+
-							"</div>"+
-								"<div id='updateForm-"+value.id+"' style='display: none;'>"+
-									"<form method='post' action='/reply/"+value.id+"' onsubmit='return replyUpdate("+value.id+");'>"+
-										"<input type='hidden' name='_method' value='PUT'>"+
-										"<textarea id='replyContent-"+value.id+"' name='content' class='form-control z-depth-1' rows='3' maxlength='1000' placeholder='댓글을 입력해주세요.'>"+value.content+"</textarea>"+
-										"<input type='submit' style='width:50%' class='btn btn-success' value='수정'>"+
-										"<input type='button' style='width:50%' class='btn btn-primary' value='취소' onclick='replyForm("+value.id+")'>"+
- 									"</form>"+
-								"</div>"+
-							"</div>"+
-						"</div>"+
-					"</li>");
-					$('.dropdown-toggle').dropdown();
+							"</li>";
 				}else{
-					$("#replyList").append("<li class='list-group-item'><span>"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>"+
-											"<div style='white-space : pre-wrap;height: 100%'>"+value.content+"</div></li>");
+					html +="<li class='list-group-item'><span>"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>";
+					if(value.modifyDate != null){
+						html +="<span class='text-muted'><small> ᛫ "+uxin_timestamp(value.modifyDate)+" 수정</small></span>";
+					}
+					html +=			"<div style='white-space : pre-wrap;height: 100%'>"+value.content+"</div>"+
+							"</li>";
 				}
+				document.getElementById('replyList').innerHTML = html;
 			});
 		},
 		error:function(request,status,error){
@@ -131,7 +118,43 @@ function replyList(id){
 	});
 	return false;
 }
-//3.
+
+function replyCreate(){
+	var content = $("#replyContent").val().replace(/\s|/gi,'');
+	
+	if(content==""){
+		alert("댓글을 입력해주세요.");
+		$("#replyContent").val("");
+		$("#replyContent").focus();
+		return false;
+	}
+	
+	var requestReplyCreateDto = {
+			articleId : "${responseDto.id}",
+			accountId : "${principal.id}",
+			content : $("#replyContent").val(),
+	}
+	
+	$.ajax({
+		url:"/reply",
+		type:"post",
+		contentType : "application/json; charset=UTF-8",
+		data: JSON.stringify(requestReplyCreateDto), 
+		
+		success:function(data){
+			alert("댓글이 입력되었습니다.");
+			replyList("${responseDto.id}");
+		},
+		error:function(request,status,error){
+			jsonValue = jQuery.parseJSON(request.responseText);
+			code = jsonValue.code;
+			console.log("errorCode : " + code);
+			alert(jsonValue.message);
+		}
+	});
+	return false;
+}
+
 function replyUpdateForm(id){
 	var dropdownForm = $("#dropdownForm-"+id);
 	var replyForm = $("#replyForm-"+id);
@@ -159,6 +182,7 @@ function replyUpdate(id){
 	
 	var requestReplyUpdateDto = {
 		articleId : "${responseDto.id}",	
+		accountId : "${principal.id}",
 		content : $("#replyContent-"+id).val()
 	}
 	
@@ -172,15 +196,27 @@ function replyUpdate(id){
 			replyList("${responseDto.id}");
 		},
 		error:function(request,status,error){
-			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			jsonValue = jQuery.parseJSON(request.responseText);
+			code = jsonValue.code;
+			console.log("errorCode : " + code);
+			alert(jsonValue.message);
 		}
 	});
 	return false;
 }
 
+function deleteConfirm(id){
+	if(confirm("댓글을 삭제하시겠습니까?")){
+		replyDelete(id);
+	}else{
+		return;
+	}
+}
+
 function replyDelete(id){
 	var requestReplyDeleteDto = {
-			articleId : "${responseDto.id}"
+			articleId : "${responseDto.id}",
+			accountId : "${principal.id}",
 		}
 	
 	$.ajax({
@@ -193,7 +229,10 @@ function replyDelete(id){
 			replyList("${responseDto.id}");
 		},
 		error:function(request,status,error){
-			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			jsonValue = jQuery.parseJSON(request.responseText);
+			code = jsonValue.code;
+			console.log("errorCode : " + code);
+			alert(jsonValue.message);
 		}
 	});
 	return false;
@@ -218,13 +257,6 @@ function listConfirm(id){
 	}
 }
 
-function deleteConfirm(id){
-	if(confirm("삭제하시겠습니까?")){
-		replyDelete(id);
-	}else{
-		return;
-	}
-}
 
 //추천
 function like(accountId){
@@ -264,6 +296,8 @@ function login(){
 	return false;
 }
 </script>
+
+
 <body>
 <div class="container" style="margin-top: 50px">
 	<input type="hidden" id ="category" value="${responseDto.category }">
@@ -293,10 +327,17 @@ function login(){
 			</ul>
 			<div class="row" style="margin-left: 0px; margin-right: 0px">
 					<div style="float: left">
-					<a href="/articles/${responseDto.category }" class="btn btn-primary">목록</a>
+						<div class="btn-group">
+							<a href="/articles/${responseDto.category }" class="btn btn-primary">목록</a>
+							<!-- 글 수정,삭제 버튼 -->
+							<c:if test="${principal.id eq responseDto.accountId}">
+								<input type="button" class="btn btn-primary" value="수정" onclick="location.href='/article/edit/${responseDto.id}'">
+								<input type="button" class="btn btn-primary" value="삭제" onclick="articleDelete(${responseDto.id});">
+							</c:if> 
+						</div>
 					</div>
-<!-- 글 수정,삭제 버튼 -->
-					<div style="float: left">
+
+					<%-- <div style="float: left">
 						<c:if test="${principal.id eq responseDto.accountId}">
 							<input type="button" class="btn btn-primary" value="수정" onclick="location.href='/article/edit/${responseDto.id}'">
 							<div style="float: left">
@@ -307,9 +348,8 @@ function login(){
 								</form>
 							</div>
 						</c:if> 
-					</div>
+					</div> --%>
 <!-- 추천버튼 -->
-		<!-- if category값이 notice가 아니면 추천,댓글작성,댓글리스트를 볼수 있어야한다. -->
 				<div style="float: right">
 					<sec:authorize access="isAuthenticated()">
 						<c:choose>
@@ -348,63 +388,12 @@ function login(){
 			
 <!-- 새로고침(댓글) -->			
 			<hr>
-				<input type="button" class="btn btn-primary" value="새로고침" onclick="listConfirm(${responseDto.id});">
+				<input type="button" class="btn btn-default" value="새로고침" onclick="listConfirm(${responseDto.id});">
 				
 <!-- 댓글 리스트 -->
 			<div>
 				<ul class="list-group" id="replyList">
 					
-					<%-- <c:choose>
-						<c:when test="${empty responseDto.replyList}">
-							<li class="list-group-item" id="noComments">
-								<div>
-									<div>
-										<div>	
-											<div id="replyForm">
-												<span>댓글이 없습니다.</span>
-											</div>
-										</div>
-									</div>
-								</div>
-							</li>
-						</c:when>
-						
-						<c:otherwise>
-							<c:forEach items="${responseDto.replyList }" var="replyDto">
-								<li class="list-group-item">
-									<div style="position: relative; height: 100%">
-										<div>
-											<div>
-												<span>${ replyDto.nickname}</span><span class="text-muted"> | <small><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${replyDto.regDate}"/></small></span>
-													<c:if test="${member.id eq replyDto.memberId}">
-													<div id="dropdownForm-${ replyDto.id}" style="float: right;">
-														<div class="btn-group">
-															<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-																<span class="caret"></span>
-															</button>
-															<ul class="dropdown-menu" role="menu">
-																<li><a onClick="replyUpdateForm(${ replyDto.id})">수정</a></li>
-																<li><a onClick="deleteConfirm(${ replyDto.id})">삭제</a></li>
-															</ul>
-														</div>
-													</div>
-													</c:if>
-										<div id="replyForm-${replyDto.id }" style="white-space : pre-wrap;height: 100%"><p>${replyDto.content }</p></div>
-										</div>
-											<div id="updateForm-${replyDto.id }" style='display: none;'>
-												<form method="post" action="/reply/${replyDto.id }" onsubmit="return replyUpdate(${replyDto.id });">
-													<input type="hidden" name="_method" value="PUT">
-													<textarea id="replyContent-${replyDto.id }" name="content" class="form-control z-depth-1" rows="3" maxlength="1000" placeholder="댓글을 입력해주세요.">${replyDto.content }</textarea>
-													<input type="submit" style="width:50%" class="btn btn-success" value="수정">
-													<input type="button" style="width:50%; float: left;" class="btn btn-primary" value="취소" onclick="replyForm(${replyDto.id })">
-			 									</form>
-											</div>
-										</div>
-									</div>
-								</li>		
-							</c:forEach>
-						</c:otherwise>
-					</c:choose> --%>
 				</ul>
 			</div>
 	</div>

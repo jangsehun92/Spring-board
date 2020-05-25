@@ -42,7 +42,8 @@
 		WHERE
 			id = #{id} AND
 			article_id = #{articleId} AND
-			account_id = #{accountId}
+			account_id = #{accountId} AND
+			enabled = 1
 	</update>
 	
 	<update id="deleteReply" parameterType="Reply">
@@ -53,7 +54,8 @@
 		WHERE
 			id = #{id} AND
 			article_id = #{articleId} AND
-			account_id = #{accountId}
+			account_id = #{accountId} AND
+			enabled = 1
 	</update>
 	
 	<delete id="deleteReplys" parameterType="int">

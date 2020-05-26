@@ -21,16 +21,26 @@ $(document).ready(function(){
 	replyList("${responseDto.id}");
 });
 
+function articleDeleteConfirm(id){
+	if(confirm("글을 삭제하시겠습니까?")){
+		articleDelete(id);
+	}else{
+		return;
+	}
+}
 function articleDelete(id){
+	var requestArticleDeleteDto = {
+			articleId : "${responseDto.id}",
+			accountId : "${principal.id}"
+	}
+	
 	$.ajax({
-		url:"/article",
+		url:"/article/${responseDto.id}",
 		type:"delete",
 		contentType : "application/json; charset=UTF-8",
-		data: JSON.stringify(requestReplyCreateDto), 
-		
+		data: JSON.stringify(requestArticleDeleteDto), 
 		success:function(data){
-			alert("댓글이 입력되었습니다.");
-			replyList("${responseDto.id}");
+			location.href="/";
 		},
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
@@ -181,6 +191,7 @@ function replyForm(id){
 function replyUpdate(id){
 	
 	var requestReplyUpdateDto = {
+		id : id,
 		articleId : "${responseDto.id}",	
 		accountId : "${principal.id}",
 		content : $("#replyContent-"+id).val()
@@ -215,9 +226,10 @@ function deleteConfirm(id){
 
 function replyDelete(id){
 	var requestReplyDeleteDto = {
-			articleId : "${responseDto.id}",
-			accountId : "${principal.id}",
-		}
+		id : id,
+		articleId : "${responseDto.id}",
+		accountId : "${principal.id}",
+	}
 	
 	$.ajax({
 		url:"/reply/"+id,
@@ -260,9 +272,16 @@ function listConfirm(id){
 
 //추천
 function like(accountId){
+	var requestLikeDto = {
+		articleId : "${responseDto.id}",
+		accountId : "${principal.id}",
+	}
+	
 	$.ajax({
 		url:"/article/like/${responseDto.id}",
 		type:"post",
+		contentType : "application/json; charset=UTF-8",
+		data: JSON.stringify(requestLikeDto),
 		success:function(data){
 			var likeCount = Number($("#likeCount").text());
 			if($("#likeCheck").val() == "true"){
@@ -280,10 +299,7 @@ function like(accountId){
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			$(".error").empty();
-			if(code == 'B001'){
-				alert(jsonValue.message);
-			}
+			alert(jsonValue.message);
 		}
 	});
 }
@@ -332,23 +348,12 @@ function login(){
 							<!-- 글 수정,삭제 버튼 -->
 							<c:if test="${principal.id eq responseDto.accountId}">
 								<input type="button" class="btn btn-primary" value="수정" onclick="location.href='/article/edit/${responseDto.id}'">
-								<input type="button" class="btn btn-primary" value="삭제" onclick="articleDelete(${responseDto.id});">
+								
+								<input type="button" class="btn btn-primary" value="삭제" onclick="articleDeleteConfirm(${responseDto.id});">
 							</c:if> 
 						</div>
 					</div>
 
-					<%-- <div style="float: left">
-						<c:if test="${principal.id eq responseDto.accountId}">
-							<input type="button" class="btn btn-primary" value="수정" onclick="location.href='/article/edit/${responseDto.id}'">
-							<div style="float: left">
-								<form method="post" action="/article/${responseDto.id }">
-									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-									<input type="hidden" name="_method" value="delete"/>
-									<input type="submit" class="btn btn-primary" value="삭제">
-								</form>
-							</div>
-						</c:if> 
-					</div> --%>
 <!-- 추천버튼 -->
 				<div style="float: right">
 					<sec:authorize access="isAuthenticated()">

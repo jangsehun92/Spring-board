@@ -34,4 +34,13 @@
 			article_table.id, article_table.account_id, article_table.category, account_table.nickname, article_table.title, article_table.content, article_table.view_count, article_table.regdate
 	</select>
 	
+	<delete id="deleteArticle" parameterType="RequestArticleDeleteDto">
+		DELETE
+		FROM
+			article_table
+		WHERE
+			id = #{articleId} AND
+			account_id = #{accountId}
+	</delete>
+	
 </mapper>

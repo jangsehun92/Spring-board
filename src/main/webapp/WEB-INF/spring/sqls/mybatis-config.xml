@@ -23,6 +23,7 @@
   	<typeAlias type="jsh.project.board.article.dto.ResponseArticleDetailDto" alias="ResponseArticleDetailDto"/>
   	<typeAlias type="jsh.project.board.article.dto.RequestArticlesDto" alias="RequestArticlesDto"/>
   	<typeAlias type="jsh.project.board.article.dto.ArticleViewCountDto" alias="ArticleViewCountDto"/>
+  	<typeAlias type="jsh.project.board.article.dto.RequestArticleDeleteDto" alias="RequestArticleDeleteDto"/>
   	
   	<!-- Article Like 관련 -->
   	<typeAlias type="jsh.project.board.article.dto.like.RequestLikeDto" alias="RequestLikeDto"/>

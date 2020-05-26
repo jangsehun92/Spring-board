@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,11 +20,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import jsh.project.board.account.dto.Account;
 import jsh.project.board.article.dto.RequestArticleCreateDto;
+import jsh.project.board.article.dto.RequestArticleDeleteDto;
 import jsh.project.board.article.dto.RequestArticleDetailDto;
+import jsh.project.board.article.dto.RequestArticleUpdateDto;
 import jsh.project.board.article.dto.RequestArticlesDto;
 import jsh.project.board.article.dto.ResponseArticlesDto;
 import jsh.project.board.article.dto.like.RequestLikeDto;
-import jsh.project.board.article.exception.NonLoginException;
 import jsh.project.board.article.service.ArticleService;
 
 @Controller
@@ -78,31 +80,27 @@ public class ArticleController {
 		return "articlePages/articleDetail";
 	}
 	
+	@PreAuthorize("(#dto.accountId == principal.id) and (#dto.articleId == #id)")
 	@PostMapping("/article/like/{id}")
-	public @ResponseBody ResponseEntity<HttpStatus> like(@PathVariable("id")int id, Principal principal, RequestLikeDto dto){
-		if(principal == null) {
-			throw new NonLoginException();
-		}
-		Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		dto.setArticleId(id);
-		dto.setAccountId(account.getId());
+	public @ResponseBody ResponseEntity<HttpStatus> like(@PathVariable("id")int id, @RequestBody RequestLikeDto dto){
 		articleService.like(dto);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
-	// 글쓰기 페이지 요청
+	// 글쓰기 페이지 요청 1.
 	@GetMapping("/article/create")
 	public String articleCreateForm() {
 		return "articlePages/articleCreate";
 	}
 	
-	// 글수정 페이지 요청
+	// 글수정 페이지 요청 3.
 	@GetMapping("/article/edit/{id}")
 	public String articleUpdateForm(@PathVariable("id") int id, Model model) {
 		return "articlePages/articleUpdate";
 	}
 	
-	// Article 생성
+	
+	// Article 생성 2.
 	@PostMapping("/article")
 	public ResponseEntity<HttpStatus> create(@RequestBody RequestArticleCreateDto dto){
 		log.info("dto.getDate : "+dto.getTitle());
@@ -110,18 +108,23 @@ public class ArticleController {
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
-	// Article 수정
+	// Article 수정 4.
+	@PreAuthorize("(#dto.accountId == principal.id) and (#dto.articleId == #id)")
 	@PatchMapping("/article/{id}")
-	public ResponseEntity<HttpStatus> create(@PathVariable("id") int id) {
+	public ResponseEntity<HttpStatus> create(@PathVariable("id") int id, @RequestBody RequestArticleUpdateDto dto) {
+		
 		log.info("PATCH /article/" + id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 
 	// Article 삭제
+	@PreAuthorize("(#dto.accountId == principal.id) and (#dto.articleId == #id)")
 	@DeleteMapping("/article/{id}")
-	public ResponseEntity<HttpStatus> delete(@PathVariable("id") int id) {
+	public ResponseEntity<HttpStatus> delete(@PathVariable("id") int id, @RequestBody RequestArticleDeleteDto dto) {
+		articleService.deleteArticle(dto);
 		log.info("DELETE /article/" + id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
+	
 
 }

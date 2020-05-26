@@ -50,7 +50,7 @@ public class RequestReplyUpdateDto implements toReply{
 	
 	@Override
 	public String toString() {
-		return "RequestReplyUpdateDto {id : + " + id + " + articleId : " + articleId + " accountId : " + accountId + " content : " + content + " }";
+		return "RequestReplyUpdateDto {id : " + id + " articleId : " + articleId + " accountId : " + accountId + " content : " + content + " }";
 	}
 
 	@Override

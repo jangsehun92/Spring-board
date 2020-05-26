@@ -33,6 +33,14 @@
 			account_id = #{accountId}
 	</delete>
 	
+	<delete id="deleteLikes" parameterType="int">
+		DELETE
+		FROM
+			article_like_table
+		WHERE
+			article_id = #{articleId}
+	</delete>
+	
 	
 	
 </mapper>

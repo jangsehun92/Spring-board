@@ -6,9 +6,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jsh.project.board.article.dao.ArticleDao;
 import jsh.project.board.article.dto.ArticleResponseDto;
+import jsh.project.board.article.dto.RequestArticleDeleteDto;
 import jsh.project.board.article.dto.RequestArticleDetailDto;
 import jsh.project.board.article.dto.RequestArticlesDto;
 import jsh.project.board.article.dto.ResponseArticleDetailDto;
@@ -60,6 +62,13 @@ public class ArticleService {
 		ResponseArticleDetailDto responseDto = articleDao.selectArticle(dto.getId());
 		responseDto.setLikeCheck(articleDao.articleLikeCheck(dto.getLikeDto()));
 		return responseDto;
+	}
+	
+	@Transactional
+	public void deleteArticle(RequestArticleDeleteDto dto) {
+		articleDao.deleteArticle(dto);
+		articleDao.deleteReplys(dto.getArticleId());
+		articleDao.deleteLikes(dto.getAccountId());
 	}
 	
 	public void like(RequestLikeDto dto) {

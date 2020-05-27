@@ -10,6 +10,7 @@ Spring Framework를 사용하여 게시판을 구현한다.
 * WEB Server : Apache
 * WAS Server : Tomcat 8.5
 * Framework : Spring 5.1.3
+* View : JSP
 * build tool : Maven 3.5.1
 * ORM : mybatis 3.4.6
 * DB : Oracle 11g
@@ -95,7 +96,9 @@ Spring Framework를 사용하여 게시판을 구현한다.
     - 게시글을 작성한 계정이라면 수정 및 삭제 버튼을 보여준다.
     
 * **게시글 작성**
-  
+    - 작성요청 한 계정의 번호와 서버에 로그인된 계정의 ID값이 같아야 한다.
+    - 글 작성에 성공하면 작성한 글을 바로 확인할 수 있다. 
+    
 * **게시글 수정**
     - 게시글을 고유번호를 기준으로 해당 글을 수정한다.
     - 게시글을 작성한 유저와 어드민 계정만 게시글을 수정할 수 있다.

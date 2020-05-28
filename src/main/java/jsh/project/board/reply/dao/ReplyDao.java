@@ -18,7 +18,7 @@ public class ReplyDao {
 	}
 	
 	public List<ResponseReplyDto> selectReplys(int articleId) {
-		return sqlSession.selectList("replyMapper.replys", articleId);
+		return sqlSession.selectList("replyMapper.selectReplys", articleId);
 	}
 	
 	public void insertReply(final Reply reply) {

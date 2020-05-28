@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>articleCreate</title>
+<title>게시글 수정</title>
 </head>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.5.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/ajax_header.js"></script>
@@ -66,16 +66,16 @@ function check_form(){
 	} */
 	
 	//var articleCreateRequest = $("form[name=articleCreateForm]").serializeObject();
-	var articleCreateDto = {
+	var requestArticleUpdateDto = {
 			title : $("#title").val(),
 			content : $("#content").val(),
 		}
 	
 	$.ajax({
 		url:"/article",
-		type:"post",
+		type:"patch",
 		contentType : "application/json; charset=UTF-8",
-		data: JSON.stringify(articleCreateDto),
+		data: JSON.stringify(requestArticleUpdateDto),
 		success:function(data){
 			alert(data);
 			location.href = "/article/"+data;
@@ -98,9 +98,11 @@ function check_form(){
 <body>
 <div class="container" style="margin-top: 50px">
 	<div class="form">
-		<h2>글쓰기</h2>
-		<form name = "articleCreateForm" id = "articleCreateForm">
+		<h2>게시글 수정</h2>
 			<table class="table">
+				<tr>
+					<td><input id="category" type="text" class="form-control" readonly="readonly" value="${category }"/></td>
+				<tr>
 				<tr>
 					<td><input id="title" name="title" type="text" class="form-control" placeholder="제목" maxlength="50"></td>
 					<td><small id="error_title" class="error"></small></td>
@@ -110,9 +112,8 @@ function check_form(){
 					<td><small id="error_content" class="error"></small></td>
 				</tr>
 			</table>
-		</form>
 		<a href="/" class="btn btn-primary">목록</a>
-		<input type="button" class="btn btn-primary" value="완료" onclick="return check_form();">
+		<input type="button" class="btn btn-primary" value="완료" onclick="check_form();">
 	</div>
 </div>
 </body>

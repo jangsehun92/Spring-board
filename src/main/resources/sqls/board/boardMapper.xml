@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="boardMapper">	
 	
-	<select id="totalCount" parameterType="RequestArticlesDto" resultType="int">
+	<select id="selectTotalCount" parameterType="RequestArticlesDto" resultType="int">
 		SELECT
 			count(id)
 		FROM
@@ -58,7 +58,7 @@
 			article_table.id, article_table.account_id, article_table.category, account_table.nickname, article_table.title, article_table.content, article_table.view_count, article_table.regdate
 	</select> -->
 	
-	<select id="noticeTotalCount" resultType="int">
+	<select id="selectNoticeTotalCount" resultType="int">
 		SELECT
 			count(id)
 		FROM
@@ -68,7 +68,7 @@
 			importance = 1
 	</select>
 	
-	<select id="noticeArticles" parameterType="map" resultType="ArticleResponseDto">
+	<select id="selectNoticeArticles" parameterType="map" resultType="ArticleResponseDto">
 	<![CDATA[
 		SELECT 
 			b.id,
@@ -105,7 +105,7 @@
 		]]>
 	</select>
 	
-	<select id="articles" parameterType="RequestArticlesDto" resultType="ArticleResponseDto">
+	<select id="selectArticles" parameterType="RequestArticlesDto" resultType="ArticleResponseDto">
 		<![CDATA[
 		SELECT 
 			b.id,

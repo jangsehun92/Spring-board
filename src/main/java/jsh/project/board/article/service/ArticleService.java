@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jsh.project.board.article.dao.ArticleDao;
 import jsh.project.board.article.dto.ArticleResponseDto;
+import jsh.project.board.article.dto.RequestArticleCreateDto;
 import jsh.project.board.article.dto.RequestArticleDeleteDto;
 import jsh.project.board.article.dto.RequestArticleDetailDto;
 import jsh.project.board.article.dto.RequestArticlesDto;
@@ -62,6 +63,10 @@ public class ArticleService {
 		ResponseArticleDetailDto responseDto = articleDao.selectArticle(dto.getId());
 		responseDto.setLikeCheck(articleDao.articleLikeCheck(dto.getLikeDto()));
 		return responseDto;
+	}
+	
+	public void createArticle(RequestArticleCreateDto dto) {
+		dto.getArticle();
 	}
 	
 	@Transactional

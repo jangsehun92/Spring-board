@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="articleLikeMapper">	
 	
-	<select id="likeCheck" parameterType="RequestLikeDto" resultType="int">
+	<select id="selectLikeCount" parameterType="RequestLikeDto" resultType="int">
 		SELECT 
 			count(id)
 		FROM 	
@@ -12,7 +12,7 @@
 			account_id = #{accountId}
 	</select>
 	
-	<insert id="like" parameterType="RequestLikeDto" >
+	<insert id="insertLike" parameterType="RequestLikeDto" >
 		INSERT 
 		INTO 
 			article_like_table 
@@ -24,7 +24,7 @@
 		)
 	</insert>
 	
-	<delete id="likeCancel" parameterType="RequestLikeDto">
+	<delete id="deleteLike" parameterType="RequestLikeDto">
 		DELETE 
 		FROM 
 			article_like_table 

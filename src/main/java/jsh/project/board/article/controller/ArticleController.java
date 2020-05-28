@@ -87,20 +87,21 @@ public class ArticleController {
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
-	// 글쓰기 페이지 요청 1.
-	@GetMapping("/article/create")
-	public String articleCreateForm() {
-		return "articlePages/articleCreate";
+	//1. 글쓰기 페이지 요청(USER 권한을 가지고 있어야한다.)
+	@GetMapping("/articles/{category}/create")
+	public String articleCreateForm(@PathVariable("category") String category, Model model) {
+		model.addAttribute("category", category);
+		return "articlePages/articleCreatePage";
 	}
 	
-	// 글수정 페이지 요청 3.
+	//3. 글수정 페이지 요청(로그인이 되어있어야한다. 수정하려는 게시글이 내가 쓴 글이여야한다.)
 	@GetMapping("/article/edit/{id}")
 	public String articleUpdateForm(@PathVariable("id") int id, Model model) {
-		return "articlePages/articleUpdate";
+		
+		return "articlePages/articleUpdatePage";
 	}
 	
-	
-	// Article 생성 2.
+	//2. Article 생성
 	@PostMapping("/article")
 	public ResponseEntity<HttpStatus> create(@RequestBody RequestArticleCreateDto dto){
 		log.info("dto.getDate : "+dto.getTitle());
@@ -108,16 +109,15 @@ public class ArticleController {
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
-	// Article 수정 4.
+	//4. Article 수정
 	@PreAuthorize("(#dto.accountId == principal.id) and (#dto.articleId == #id)")
 	@PatchMapping("/article/{id}")
-	public ResponseEntity<HttpStatus> create(@PathVariable("id") int id, @RequestBody RequestArticleUpdateDto dto) {
+	public ResponseEntity<HttpStatus> update(@PathVariable("id") int id, @RequestBody RequestArticleUpdateDto dto) {
 		
 		log.info("PATCH /article/" + id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 
-	// Article 삭제
 	@PreAuthorize("(#dto.accountId == principal.id) and (#dto.articleId == #id)")
 	@DeleteMapping("/article/{id}")
 	public ResponseEntity<HttpStatus> delete(@PathVariable("id") int id, @RequestBody RequestArticleDeleteDto dto) {

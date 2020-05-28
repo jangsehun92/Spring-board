@@ -3,7 +3,7 @@
 <mapper namespace="articleMapper">	
 
 	
-	<update id="viewCount" parameterType="int">
+	<update id="updateViewCount" parameterType="int">
 		UPDATE
 			article_table
 		SET
@@ -12,7 +12,7 @@
 			id = #{id}
 	</update>
 
-	<select id="article" resultType="ResponseArticleDetailDto">
+	<select id="selectArticle" resultType="ResponseArticleDetailDto">
 		SELECT 
 			article_table.id,
 			article_table.account_id AS accountId,
@@ -33,6 +33,14 @@
 		GROUP BY 
 			article_table.id, article_table.account_id, article_table.category, account_table.nickname, article_table.title, article_table.content, article_table.view_count, article_table.regdate
 	</select>
+	
+	<insert id="insertArticle" parameterType="Article">
+		
+	</insert>
+	
+	<update id="updateArticle" parameterType="Article">
+	
+	</update>
 	
 	<delete id="deleteArticle" parameterType="RequestArticleDeleteDto">
 		DELETE

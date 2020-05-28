@@ -1,12 +1,16 @@
 package jsh.project.board.article.dto;
 
+import javax.validation.constraints.NotBlank;
+
 import jsh.project.board.article.domain.Article;
 
 public class RequestArticleCreateDto {
 	
 	private int accountId;
 	private String category;
+	@NotBlank(message = "제목을 입력해주세요.")
 	private String title;
+	@NotBlank(message = "내용을 입력해주세요.")
 	private String content;
 	
 	public RequestArticleCreateDto() {
@@ -42,7 +46,7 @@ public class RequestArticleCreateDto {
 	}
 	
 	public void setContent(String content) {
-		this.content = content;
+		this.content = content.trim();
 	}
 	
 	public Article getArticle() {

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import jsh.project.board.article.domain.Article;
 import jsh.project.board.article.dto.ArticleResponseDto;
 import jsh.project.board.article.dto.RequestArticleDeleteDto;
 import jsh.project.board.article.dto.RequestArticlesDto;
@@ -22,27 +23,35 @@ public class ArticleDao {
 	}
 	
 	public int selectNoticeTotalCount() {
-		return sqlSession.selectOne("boardMapper.noticeTotalCount");
+		return sqlSession.selectOne("boardMapper.selectNoticeTotalCount");
 	}
 	
 	public List<ArticleResponseDto> selectNoticeArticles(Map<String, Integer> paramMap){
-		return sqlSession.selectList("boardMapper.noticeArticles", paramMap);
+		return sqlSession.selectList("boardMapper.selectNoticeArticles", paramMap);
 	}
 	
 	public int selectTotalCount(RequestArticlesDto dto) {
-		return sqlSession.selectOne("boardMapper.totalCount", dto);
+		return sqlSession.selectOne("boardMapper.selectTotalCount", dto);
 	}
 	
 	public List<ArticleResponseDto> selectArticles(RequestArticlesDto dto){
-		return sqlSession.selectList("boardMapper.articles", dto);
+		return sqlSession.selectList("boardMapper.selectArticles", dto);
 	}
 	
 	public void updateViewCount(int id) {
-		sqlSession.update("articleMapper.viewCount", id);
+		sqlSession.update("articleMapper.updateViewCount", id);
 	}
 	
 	public ResponseArticleDetailDto selectArticle(int id) {
-		return sqlSession.selectOne("articleMapper.article", id);
+		return sqlSession.selectOne("articleMapper.selectArticle", id);
+	}
+	
+	public void insertArticle(Article article) {
+		sqlSession.insert("articleMapper.insertArticle", article);
+	}
+	
+	public void updateArticle(Article article) {
+		sqlSession.update("articleMapper.updateArticle", article);
 	}
 	
 	public void deleteArticle(RequestArticleDeleteDto dto) {
@@ -58,15 +67,15 @@ public class ArticleDao {
 	}
 	
 	public int articleLikeCheck(RequestLikeDto dto) {
-		return sqlSession.selectOne("articleLikeMapper.likeCheck", dto);
+		return sqlSession.selectOne("articleLikeMapper.selectLikeCount", dto);
 	}
 	
 	public void insertLike(RequestLikeDto dto) {
-		sqlSession.insert("articleLikeMapper.like", dto);
+		sqlSession.insert("articleLikeMapper.insertLike", dto);
 	}
 	
 	public void deleteLike(RequestLikeDto dto) {
-		sqlSession.insert("articleLikeMapper.likeCancel", dto);
+		sqlSession.insert("articleLikeMapper.deleteLike", dto);
 	}
 	
 	

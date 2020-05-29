@@ -53,6 +53,9 @@ public class RequestArticleCreateDto {
 		Article article = new Article();
 		article.setAccountId(this.accountId);
 		article.setCategory(this.category);
+		if(category.equals("notice")) {
+			article.setImportance(1);
+		}
 		article.setTitle(this.title);
 		article.setContent(this.content);
 		return article;

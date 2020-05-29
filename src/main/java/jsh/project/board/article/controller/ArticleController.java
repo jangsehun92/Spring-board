@@ -2,6 +2,8 @@ package jsh.project.board.article.controller;
 
 import java.security.Principal;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import jsh.project.board.account.dto.Account;
 import jsh.project.board.article.dto.RequestArticleCreateDto;
@@ -102,11 +106,16 @@ public class ArticleController {
 	}
 	
 	//2. Article 생성
+	@PreAuthorize("(#dto.accountId == principal.id)")
 	@PostMapping("/article")
-	public ResponseEntity<HttpStatus> create(@RequestBody RequestArticleCreateDto dto){
-		log.info("dto.getContent : "+dto.getContent());
+	public ResponseEntity<String> create(@RequestBody @Valid RequestArticleCreateDto dto){
 		log.info("POST /article");
-		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+		return new ResponseEntity<>(Integer.toString(articleService.createArticle(dto)),HttpStatus.OK);
+	}
+	
+	@PostMapping("/article/image")
+	public ResponseEntity<String> imageUpload(@RequestParam("file") MultipartFile file){
+		return new ResponseEntity<>(articleService.uploadFile(file),HttpStatus.OK);
 	}
 	
 	//4. Article 수정

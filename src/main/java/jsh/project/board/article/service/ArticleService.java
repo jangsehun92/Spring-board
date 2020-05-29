@@ -7,8 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import jsh.project.board.article.dao.ArticleDao;
+import jsh.project.board.article.domain.Article;
 import jsh.project.board.article.dto.ArticleResponseDto;
 import jsh.project.board.article.dto.RequestArticleCreateDto;
 import jsh.project.board.article.dto.RequestArticleDeleteDto;
@@ -18,6 +20,7 @@ import jsh.project.board.article.dto.ResponseArticleDetailDto;
 import jsh.project.board.article.dto.ResponseArticlesDto;
 import jsh.project.board.article.dto.like.RequestLikeDto;
 import jsh.project.board.global.infra.util.Pagination;
+import jsh.project.board.global.infra.util.UploadFileService;
 
 @Service
 public class ArticleService {
@@ -65,8 +68,15 @@ public class ArticleService {
 		return responseDto;
 	}
 	
-	public void createArticle(RequestArticleCreateDto dto) {
-		dto.getArticle();
+	public int createArticle(RequestArticleCreateDto dto) {
+		Article article = dto.getArticle();
+		articleDao.insertArticle(article);
+		return article.getId();
+	}
+	
+	public String uploadFile(MultipartFile file) {
+		UploadFileService fileService = new UploadFileService(file);
+		return fileService.getFileUrl();
 	}
 	
 	@Transactional

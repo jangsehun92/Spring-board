@@ -35,7 +35,24 @@
 	</select>
 	
 	<insert id="insertArticle" parameterType="Article">
-		
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			select 
+				article_seq.nextval 
+			from 
+				DUAL
+		</selectKey>
+		INSERT INTO
+			article_table 
+		VALUES(
+			#{id},
+			#{category},
+			#{importance},
+			#{accountId}, 
+			#{title},
+			#{content},
+			0,
+			SYSDATE
+		)
 	</insert>
 	
 	<update id="updateArticle" parameterType="Article">

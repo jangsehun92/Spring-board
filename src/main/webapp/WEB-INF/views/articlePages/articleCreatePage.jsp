@@ -30,27 +30,33 @@ $(document).ready(function() {
 	        minHeight: null,
 	        maxHeight: null,
 	        focus: true, 
-	        lang : 'ko-KR'
+	        lang : 'ko-KR',
+	        callbacks: {
+	        	onImageUpload : function(files){
+	        		uploadSummernoteImageFile(files[0],this);
+	        	}
+	        }
 	  });
 });
-	
-/* jQuery.fn.serializeObject = function() { 
-    var obj = null; 
-    try { 
-        if(this[0].tagName && this[0].tagName.toUpperCase() == "FORM" ) { 
-            var arr = this.serializeArray(); 
-            if(arr){ obj = {}; 
-            jQuery.each(arr, function() { 
-                obj[this.name] = this.value; }); 
-            } 
-        } 
-    }catch(e) { 
-        alert(e.message); 
-    }finally {} 
-    return obj; 
-} */
+
+function uploadSummernoteImageFile(file, editor) {
+	data = new FormData();
+	data.append("file", file);
+	$.ajax({
+		data : data,
+		type : "POST",
+		url : "/article/image",
+		contentType : false,
+		processData : false,
+		success : function(data) {
+        	//항상 업로드된 파일의 url이 있어야 한다.
+        	alert(data);
+			$(editor).summernote('insertImage', data);
+		}
+	});
+}
 function check_form(){
-	//var articleCreateRequest = $("form[name=articleCreateForm]").serializeObject();
+	//스페이스 하나만 입력햇을때 걸러주기
 	var requestArticleCreateDto = {
 			accountId : "${principal.id}",
 			category : "${category }",
@@ -64,17 +70,15 @@ function check_form(){
 		contentType : "application/json; charset=UTF-8",
 		data: JSON.stringify(requestArticleCreateDto),
 		success:function(data){
-			alert(data);
-			//location.href = "/article/"+data;
+			location.href = "/article/"+data;
 		},
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
+			alert(jsonValue.errors[0].reason);
 			if(code == 'C003'){
-				$(".error").empty();
 				for(var i in jsonValue.errors){
-					$("#user_nickname").focus();
-					$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
+					console.log(code +" : "+jsonValue.errors[i].reason);
 				}
 			}
 		}
@@ -91,11 +95,9 @@ function check_form(){
 					<td><input id="category" type="text" class="form-control" readonly="readonly" value="${category }"/></td>
 				<tr>
 					<td><input id="title" name="title" type="text" class="form-control" placeholder="제목" maxlength="50"></td>
-					<td><small id="error_title" class="error"></small></td>
 				</tr>
 				<tr>
 					<td><textarea id="content" name="content" class="form-control" placeholder="내용" onkeydown="resize(this)"></textarea>
-					<td><small id="error_content" class="error"></small></td>
 				</tr>
 			</table>
 		<a href="/" class="btn btn-primary">목록</a>

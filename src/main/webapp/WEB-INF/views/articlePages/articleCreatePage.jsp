@@ -15,10 +15,25 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
+<script src="${pageContext.request.contextPath}/resources/js/summernote/summernote-lite.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/summernote/lang/summernote-ko-KR.js"></script>
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/summernote/summernote-lite.css">
 <style>
 textarea {min-height: 50px;}
 </style>
 <script type="text/javascript">
+$(document).ready(function() {
+	  $('#content').summernote({
+	    	placeholder: '내용',
+	    	height: 300,
+	        minHeight: null,
+	        maxHeight: null,
+	        focus: true, 
+	        lang : 'ko-KR'
+	  });
+});
+	
 /* jQuery.fn.serializeObject = function() { 
     var obj = null; 
     try { 
@@ -34,39 +49,11 @@ textarea {min-height: 50px;}
     }finally {} 
     return obj; 
 } */
-//textarea 입력값에 따라 height 조절
-function resize(obj){
-	obj.style.height = "1px";
-	obj.style.height = (12+obj.scrollHeight)+"px";
-}
 function check_form(){
-	//replace 로 공백 제거
-	/* var inputForm_title = $("#title").val().replace(/\s|/gi,'');
-	var inputForm_content = $("#content").val().replace(/\s|/gi,'');
-	
-	if(inputForm_title==""){
-		alert("제목을 입력해주세요.");
-		$("#title").val("");
-		$("#title").focus();
-		return false;
-	}
-	
-	if(inputForm_writer==""){
-		alert("작성자를 입력해주세요.");
-		$("#writer").val("");
-		$("#writer").focus();
-		return false;
-	}
-	
-	if(inputForm_content==""){
-		alert("내용을 입력해주세요.");
-		$("#content").val("");
-		$("#content").focus();
-		return false;
-	} */
-	
 	//var articleCreateRequest = $("form[name=articleCreateForm]").serializeObject();
 	var requestArticleCreateDto = {
+			accountId : "${principal.id}",
+			category : "${category }",
 			title : $("#title").val(),
 			content : $("#content").val(),
 		}
@@ -78,7 +65,7 @@ function check_form(){
 		data: JSON.stringify(requestArticleCreateDto),
 		success:function(data){
 			alert(data);
-			location.href = "/article/"+data;
+			//location.href = "/article/"+data;
 		},
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);

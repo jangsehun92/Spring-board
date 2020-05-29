@@ -104,7 +104,7 @@ public class ArticleController {
 	//2. Article 생성
 	@PostMapping("/article")
 	public ResponseEntity<HttpStatus> create(@RequestBody RequestArticleCreateDto dto){
-		log.info("dto.getDate : "+dto.getTitle());
+		log.info("dto.getContent : "+dto.getContent());
 		log.info("POST /article");
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
@@ -113,7 +113,6 @@ public class ArticleController {
 	@PreAuthorize("(#dto.accountId == principal.id) and (#dto.articleId == #id)")
 	@PatchMapping("/article/{id}")
 	public ResponseEntity<HttpStatus> update(@PathVariable("id") int id, @RequestBody RequestArticleUpdateDto dto) {
-		
 		log.info("PATCH /article/" + id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}

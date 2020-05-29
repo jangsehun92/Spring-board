@@ -52,7 +52,7 @@ public class RequestArticleCreateDto {
 	public Article getArticle() {
 		Article article = new Article();
 		article.setAccountId(this.accountId);
-		article.setCategory(category);
+		article.setCategory(this.category);
 		article.setTitle(this.title);
 		article.setContent(this.content);
 		return article;

@@ -2,6 +2,7 @@
 Spring Framework를 사용하여 게시판을 구현한다.
 
 ## Front-end
+* JavaScript
 * Bootstrop3
 * jQuery3
 

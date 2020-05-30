@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import jsh.project.board.account.dao.AccountDao;
-import jsh.project.board.account.dto.Account;
+import jsh.project.board.account.domain.Account;
 
 public class CustomUserDetailsService implements UserDetailsService{
 	

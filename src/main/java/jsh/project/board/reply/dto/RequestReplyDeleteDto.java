@@ -1,8 +1,9 @@
 package jsh.project.board.reply.dto;
 
-import jsh.project.board.reply.dto.Reply.toReply;
+import jsh.project.board.reply.domain.Reply;
+import jsh.project.board.reply.domain.Reply.getReply;
 
-public class RequestReplyDeleteDto implements toReply{
+public class RequestReplyDeleteDto implements getReply{
 	
 	private int id;
 	private int articleId;
@@ -42,7 +43,7 @@ public class RequestReplyDeleteDto implements toReply{
 	}
 
 	@Override
-	public Reply getReply() {
+	public Reply toReply() {
 		final Reply reply = new Reply(this.articleId, this.accountId);
 		reply.setId(this.id);
 		reply.setEnabled(0);

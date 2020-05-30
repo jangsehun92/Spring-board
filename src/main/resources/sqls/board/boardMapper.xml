@@ -68,47 +68,11 @@
 			importance = 1
 	</select>
 	
-	<select id="selectNoticeArticles" parameterType="map" resultType="ArticleResponseDto">
+	<select id="selectNoticeArticles" parameterType="map" resultType="ResponseArticleDto">
 	<![CDATA[
 		SELECT 
 			b.id,
-			b.category,
-			b.title,
-			b.nickname,
-			b.view_count AS viewCount,
-			b.regdate 
-		FROM 
-			(SELECT 
-				rownum AS rnum, 
-				a.id, 
-				a.category, 
-				a.title, 
-				a.nickname, 
-				a.view_count, 
-				a.regdate 
-			FROM
-				(SELECT 
-					article_table.id,
-					article_table.category,
-					article_table.title,
-					account_table.nickname,
-					article_table.view_count,
-					article_table.regdate
-				FROM 
-					article_table JOIN account_table ON article_table.account_id = account_table.id
-				WHERE article_table.importance = 1
-				ORDER BY regdate DESC)a
-			WHERE rownum <= #{endCount}
-			)b
-		WHERE b.rnum >= #{startCount}
-		ORDER BY id DESC
-		]]>
-	</select>
-	
-	<select id="selectArticles" parameterType="RequestArticlesDto" resultType="ArticleResponseDto">
-		<![CDATA[
-		SELECT 
-			b.id,
+			b.accountId,
 			b.category,
 			b.title,
 			b.nickname,
@@ -120,6 +84,7 @@
 			(SELECT 
 				rownum AS rnum,
 				a.id,
+				a.accountId,
 				a.category,
 				a.title,
 				a.nickname,
@@ -130,6 +95,57 @@
 			FROM
 				(SELECT 
 					article_table.id,
+					article_table.account_id AS accountId,
+					article_table.category,
+					article_table.title,
+					account_table.nickname,
+					article_table.view_count AS viewCount,
+					count(reply_table.id) AS replyCount,
+					count(article_like_table.id) AS likeCount,
+					article_table.regdate
+				FROM 
+					article_table JOIN account_table ON article_table.account_id = account_table.id 
+							 LEFT JOIN reply_table ON article_table.id = reply_table.article_id 
+							 LEFT JOIN article_like_table ON article_table.id = article_like_table.article_id
+				WHERE article_table.importance = 1
+				GROUP BY 
+					article_table.id, article_table.account_id, article_table.category, article_table.title, account_table.nickname,article_table.view_count, article_table.regdate
+				ORDER BY regdate DESC)a
+			WHERE rownum <= #{endCount}
+			)b
+		WHERE b.rnum >= #{startCount}
+		ORDER BY id DESC
+		]]>
+	</select>
+	
+	<select id="selectArticles" parameterType="RequestArticlesDto" resultType="ResponseArticleDto">
+		<![CDATA[
+		SELECT 
+			b.id,
+			b.accountId,
+			b.category,
+			b.title,
+			b.nickname,
+			b.viewCount,
+			replyCount,
+			likeCount,
+			b.regdate	
+		FROM 
+			(SELECT 
+				rownum AS rnum,
+				a.id,
+				a.accountId,
+				a.category,
+				a.title,
+				a.nickname,
+				a.viewCount,
+				replyCount,
+				likeCount,
+				a.regdate
+			FROM
+				(SELECT 
+					article_table.id,
+					article_table.account_id AS accountId,
 					article_table.category,
 					article_table.title,
 					account_table.nickname,
@@ -151,8 +167,7 @@
 					</when>
 					<when test="accountId != 0">
 				WHERE 
-					  article_table.account_id = #{accountId} AND
-					  article_table.category != 'notice'
+					  article_table.account_id = #{accountId}
 					</when>
 					<otherwise>
 				WHERE 
@@ -162,7 +177,7 @@
 				</choose>
 		<![CDATA[
 				GROUP BY 
-					article_table.id, article_table.category, article_table.title, account_table.nickname,article_table.view_count, article_table.regdate
+					article_table.id, article_table.account_id, article_table.category, article_table.title, account_table.nickname,article_table.view_count, article_table.regdate
 				ORDER BY 
 					${sort} DESC
 				)a

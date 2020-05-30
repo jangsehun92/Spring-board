@@ -24,15 +24,15 @@ public class ReplyService {
 	}
 	
 	public void saveReply(RequestReplyCreateDto dto) {
-		replyDao.insertReply(dto.getReply());
+		replyDao.insertReply(dto.toReply());
 	}
 	
 	public void modifyReply(RequestReplyUpdateDto dto) {
-		replyDao.updateReply(dto.getReply());
+		replyDao.updateReply(dto.toReply());
 	}
 	
 	public void enabledReply(RequestReplyDeleteDto dto) {
-		replyDao.deleteReply(dto.getReply());
+		replyDao.deleteReply(dto.toReply());
 	}
 	
 }

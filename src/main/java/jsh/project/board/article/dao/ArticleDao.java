@@ -7,11 +7,12 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import jsh.project.board.article.domain.Article;
-import jsh.project.board.article.dto.ArticleResponseDto;
-import jsh.project.board.article.dto.RequestArticleDeleteDto;
-import jsh.project.board.article.dto.RequestArticlesDto;
-import jsh.project.board.article.dto.ResponseArticleDetailDto;
-import jsh.project.board.article.dto.like.RequestLikeDto;
+import jsh.project.board.article.dto.request.RequestArticleDeleteDto;
+import jsh.project.board.article.dto.request.RequestArticlesDto;
+import jsh.project.board.article.dto.request.like.RequestLikeDto;
+import jsh.project.board.article.dto.response.ResponseArticleDetailDto;
+import jsh.project.board.article.dto.response.ResponseArticleDto;
+import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
 
 @Repository
 public class ArticleDao {
@@ -26,7 +27,7 @@ public class ArticleDao {
 		return sqlSession.selectOne("boardMapper.selectNoticeTotalCount");
 	}
 	
-	public List<ArticleResponseDto> selectNoticeArticles(Map<String, Integer> paramMap){
+	public List<ResponseArticleDto> selectNoticeArticles(Map<String, Integer> paramMap){
 		return sqlSession.selectList("boardMapper.selectNoticeArticles", paramMap);
 	}
 	
@@ -34,7 +35,7 @@ public class ArticleDao {
 		return sqlSession.selectOne("boardMapper.selectTotalCount", dto);
 	}
 	
-	public List<ArticleResponseDto> selectArticles(RequestArticlesDto dto){
+	public List<ResponseArticleDto> selectArticles(RequestArticlesDto dto){
 		return sqlSession.selectList("boardMapper.selectArticles", dto);
 	}
 	
@@ -44,6 +45,10 @@ public class ArticleDao {
 	
 	public ResponseArticleDetailDto selectArticle(int id) {
 		return sqlSession.selectOne("articleMapper.selectArticle", id);
+	}
+	
+	public ResponseArticleUpdateDto selectUpdateArticle(int id) {
+		return sqlSession.selectOne("articleMapper.selectUpdateArticle",id);
 	}
 	
 	public void insertArticle(Article article) {

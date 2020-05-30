@@ -21,6 +21,7 @@ $(document).ready(function(){
 $(function(){
 	if($("#category").val()=="notice"){
 		$("#main_category").append("<h3>공지사항</h3>");
+		$("#notice").addClass("active");
 	}
 	
 	if($("#category").val()=="community"){
@@ -46,6 +47,7 @@ $(function(){
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
+					<li id="notice"><a href="/articles/notice">공지사항</a></li>
 					<li id="community"><a href="/articles/community">커뮤니티</a></li>
 					<li id="questions" ><a href="/articles/questions">질문</a></li>
 					<li><hr></li>

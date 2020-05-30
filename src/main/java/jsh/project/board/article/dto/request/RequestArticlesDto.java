@@ -1,4 +1,6 @@
-package jsh.project.board.article.dto;
+package jsh.project.board.article.dto.request;
+
+import jsh.project.board.article.dto.response.ResponseBoardDto;
 
 public class RequestArticlesDto {
 	private int page;
@@ -72,8 +74,8 @@ public class RequestArticlesDto {
 		this.endCount = endCount;
 	}
 	
-	public ResponseArticlesDto getResponseDto() {
-		ResponseArticlesDto dto = new ResponseArticlesDto();
+	public ResponseBoardDto getResponseDto() {
+		ResponseBoardDto dto = new ResponseBoardDto();
 		dto.setCategory(this.category);
 		dto.setQuery(this.query);
 		dto.setSort(this.sort);

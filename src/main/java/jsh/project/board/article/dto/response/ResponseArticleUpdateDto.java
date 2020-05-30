@@ -1,22 +1,17 @@
-package jsh.project.board.article.domain;
+package jsh.project.board.article.dto.response;
 
-import java.util.Date;
-
-public class Article {
+public class ResponseArticleUpdateDto {
 	
 	private int id;
 	private int accountId;
 	private String category;
-	private int importance;
 	private String title;
 	private String content;
-	private Date regdate;
-	private Date modifyDate;
 	
-	public Article() {
+	public ResponseArticleUpdateDto() {
 		
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -40,14 +35,6 @@ public class Article {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	
-	public int getImportance() {
-		return importance;
-	}
-	
-	public void setImportance(int importance) {
-		this.importance = importance;
-	}
 
 	public String getTitle() {
 		return title;
@@ -64,26 +51,6 @@ public class Article {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	
 
-	public Date getRegdate() {
-		return regdate;
-	}
-
-	public void setRegdate(Date regdate) {
-		this.regdate = regdate;
-	}
-	
-	public Date getModifyDate() {
-		return modifyDate;
-	}
-	
-	public void setModifyDate(Date modifyDate) {
-		this.modifyDate = modifyDate;
-	}
-	
-	public interface getArticle{
-		Article toArticle();
-	}
-
-	
 }

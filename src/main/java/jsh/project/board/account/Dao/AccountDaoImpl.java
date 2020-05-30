@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import jsh.project.board.account.dto.Account;
+import jsh.project.board.account.domain.Account;
 import jsh.project.board.account.dto.AccountCreateDto;
 import jsh.project.board.account.dto.AccountEmailDto;
 import jsh.project.board.account.dto.AccountFindRequestDto;

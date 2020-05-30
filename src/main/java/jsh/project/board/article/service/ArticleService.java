@@ -11,14 +11,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jsh.project.board.article.dao.ArticleDao;
 import jsh.project.board.article.domain.Article;
-import jsh.project.board.article.dto.ArticleResponseDto;
-import jsh.project.board.article.dto.RequestArticleCreateDto;
-import jsh.project.board.article.dto.RequestArticleDeleteDto;
-import jsh.project.board.article.dto.RequestArticleDetailDto;
-import jsh.project.board.article.dto.RequestArticlesDto;
-import jsh.project.board.article.dto.ResponseArticleDetailDto;
-import jsh.project.board.article.dto.ResponseArticlesDto;
-import jsh.project.board.article.dto.like.RequestLikeDto;
+import jsh.project.board.article.dto.request.RequestArticleCreateDto;
+import jsh.project.board.article.dto.request.RequestArticleDeleteDto;
+import jsh.project.board.article.dto.request.RequestArticleDetailDto;
+import jsh.project.board.article.dto.request.RequestArticleUpdateDto;
+import jsh.project.board.article.dto.request.RequestArticlesDto;
+import jsh.project.board.article.dto.request.like.RequestLikeDto;
+import jsh.project.board.article.dto.response.ResponseArticleDetailDto;
+import jsh.project.board.article.dto.response.ResponseArticleDto;
+import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
+import jsh.project.board.article.dto.response.ResponseBoardDto;
 import jsh.project.board.global.infra.util.Pagination;
 import jsh.project.board.global.infra.util.UploadFileService;
 
@@ -32,29 +34,29 @@ public class ArticleService {
 		this.articleDao = articleDao;
 	}
 	
-	public ResponseArticlesDto getArticles(RequestArticlesDto dto){
+	public ResponseBoardDto getArticles(RequestArticlesDto dto){
 		log.info(dto.toString());
 		Pagination pagination = new Pagination(articleDao.selectTotalCount(dto), dto.getPage(),articleDao.selectNoticeTotalCount());
 		dto.setStartCount(pagination.getStartCount());
 		dto.setEndCount(pagination.getEndCount());
 		
-		List<ArticleResponseDto> articles = new ArrayList<>();
+		List<ResponseArticleDto> articles = new ArrayList<>();
 		articles.addAll(articleDao.selectNoticeArticles(pagination.getNoticeScope()));
 		articles.addAll(articleDao.selectArticles(dto));
 		
-		ResponseArticlesDto responseArticles = dto.getResponseDto();
+		ResponseBoardDto responseArticles = dto.getResponseDto();
 		responseArticles.setArticles(articles);
 		responseArticles.setPagination(pagination);
 		return responseArticles;
 	}
 	
-	public ResponseArticlesDto getAccountArticles(RequestArticlesDto dto){
+	public ResponseBoardDto getAccountArticles(RequestArticlesDto dto){
 		log.info(dto.toString());
 		Pagination pagination = new Pagination(articleDao.selectTotalCount(dto), dto.getPage());
 		dto.setStartCount(pagination.getStartCount());
 		dto.setEndCount(pagination.getEndCount());
 		
-		ResponseArticlesDto responseArticles = dto.getResponseDto();
+		ResponseBoardDto responseArticles = dto.getResponseDto();
 		responseArticles.setArticles(articleDao.selectArticles(dto));
 		responseArticles.setPagination(pagination);
 		return responseArticles;
@@ -69,14 +71,17 @@ public class ArticleService {
 	}
 	
 	public int createArticle(RequestArticleCreateDto dto) {
-		Article article = dto.getArticle();
+		Article article = dto.toArticle();
 		articleDao.insertArticle(article);
 		return article.getId();
 	}
 	
-	public String uploadFile(MultipartFile file) {
-		UploadFileService fileService = new UploadFileService(file);
-		return fileService.getFileUrl();
+	public ResponseArticleUpdateDto getUpdateArticle(int id) {
+		return articleDao.selectUpdateArticle(id);
+	}
+	
+	public void updateArticle(RequestArticleUpdateDto dto) {
+		articleDao.updateArticle(dto.toArticle());
 	}
 	
 	@Transactional
@@ -92,6 +97,11 @@ public class ArticleService {
 		}else {
 			articleDao.deleteLike(dto);
 		}
+	}
+	
+	public String uploadFile(MultipartFile file) {
+		UploadFileService fileService = new UploadFileService(file);
+		return fileService.getFileUrl();
 	}
 	
 }

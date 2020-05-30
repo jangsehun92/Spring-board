@@ -22,14 +22,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import jsh.project.board.account.dto.Account;
-import jsh.project.board.article.dto.RequestArticleCreateDto;
-import jsh.project.board.article.dto.RequestArticleDeleteDto;
-import jsh.project.board.article.dto.RequestArticleDetailDto;
-import jsh.project.board.article.dto.RequestArticleUpdateDto;
-import jsh.project.board.article.dto.RequestArticlesDto;
-import jsh.project.board.article.dto.ResponseArticlesDto;
-import jsh.project.board.article.dto.like.RequestLikeDto;
+import jsh.project.board.account.domain.Account;
+import jsh.project.board.article.dto.request.RequestArticleCreateDto;
+import jsh.project.board.article.dto.request.RequestArticleDeleteDto;
+import jsh.project.board.article.dto.request.RequestArticleDetailDto;
+import jsh.project.board.article.dto.request.RequestArticleUpdateDto;
+import jsh.project.board.article.dto.request.RequestArticlesDto;
+import jsh.project.board.article.dto.request.like.RequestLikeDto;
+import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
+import jsh.project.board.article.dto.response.ResponseBoardDto;
 import jsh.project.board.article.service.ArticleService;
 
 @Controller
@@ -45,12 +46,8 @@ public class ArticleController {
 	
 	// 공지사항 Aritcles
 	@GetMapping("/")
-	public String articleList(RequestArticlesDto dto, Model model){
-		log.info("GET /articles/"+dto.getPage());
-		dto.setCategory("notice");
-		ResponseArticlesDto responseArticlesDto = articleService.getArticles(dto);
-		model.addAttribute("responseArticlesDto", responseArticlesDto);
-		return "articlePages/articles";
+	public String articleList(){
+		return "redirect:/articles/notice";
 	}
 	
 	// category별 Aritcles 
@@ -58,17 +55,17 @@ public class ArticleController {
 	public String articleListByCategory(@PathVariable String category, RequestArticlesDto dto, Model model){
 		log.info("GET /articles/"+category+"?page="+dto.getPage());
 		dto.setCategory(category);
-		ResponseArticlesDto responseArticlesDto = articleService.getArticles(dto);
-		model.addAttribute("responseArticlesDto", responseArticlesDto);
+		ResponseBoardDto responseBoardDto = articleService.getArticles(dto);
+		model.addAttribute("responseBoardDto", responseBoardDto);
 		return "articlePages/articles";
 	}
 		
 	// 해당 유저의 Aritcles
 	@GetMapping("/articles/account/{id}")
-	public @ResponseBody ResponseEntity<ResponseArticlesDto> articleListByAccount(@PathVariable int id, RequestArticlesDto dto){
+	public @ResponseBody ResponseEntity<ResponseBoardDto> articleListByAccount(@PathVariable int id, RequestArticlesDto dto){
 		log.info("GET /articles/account/"+id+"?page="+dto.getPage());
 		dto.setAccountId(id);
-		ResponseArticlesDto responseArticlesDto = articleService.getAccountArticles(dto);
+		ResponseBoardDto responseArticlesDto = articleService.getAccountArticles(dto);
 		return new ResponseEntity<>(responseArticlesDto, HttpStatus.OK);
 	}
 	
@@ -84,6 +81,7 @@ public class ArticleController {
 		return "articlePages/articleDetail";
 	}
 	
+	// 추천
 	@PreAuthorize("(#dto.accountId == principal.id) and (#dto.articleId == #id)")
 	@PostMapping("/article/like/{id}")
 	public @ResponseBody ResponseEntity<HttpStatus> like(@PathVariable("id")int id, @RequestBody RequestLikeDto dto){
@@ -91,21 +89,27 @@ public class ArticleController {
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
-	//1. 글쓰기 페이지 요청(USER 권한을 가지고 있어야한다.)
+	// 글 작성 페이지 요청
 	@GetMapping("/articles/{category}/create")
 	public String articleCreateForm(@PathVariable("category") String category, Model model) {
 		model.addAttribute("category", category);
 		return "articlePages/articleCreatePage";
 	}
 	
-	//3. 글수정 페이지 요청(로그인이 되어있어야한다. 수정하려는 게시글이 내가 쓴 글이여야한다.)
+	// 글 수정 페이지 요청
 	@GetMapping("/article/edit/{id}")
 	public String articleUpdateForm(@PathVariable("id") int id, Model model) {
-		
+		Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		ResponseArticleUpdateDto dto = articleService.getUpdateArticle(id);
+		if(account.getId() != dto.getAccountId()) {
+			return "redirect:/";
+		}
+		model.addAttribute("responseArticleUpdateDto", dto);
 		return "articlePages/articleUpdatePage";
+		
 	}
 	
-	//2. Article 생성
+	// 글 작성
 	@PreAuthorize("(#dto.accountId == principal.id)")
 	@PostMapping("/article")
 	public ResponseEntity<String> create(@RequestBody @Valid RequestArticleCreateDto dto){
@@ -113,19 +117,16 @@ public class ArticleController {
 		return new ResponseEntity<>(Integer.toString(articleService.createArticle(dto)),HttpStatus.OK);
 	}
 	
-	@PostMapping("/article/image")
-	public ResponseEntity<String> imageUpload(@RequestParam("file") MultipartFile file){
-		return new ResponseEntity<>(articleService.uploadFile(file),HttpStatus.OK);
-	}
-	
-	//4. Article 수정
-	@PreAuthorize("(#dto.accountId == principal.id) and (#dto.articleId == #id)")
+	// 글 수정
+	@PreAuthorize("(#dto.accountId == principal.id) and (#dto.id == #id)")
 	@PatchMapping("/article/{id}")
 	public ResponseEntity<HttpStatus> update(@PathVariable("id") int id, @RequestBody RequestArticleUpdateDto dto) {
 		log.info("PATCH /article/" + id);
+		articleService.updateArticle(dto);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 
+	// 글 삭제
 	@PreAuthorize("(#dto.accountId == principal.id) and (#dto.articleId == #id)")
 	@DeleteMapping("/article/{id}")
 	public ResponseEntity<HttpStatus> delete(@PathVariable("id") int id, @RequestBody RequestArticleDeleteDto dto) {
@@ -134,5 +135,9 @@ public class ArticleController {
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
-
+	// 파일 업로드
+	@PostMapping("/article/image")
+	public ResponseEntity<String> imageUpload(@RequestParam("file") MultipartFile file){
+		return new ResponseEntity<>(articleService.uploadFile(file),HttpStatus.OK);
+	}
 }

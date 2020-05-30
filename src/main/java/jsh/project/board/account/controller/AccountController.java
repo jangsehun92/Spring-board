@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import jsh.project.board.account.dto.Account;
+import jsh.project.board.account.domain.Account;
 import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AccountCreateDto;
 import jsh.project.board.account.dto.AccountEditRequestDto;

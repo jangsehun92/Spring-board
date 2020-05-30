@@ -11,7 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import jsh.project.board.account.dto.Account;
+import jsh.project.board.account.domain.Account;
 
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 	private static final org.slf4j.Logger log = LoggerFactory.getLogger(CustomAuthenticationProvider.class);

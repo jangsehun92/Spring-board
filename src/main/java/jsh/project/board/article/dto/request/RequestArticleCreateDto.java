@@ -1,10 +1,13 @@
-package jsh.project.board.article.dto;
+package jsh.project.board.article.dto.request;
+
+import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
 
 import jsh.project.board.article.domain.Article;
+import jsh.project.board.article.domain.Article.getArticle;
 
-public class RequestArticleCreateDto {
+public class RequestArticleCreateDto implements getArticle{
 	
 	private int accountId;
 	private String category;
@@ -49,7 +52,8 @@ public class RequestArticleCreateDto {
 		this.content = content.trim();
 	}
 	
-	public Article getArticle() {
+	@Override
+	public Article toArticle() {
 		Article article = new Article();
 		article.setAccountId(this.accountId);
 		article.setCategory(this.category);
@@ -58,6 +62,7 @@ public class RequestArticleCreateDto {
 		}
 		article.setTitle(this.title);
 		article.setContent(this.content);
+		article.setRegdate(new Date());
 		return article;
 	}
 

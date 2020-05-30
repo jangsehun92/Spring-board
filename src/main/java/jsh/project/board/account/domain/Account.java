@@ -1,4 +1,4 @@
-package jsh.project.board.account.dto;
+package jsh.project.board.account.domain;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -7,6 +7,8 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import jsh.project.board.account.dto.AccountPasswordResetRequestDto;
 
 @SuppressWarnings("serial")
 public class Account implements UserDetails{

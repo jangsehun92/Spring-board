@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jsh.project.board.account.Enum.AuthOption;
 import jsh.project.board.account.dao.AccountDao;
 import jsh.project.board.account.dao.AuthDao;
-import jsh.project.board.account.dto.Account;
+import jsh.project.board.account.domain.Account;
 import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AccountCreateDto;
 import jsh.project.board.account.dto.AccountEmailDto;

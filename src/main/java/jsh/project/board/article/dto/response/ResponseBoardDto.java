@@ -1,25 +1,25 @@
-package jsh.project.board.article.dto;
+package jsh.project.board.article.dto.response;
 
 import java.util.List;
 
 import jsh.project.board.global.infra.util.Pagination;
 
-public class ResponseArticlesDto {
-	private List<ArticleResponseDto> articles;
+public class ResponseBoardDto {
+	private List<ResponseArticleDto> articles;
 	private Pagination pagination;
 	private String category;
 	private String query;
 	private String sort;
 	
-	public ResponseArticlesDto() {
+	public ResponseBoardDto() {
 		
 	}
 	
-	public List<ArticleResponseDto> getArticles() {
+	public List<ResponseArticleDto> getArticles() {
 		return articles;
 	}
 
-	public void setArticles(List<ArticleResponseDto> articles) {
+	public void setArticles(List<ResponseArticleDto> articles) {
 		this.articles = articles;
 	}
 

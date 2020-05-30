@@ -1,21 +1,19 @@
-package jsh.project.board.article.dto;
+package jsh.project.board.article.dto.response;
 
 import java.sql.Date;
 
-public class ResponseArticleDetailDto {
+public class ResponseArticleDto {
 	private int id;
 	private int accountId;
 	private String category;
-	private String nickname;
 	private String title;
-	private String content;
+	private String nickname;
 	private int viewCount;
 	private int replyCount;
 	private int likeCount;
 	private Date regdate;
-	private boolean likeCheck;
 	
-	public ResponseArticleDetailDto() {
+	public ResponseArticleDto() {
 		
 	}
 
@@ -26,29 +24,21 @@ public class ResponseArticleDetailDto {
 	public void setId(int id) {
 		this.id = id;
 	}
-
+	
 	public int getAccountId() {
 		return accountId;
 	}
-
+	
 	public void setAccountId(int accountId) {
 		this.accountId = accountId;
 	}
-
+	
 	public String getCategory() {
 		return category;
 	}
-
+	
 	public void setCategory(String category) {
 		this.category = category;
-	}
-
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
 	}
 
 	public String getTitle() {
@@ -59,12 +49,12 @@ public class ResponseArticleDetailDto {
 		this.title = title;
 	}
 
-	public String getContent() {
-		return content;
+	public String getNickname() {
+		return nickname;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public int getViewCount() {
@@ -99,16 +89,6 @@ public class ResponseArticleDetailDto {
 		this.regdate = regdate;
 	}
 	
-	public boolean getLikeCheck() {
-		return likeCheck;
-	}
 	
-	public void setLikeCheck(int likeCheck) {
-		if(likeCheck == 0) {
-			this.likeCheck = false;
-		}else {
-			this.likeCheck = true;
-		}
-	}
 	
 }

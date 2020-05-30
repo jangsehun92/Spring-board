@@ -1,4 +1,6 @@
-package jsh.project.board.reply.dto;
+package jsh.project.board.reply.domain;
+
+import java.util.Date;
 
 public class Reply {
 	
@@ -6,6 +8,8 @@ public class Reply {
 	private int articleId;
 	private int accountId;
 	private String content;
+	private Date regdate;
+	private Date modifyDate;
 	private int enabled;
 	
 	public Reply(int articleId, int accountId) {
@@ -53,8 +57,24 @@ public class Reply {
 		this.enabled= enabled;
 	}
 	
-	interface toReply{
-		Reply getReply();
+	public Date getRegdate() {
+		return regdate;
+	}
+	
+	public void setRegdate(Date regdate) {
+		this.regdate = regdate;
+	}
+	
+	public Date getModifyDate() {
+		return modifyDate;
+	}
+	
+	public void setModifyDate(Date modifyDate) {
+		this.modifyDate = modifyDate;
+	}
+	
+	public interface getReply{
+		Reply toReply();
 	}
 	
 }

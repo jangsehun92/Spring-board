@@ -27,7 +27,7 @@
 			#{articleId},
 			#{accountId},
 			#{content},
-			SYSDATE,
+			#{regdate},
 			NULL,
 			#{enabled}
 		)
@@ -38,7 +38,7 @@
 			reply_table
 		SET
 			content = #{content},
-			modify_date = SYSDATE
+			modify_date = #{modifyDate}
 		WHERE
 			id = #{id} AND
 			article_id = #{articleId} AND

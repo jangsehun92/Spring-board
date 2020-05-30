@@ -30,12 +30,12 @@ function articleDeleteConfirm(id){
 }
 function articleDelete(id){
 	var requestArticleDeleteDto = {
-			articleId : "${responseDto.id}",
+			articleId : id,
 			accountId : "${principal.id}"
 	}
 	
 	$.ajax({
-		url:"/article/${responseDto.id}",
+		url:"/article/"+id,
 		type:"delete",
 		contentType : "application/json; charset=UTF-8",
 		data: JSON.stringify(requestArticleDeleteDto), 
@@ -51,8 +51,25 @@ function articleDelete(id){
 	});
 }
 
-function articleUpdate(){
+function articleUpdate(id){
+	var requestArticleUpdateDto = {
+			accountId : "${responseDto.accountId}"
+		}
 	
+		$.ajax({
+			url:"/article/edit/${responseDto.id}",
+			type:"get",
+			contentType : "application/json; charset=UTF-8",
+			data: JSON.stringify(requestArticleUpdateDto),
+			success:function(data){
+				
+			},
+			error:function(request,status,error){
+				jsonValue = jQuery.parseJSON(request.responseText);
+				code = jsonValue.code;
+				alert(jsonValue.message);
+			}
+		});
 }
 
 function replyList(id){
@@ -81,7 +98,7 @@ function replyList(id){
 				);
 			}
 			$.each(data, function(index, value) {
-				if(value.accountId == "${principal.id}"){
+				if(value.accountId == "${principal.id}" || "${principal.authorities} == '[ROLE_ADMIN]'"){
 					html += "<li class='list-group-item'>"+
 							 	"<div style='position: relative; height: 100%'>"+
 							  		"<div>"+
@@ -328,7 +345,11 @@ function login(){
 					</div>
 					<div class="row" >
 						<div class="col-md-4" style="float: left">
-							<span>${responseDto.nickname } </span> <span style="margin-left: 10px"><small><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${responseDto.regdate }"/></small></span>
+							<span><a href="/account/info/${responseDto.accountId }">${responseDto.nickname }</a> </span> <span style="margin-left: 10px"><small><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${responseDto.regdate }"/> 작성
+							<c:if test="${responseDto.modifyDate != null }">
+								᛫ <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${responseDto.modifyDate }"/>수정
+							</c:if>
+							</small></span>
 						</div>
 						<div style="float: right">
 							<small><span style="margin-right: 10px">조회 ${responseDto.viewCount }</span></small> <small >댓글<span id = "replyCount" style="margin-right: 10px">${responseDto.replyCount }</span> </small><small >추천<span id = "likeCount" style="margin-right: 10px">${responseDto.likeCount }</span> </small>
@@ -345,10 +366,9 @@ function login(){
 					<div style="float: left">
 						<div class="btn-group">
 							<a href="/articles/${responseDto.category }" class="btn btn-primary">목록</a>
-							<!-- 글 수정,삭제 버튼 -->
+<!-- 글 수정,삭제 버튼 -->
 							<c:if test="${principal.id eq responseDto.accountId}">
 								<input type="button" class="btn btn-primary" value="수정" onclick="location.href='/article/edit/${responseDto.id}'">
-								
 								<input type="button" class="btn btn-primary" value="삭제" onclick="articleDeleteConfirm(${responseDto.id});">
 							</c:if> 
 						</div>
@@ -361,7 +381,7 @@ function login(){
 							<c:when test="${responseDto.likeCheck == 'true'}">
 								<input type="button" class="btn btn-primary" id="like" value="추천 취소" onclick="like(${principal.id})">
 							</c:when>
-							<c:otherwise>
+								<c:otherwise>
 								<input type="button" class="btn btn-primary" id="like" value="추천 하기" onclick="like(${principal.id})">
 							</c:otherwise>
 						</c:choose>
@@ -371,8 +391,7 @@ function login(){
 					</sec:authorize>
 				</div>
 			</div>
-			<hr >
-
+		<hr >
 <!-- 댓글 입력란 -->
 			<div class="form-group shadow-textarea">
 					<sec:authorize access="isAnonymous()">
@@ -390,11 +409,9 @@ function login(){
 						</div>
 					</sec:authorize>
 			</div>
-			
 <!-- 새로고침(댓글) -->			
 			<hr>
 				<input type="button" class="btn btn-default" value="새로고침" onclick="listConfirm(${responseDto.id});">
-				
 <!-- 댓글 리스트 -->
 			<div>
 				<ul class="list-group" id="replyList">

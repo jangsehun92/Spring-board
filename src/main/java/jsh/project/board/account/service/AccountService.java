@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.security.auth.login.AccountNotFoundException;
 
-import jsh.project.board.account.dto.Account;
+import jsh.project.board.account.domain.Account;
 import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AccountCreateDto;
 import jsh.project.board.account.dto.AccountEmailDto;

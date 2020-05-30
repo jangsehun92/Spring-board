@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import jsh.project.board.reply.dto.Reply;
+import jsh.project.board.reply.domain.Reply;
 import jsh.project.board.reply.dto.ResponseReplyDto;
 
 @Repository

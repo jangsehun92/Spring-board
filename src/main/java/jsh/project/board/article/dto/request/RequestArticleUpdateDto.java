@@ -1,11 +1,15 @@
-package jsh.project.board.article.dto;
+package jsh.project.board.article.dto.request;
+
+import java.util.Date;
 
 import jsh.project.board.article.domain.Article;
+import jsh.project.board.article.domain.Article.getArticle;
 
-public class RequestArticleUpdateDto {
+public class RequestArticleUpdateDto implements getArticle{
 	
 	private int id;
 	private int accountId;
+	private String category;
 	private String title;
 	private String content;
 	
@@ -28,6 +32,14 @@ public class RequestArticleUpdateDto {
 	public void setAccountId(int accountId) {
 		this.accountId = accountId;
 	}
+	
+	public String getCategory() {
+		return category;
+	}
+	
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
 	public String getTitle() {
 		return title;
@@ -45,12 +57,15 @@ public class RequestArticleUpdateDto {
 		this.content = content;
 	}
 	
+	@Override
 	public Article toArticle() {
 		Article article = new Article();
 		article.setId(this.id);
 		article.setAccountId(this.accountId);
+		article.setCategory(this.category);
 		article.setTitle(this.title);
 		article.setContent(this.content);
+		article.setModifyDate(new Date());
 		return article;
 	}
 	

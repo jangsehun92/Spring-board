@@ -32,8 +32,12 @@ $(document).ready(function() {
 	        focus: true, 
 	        lang : 'ko-KR',
 	        callbacks: {
+	        	//이미지가 올라오면 여기로 온다.
 	        	onImageUpload : function(files){
-	        		uploadSummernoteImageFile(files[0],this);
+	        		for (var i = 0; i < files.length; i++) {
+	        		//해당 파일을 서버에 보내 저장한 후 저장한다.
+	        			uploadSummernoteImageFile(files[i],this);
+	        		}
 	        	}
 	        }
 	  });
@@ -49,14 +53,21 @@ function uploadSummernoteImageFile(file, editor) {
 		contentType : false,
 		processData : false,
 		success : function(data) {
-        	//항상 업로드된 파일의 url이 있어야 한다.
-        	alert(data);
-			$(editor).summernote('insertImage', data);
+        	//editor에 저장된 이미지를 가져와 보여줘야하기 때문에 항상 업로드된 파일의 url이 있어야 한다.
+			$(editor).summernote('insertImage',data);
 		}
 	});
 }
 function check_form(){
-	//스페이스 하나만 입력햇을때 걸러주기
+	var inputForm_content = $("#content").val().replace(/\s|/gi,'');
+	
+	if(inputForm_content==""){
+		alert("내용을 입력해주세요.");
+		$("#content").val("");
+		$("#content").focus();
+		return false;
+	}
+	
 	var requestArticleCreateDto = {
 			accountId : "${principal.id}",
 			category : "${category }",

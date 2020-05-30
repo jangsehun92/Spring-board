@@ -3,7 +3,7 @@ package jsh.project.board.account.dao;
 import java.util.List;
 import java.util.Map;
 
-import jsh.project.board.account.dto.Account;
+import jsh.project.board.account.domain.Account;
 import jsh.project.board.account.dto.AccountCreateDto;
 import jsh.project.board.account.dto.AccountEmailDto;
 import jsh.project.board.account.dto.AccountFindRequestDto;

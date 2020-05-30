@@ -12,11 +12,14 @@
         <intercept-url pattern="/account" method="GET" access="permitAll" />
         <intercept-url pattern="/account" method="POST" access="permitAll" />
         <intercept-url pattern="/account" method="PATCH" access="hasRole('ROLE_USER')" />
-        <intercept-url pattern="/account/edit" method="GET" access="hasRole('ROLE_USER')" />
-        <intercept-url pattern="/account/passwordChange" method="GET" access="hasRole('ROLE_USER')" />
-        <intercept-url pattern="/account/passwordChange" method="POST" access="hasRole('ROLE_USER')" />
+        <intercept-url pattern="/account/edit" method="GET" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
+        <intercept-url pattern="/account/passwordChange" method="GET" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
+        <intercept-url pattern="/account/passwordChange" method="POST" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/article" method="GET" access="permitAll" />
+        <intercept-url pattern="/articles/{category}/create" method="GET" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"/>
         <intercept-url pattern="/article" method="POST" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
+        <intercept-url pattern="/article/image" method="POST" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
+        <intercept-url pattern="/article/edit/{id}" method="GET" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/article" method="PATCH" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/article" method="DELETE" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
 		<intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
@@ -35,7 +38,7 @@
 		<session-management invalid-session-url="/login">
 			<concurrency-control max-sessions="1" expired-url="/login" />
 		</session-management>
-		<access-denied-handler error-page="/account/denied"/>
+		<access-denied-handler error-page="/login"/>
 		<csrf disabled="false"/>
 		
     </http>

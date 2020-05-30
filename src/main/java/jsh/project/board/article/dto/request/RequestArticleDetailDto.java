@@ -1,6 +1,6 @@
-package jsh.project.board.article.dto;
+package jsh.project.board.article.dto.request;
 
-import jsh.project.board.article.dto.like.RequestLikeDto;
+import jsh.project.board.article.dto.request.like.RequestLikeDto;
 
 public class RequestArticleDetailDto {
 	private int id;

@@ -34,9 +34,9 @@ public class UploadFileService {
 		StringBuffer sb = new StringBuffer();
 		sb.append(calendar.get(Calendar.YEAR)+"/");
 		sb.append((calendar.get(Calendar.MONTH)+1) + "/");
-		sb.append(calendar.get(Calendar.DATE) + "/");
+		sb.append(calendar.get(Calendar.DATE) +"/");
 		
-		File fileDateDirectory = new File(sb.toString());
+		File fileDateDirectory = new File(rootDirectory + sb.toString());
 		if(!fileDateDirectory.exists()) {
 			fileDateDirectory.mkdirs();
 			log.info(rootDirectory + sb + " 경로에 폴더 생성");
@@ -60,6 +60,7 @@ public class UploadFileService {
 	
 	//파일 저장을 저장한다.
 	public void writerFile(MultipartFile file) {
+		//1.
 		FileOutputStream fos = null;
 
 		byte[] data;
@@ -77,7 +78,8 @@ public class UploadFileService {
 				e.printStackTrace();
 			}
 		}
-// 이렇게 할 수도 있다.		
+// 		2.
+//		FileUtils을 사용하여 할 수 있다.		
 //		File targetFile = new File(rootDirectory + savedFileName);
 //		InputStream fileStream;
 //		try {

@@ -6,7 +6,7 @@
   <!-- 패키지.클래스 까지 입력 -->
   <typeAliases>
   	<!-- Account 관련  -->
-  	<typeAlias type="jsh.project.board.account.dto.Account" alias="Account"/>
+  	<typeAlias type="jsh.project.board.account.domain.Account" alias="Account"/>
   	<typeAlias type="jsh.project.board.account.dto.AccountResponseDto" alias="AccountResponseDto"/>
   	<typeAlias type="jsh.project.board.account.dto.AccountEmailDto" alias="AccountEmailDto"/>
   	<typeAlias type="jsh.project.board.account.dto.AccountCreateDto" alias="AccountCreateDto"/>
@@ -19,17 +19,17 @@
   	
   	<!-- Article 관련 -->
   	<typeAlias type="jsh.project.board.article.domain.Article" alias="Article"/>
-  	<typeAlias type="jsh.project.board.article.dto.ArticleResponseDto" alias="ArticleResponseDto"/>
-  	<typeAlias type="jsh.project.board.article.dto.ResponseArticleDetailDto" alias="ResponseArticleDetailDto"/>
-  	<typeAlias type="jsh.project.board.article.dto.RequestArticlesDto" alias="RequestArticlesDto"/>
-  	<typeAlias type="jsh.project.board.article.dto.ArticleViewCountDto" alias="ArticleViewCountDto"/>
-  	<typeAlias type="jsh.project.board.article.dto.RequestArticleDeleteDto" alias="RequestArticleDeleteDto"/>
+  	<typeAlias type="jsh.project.board.article.dto.response.ResponseArticleDto" alias="ResponseArticleDto"/>
+  	<typeAlias type="jsh.project.board.article.dto.response.ResponseArticleDetailDto" alias="ResponseArticleDetailDto"/>
+  	<typeAlias type="jsh.project.board.article.dto.response.ResponseArticleUpdateDto" alias="ResponseArticleUpdateDto"/>
+  	<typeAlias type="jsh.project.board.article.dto.request.RequestArticlesDto" alias="RequestArticlesDto"/>
+  	<typeAlias type="jsh.project.board.article.dto.request.RequestArticleDeleteDto" alias="RequestArticleDeleteDto"/>
   	
   	<!-- Article Like 관련 -->
-  	<typeAlias type="jsh.project.board.article.dto.like.RequestLikeDto" alias="RequestLikeDto"/>
+  	<typeAlias type="jsh.project.board.article.dto.request.like.RequestLikeDto" alias="RequestLikeDto"/>
   	
   	<!-- Article Reply 관련 -->
-  	<typeAlias type="jsh.project.board.reply.dto.Reply" alias="Reply"/>
+  	<typeAlias type="jsh.project.board.reply.domain.Reply" alias="Reply"/>
   	<typeAlias type="jsh.project.board.reply.dto.ResponseReplyDto" alias="ResponseReplyDto"/>
   	
   </typeAliases>

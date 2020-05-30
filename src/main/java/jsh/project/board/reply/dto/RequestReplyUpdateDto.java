@@ -1,10 +1,13 @@
 package jsh.project.board.reply.dto;
 
+import java.util.Date;
+
 import javax.validation.constraints.NotBlank;
 
-import jsh.project.board.reply.dto.Reply.toReply;
+import jsh.project.board.reply.domain.Reply;
+import jsh.project.board.reply.domain.Reply.getReply;
 
-public class RequestReplyUpdateDto implements toReply{
+public class RequestReplyUpdateDto implements getReply{
 	
 	private int id;
 	private int articleId;
@@ -54,10 +57,11 @@ public class RequestReplyUpdateDto implements toReply{
 	}
 
 	@Override
-	public Reply getReply() {
+	public Reply toReply() {
 		final Reply reply = new Reply(this.articleId, this.accountId);
 		reply.setId(this.id);
 		reply.setContent(this.content);
+		reply.setModifyDate(new Date());
 		return reply;
 	}
 	

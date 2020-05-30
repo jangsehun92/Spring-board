@@ -1,4 +1,4 @@
-package jsh.project.board.article.dto.like;
+package jsh.project.board.article.dto.request.like;
 
 public class RequestLikeDto {
 	

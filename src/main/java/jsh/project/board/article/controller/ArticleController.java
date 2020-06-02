@@ -94,27 +94,36 @@ public class ArticleController {
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
-	// 글 작성 페이지 요청
+	// 글 작성 페이지 요청(일반)
 	@GetMapping("/articles/{category}/create")
 	public String articleCreateForm(@PathVariable("category") String category, Model model) {
-		model.addAttribute("category", UserCategory.valueOf(category.toUpperCase()).getValue());
+		model.addAttribute("category", enumMapper.getCategory(category));
 		model.addAttribute("categorys", enumMapper.getUserCategory());
+		return "articlePages/articleCreatePage";
+	}
+	
+	// 글 작성 페이지 요청(관리자)
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@GetMapping("/admin/articles/{category}/create")
+	public String adminArticleCreateForm(@PathVariable("category") String category, Model model) {
+		model.addAttribute("category", enumMapper.getCategory(category));
+		model.addAttribute("categorys", enumMapper.getAdminCategory());
 		return "articlePages/articleCreatePage";
 	}
 	
 	// 글 수정 페이지 요청
 	@PreAuthorize("((#dto.accountId == principal.id) and (#dto.id == #id)) or (hasAuthority('ROLE_ADMIN'))")
 	@GetMapping("/article/edit/{id}")
-	public String articleUpdateForm(@PathVariable("id") int id, Model model, HttpServletRequest request, RequestArticleInfoDto dto) {
+	public String articleUpdateForm(@PathVariable("id") int id, Model model, RequestArticleInfoDto dto) {
 		model.addAttribute("categorys", enumMapper.getUserCategory());
 		model.addAttribute("responseArticleUpdateDto", articleService.getUpdateArticle(id));
 		return "articlePages/articleUpdatePage";
 	}
 	
-	// 글 작성
+	// 글 작성(일반)
 	@PreAuthorize("(#dto.accountId == principal.id)")
 	@PostMapping("/article")
-	public ResponseEntity<String> create(@RequestBody @Valid RequestArticleCreateDto dto){
+	public ResponseEntity<String> createArticle(@RequestBody @Valid RequestArticleCreateDto dto){
 		log.info("POST /article");
 		return new ResponseEntity<>(Integer.toString(articleService.createArticle(dto)),HttpStatus.OK);
 	}
@@ -122,7 +131,7 @@ public class ArticleController {
 	// 글 수정
 	@PreAuthorize("((#dto.accountId == principal.id) and (#dto.id == #id)) or (hasAuthority('ROLE_ADMIN'))")
 	@PatchMapping("/article/{id}")
-	public ResponseEntity<HttpStatus> update(@PathVariable("id") int id, @RequestBody RequestArticleUpdateDto dto) {
+	public ResponseEntity<HttpStatus> updateArticle(@PathVariable("id") int id, @RequestBody RequestArticleUpdateDto dto) {
 		log.info("PATCH /article/" + id);
 		articleService.updateArticle(dto);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
@@ -131,7 +140,7 @@ public class ArticleController {
 	// 글 삭제
 	@PreAuthorize("((#dto.accountId == principal.id) and (#dto.articleId == #id)) or (hasAuthority('ROLE_ADMIN'))")
 	@DeleteMapping("/article/{id}")
-	public ResponseEntity<HttpStatus> delete(@PathVariable("id") int id, @RequestBody RequestArticleDeleteDto dto) {
+	public ResponseEntity<HttpStatus> deleteArticle(@PathVariable("id") int id, @RequestBody RequestArticleDeleteDto dto) {
 		articleService.deleteArticle(id);
 		log.info("DELETE /article/" + id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);

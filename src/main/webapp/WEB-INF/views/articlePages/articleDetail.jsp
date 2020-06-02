@@ -52,17 +52,11 @@ function articleDelete(id){
 }
 
 function articleUpdate(id){
-	var requestArticleUpdateDto = {
-			accountId : "${responseDto.accountId}"
-		}
-	
 		$.ajax({
-			url:"/article/edit/${responseDto.id}",
+			url:"/article/edit/${responseDto.id}?id="+id+"&accountId=${responseDto.accountId}",
 			type:"get",
-			contentType : "application/json; charset=UTF-8",
-			data: JSON.stringify(requestArticleUpdateDto),
 			success:function(data){
-				
+				$("#container").html(data);
 			},
 			error:function(request,status,error){
 				jsonValue = jQuery.parseJSON(request.responseText);
@@ -98,7 +92,7 @@ function replyList(id){
 				);
 			}
 			$.each(data, function(index, value) {
-				if(value.accountId == "${principal.id}" || "${principal.authorities} == '[ROLE_ADMIN]'"){
+				if(value.accountId == "${principal.id}"){
 					html += "<li class='list-group-item'>"+
 							 	"<div style='position: relative; height: 100%'>"+
 							  		"<div>"+
@@ -128,7 +122,30 @@ function replyList(id){
 									"</div>"+
 								"</div>"+
 							"</li>";
-				}else{
+				}else if('${principal.authorities}' == "[ROLE_ADMIN]"){
+					html += "<li class='list-group-item'>"+
+				 	"<div style='position: relative; height: 100%'>"+
+				  		"<div>"+
+							"<div>"+
+								"<span>"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>";
+						if(value.modifyDate != null){
+							html +="<span class='text-muted'><small> ᛫ "+uxin_timestamp(value.modifyDate)+" 수정</small></span>";
+						}
+						if(value.enabled != 0){
+							html +=	"<div id='dropdownForm-"+value.id+"' style='float: right;'>"+
+											"<a onClick='deleteConfirm("+value.id+")'>삭제</a>";
+						}
+						html += "</div>"+
+									"<div id='replyForm-"+value.id+"' style='white-space : pre-wrap;height: 100%'>"+
+										"<p id='reply-"+value.id+"'>"+value.content+"</p>"+
+									"</div>"+
+								"</div>"+
+						"</div>"+
+					"</div>"+
+				"</li>";
+				}
+				
+				else{
 					html +="<li class='list-group-item'><span>"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>";
 					if(value.modifyDate != null){
 						html +="<span class='text-muted'><small> ᛫ "+uxin_timestamp(value.modifyDate)+" 수정</small></span>";
@@ -169,7 +186,6 @@ function replyCreate(){
 		data: JSON.stringify(requestReplyCreateDto), 
 		
 		success:function(data){
-			alert("댓글이 입력되었습니다.");
 			replyList("${responseDto.id}");
 		},
 		error:function(request,status,error){
@@ -286,7 +302,6 @@ function listConfirm(id){
 	}
 }
 
-
 //추천
 function like(accountId){
 	var requestLikeDto = {
@@ -332,7 +347,7 @@ function login(){
 
 
 <body>
-<div class="container" style="margin-top: 50px">
+<div id="container" class="container" style="margin-top: 50px">
 	<input type="hidden" id ="category" value="${responseDto.category }">
 	<input type="hidden" id ="likeCheck" value="${responseDto.likeCheck }">
 	<div class="header">
@@ -365,12 +380,19 @@ function login(){
 			<div class="row" style="margin-left: 0px; margin-right: 0px">
 					<div style="float: left">
 						<div class="btn-group">
-							<a href="/articles/${responseDto.category }" class="btn btn-primary">목록</a>
+							<a href="/articles/${responseDto.category }" class="btn btn-primary">목록 </a>
 <!-- 글 수정,삭제 버튼 -->
 							<c:if test="${principal.id eq responseDto.accountId}">
-								<input type="button" class="btn btn-primary" value="수정" onclick="location.href='/article/edit/${responseDto.id}'">
+								<%-- <input type="button" class="btn btn-primary" value="수정" onclick="location.href='/article/edit/${responseDto.id}'"> --%>
+								<input type="button" class="btn btn-primary" value="수정" onclick="articleUpdate(${responseDto.id});">
 								<input type="button" class="btn btn-primary" value="삭제" onclick="articleDeleteConfirm(${responseDto.id});">
 							</c:if> 
+							<c:if test="${principal.id != responseDto.accountId}">
+								<sec:authorize access="hasRole('ROLE_ADMIN')">
+									<input type="button" class="btn btn-primary" value="수정" onclick="articleUpdate(${responseDto.id});">
+									<input type="button" class="btn btn-primary" value="삭제" onclick="articleDeleteConfirm(${responseDto.id});">
+								</sec:authorize>
+							</c:if>
 						</div>
 					</div>
 

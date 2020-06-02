@@ -44,7 +44,7 @@ public class RequestReplyDeleteDto implements getReply{
 
 	@Override
 	public Reply toReply() {
-		final Reply reply = new Reply(this.articleId, this.accountId);
+		final Reply reply = new Reply(this.articleId);
 		reply.setId(this.id);
 		reply.setEnabled(0);
 		return reply;

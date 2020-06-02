@@ -12,6 +12,9 @@ public class Reply {
 	private Date modifyDate;
 	private int enabled;
 	
+	public Reply(int articleId) {
+		this.articleId = articleId;
+	}
 	public Reply(int articleId, int accountId) {
 		this.articleId = articleId;
 		this.accountId = accountId;

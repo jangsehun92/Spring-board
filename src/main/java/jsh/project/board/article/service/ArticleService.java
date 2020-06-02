@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import jsh.project.board.article.dao.ArticleDao;
 import jsh.project.board.article.domain.Article;
 import jsh.project.board.article.dto.request.RequestArticleCreateDto;
-import jsh.project.board.article.dto.request.RequestArticleDeleteDto;
 import jsh.project.board.article.dto.request.RequestArticleDetailDto;
 import jsh.project.board.article.dto.request.RequestArticleUpdateDto;
 import jsh.project.board.article.dto.request.RequestArticlesDto;
@@ -85,10 +84,10 @@ public class ArticleService {
 	}
 	
 	@Transactional
-	public void deleteArticle(RequestArticleDeleteDto dto) {
-		articleDao.deleteArticle(dto);
-		articleDao.deleteReplys(dto.getArticleId());
-		articleDao.deleteLikes(dto.getAccountId());
+	public void deleteArticle(int id) {
+		articleDao.deleteArticle(id);
+		articleDao.deleteReplys(id);
+		articleDao.deleteLikes(id);
 	}
 	
 	public void like(RequestLikeDto dto) {

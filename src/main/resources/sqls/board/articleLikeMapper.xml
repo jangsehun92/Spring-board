@@ -38,7 +38,7 @@
 		FROM
 			article_like_table
 		WHERE
-			article_id = #{articleId}
+			article_id = #{id}
 	</delete>
 	
 	

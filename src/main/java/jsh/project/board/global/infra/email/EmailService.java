@@ -3,8 +3,8 @@ package jsh.project.board.global.infra.email;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
-import jsh.project.board.account.Enum.AuthOption;
 import jsh.project.board.account.dto.AuthDto;
+import jsh.project.board.account.enums.AuthOption;
 
 @Component
 public class EmailService {

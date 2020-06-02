@@ -41,6 +41,9 @@ function check_form(){
 					$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
 				}
 			}
+			if(code == 'A001'){
+				$("#error_email").append(jsonValue.message);
+			}
 		}
 	});
 	

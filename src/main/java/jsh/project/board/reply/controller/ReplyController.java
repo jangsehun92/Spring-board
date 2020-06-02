@@ -60,9 +60,9 @@ public class ReplyController {
 	}
 	
 	//해당 게시글 댓글 삭제(비활성화)
-	@PreAuthorize("(#dto.accountId == principal.id) and (#dto.id == #id)")
+	@PreAuthorize("((#dto.accountId == principal.id) and (#dto.id == #id)) or (hasAuthority('ROLE_ADMIN'))")
 	@DeleteMapping("/reply/{id}")
-	public ResponseEntity<HttpStatus> deleteReply(@PathVariable("id")int id,@RequestBody RequestReplyDeleteDto dto){
+	public ResponseEntity<HttpStatus> deleteReply(@PathVariable("id")int id, @RequestBody RequestReplyDeleteDto dto){
 		log.info("DELETE /reply/"+id + " " + dto.toString());
 		replyService.enabledReply(dto);
 		return new ResponseEntity<>(HttpStatus.OK);

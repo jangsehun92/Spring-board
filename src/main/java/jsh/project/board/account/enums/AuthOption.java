@@ -1,4 +1,4 @@
-package jsh.project.board.account.Enum;
+package jsh.project.board.account.enums;
 
 public enum AuthOption {
 	

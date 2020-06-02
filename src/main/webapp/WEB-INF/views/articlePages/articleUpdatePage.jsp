@@ -73,7 +73,7 @@ function check_form(){
 	var requestArticleUpdateDto = {
 			id : "${responseArticleUpdateDto.id}",
 			accountId : "${principal.id}",
-			category : "${category }",
+			category : $("#select_category option:selected").val(),
 			title : $("#title").val(),
 			content : $("#content").val(),
 		}
@@ -106,7 +106,14 @@ function check_form(){
 		<h2>게시글 수정</h2>
 			<table class="table">
 				<tr>
-					<td><input id="category" type="text" class="form-control" readonly="readonly" value="${responseArticleUpdateDto.category }"/></td>
+					<td>
+						<select id = "select_category" class="form-control">
+							<c:forEach items="${categorys }" var="categorys">
+								<option value="${categorys.key}"
+									<c:if test="${responseArticleUpdateDto.category eq categorys.value }"> selected </c:if>>${categorys.value }</option>
+							</c:forEach>
+						</select>
+					</td>
 				<tr>
 				<tr>
 					<td><input id="title" name="title" type="text" class="form-control" placeholder="제목" maxlength="50" value="${responseArticleUpdateDto.title }"></td>

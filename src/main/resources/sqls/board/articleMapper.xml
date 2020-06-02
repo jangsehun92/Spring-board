@@ -74,21 +74,20 @@
 		UPDATE
 			article_table
 		SET
+			category = #{category},
 			title = #{title},
 			content = #{content},
 			modify_date = #{modifyDate}
 		WHERE
-			id = #{id} AND
-			account_id = #{accountId}
+			id = #{id}
 	</update>
 	
-	<delete id="deleteArticle" parameterType="RequestArticleDeleteDto">
+	<delete id="deleteArticle" parameterType="int">
 		DELETE
 		FROM
 			article_table
 		WHERE
-			id = #{articleId} AND
-			account_id = #{accountId}
+			id = #{id}
 	</delete>
 	
 </mapper>

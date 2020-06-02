@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 
 import jsh.project.board.article.domain.Article;
 import jsh.project.board.article.domain.Article.getArticle;
+import jsh.project.board.article.enums.AllCategory;
 
 public class RequestArticleCreateDto implements getArticle{
 	
@@ -56,7 +57,7 @@ public class RequestArticleCreateDto implements getArticle{
 	public Article toArticle() {
 		Article article = new Article();
 		article.setAccountId(this.accountId);
-		article.setCategory(this.category);
+		article.setCategory(AllCategory.valueOf(this.category).getCategory());
 		if(category.equals("notice")) {
 			article.setImportance(1);
 		}

@@ -70,7 +70,7 @@ function check_form(){
 	
 	var requestArticleCreateDto = {
 			accountId : "${principal.id}",
-			category : "${category }",
+			category : $("#select_category option:selected").val(),
 			title : $("#title").val(),
 			content : $("#content").val(),
 		}
@@ -99,11 +99,21 @@ function check_form(){
 
 <body>
 <div class="container" style="margin-top: 50px">
+	<input type="hidden" id="category" value="${category }"/>
 	<div class="form">
 		<h2>게시글 작성</h2>
 			<table class="table">
 				<tr>
-					<td><input id="category" type="text" class="form-control" readonly="readonly" value="${category }"/></td>
+					<%-- <td><input id="category" type="text" class="form-control" readonly="readonly" value="${category }"/></td> --%>
+					<td>
+						<select id = "select_category" class="form-control">
+							<c:forEach items="${categorys }" var="categorys">
+								<option value="${categorys.key}"
+									<c:if test="${category eq categorys.value }"> selected </c:if>>${categorys.value }</option>
+							</c:forEach>
+						</select>
+					</td>
+					
 				<tr>
 					<td><input id="title" name="title" type="text" class="form-control" placeholder="제목" maxlength="50"></td>
 				</tr>

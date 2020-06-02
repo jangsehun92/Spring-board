@@ -4,6 +4,7 @@ import java.util.Date;
 
 import jsh.project.board.article.domain.Article;
 import jsh.project.board.article.domain.Article.getArticle;
+import jsh.project.board.article.enums.AllCategory;
 
 public class RequestArticleUpdateDto implements getArticle{
 	
@@ -61,8 +62,7 @@ public class RequestArticleUpdateDto implements getArticle{
 	public Article toArticle() {
 		Article article = new Article();
 		article.setId(this.id);
-		article.setAccountId(this.accountId);
-		article.setCategory(this.category);
+		article.setCategory(AllCategory.valueOf(this.category).getCategory());
 		article.setTitle(this.title);
 		article.setContent(this.content);
 		article.setModifyDate(new Date());

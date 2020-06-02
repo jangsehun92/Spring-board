@@ -105,6 +105,7 @@ window.onload = function() {
 					<c:otherwise>
 						<sec:authorize access="hasRole('ROLE_ADMIN')">
 							<div style="float: right">
+							<!-- 공지사항을 쓸수있게 링크 수정 -->
 								<a href="/articles/${responseBoardDto.category }/create" class="btn btn-primary">글쓰기</a>
 							</div>
 						</sec:authorize>

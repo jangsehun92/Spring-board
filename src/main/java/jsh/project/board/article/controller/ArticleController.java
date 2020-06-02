@@ -2,6 +2,7 @@ package jsh.project.board.article.controller;
 
 import java.security.Principal;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -26,11 +27,13 @@ import jsh.project.board.account.domain.Account;
 import jsh.project.board.article.dto.request.RequestArticleCreateDto;
 import jsh.project.board.article.dto.request.RequestArticleDeleteDto;
 import jsh.project.board.article.dto.request.RequestArticleDetailDto;
+import jsh.project.board.article.dto.request.RequestArticleInfoDto;
 import jsh.project.board.article.dto.request.RequestArticleUpdateDto;
 import jsh.project.board.article.dto.request.RequestArticlesDto;
 import jsh.project.board.article.dto.request.like.RequestLikeDto;
-import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
 import jsh.project.board.article.dto.response.ResponseBoardDto;
+import jsh.project.board.article.enums.EnumMapper;
+import jsh.project.board.article.enums.UserCategory;
 import jsh.project.board.article.service.ArticleService;
 
 @Controller
@@ -39,9 +42,11 @@ public class ArticleController {
 	private static final Logger log = LoggerFactory.getLogger(ArticleController.class);
 	
 	private ArticleService articleService;
+	private EnumMapper enumMapper;
 	
-	public ArticleController(ArticleService articleService) {
+	public ArticleController(ArticleService articleService, EnumMapper enumMapper) {
 		this.articleService = articleService;
+		this.enumMapper = enumMapper;
 	}
 	
 	// 공지사항 Aritcles
@@ -54,7 +59,7 @@ public class ArticleController {
 	@GetMapping("/articles/{category}")
 	public String articleListByCategory(@PathVariable String category, RequestArticlesDto dto, Model model){
 		log.info("GET /articles/"+category+"?page="+dto.getPage());
-		dto.setCategory(category);
+		dto.setCategory(enumMapper.getCategory(category));
 		ResponseBoardDto responseBoardDto = articleService.getArticles(dto);
 		model.addAttribute("responseBoardDto", responseBoardDto);
 		return "articlePages/articles";
@@ -92,21 +97,18 @@ public class ArticleController {
 	// 글 작성 페이지 요청
 	@GetMapping("/articles/{category}/create")
 	public String articleCreateForm(@PathVariable("category") String category, Model model) {
-		model.addAttribute("category", category);
+		model.addAttribute("category", UserCategory.valueOf(category.toUpperCase()).getValue());
+		model.addAttribute("categorys", enumMapper.getUserCategory());
 		return "articlePages/articleCreatePage";
 	}
 	
 	// 글 수정 페이지 요청
+	@PreAuthorize("((#dto.accountId == principal.id) and (#dto.id == #id)) or (hasAuthority('ROLE_ADMIN'))")
 	@GetMapping("/article/edit/{id}")
-	public String articleUpdateForm(@PathVariable("id") int id, Model model) {
-		Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		ResponseArticleUpdateDto dto = articleService.getUpdateArticle(id);
-		if(account.getId() != dto.getAccountId()) {
-			return "redirect:/";
-		}
-		model.addAttribute("responseArticleUpdateDto", dto);
+	public String articleUpdateForm(@PathVariable("id") int id, Model model, HttpServletRequest request, RequestArticleInfoDto dto) {
+		model.addAttribute("categorys", enumMapper.getUserCategory());
+		model.addAttribute("responseArticleUpdateDto", articleService.getUpdateArticle(id));
 		return "articlePages/articleUpdatePage";
-		
 	}
 	
 	// 글 작성
@@ -118,7 +120,7 @@ public class ArticleController {
 	}
 	
 	// 글 수정
-	@PreAuthorize("(#dto.accountId == principal.id) and (#dto.id == #id)")
+	@PreAuthorize("((#dto.accountId == principal.id) and (#dto.id == #id)) or (hasAuthority('ROLE_ADMIN'))")
 	@PatchMapping("/article/{id}")
 	public ResponseEntity<HttpStatus> update(@PathVariable("id") int id, @RequestBody RequestArticleUpdateDto dto) {
 		log.info("PATCH /article/" + id);
@@ -127,10 +129,10 @@ public class ArticleController {
 	}
 
 	// 글 삭제
-	@PreAuthorize("(#dto.accountId == principal.id) and (#dto.articleId == #id)")
+	@PreAuthorize("((#dto.accountId == principal.id) and (#dto.articleId == #id)) or (hasAuthority('ROLE_ADMIN'))")
 	@DeleteMapping("/article/{id}")
 	public ResponseEntity<HttpStatus> delete(@PathVariable("id") int id, @RequestBody RequestArticleDeleteDto dto) {
-		articleService.deleteArticle(dto);
+		articleService.deleteArticle(id);
 		log.info("DELETE /article/" + id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}

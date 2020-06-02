@@ -7,7 +7,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import jsh.project.board.article.domain.Article;
-import jsh.project.board.article.dto.request.RequestArticleDeleteDto;
 import jsh.project.board.article.dto.request.RequestArticlesDto;
 import jsh.project.board.article.dto.request.like.RequestLikeDto;
 import jsh.project.board.article.dto.response.ResponseArticleDetailDto;
@@ -59,8 +58,8 @@ public class ArticleDao {
 		sqlSession.update("articleMapper.updateArticle", article);
 	}
 	
-	public void deleteArticle(RequestArticleDeleteDto dto) {
-		sqlSession.delete("articleMapper.deleteArticle", dto);
+	public void deleteArticle(int id) {
+		sqlSession.delete("articleMapper.deleteArticle", id);
 	}
 	
 	public void deleteReplys(int articleId) {

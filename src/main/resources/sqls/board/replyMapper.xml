@@ -16,6 +16,7 @@
 			reply_table JOIN account_table ON reply_table.account_id = account_table.id
 		WHERE 
 			reply_table.article_id = #{articleId}
+		ORDER BY reply_table.regdate
 	</select>
 	
 	<insert id="insertReply" parameterType="Reply">
@@ -54,7 +55,6 @@
 		WHERE
 			id = #{id} AND
 			article_id = #{articleId} AND
-			account_id = #{accountId} AND
 			enabled = 1
 	</update>
 	
@@ -63,7 +63,7 @@
 		FROM
 			reply_table
 		WHERE
-			article_id = #{articleId}
+			article_id = #{id}
 	</delete>
 	
 </mapper>

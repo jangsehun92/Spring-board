@@ -27,37 +27,6 @@
 		</choose>
 	</select>
 	
-	<!-- <update id="viewCount" parameterType="int">
-		UPDATE
-			article_table
-		SET
-			view_count = view_count + 1
-		WHERE
-			id = #{id}
-	</update>
-
-	<select id="article" resultType="ResponseArticleDetailDto">
-		SELECT 
-			article_table.id,
-			article_table.account_id AS accountId,
-			article_table.category,
-			account_table.nickname,
-			article_table.title,
-			article_table.content,
-			article_table.view_count AS viewCount,
-			count(reply_table.id) AS replyCount,
-			count(article_like_table.id) AS likeCount,
-			article_table.regdate
-		FROM 
-			article_table JOIN account_table ON article_table.account_id = account_table.id 
-					 LEFT JOIN reply_table ON article_table.id = reply_table.article_id 
-					 LEFT JOIN article_like_table ON article_table.id = article_like_table.article_id
-		WHERE 
-			article_table.id  = #{id}
-		GROUP BY 
-			article_table.id, article_table.account_id, article_table.category, account_table.nickname, article_table.title, article_table.content, article_table.view_count, article_table.regdate
-	</select> -->
-	
 	<select id="selectNoticeTotalCount" resultType="int">
 		SELECT
 			count(id)
@@ -95,7 +64,7 @@
 			FROM
 				(SELECT 
 					article_table.id,
-					article_table.account_id AS accountId,
+					article_table.ACCOUNT_ID AS accountID,
 					article_table.category,
 					article_table.title,
 					account_table.nickname,
@@ -105,16 +74,13 @@
 					article_table.regdate
 				FROM 
 					article_table JOIN account_table ON article_table.account_id = account_table.id 
-							 LEFT JOIN reply_table ON article_table.id = reply_table.article_id 
-							 LEFT JOIN article_like_table ON article_table.id = article_like_table.article_id
-				WHERE article_table.importance = 1
-				GROUP BY 
-					article_table.id, article_table.account_id, article_table.category, article_table.title, account_table.nickname,article_table.view_count, article_table.regdate
+					LEFT JOIN reply_table ON article_table.id = reply_table.article_id
+					LEFT JOIN article_like_table ON article_table.id = article_like_table.article_id 
+				WHERE category = LOWER('notice') 
+				GROUP BY article_table.id, article_table.account_id, article_table.category, article_table.title, account_table.nickname,article_table.view_count, article_table.regdate
 				ORDER BY regdate DESC)a
-			WHERE rownum <= #{endCount}
-			)b
+			WHERE rownum <= #{endCount})b
 		WHERE b.rnum >= #{startCount}
-		ORDER BY id DESC
 		]]>
 	</select>
 	
@@ -162,7 +128,7 @@
 					<when test="query != null and query != ''">
 				WHERE 
 					article_table.title LIKE '%'||#{query}||'%' AND
-					article_table.category = #{category} AND
+					article_table.category = LOWER(#{category}) AND
 					article_table.importance = 0
 					</when>
 					<when test="accountId != 0">
@@ -171,7 +137,7 @@
 					</when>
 					<otherwise>
 				WHERE 
-					  article_table.category = #{category} AND
+					  article_table.category = LOWER(#{category}) AND
 					  article_table.importance = 0
 					</otherwise>
 				</choose>

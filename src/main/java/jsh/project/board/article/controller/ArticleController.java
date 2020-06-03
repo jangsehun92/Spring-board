@@ -2,7 +2,6 @@ package jsh.project.board.article.controller;
 
 import java.security.Principal;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -33,7 +32,6 @@ import jsh.project.board.article.dto.request.RequestArticlesDto;
 import jsh.project.board.article.dto.request.like.RequestLikeDto;
 import jsh.project.board.article.dto.response.ResponseBoardDto;
 import jsh.project.board.article.enums.EnumMapper;
-import jsh.project.board.article.enums.UserCategory;
 import jsh.project.board.article.service.ArticleService;
 
 @Controller
@@ -51,7 +49,7 @@ public class ArticleController {
 	
 	// 공지사항 Aritcles
 	@GetMapping("/")
-	public String articleList(){
+	public String root(){
 		return "redirect:/articles/notice";
 	}
 	
@@ -60,7 +58,7 @@ public class ArticleController {
 	public String articleListByCategory(@PathVariable String category, RequestArticlesDto dto, Model model){
 		log.info("GET /articles/"+category+"?page="+dto.getPage());
 		dto.setCategory(enumMapper.getCategory(category));
-		ResponseBoardDto responseBoardDto = articleService.getArticles(dto);
+		ResponseBoardDto responseBoardDto = dto.isNotice()?articleService.getNoticeArticles(dto):articleService.getArticles(dto);
 		model.addAttribute("responseBoardDto", responseBoardDto);
 		return "articlePages/articles";
 	}

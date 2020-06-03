@@ -33,6 +33,18 @@ public class ArticleService {
 		this.articleDao = articleDao;
 	}
 	
+	public ResponseBoardDto getNoticeArticles(RequestArticlesDto dto){
+		log.info(dto.toString());
+		Pagination pagination = new Pagination(articleDao.selectTotalCount(dto), dto.getPage());
+		dto.setStartCount(pagination.getStartCount());
+		dto.setEndCount(pagination.getEndCount());
+		
+		ResponseBoardDto responseArticles = dto.getResponseDto();
+		responseArticles.setArticles(articleDao.selectArticles(dto));
+		responseArticles.setPagination(pagination);
+		return responseArticles;
+	}
+	
 	public ResponseBoardDto getArticles(RequestArticlesDto dto){
 		log.info(dto.toString());
 		Pagination pagination = new Pagination(articleDao.selectTotalCount(dto), dto.getPage(),articleDao.selectNoticeTotalCount());

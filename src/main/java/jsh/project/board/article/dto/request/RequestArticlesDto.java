@@ -81,6 +81,10 @@ public class RequestArticlesDto {
 		dto.setSort(this.sort);
 		return dto;
 	}
+	
+	public boolean isNotice() {
+		return category.equals("notice")?true:false;
+	}
 
 	@Override
 	public String toString() {

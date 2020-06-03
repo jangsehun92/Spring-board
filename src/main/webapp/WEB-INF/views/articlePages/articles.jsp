@@ -13,7 +13,7 @@
 <script src="${pageContext.request.contextPath }/resources/js/pagination.js"></script>
 <script type="text/javascript">
 window.onload = function() {
-	var sort = '${responseArticlesDto.sort }';
+	var sort = '${responseBoardDto.sort }';
 	$("#sort-"+sort).css('fontWeight','bold');
 };
 </script>

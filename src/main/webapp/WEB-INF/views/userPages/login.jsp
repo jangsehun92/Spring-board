@@ -21,9 +21,7 @@ var inko = new Inko();
 function check_form(){
 	var email = $("#email").val().replace(/\s|/gi,'');
 	var password = inko.ko2en($("#password").val().replace(/\s|/gi,''));
-	//alert(password);
 	$("#password").val(password);
-	//galert($("#password").val());
 	if(email==""){
 		alert("이메일을 입력해주세요.");
 		$("#email").focus();
@@ -56,7 +54,6 @@ function join(){
 						로그인
 					</h5>
 				</div>
-				<!--  <form class="form-signup form-user panel-body" method="post" action="/login" onsubmit="return check_form();">-->
 				<form:form class="form-signup form-user panel-body" method="post" action="/login" onsubmit="return check_form();">
 					<fieldset>
 						<input type="text" class="form-control input-sm" id="email" name="email" placeholder="이메일" value="${email }">

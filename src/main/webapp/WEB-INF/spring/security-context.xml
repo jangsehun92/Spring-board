@@ -24,12 +24,16 @@
         <intercept-url pattern="/article" method="DELETE" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
 		<intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
 		
-		<form-login login-page="/login"
-					username-parameter="email"
-					password-parameter="password"
-					authentication-failure-handler-ref="loginFailureHandler"
-					authentication-success-handler-ref="loginSuccessHandler"/>
+		<!-- <anonymous enabled="false"/> -->
 		
+		<form-login 
+			login-processing-url="/login"
+			login-page="/login"
+			username-parameter="email"
+			password-parameter="password"
+			authentication-failure-handler-ref="loginFailureHandler"
+			authentication-success-handler-ref="loginSuccessHandler" />
+			
 		<logout
 			logout-url="/logout"
 			logout-success-url="/"
@@ -39,9 +43,9 @@
 		<session-management invalid-session-url="/login">
 			<concurrency-control max-sessions="1" expired-url="/login" />
 		</session-management>
+		
 		<access-denied-handler error-page="/login"/>
 		<csrf disabled="false"/>
-		
     </http>
     
     <context:component-scan base-package="jsh.project.board" />

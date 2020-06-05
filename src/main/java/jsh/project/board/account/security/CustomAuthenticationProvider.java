@@ -25,8 +25,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String email = (String) authentication.getPrincipal();
-		String password = (String) authentication.getCredentials();
-
+		String password = (String)authentication.getCredentials();
+		
 		log.info("====== 로그인 시도 정보 {email : "+email +" password : " + password + " }");
 		Account account = (Account)userDetailsService.loadUserByUsername(email);
 		
@@ -45,7 +45,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 			throw new LockedException(email);
 		}
 		//...
-		
 		return new UsernamePasswordAuthenticationToken(account, password, account.getAuthorities());
 	}
 

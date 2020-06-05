@@ -6,7 +6,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
-		 
+		
     <http auto-config="true" use-expressions="true"  >
         <intercept-url pattern="/articles" access="permitAll" />
         <intercept-url pattern="/account" method="GET" access="permitAll" />
@@ -28,13 +28,14 @@
 					username-parameter="email"
 					password-parameter="password"
 					authentication-failure-handler-ref="loginFailureHandler"
-					authentication-success-handler-ref="loginSuccessHandler"
-		/>
+					authentication-success-handler-ref="loginSuccessHandler"/>
 		
 		<logout
+			logout-url="/logout"
 			logout-success-url="/"
-			invalidate-session="true"
-		/>
+			delete-cookies="JSESSIONID"
+			invalidate-session="true" />
+		
 		<session-management invalid-session-url="/login">
 			<concurrency-control max-sessions="1" expired-url="/login" />
 		</session-management>

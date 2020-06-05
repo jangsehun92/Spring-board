@@ -50,8 +50,8 @@ public class AccountServiceImpl implements AccountService{
 	}
 	
 	//회원가입
-	@Override
 	@Transactional
+	@Override
 	public void register(AccountCreateDto dto) throws Exception {
 		dto.checkPassword();
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
@@ -70,12 +70,14 @@ public class AccountServiceImpl implements AccountService{
 	}
 	
 	//회원정보 수정
+	@Transactional
 	@Override
 	public void accountEdit(Account dto) {
 		accountDao.edit(dto);
 	}
 	
 	//비밀번호 변경
+	@Transactional
 	@Override
 	public void passwordChange(Account account, AccountPasswordDto dto) {
 		dto.checkPassword();
@@ -108,6 +110,7 @@ public class AccountServiceImpl implements AccountService{
 	}
 	
 	//계정 잠금 및 해제
+	@Transactional
 	@Override
 	public void updateLocked(String email, int locked) {
 		Map<String, Object> paramMap = new HashMap<>();
@@ -135,6 +138,7 @@ public class AccountServiceImpl implements AccountService{
 	}
 	
 	//인증 이메일 재발송
+	@Transactional
 	@Override
 	public void resendEmail(AccountEmailDto dto) throws Exception {
 		AuthDto authDto = updateAuth(dto.getEmail());
@@ -142,6 +146,7 @@ public class AccountServiceImpl implements AccountService{
 	}
 	
 	//비밀번호 초기화 인증이메일 발송
+	@Transactional
 	@Override
 	public void sendResetEmail(AccountPasswordResetRequestDto dto) throws Exception {
 		Account account = accountDao.findByEmail(dto.getEmail());
@@ -208,7 +213,6 @@ public class AccountServiceImpl implements AccountService{
 	}
 	
 	//인증키 생성
-	@Transactional
 	private AuthDto createAuth(String email, AuthOption authOption) {
 		Map<String, String> paramMap = new HashMap<>();
 		paramMap.put("email", email);
@@ -227,7 +231,6 @@ public class AccountServiceImpl implements AccountService{
 	}
 	
 	//인증키 업데이트
-	@Transactional
 	private AuthDto updateAuth(String email) {
 		AuthDto authDto = authDao.findByEmail(email);
 		if(authDto == null || authDto.isAuthExpired()) {

@@ -10,10 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
-import jsh.project.board.article.service.ArticleService;
+import jsh.project.board.article.service.ArticleServiceImpl;
 
 public class UploadFileService {
-	private static final Logger log = LoggerFactory.getLogger(ArticleService.class);
+	private static final Logger log = LoggerFactory.getLogger(ArticleServiceImpl.class);
 	
 	private final String rootDirectory = "/Users/jangsehun/Documents/fileDirectory/";
 	private final String pathUrl = "/article/images/";

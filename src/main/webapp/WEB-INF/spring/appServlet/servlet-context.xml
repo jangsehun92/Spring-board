@@ -4,10 +4,12 @@
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.2.xsd
 		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
@@ -26,8 +28,7 @@
 	<context:component-scan base-package="jsh.project.board" />
 	<security:global-method-security pre-post-annotations="enabled"/>
 	
-
-	<!-- 멀티파트 리졸버 -->
+	<!-- MultipartResolver 설정 -->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<!-- 최대업로드 가능한 바이트크기 -->
 		<beans:property name="maxUploadSize" value="52428800" />
@@ -36,4 +37,7 @@
 		<!-- defaultEncoding -->
 		<beans:property name="defaultEncoding" value="utf-8" />
 	</beans:bean>
+	
+	<aop:aspectj-autoproxy/>
+	
 </beans:beans>

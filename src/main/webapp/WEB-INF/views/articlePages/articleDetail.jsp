@@ -436,7 +436,7 @@ function login(){
 							<div>
 							<form method="post" action="/reply" onsubmit="return replyCreate();">
 								<textarea id="replyContent" name="content" class="form-control z-depth-1" rows="3" maxlength="1000" placeholder="댓글을 입력해주세요."></textarea>
-								<input type="submit" class="btn btn-success" style="width:100%;" value="작성">
+								<input type="submit" class="btn btn-default" style="width:100%;" value="작성">
 							</form>
 							</div>
 						</div>

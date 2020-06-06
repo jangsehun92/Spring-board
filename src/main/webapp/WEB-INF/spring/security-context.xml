@@ -22,9 +22,8 @@
         <intercept-url pattern="/article/edit/{id}" method="GET" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/article" method="PATCH" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/article" method="DELETE" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
-		<intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
 		
-		<!-- <anonymous enabled="false"/> -->
+		<anonymous enabled="false"/>
 		
 		<form-login 
 			login-processing-url="/login"

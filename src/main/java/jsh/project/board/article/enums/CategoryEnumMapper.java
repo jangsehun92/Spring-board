@@ -6,15 +6,31 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EnumMapper {
+public class CategoryEnumMapper {
 	
-	public EnumMapper() {
+	public CategoryEnumMapper() {
 		
 	}
 	
 	public String getCategory(String category) {
 		return AllCategory.valueOf(category.toUpperCase()).getCategory();
 	}
+	
+	public List<CategoryDto> getCategorys(String category){
+		boolean result = false;
+		for(AdminCategory adminCategorys : AdminCategory.values()) {
+			if(adminCategorys.getValue().equals(category)) {
+				result = true;
+			}
+		}
+		
+		if(result) {
+			return getAdminCategory();
+		}else {
+			return getUserCategory();
+		}
+	}
+		
 	
 	public List<CategoryDto> getAdminCategory() {
 		List<CategoryDto> list = new ArrayList<CategoryDto>();

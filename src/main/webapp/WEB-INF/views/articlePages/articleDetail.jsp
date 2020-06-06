@@ -28,6 +28,8 @@ function articleDeleteConfirm(id){
 		return;
 	}
 }
+
+// 게시글 삭제
 function articleDelete(id){
 	var requestArticleDeleteDto = {
 			articleId : id,
@@ -51,21 +53,23 @@ function articleDelete(id){
 	});
 }
 
+// 게시글 업데이트 요청
 function articleUpdate(id){
-		$.ajax({
-			url:"/article/edit/${responseDto.id}?id="+id+"&accountId=${responseDto.accountId}",
-			type:"get",
-			success:function(data){
-				$("#container").html(data);
-			},
-			error:function(request,status,error){
-				jsonValue = jQuery.parseJSON(request.responseText);
-				code = jsonValue.code;
-				alert(jsonValue.message);
-			}
-		});
+	$.ajax({
+		url:"/article/edit/${responseDto.id}?id="+id+"&accountId=${responseDto.accountId}",
+		type:"get",
+		success:function(data){
+			$("#container").html(data);
+		},
+		error:function(request,status,error){
+			jsonValue = jQuery.parseJSON(request.responseText);
+			code = jsonValue.code;
+			alert(jsonValue.message);
+		}
+	});
 }
 
+// 댓글 리스트 불러오기
 function replyList(id){
 	$.ajax({
 		url:"/replys/${responseDto.id}",
@@ -163,6 +167,7 @@ function replyList(id){
 	return false;
 }
 
+//댓글 입력
 function replyCreate(){
 	var content = $("#replyContent").val().replace(/\s|/gi,'');
 	
@@ -198,6 +203,7 @@ function replyCreate(){
 	return false;
 }
 
+// 댓글 업데이트 요청
 function replyUpdateForm(id){
 	var dropdownForm = $("#dropdownForm-"+id);
 	var replyForm = $("#replyForm-"+id);
@@ -209,6 +215,8 @@ function replyUpdateForm(id){
 	updateForm.show();
 	$("#replyContent-"+id).focus();
 }
+
+// 댓글 폼 컨트롤
 function replyForm(id){
 	var dropdownForm = $("#dropdownForm-"+id);
 	var replyForm = $("#replyForm-"+id);
@@ -221,6 +229,7 @@ function replyForm(id){
 	$("#replyForm-"+id).focus();
 }
 
+// 댓글 업데이트 
 function replyUpdate(id){
 	
 	var requestReplyUpdateDto = {
@@ -257,6 +266,7 @@ function deleteConfirm(id){
 	}
 }
 
+// 댓글 삭제 
 function replyDelete(id){
 	var requestReplyDeleteDto = {
 		id : id,
@@ -302,7 +312,7 @@ function listConfirm(id){
 	}
 }
 
-//추천
+// 추천
 function like(accountId){
 	var requestLikeDto = {
 		articleId : "${responseDto.id}",
@@ -335,6 +345,7 @@ function like(accountId){
 		}
 	});
 }
+
 function login(){
 	if(confirm("로그인 하시겠습니까?")){
 		location.href="/login";	
@@ -347,8 +358,8 @@ function login(){
 
 
 <body>
+<input type="hidden" id ="category" value="${responseDto.category }">
 <div id="container" class="container" style="margin-top: 50px">
-	<input type="hidden" id ="category" value="${responseDto.category }">
 	<input type="hidden" id ="likeCheck" value="${responseDto.likeCheck }">
 	<div class="header">
 		<h2>글보기</h2>

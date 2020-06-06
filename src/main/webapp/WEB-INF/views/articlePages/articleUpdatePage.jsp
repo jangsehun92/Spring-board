@@ -41,7 +41,7 @@ $(document).ready(function() {
 	        	}
 	        }
 	  });
-	  $('#content').summernote('code', '${responseArticleUpdateDto.content}');
+	  $('#content').summernote('code', '${responseDto.content}');
 });
 
 function uploadSummernoteImageFile(file, editor) {
@@ -71,7 +71,7 @@ function check_form(){
 	}
 	
 	var requestArticleUpdateDto = {
-			id : "${responseArticleUpdateDto.id}",
+			id : "${responseDto.id}",
 			accountId : "${principal.id}",
 			category : $("#select_category option:selected").val(),
 			title : $("#title").val(),
@@ -79,12 +79,12 @@ function check_form(){
 		}
 	
 	$.ajax({
-		url:"/article/${responseArticleUpdateDto.id}",
+		url:"/article/${responseDto.id}",
 		type:"patch",
 		contentType : "application/json; charset=UTF-8",
 		data: JSON.stringify(requestArticleUpdateDto),
 		success:function(data){
-			location.href = "/article/${responseArticleUpdateDto.id}";
+			location.href = "/article/${responseDto.id}";
 		},
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
@@ -102,6 +102,7 @@ function check_form(){
 
 <body>
 <div class="container" style="margin-top: 50px">
+	<input type="hidden" id="category" value="${responseDto.category }"/>
 	<div class="form">
 		<h2>게시글 수정</h2>
 			<table class="table">
@@ -110,13 +111,13 @@ function check_form(){
 						<select id = "select_category" class="form-control">
 							<c:forEach items="${categorys }" var="categorys">
 								<option value="${categorys.key}"
-									<c:if test="${responseArticleUpdateDto.category eq categorys.value }"> selected </c:if>>${categorys.value }</option>
+									<c:if test="${responseDto.category eq categorys.value }"> selected </c:if>>${categorys.value }</option>
 							</c:forEach>
 						</select>
 					</td>
 				<tr>
 				<tr>
-					<td><input id="title" name="title" type="text" class="form-control" placeholder="제목" maxlength="50" value="${responseArticleUpdateDto.title }"></td>
+					<td><input id="title" name="title" type="text" class="form-control" placeholder="제목" maxlength="50" value="${responseDto.title }"></td>
 				</tr>
 				<tr>
 					<td><textarea id="content" name="content" class="form-control" placeholder="내용" onkeydown="resize(this)"></textarea>

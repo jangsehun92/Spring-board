@@ -57,20 +57,16 @@ public class GlobalExceptionHandler {
 
 	/**
 	 * Authentication 객체가 필요한 권한을 보유하지 않은 경우 발생
+	 * 컨트롤러 단에서 권한 인증에 실패 할 경우 메인페이지로 리다이렉트 시킨다.
+	 * ReponseEntity를 이용하여 ErrorResponse를 리턴해 줄 수 있다.
 	 */
-//	@ExceptionHandler(AccessDeniedException.class)
-//	protected ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException e) {
-//		log.error("handleAccessDeniedException", e);
-//		final ErrorResponse response = new ErrorResponse(ErrorCode.HANDLE_ACCESS_DENIED);
-//		return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.HANDLE_ACCESS_DENIED.getStatus()));
-//	}
-	
-// 컨트롤러 단에서 권한 인증에 실패 할 경우 메인페이지로 리다이렉트 시킨다.
 	@ExceptionHandler(AccessDeniedException.class)
 	protected String handleAccessDeniedException(AccessDeniedException e) {
 		log.error("handleAccessDeniedException", e);
 		final ErrorResponse response = new ErrorResponse(ErrorCode.HANDLE_ACCESS_DENIED);
 		log.error(response.getCode() + " : " + response.getMessage());
+//		final ErrorResponse response = new ErrorResponse(ErrorCode.HANDLE_ACCESS_DENIED);
+//		return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.HANDLE_ACCESS_DENIED.getStatus()));
 		return "redirect:/";
 	}
 
@@ -102,8 +98,8 @@ public class GlobalExceptionHandler {
 	protected String handleException(HttpServletRequest request, Exception e) {
 		log.error("handleEntityNotFoundException", e);
 		final ErrorResponse response = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
-		//return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		log.error(response.getCode() + " : " + response.getMessage());
+//		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		return "redirect:/";
 	}
 

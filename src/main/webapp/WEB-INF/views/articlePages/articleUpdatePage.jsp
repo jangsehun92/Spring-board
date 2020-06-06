@@ -105,7 +105,7 @@ function check_form(){
 	<input type="hidden" id="category" value="${responseDto.category }"/>
 	<div class="form">
 		<h2>게시글 수정</h2>
-			<table class="table">
+			<table class="table table-bordered" >
 				<tr>
 					<td>
 						<select id = "select_category" class="form-control">
@@ -123,8 +123,12 @@ function check_form(){
 					<td><textarea id="content" name="content" class="form-control" placeholder="내용" onkeydown="resize(this)"></textarea>
 				</tr>
 			</table>
-		<a href="/" class="btn btn-primary">목록</a>
-		<input type="button" class="btn btn-primary" value="완료" onclick="check_form();">
+		<div style="float: right">
+			<div class="btn-group">
+				<input type="button" class="btn btn-primary" value="취소" onclick="location.href='/article/${responseDto.id}'">
+				<input type="button" class="btn btn-primary" value="완료" onclick="check_form();">
+			</div>
+		</div>
 	</div>
 </div>
 </body>

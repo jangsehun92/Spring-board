@@ -19,9 +19,6 @@
 <script src="${pageContext.request.contextPath}/resources/js/summernote/lang/summernote-ko-KR.js"></script>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/summernote/summernote-lite.css">
-<style>
-textarea {min-height: 50px;}
-</style>
 <script type="text/javascript">
 $(document).ready(function() {
 	  $('#content').summernote({
@@ -102,9 +99,8 @@ function check_form(){
 	<input type="hidden" id="category" value="${category }"/>
 	<div class="form">
 		<h2>게시글 작성</h2>
-			<table class="table">
+			<table class="table table-bordered">
 				<tr>
-					<%-- <td><input id="category" type="text" class="form-control" readonly="readonly" value="${category }"/></td> --%>
 					<td>
 						<select id = "select_category" class="form-control">
 							<c:forEach items="${categorys }" var="categorys">
@@ -118,11 +114,15 @@ function check_form(){
 					<td><input id="title" name="title" type="text" class="form-control" placeholder="제목" maxlength="50"></td>
 				</tr>
 				<tr>
-					<td><textarea id="content" name="content" class="form-control" placeholder="내용" onkeydown="resize(this)"></textarea>
+					<td><textarea id="content" name="content"></textarea>
 				</tr>
 			</table>
-		<a href="/" class="btn btn-primary">목록</a>
-		<input type="button" class="btn btn-primary" value="완료" onclick="check_form();">
+		<div style="float: right">
+			<div class="btn-group">
+				<input type="button" class="btn btn-primary" value="취소" onclick="location.href='/articles/${category}'">
+				<input type="button" class="btn btn-primary" value="작성" onclick="check_form();">
+			</div>
+		</div>
 	</div>
 </div>
 </body>

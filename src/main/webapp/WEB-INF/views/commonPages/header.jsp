@@ -62,14 +62,6 @@ $(function(){
 						</form>
 					</sec:authorize>
 					
-					<%-- <sec:authorize access="isAnonymous()">
-						<div>
-							<ul class="nav navbar-nav navbar-right">
-								<li id="login"><a href="/login">로그인</a></li>
-								<li id="join"><a href="/account/join">회원가입</a></li>
-							</ul>
-						</div>
-					</sec:authorize> --%>
 					<c:if test="${principal == null}">
 						<div>
 							<ul class="nav navbar-nav navbar-right">

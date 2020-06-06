@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,14 +63,22 @@ $(function(){
 						</form>
 					</sec:authorize>
 					
-					<sec:authorize access="isAnonymous()">
+					<%-- <sec:authorize access="isAnonymous()">
 						<div>
 							<ul class="nav navbar-nav navbar-right">
 								<li id="login"><a href="/login">로그인</a></li>
 								<li id="join"><a href="/account/join">회원가입</a></li>
 							</ul>
 						</div>
-					</sec:authorize>
+					</sec:authorize> --%>
+					<c:if test="${principal == null}">
+						<div>
+							<ul class="nav navbar-nav navbar-right">
+								<li id="login"><a href="/login">로그인</a></li>
+								<li id="join"><a href="/account/join">회원가입</a></li>
+							</ul>
+						</div>
+					</c:if>
 				</ul>
 			</div>
 			<!--/.nav-collapse -->

@@ -13,16 +13,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context_test.xml")
+@ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-contextTest.xml")
 public class DataSourceTest {
 	private static final Logger logger = LoggerFactory.getLogger(DataSourceTest.class);
 
 	@Inject
-	private DataSource ds;
+	private DataSource dataSource;
 	
 	@Test
 	public void 데이터소스_연결테스트() throws Exception {
-		Connection con = ds.getConnection();
+		Connection con = dataSource.getConnection();
 		logger.info("DataSource : "+con);
 	}
 	

@@ -81,6 +81,11 @@ public class Article {
 		this.modifyDate = modifyDate;
 	}
 	
+	@Override
+	public String toString() {
+		return "Article {id : "+id + " accountId : " + accountId + " category : " + category + " importance : " + importance + " title : " + title + " content : " + content + " regdate : " + regdate + " modifyDate : " + modifyDate;
+	}
+	
 	public interface getArticle{
 		Article toArticle();
 	}

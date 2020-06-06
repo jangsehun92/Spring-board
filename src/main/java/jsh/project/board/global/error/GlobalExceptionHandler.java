@@ -97,8 +97,7 @@ public class GlobalExceptionHandler {
 		return "redirect:/auth/denied";
 	}
 	
-	
-//서버에러일 경우 메인페이지로 리다이렉트 시킨다.
+	//서버에러일 경우 메인페이지로 리다이렉트 시킨다.
 	@ExceptionHandler(Exception.class)
 	protected String handleException(HttpServletRequest request, Exception e) {
 		log.error("handleEntityNotFoundException", e);

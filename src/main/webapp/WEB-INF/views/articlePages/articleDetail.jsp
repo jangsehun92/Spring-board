@@ -40,7 +40,7 @@ function articleDelete(id){
 		contentType : "application/json; charset=UTF-8",
 		data: JSON.stringify(requestArticleDeleteDto), 
 		success:function(data){
-			location.href="/";
+			history.back();
 		},
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);

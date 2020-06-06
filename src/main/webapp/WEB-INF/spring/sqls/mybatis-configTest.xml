@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+
+<configuration >
+	
+  <!-- 패키지.클래스 까지 입력 -->
+  <typeAliases>
+  	<!-- Account 관련  -->
+  	<typeAlias type="jsh.project.board.account.domain.Account" alias="Account"/>
+  	<typeAlias type="jsh.project.board.account.dto.AccountResponseDto" alias="AccountResponseDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.AccountEmailDto" alias="AccountEmailDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.AccountCreateDto" alias="AccountCreateDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.AccountFindRequestDto" alias="AccountFindRequestDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.AccountFindResponseDto" alias="AccountFindResponseDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.AccountAuthRequestDto" alias="AccountAuthRequestDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.AccountPasswordResetRequestDto" alias="AccountPasswordResetRequestDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.AccountPasswordDto" alias="AccountPasswordDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.AuthDto" alias="AuthDto"/>
+  	
+  	<!-- Article 관련 -->
+  	<typeAlias type="jsh.project.board.article.domain.Article" alias="Article"/>
+  	<typeAlias type="jsh.project.board.article.dto.response.ResponseArticleDto" alias="ResponseArticleDto"/>
+  	<typeAlias type="jsh.project.board.article.dto.response.ResponseArticleDetailDto" alias="ResponseArticleDetailDto"/>
+  	<typeAlias type="jsh.project.board.article.dto.response.ResponseArticleUpdateDto" alias="ResponseArticleUpdateDto"/>
+  	<typeAlias type="jsh.project.board.article.dto.request.RequestArticlesDto" alias="RequestArticlesDto"/>
+  	<typeAlias type="jsh.project.board.article.dto.request.RequestArticleDeleteDto" alias="RequestArticleDeleteDto"/>
+  	
+  	<!-- Article Like 관련 -->
+  	<typeAlias type="jsh.project.board.article.dto.request.like.RequestLikeDto" alias="RequestLikeDto"/>
+  	
+  	<!-- Article Reply 관련 -->
+  	<typeAlias type="jsh.project.board.reply.domain.Reply" alias="Reply"/>
+  	<typeAlias type="jsh.project.board.reply.dto.ResponseReplyDto" alias="ResponseReplyDto"/>
+  	
+  </typeAliases>
+  <typeHandlers>
+  	<typeHandler handler="jsh.project.board.global.handler.CustomDateHandler"/>
+  </typeHandlers> 
+
+  <!-- mapper의 위치를 잡아준다. -->
+  <!-- <mappers>
+    게시판 관련
+  	<mapper resource="file:src/main/resources/sqls/board/boardMapper.xml"/>
+  	<mapper resource="file:src/main/resources/sqls/board/articleMapper.xml"/>
+  	<mapper resource="file:src/main/resources/sqls/board/articleLikeMapper.xml"/>
+  	<mapper resource="file:src/main/resources/sqls/board/replyMapper.xml"/>
+  	<mapper resource="file:src/main/resources/sqls/account/accountMapper.xml"/>
+  	<mapper resource="file:src/main/resources/sqls/account/authMapper.xml"/>
+  </mappers> -->
+  
+
+
+</configuration>
+

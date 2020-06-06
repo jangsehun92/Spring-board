@@ -90,6 +90,7 @@ public class ArticleServiceImpl implements ArticleService{
 	public int createArticle(RequestArticleCreateDto dto) {
 		Article article = dto.toArticle();
 		articleDao.insertArticle(article);
+		log.info(article.toString());
 		return article.getId();
 	}
 	

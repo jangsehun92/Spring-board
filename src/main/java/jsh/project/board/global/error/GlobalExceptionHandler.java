@@ -61,15 +61,15 @@ public class GlobalExceptionHandler {
 	 * ReponseEntity를 이용하여 ErrorResponse를 리턴해 줄 수 있다.
 	 */
 	@ExceptionHandler(AccessDeniedException.class)
-	protected String handleAccessDeniedException(AccessDeniedException e) {
+	protected Object handleAccessDeniedException(HttpServletRequest request, AccessDeniedException e) {
 		log.error("handleAccessDeniedException", e);
-		final ErrorResponse response = new ErrorResponse(ErrorCode.HANDLE_ACCESS_DENIED);
-		log.error(response.getCode() + " : " + response.getMessage());
-//		final ErrorResponse response = new ErrorResponse(ErrorCode.HANDLE_ACCESS_DENIED);
-//		return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.HANDLE_ACCESS_DENIED.getStatus()));
+		if(isAjax(request)) {
+			final ErrorResponse response = new ErrorResponse(ErrorCode.HANDLE_ACCESS_DENIED);
+			return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.HANDLE_ACCESS_DENIED.getStatus()));
+		}
 		return "redirect:/";
 	}
-
+	
 	/**
 	 * 서비스단에서 발생 할 수 있는 에러들을 처리한다.
 	 */
@@ -93,14 +93,25 @@ public class GlobalExceptionHandler {
 		return "redirect:/auth/denied";
 	}
 	
-	//서버에러일 경우 메인페이지로 리다이렉트 시킨다.
+	/**
+	 * 나머지 exception에 관한 처리
+	 */
 	@ExceptionHandler(Exception.class)
-	protected String handleException(HttpServletRequest request, Exception e) {
+	protected Object handleException(HttpServletRequest request, Exception e) {
 		log.error("handleEntityNotFoundException", e);
 		final ErrorResponse response = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
+		if(isAjax(request)) {
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		log.error(response.getCode() + " : " + response.getMessage());
-//		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		return "redirect:/";
+	}
+	
+	private boolean isAjax(HttpServletRequest request) {
+		if("XMLHttpRequest".equals(request.getHeader("x-requested-with"))) {
+			return true;
+		}
+		return false;
 	}
 
 }

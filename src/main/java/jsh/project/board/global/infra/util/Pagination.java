@@ -20,9 +20,6 @@ public class Pagination {
 	private int endPage; //하단 페이지네이션의 마지막 숫자
 	
 	public Pagination(int totalCount, int page, int noticeCount) {
-		if(totalCount == 0) {
-			totalCount = 1;
-		}
 		this.totalCount = totalCount;
 		this.page = page;
 		this.noticeCount = noticeCount;
@@ -31,9 +28,6 @@ public class Pagination {
 	}
 	
 	public Pagination(int totalCount, int page) {
-		if(totalCount == 0) {
-			totalCount = 1;
-		}
 		this.totalCount = totalCount;
 		this.page = page;
 		init();
@@ -132,4 +126,13 @@ public class Pagination {
 		resultMap.put("endCount", noticeCount);
 		return resultMap;
 	}
+	
+	@Override
+	public String toString() {
+		return "pagination { totalCount : "+ totalCount + " countList : " + countList +
+				" countPage : " + countPage + " page : " + page + " totalPage : "
+				+ totalPage + " startCount : " + startCount + " endCount : " + endCount + " noticeCount : "+ noticeCount + " startPage : "
+				+ startPage + " endPage : " + endPage + " }";
+	}
+	
 }

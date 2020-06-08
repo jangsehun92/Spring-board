@@ -50,6 +50,8 @@ public class ArticleServiceImpl implements ArticleService{
 	public ResponseBoardDto getArticles(RequestArticlesDto dto){
 		log.info(dto.toString());
 		Pagination pagination = new Pagination(articleDao.selectTotalCount(dto), dto.getPage(),articleDao.selectNoticeTotalCount());
+		log.info(pagination.toString());
+		
 		dto.setStartCount(pagination.getStartCount());
 		dto.setEndCount(pagination.getEndCount());
 		
@@ -67,6 +69,8 @@ public class ArticleServiceImpl implements ArticleService{
 	public ResponseBoardDto getAccountArticles(RequestArticlesDto dto){
 		log.info(dto.toString());
 		Pagination pagination = new Pagination(articleDao.selectTotalCount(dto), dto.getPage());
+		log.info(pagination.toString());
+		
 		dto.setStartCount(pagination.getStartCount());
 		dto.setEndCount(pagination.getEndCount());
 		
@@ -82,6 +86,7 @@ public class ArticleServiceImpl implements ArticleService{
 		articleDao.updateViewCount(dto.getId());
 		ResponseArticleDetailDto responseDto = articleDao.selectArticle(dto.getId());
 		responseDto.setLikeCheck(articleDao.articleLikeCheck(dto.getLikeDto()));
+		log.info(responseDto.toString());
 		return responseDto;
 	}
 	

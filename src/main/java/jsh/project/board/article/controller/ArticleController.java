@@ -112,9 +112,10 @@ public class ArticleController {
 	
 	// 글 수정 페이지 요청
 	@PreAuthorize("((#dto.accountId == principal.id) and (#dto.id == #id)) or (hasAuthority('ROLE_ADMIN'))")
-	@GetMapping("/article/edit/{id}")
+	@PostMapping("/article/edit/{id}")
 	public String articleUpdateForm(@PathVariable("id") int id, Model model, RequestArticleInfoDto dto) {
-		ResponseArticleUpdateDto responseDto = articleService.getUpdateArticle(id);
+		log.info("POST /article/edit/"+id);
+		ResponseArticleUpdateDto responseDto = articleService.getUpdateArticle(dto.getId());
 		model.addAttribute("categorys", categoryEnumMapper.getCategorys(responseDto.getCategory()));
 		model.addAttribute("responseDto", responseDto);
 		return "articlePages/articleUpdatePage";
@@ -124,6 +125,7 @@ public class ArticleController {
 	@PreAuthorize("(#dto.accountId == principal.id)")
 	@PostMapping("/article")
 	public ResponseEntity<Integer> createArticle(@RequestBody @Valid RequestArticleCreateDto dto){
+		dto.setCategory(categoryEnumMapper.getCategory(dto.getCategory()));
 		log.info("POST /article");
 		return new ResponseEntity<>(articleService.createArticle(dto),HttpStatus.OK);
 	}

@@ -120,4 +120,11 @@ public class ResponseArticleDetailDto {
 		}
 	}
 	
+	@Override
+	public String toString() {
+		return "ResponseArticleDetailDto { id : " + id + " accountId : " + accountId + " category : " + category
+				+ " nickname : " + nickname + " title : " + title + " content : " + content + " viewCount : " + viewCount + " replyCount : " + replyCount
+				+ " likeCount : " + likeCount + " regdate : " + regdate + " modifyDate : " + modifyDate + " likeCheck : " + likeCheck;
+	}
+	
 }

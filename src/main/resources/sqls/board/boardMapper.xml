@@ -11,7 +11,7 @@
 			<when test="query != null and query !=''">
 		WHERE 
 			article_table.title LIKE '%'||#{query}||'%' AND
-			article_table.category = #{category} AND
+			article_table.category = LOWER(#{category}) AND
 			article_table.importance = 0
 			</when>
 			<when test="accountId != 0">
@@ -21,7 +21,7 @@
 			</when>
 			<otherwise>
 		WHERE 
-			article_table.category = #{category} AND
+			article_table.category = LOWER(#{category}) AND
 			article_table.importance = 0
 			</otherwise>
 		</choose>
@@ -33,7 +33,7 @@
 		FROM
 			article_table
 		WHERE
-			category = 'notice' AND
+			category = LOWER('notice') AND
 			importance = 1
 	</select>
 	
@@ -137,8 +137,7 @@
 					</when>
 					<otherwise>
 				WHERE 
-					  article_table.category = LOWER(#{category}) AND
-					  article_table.importance = 0
+					  article_table.category = LOWER(#{category})
 					</otherwise>
 				</choose>
 		<![CDATA[

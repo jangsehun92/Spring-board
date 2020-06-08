@@ -53,22 +53,6 @@ function articleDelete(id){
 	});
 }
 
-// 게시글 업데이트 요청
-function articleUpdate(id){
-	$.ajax({
-		url:"/article/edit/${responseDto.id}?id="+id+"&accountId=${responseDto.accountId}",
-		type:"get",
-		success:function(data){
-			$("#container").html(data);
-		},
-		error:function(request,status,error){
-			jsonValue = jQuery.parseJSON(request.responseText);
-			code = jsonValue.code;
-			alert(jsonValue.message);
-		}
-	});
-}
-
 // 댓글 리스트 불러오기
 function replyList(id){
 	$.ajax({
@@ -394,19 +378,22 @@ function login(){
 							<a href="/articles/${responseDto.category }" class="btn btn-primary">목록 </a>
 <!-- 글 수정,삭제 버튼 -->
 							<c:if test="${principal.id eq responseDto.accountId}">
-								<%-- <input type="button" class="btn btn-primary" value="수정" onclick="location.href='/article/edit/${responseDto.id}'"> --%>
-								<input type="button" class="btn btn-primary" value="수정" onclick="articleUpdate(${responseDto.id});">
-								<input type="button" class="btn btn-primary" value="삭제" onclick="articleDeleteConfirm(${responseDto.id});">
+								<input type="button" class="btn btn-primary" value="수정" onclick="document.getElementById('article-edit-form').submit();">
+								<input type="button" class="btn btn-primary" value="삭제" onclick="articleDeleteConfirm(${responseDto.id});" >
 							</c:if> 
 							<c:if test="${principal.id != responseDto.accountId}">
 								<sec:authorize access="hasRole('ROLE_ADMIN')">
-									<input type="button" class="btn btn-primary" value="수정" onclick="articleUpdate(${responseDto.id});">
+									<input type="button" class="btn btn-primary" value="수정" onclick="document.getElementById('article-edit-form').submit();">
 									<input type="button" class="btn btn-primary" value="삭제" onclick="articleDeleteConfirm(${responseDto.id});">
 								</sec:authorize>
 							</c:if>
 						</div>
 					</div>
-
+				<form method="post" action="/article/edit/${responseDto.id }" id="article-edit-form">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					<input type="hidden" name="id" value="${responseDto.id }">
+					<input type="hidden" name="accountId" value="${responseDto.accountId }">
+				</form>
 <!-- 추천버튼 -->
 				<div style="float: right">
 					<sec:authorize access="isAuthenticated()">

@@ -83,11 +83,10 @@ function check_form(){
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			alert(jsonValue.errors[0].reason);
-			if(code == 'C003'){
-				for(var i in jsonValue.errors){
-					console.log(code +" : "+jsonValue.errors[i].reason);
-				}
+			if(code =='C004'){
+				console.log(code +" : "+jsonValue.message);
+				alert(jsonValue.message);
+				history.back();
 			}
 		}
 	});

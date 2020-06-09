@@ -104,6 +104,7 @@ public class AccountServiceImpl implements AccountService{
 	}
 	
 	//로그인 성공시 마지막로그인날짜 업데이트
+	@Transactional
 	@Override
 	public void updateLoginDate(String email) {
 		accountDao.updateLoginDate(email);

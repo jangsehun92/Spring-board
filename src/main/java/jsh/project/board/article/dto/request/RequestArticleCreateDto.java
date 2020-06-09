@@ -6,12 +6,12 @@ import javax.validation.constraints.NotBlank;
 
 import jsh.project.board.article.domain.Article;
 import jsh.project.board.article.domain.Article.getArticle;
-import jsh.project.board.article.enums.AdminCategory;
 
 public class RequestArticleCreateDto implements getArticle{
 	
 	private int accountId;
 	private String category;
+	private int importance;
 	@NotBlank(message = "제목을 입력해주세요.")
 	private String title;
 	@NotBlank(message = "내용을 입력해주세요.")
@@ -37,6 +37,14 @@ public class RequestArticleCreateDto implements getArticle{
 		this.category = category;
 	}
 	
+	public int getImportance() {
+		return importance;
+	}
+	
+	public void setImportance(int importance) {
+		this.importance = importance;
+	}
+	
 	public String getTitle() {
 		return title;
 	}
@@ -58,9 +66,7 @@ public class RequestArticleCreateDto implements getArticle{
 		Article article = new Article();
 		article.setAccountId(this.accountId);
 		article.setCategory(this.category);
-		if(category.equals(AdminCategory.NOTICE.getValue())) {
-			article.setImportance(1);
-		}
+		article.setImportance(this.importance);
 		article.setTitle(this.title);
 		article.setContent(this.content);
 		article.setRegdate(new Date());

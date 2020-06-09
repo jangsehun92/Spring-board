@@ -40,7 +40,7 @@ public class ArticleServiceImpl implements ArticleService{
 		dto.setStartCount(pagination.getStartCount());
 		dto.setEndCount(pagination.getEndCount());
 		
-		ResponseBoardDto responseArticles = dto.getResponseDto();
+		ResponseBoardDto responseArticles = dto.toResponseDto();
 		responseArticles.setArticles(articleDao.selectArticles(dto));
 		responseArticles.setPagination(pagination);
 		return responseArticles;
@@ -50,8 +50,6 @@ public class ArticleServiceImpl implements ArticleService{
 	public ResponseBoardDto getArticles(RequestArticlesDto dto){
 		log.info(dto.toString());
 		Pagination pagination = new Pagination(articleDao.selectTotalCount(dto), dto.getPage(),articleDao.selectNoticeTotalCount());
-		log.info(pagination.toString());
-		
 		dto.setStartCount(pagination.getStartCount());
 		dto.setEndCount(pagination.getEndCount());
 		
@@ -59,7 +57,7 @@ public class ArticleServiceImpl implements ArticleService{
 		articles.addAll(articleDao.selectNoticeArticles(pagination.getNoticeScope()));
 		articles.addAll(articleDao.selectArticles(dto));
 		
-		ResponseBoardDto responseArticles = dto.getResponseDto();
+		ResponseBoardDto responseArticles = dto.toResponseDto();
 		responseArticles.setArticles(articles);
 		responseArticles.setPagination(pagination);
 		return responseArticles;
@@ -69,12 +67,10 @@ public class ArticleServiceImpl implements ArticleService{
 	public ResponseBoardDto getAccountArticles(RequestArticlesDto dto){
 		log.info(dto.toString());
 		Pagination pagination = new Pagination(articleDao.selectTotalCount(dto), dto.getPage());
-		log.info(pagination.toString());
-		
 		dto.setStartCount(pagination.getStartCount());
 		dto.setEndCount(pagination.getEndCount());
 		
-		ResponseBoardDto responseArticles = dto.getResponseDto();
+		ResponseBoardDto responseArticles = dto.toResponseDto();
 		responseArticles.setArticles(articleDao.selectArticles(dto));
 		responseArticles.setPagination(pagination);
 		return responseArticles;
@@ -119,6 +115,7 @@ public class ArticleServiceImpl implements ArticleService{
 		articleDao.deleteLikes(id);
 	}
 	
+	@Transactional
 	@Override
 	public void like(RequestLikeDto dto) {
 		if(articleDao.articleLikeCheck(dto)==0) {

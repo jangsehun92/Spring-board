@@ -229,7 +229,6 @@ function replyUpdate(id){
 		contentType : "application/json; charset=UTF-8",
 		data: JSON.stringify(requestReplyUpdateDto), 
 		success:function(data){
-			alert("댓글이 수정되었습니다.");
 			replyList("${responseDto.id}");
 		},
 		error:function(request,status,error){
@@ -311,12 +310,10 @@ function like(accountId){
 		success:function(data){
 			var likeCount = Number($("#likeCount").text());
 			if($("#likeCheck").val() == "true"){
-				alert("추천을 취소하였습니다.");
 				$("#likeCount").html(Number(likeCount)-1);
 				$("#likeCheck").val(false);
 				$("#like").val("추천 하기");
 			}else{
-				alert("추천하였습니다.");
 				$("#likeCount").html(Number(likeCount)+1);
 				$("#likeCheck").val(true);
 				$("#like").val("추천 취소");
@@ -414,9 +411,9 @@ function login(){
 		<hr >
 <!-- 댓글 입력란 -->
 			<div class="form-group shadow-textarea">
-					<sec:authorize access="isAnonymous()">
-						<span>로그인을 하시면 댓글을 등록할 수 있습니다.</span>
-					</sec:authorize>
+					<c:if test="${principal == null}">
+						<span>로그인을 하시면 댓글을 등록할 수 있습니다. <a href="/login">[로그인]</a></span>
+					</c:if>
 					<sec:authorize access="isAuthenticated()">
 						<label>댓글</label>
 						<div style="position: relative; height: 100%">

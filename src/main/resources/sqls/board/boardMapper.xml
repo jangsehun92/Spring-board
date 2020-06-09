@@ -21,8 +21,7 @@
 			</when>
 			<otherwise>
 		WHERE 
-			article_table.category = LOWER(#{category}) AND
-			article_table.importance = 0
+			article_table.category = LOWER(#{category})
 			</otherwise>
 		</choose>
 	</select>
@@ -76,7 +75,9 @@
 					article_table JOIN account_table ON article_table.account_id = account_table.id 
 					LEFT JOIN reply_table ON article_table.id = reply_table.article_id
 					LEFT JOIN article_like_table ON article_table.id = article_like_table.article_id 
-				WHERE category = LOWER('notice') 
+				WHERE 
+					category = LOWER('notice') AND
+					article_table.importance = 1
 				GROUP BY article_table.id, article_table.account_id, article_table.category, article_table.title, account_table.nickname,article_table.view_count, article_table.regdate
 				ORDER BY regdate DESC)a
 			WHERE rownum <= #{endCount})b

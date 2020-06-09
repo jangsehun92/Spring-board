@@ -1,6 +1,7 @@
 package jsh.project.board.article.dto.request;
 
 import jsh.project.board.article.dto.response.ResponseBoardDto;
+import jsh.project.board.article.enums.AdminCategory;
 
 public class RequestArticlesDto {
 	private int page;
@@ -74,7 +75,7 @@ public class RequestArticlesDto {
 		this.endCount = endCount;
 	}
 	
-	public ResponseBoardDto getResponseDto() {
+	public ResponseBoardDto toResponseDto() {
 		ResponseBoardDto dto = new ResponseBoardDto();
 		dto.setCategory(this.category);
 		dto.setQuery(this.query);
@@ -83,7 +84,7 @@ public class RequestArticlesDto {
 	}
 	
 	public boolean isNotice() {
-		return category.equals("notice")?true:false;
+		return category.equals(AdminCategory.NOTICE.getValue())?true:false;
 	}
 
 	@Override

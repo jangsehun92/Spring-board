@@ -57,6 +57,11 @@ function uploadSummernoteImageFile(file, editor) {
 }
 function check_form(){
 	var inputForm_content = $("#content").val().replace(/\s|/gi,'');
+	var importance = $("#select_importance option:selected").val();
+	
+	if(importance==null){
+		importance = 0;
+	}
 	
 	if(inputForm_content==""){
 		alert("내용을 입력해주세요.");
@@ -68,6 +73,7 @@ function check_form(){
 	var requestArticleCreateDto = {
 			accountId : "${principal.id}",
 			category : $("#select_category option:selected").val(),
+			importance : importance,
 			title : $("#title").val(),
 			content : $("#content").val(),
 		}
@@ -108,7 +114,20 @@ function check_form(){
 							</c:forEach>
 						</select>
 					</td>
-					
+				</tr>
+				<!-- 카테고리값이 notice이면서 ADMIN계정일 경우에만 게시글 중요도 선택가능 -->
+				<c:if test="${category eq 'notice' }">
+					<sec:authorize access="hasRole('ROLE_ADMIN')">
+					<tr>
+						<td>
+							<select id="select_importance" class="form-control">
+								<option value="0" selected>일반</option>
+								<option value="1">필수</option>
+							</select>
+						</td>
+					</tr>
+					</sec:authorize>
+				</c:if>
 				<tr>
 					<td><input id="title" name="title" type="text" class="form-control" placeholder="제목" maxlength="50"></td>
 				</tr>

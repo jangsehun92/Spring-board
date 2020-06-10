@@ -60,8 +60,11 @@ function check_form(){
 			nickname : $("#nickname").val()
 		}
 	
+	alert($("#email").val());
+	alert($("#password").val());
+	
 	$.ajax({
-		url:"/account",
+		url:"/account/join",
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
 		data: JSON.stringify(accountCreateDto),
@@ -98,7 +101,7 @@ function check_form(){
 						회원가입
 					</h5>
 				</div>
-				<form:form method="post" action="/account/join" class="form-signup form-user panel-body">
+				<form:form class="form-signup form-user panel-body" method="post" >
 					<fieldset>
 						<input type="text" class="form-control input-sm" id="email" name="email" placeholder="이메일" maxlength="30" style="margin-top: 10px;">
 						<small id="error_email" class="error"></small>

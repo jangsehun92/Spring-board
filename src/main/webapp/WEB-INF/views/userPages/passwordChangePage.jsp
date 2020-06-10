@@ -30,7 +30,7 @@ function check_form(){
 		data: JSON.stringify(AccountPasswordDto),
 		success:function(data){
 			alert("비밀번호 변경을 완료하였습니다. 다시 로그인해주세요.");
-			location.href="/logout";
+			logout();
 		}, 
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
@@ -47,6 +47,21 @@ function check_form(){
 					$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
 				}
 			}
+		}
+	});
+}
+
+function logout(){
+	$.ajax({
+		url:"/logout",
+		type:"post",
+		success:function(data){
+			location.href="/login";
+		}, 
+		error:function(request,status,error){
+			jsonValue = jQuery.parseJSON(request.responseText);
+			code = jsonValue.code;
+			alert(jsonValue.message);
 		}
 	});
 }

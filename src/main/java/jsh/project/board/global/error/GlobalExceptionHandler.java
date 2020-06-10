@@ -48,8 +48,7 @@ public class GlobalExceptionHandler {
 	 * 지원하지 않은 HTTP method 호출 할 경우 발생
 	 */
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-	protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(
-			HttpRequestMethodNotSupportedException e) {
+	protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
 		log.error("handleHttpRequestMethodNotSupportedException", e);
 		final ErrorResponse response = new ErrorResponse(ErrorCode.METHOD_NOT_ALLOWED);
 		return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
@@ -74,22 +73,30 @@ public class GlobalExceptionHandler {
 	 * 서비스단에서 발생 할 수 있는 에러들을 처리한다.
 	 */
 	@ExceptionHandler(BusinessException.class)
-	protected ResponseEntity<ErrorResponse> handleBusinessException(final BusinessException e) {
+	protected Object handleBusinessException(HttpServletRequest request, final BusinessException e) {
 		log.error("handleEntityNotFoundException", e);
 		final ErrorCode errorCode = e.getErrorCode();
 		final ErrorResponse response = new ErrorResponse(errorCode);
-		return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
+		log.error(response.getCode() + " : " + response.getMessage());
+		if(isAjax(request)) {
+			return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
+		}
+		return "redirect:/";
+		
 	}
 	
 	/**
 	 * 이메일 인증에서 발생 할 수 있는 에러를 처리한다.
 	 */
 	@ExceptionHandler(EmailException.class)
-	protected String handleBusinessException(final EmailException e) {
+	protected Object handleBusinessException(HttpServletRequest request, final EmailException e) {
 		log.error("handleEntityNotFoundException", e);
 		final ErrorCode errorCode = e.getErrorCode();
 		final ErrorResponse response = new ErrorResponse(errorCode);
 		log.error(response.getCode() + " : " + response.getMessage());
+		if(isAjax(request)) {
+			return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
+		}
 		return "redirect:/auth/denied";
 	}
 	
@@ -100,10 +107,10 @@ public class GlobalExceptionHandler {
 	protected Object handleException(HttpServletRequest request, Exception e) {
 		log.error("handleEntityNotFoundException", e);
 		final ErrorResponse response = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
+		log.error(response.getCode() + " : " + response.getMessage());
 		if(isAjax(request)) {
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		log.error(response.getCode() + " : " + response.getMessage());
 		return "redirect:/";
 	}
 	

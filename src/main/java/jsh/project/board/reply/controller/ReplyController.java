@@ -34,14 +34,14 @@ public class ReplyController {
 		this.replyService = resplyService;
 	}
 	
-	//해당 게시글 전체 댓글 가져오기
+	// 해당 게시글 전체 댓글 가져오기
 	@GetMapping("/replys/{articleId}")
 	public ResponseEntity<List<ResponseReplyDto>> replys(@PathVariable("articleId")int articleId){
 		log.info("GET /replys/"+articleId);
 		return new ResponseEntity<>(replyService.getReplys(articleId), HttpStatus.OK);
 	}
 	
-	//해당 게시글 댓글 입력
+	// 해당 게시글 댓글 입력
 	@PreAuthorize("(#dto.accountId == principal.id)")
 	@PostMapping("/reply")
 	public ResponseEntity<HttpStatus> createReply(@RequestBody @Valid RequestReplyCreateDto dto){
@@ -50,7 +50,7 @@ public class ReplyController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	//해당 게시글 댓글 수정
+	// 해당 게시글 댓글 수정
 	@PreAuthorize("(#dto.accountId == principal.id) and (#dto.id == #id)")
 	@PatchMapping("/reply/{id}")
 	public ResponseEntity<HttpStatus> updateReply(@PathVariable("id")int id, @RequestBody @Valid RequestReplyUpdateDto dto){
@@ -59,7 +59,7 @@ public class ReplyController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	//해당 게시글 댓글 삭제(비활성화)
+	// 해당 게시글 댓글 삭제(비활성화)
 	@PreAuthorize("((#dto.accountId == principal.id) and (#dto.id == #id)) or (hasAuthority('ROLE_ADMIN'))")
 	@DeleteMapping("/reply/{id}")
 	public ResponseEntity<HttpStatus> deleteReply(@PathVariable("id")int id, @RequestBody RequestReplyDeleteDto dto){

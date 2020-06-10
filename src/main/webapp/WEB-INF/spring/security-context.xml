@@ -11,7 +11,7 @@
         <intercept-url pattern="/articles" access="permitAll" />
         <intercept-url pattern="/account" method="GET" access="permitAll" />
         <intercept-url pattern="/account" method="POST" access="permitAll" />
-        <intercept-url pattern="/account" method="PATCH" access="hasRole('ROLE_USER')" />
+        <intercept-url pattern="/account" method="PATCH" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/account/edit" method="GET" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/account/passwordChange" method="GET" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/account/passwordChange" method="POST" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />

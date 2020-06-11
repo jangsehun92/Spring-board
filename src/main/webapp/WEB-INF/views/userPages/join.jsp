@@ -9,6 +9,8 @@
 	<title>회원가입</title>
 </head>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.5.0.min.js"></script>
+<script src="lib/year-select.js"></script>
+
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/ajax_header.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/inko@1.1.0/inko.min.js"></script>
 
@@ -17,7 +19,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <body>
 <script type="text/javascript">
-//한 > 영 & 영 > 한 변환 자바스크립트 오픈소스 라이브러리
 var inko = new Inko();
 function check_form(){
 	var code;
@@ -59,9 +60,6 @@ function check_form(){
 			birth : $("#birth").val(),
 			nickname : $("#nickname").val()
 		}
-	
-	alert($("#email").val());
-	alert($("#password").val());
 	
 	$.ajax({
 		url:"/account/join",

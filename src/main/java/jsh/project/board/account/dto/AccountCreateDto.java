@@ -16,8 +16,7 @@ public class AccountCreateDto {
 	private String passwordCheck;
 	@NotBlank(message = "이름을 입력해주세요.")
 	private String name;
-	@NotBlank(message = "주민번호 앞자리를 입력해주세요. ")
-	@Pattern(regexp ="[0-9]{6,6}", message = "6자리의 숫자만 입력가능합니다. ")
+	@Pattern(regexp ="[0-9]{6,6}", message = "주민번호 앞자리를 입력해주세요. ")
 	private String birth;
 	@NotBlank(message = "닉네임을 입력해주세요.")
 	private String nickname;
@@ -52,7 +51,7 @@ public class AccountCreateDto {
 	}
 	
 	public void setName(String name) {
-		this.name = name;
+		this.name = name.trim();
 	}
 	
 	public String getName() {
@@ -72,7 +71,7 @@ public class AccountCreateDto {
 	}
 
 	public void setNickname(String nickname) {
-		this.nickname = nickname;
+		this.nickname = nickname.trim();
 	}
 	
 	public String getRole() {
@@ -84,7 +83,6 @@ public class AccountCreateDto {
 	}
 	
 	public void checkPassword() {
-		//Validation.passwordValidation(password); Validation을 위한 클래스를 만들어서 처리할 수 있다.
 		if(!password.equals(passwordCheck)) {
 			throw new PasswordCheckFailedException();
 		}

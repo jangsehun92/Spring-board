@@ -166,7 +166,7 @@ Spring Framework를 사용하여 게시판을 구현한다.
 ------------------
 1. Oracle + Mybatis환경 에서 Date값을 다루기 위해 CumstomDateHandler 등록한다.
 (java.sql.Date 타입은 org.apache.ibatis.type.SqlDateTypeHandler를 통해 date 값을 yyyy-mm-dd로 반환 > json타입으로 받을경우 unixTime으로 받아와서 시,분,초를 표시할 수 없다. [해결 방법 : DateTypeHandler를 cumstom하여 등록한다.])
-[ 참고 : https://taetaetae.github.io/2017/03/23/oracle-mybatis-date/ ]
+  - [ 참고 : https://taetaetae.github.io/2017/03/23/oracle-mybatis-date/ ]
 
 2. @PreAuthorize
   - 요청이 들어와서 해당 메소드가 실행 되기 전에 권한을 검사하는 어노테이션이다.

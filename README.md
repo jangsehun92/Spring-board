@@ -17,7 +17,7 @@ Spring Framework를 사용하여 게시판을 구현한다.
 * DB : Oracle 11g
 
 # 기능 목록
-공통 사항
+프로젝트 공통 사항
   - spring security를 적용한다.
   - csrf를 활성 한화다. 
   - 발생할 수 있는 예외케이스에 대한 처리를 한다.

@@ -8,11 +8,13 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import jsh.project.board.article.service.ArticleServiceImpl;
 
-public class UploadFileService {
+@Component
+public class FileService {
 	private static final Logger log = LoggerFactory.getLogger(ArticleServiceImpl.class);
 	
 	private final String rootDirectory = "/Users/jangsehun/Documents/fileDirectory/";
@@ -21,10 +23,15 @@ public class UploadFileService {
 	private String savedFileName;
 	private String savedPath;
 	
-	public UploadFileService(MultipartFile file) {
+	public FileService() {
+		
+	}
+	
+	public String upload(MultipartFile file) {
 		setFileDirectory();
 		setSavedFileName(file.getOriginalFilename());
 		writerFile(file);
+		return getFileUrl();
 	}
 	
 	//날짜별로 폴더를 생성한다.
@@ -50,6 +57,7 @@ public class UploadFileService {
 		savedFileName = UUID.randomUUID() + originalFileName.substring(originalFileName.lastIndexOf("."));
 	}
 	
+	//저장경로 및 파일이름 리턴
 	public String getFileUrl() {
 		StringBuffer sb = new StringBuffer();
 		sb.append(pathUrl);

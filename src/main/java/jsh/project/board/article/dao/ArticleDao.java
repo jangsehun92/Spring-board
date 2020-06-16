@@ -19,8 +19,8 @@ public interface ArticleDao {
 	public void updateViewCount(int id);
 	public ResponseArticleDetailDto selectArticle(int id);
 	public ResponseArticleUpdateDto selectUpdateArticle(int id);
-	public void insertArticle(Article article);
-	public void updateArticle(Article article);
+	public void insertArticle(final Article article);
+	public void updateArticle(final Article article);
 	public void deleteArticle(int id);
 	public void deleteReplys(int articleId);
 	public void deleteLikes(int articleId);

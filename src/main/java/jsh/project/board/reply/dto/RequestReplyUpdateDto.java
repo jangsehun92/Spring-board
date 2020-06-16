@@ -64,10 +64,5 @@ public class RequestReplyUpdateDto implements getReply{
 		reply.setModifyDate(new Date());
 		return reply;
 	}
-	
-	
-	
-	
-	
 
 }

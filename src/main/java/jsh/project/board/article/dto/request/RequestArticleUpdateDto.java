@@ -60,7 +60,7 @@ public class RequestArticleUpdateDto implements getArticle{
 	
 	@Override
 	public Article toArticle() {
-		Article article = new Article();
+		final Article article = new Article();
 		article.setId(this.id);
 		article.setCategory(AllCategory.valueOf(this.category).getCategory());
 		article.setTitle(this.title);

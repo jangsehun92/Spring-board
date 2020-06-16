@@ -63,7 +63,7 @@ public class RequestArticleCreateDto implements getArticle{
 	
 	@Override
 	public Article toArticle() {
-		Article article = new Article();
+		final Article article = new Article();
 		article.setAccountId(this.accountId);
 		article.setCategory(this.category);
 		article.setImportance(this.importance);

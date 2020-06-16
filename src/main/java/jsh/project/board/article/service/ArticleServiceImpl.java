@@ -21,16 +21,18 @@ import jsh.project.board.article.dto.response.ResponseArticleDto;
 import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
 import jsh.project.board.article.dto.response.ResponseBoardDto;
 import jsh.project.board.global.infra.util.Pagination;
-import jsh.project.board.global.infra.util.UploadFileService;
+import jsh.project.board.global.infra.util.FileService;
 
 @Service
 public class ArticleServiceImpl implements ArticleService{
 	private static final Logger log = LoggerFactory.getLogger(ArticleServiceImpl.class);
 	
 	private ArticleDao articleDao;
+	private FileService fileService;
 	
-	public ArticleServiceImpl(ArticleDao articleDao) {
+	public ArticleServiceImpl(ArticleDao articleDao, FileService fileService) {
 		this.articleDao = articleDao;
+		this.fileService = fileService;
 	}
 	
 	@Override
@@ -127,8 +129,7 @@ public class ArticleServiceImpl implements ArticleService{
 	
 	@Override
 	public String uploadFile(MultipartFile file) {
-		UploadFileService fileService = new UploadFileService(file);
-		return fileService.getFileUrl();
+		return fileService.upload(file);
 	}
 	
 }

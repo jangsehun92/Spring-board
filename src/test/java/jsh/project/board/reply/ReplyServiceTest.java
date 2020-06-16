@@ -1,12 +1,11 @@
 package jsh.project.board.reply;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.BDDMockito.given;
+import static org.hamcrest.CoreMatchers.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -20,24 +19,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jsh.project.board.reply.dao.ReplyDao;
-import jsh.project.board.reply.domain.Reply;
 import jsh.project.board.reply.dto.RequestReplyCreateDto;
+import jsh.project.board.reply.dto.RequestReplyDeleteDto;
+import jsh.project.board.reply.dto.RequestReplyUpdateDto;
 import jsh.project.board.reply.dto.ResponseReplyDto;
 import jsh.project.board.reply.service.ReplyServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReplyServiceTest {
-	
 	private static final Logger log = LoggerFactory.getLogger(ReplyServiceTest.class);
+	
 	@Mock
-	private ReplyDao ReplyDao;
+	private ReplyDao replyDao;
 	
 	@InjectMocks
 	private ReplyServiceImpl replyService;
 	
 	@Spy
-	List<ResponseReplyDto> replys = new ArrayList<ResponseReplyDto>();
-	
+	private List<ResponseReplyDto> replys = new ArrayList<ResponseReplyDto>();
 	
 	@Before
 	public void setUp() {
@@ -57,20 +56,15 @@ public class ReplyServiceTest {
 	public void 해당_게시글_모든_댓글_보기() {
 		//given
 		int articleId = 1;
-		given(ReplyDao.selectReplys(articleId)).willReturn(replys);
+		given(replyDao.selectReplys(articleId)).willReturn(replys);
 		
 		//when
-		List<ResponseReplyDto> selectReplys = ReplyDao.selectReplys(articleId);
+		List<ResponseReplyDto> selectReplys = replyService.getReplys(articleId);
 		
 		//then
-		verify(ReplyDao).selectReplys(articleId);
+		verify(replyDao, times(1)).selectReplys(articleId);
 		assertThat(selectReplys, is(replys));
 		
-		for(ResponseReplyDto reply : selectReplys) {
-			log.info("responseReplyDto { id : "+ reply.getId() + " articleId : " 
-					+ reply.getArticleId()  + " accountId : " + reply.getAccountId() 
-					+ " nickname : " + reply.getNickname() + " content : " + reply.getContent() + " }");
-		}
 	}
 	
 	@Test
@@ -80,35 +74,41 @@ public class ReplyServiceTest {
 		dto.setArticleId(1);
 		dto.setAccountId(1);
 		dto.setContent("test");
-		Reply reply = dto.toReply();
-		reply.setId(1);
-		reply.setRegdate(new Date());
-		reply.setEnabled(1);
-		
-		
 		//when
-		ReplyDao.insertReply(reply);
+		replyService.saveReply(dto);
 		
 		//then
-		verify(ReplyDao).insertReply(reply);
-		assertThat(reply.getId(), is(1));
-		assertThat(reply.getArticleId(), is(1));
-		assertThat(reply.getAccountId(), is(1));
-		assertThat(reply.getContent(), is("test"));
+		verify(replyDao, times(1)).insertReply(any());
 	}
 	
 	@Test
 	public void 댓글_수정() {
 		//given
+		RequestReplyUpdateDto dto = new RequestReplyUpdateDto();
+		dto.setId(1);
+		dto.setAccountId(1);
+		dto.setArticleId(1);
+		dto.setContent("수정");
+		
 		//when
+		replyService.modifyReply(dto);
+		
 		//then
+		verify(replyDao, times(1)).updateReply(any());
 	}
 	
 	@Test
 	public void 댓글_삭제() {
 		//given
+		RequestReplyDeleteDto dto = new RequestReplyDeleteDto();
+		dto.setId(1);
+		dto.setArticleId(1);
+		
 		//when
+		replyService.enabledReply(dto);
+		
 		//then
+		verify(replyDao, times(1)).deleteReply(any());
 	}
 
 }

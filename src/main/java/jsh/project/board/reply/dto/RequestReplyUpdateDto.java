@@ -55,7 +55,7 @@ public class RequestReplyUpdateDto implements getReply{
 	public String toString() {
 		return "RequestReplyUpdateDto {id : " + id + " articleId : " + articleId + " accountId : " + accountId + " content : " + content + " }";
 	}
-
+	
 	@Override
 	public Reply toReply() {
 		final Reply reply = new Reply(this.articleId, this.accountId);

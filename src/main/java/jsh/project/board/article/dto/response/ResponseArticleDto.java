@@ -3,6 +3,7 @@ package jsh.project.board.article.dto.response;
 import java.sql.Date;
 
 public class ResponseArticleDto {
+	
 	private int id;
 	private int accountId;
 	private String category;

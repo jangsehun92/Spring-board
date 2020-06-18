@@ -1,4 +1,4 @@
-package jsh.project.board.article.enums;
+package jsh.project.board.global.enumModel;
 
 public interface EnumModel {
 	public String getKey();

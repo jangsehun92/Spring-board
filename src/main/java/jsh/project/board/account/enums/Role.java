@@ -2,17 +2,17 @@ package jsh.project.board.account.enums;
 
 import jsh.project.board.global.enumModel.EnumModel;
 
-public enum AuthOption implements EnumModel{
+public enum Role implements EnumModel{
 	
-	SIGNUP("signup"),
-	RESET("reset");
+	USER("ROLE_USER"),
+	ADMIN("ROLE_ADMIN");
 	
-	private final String option;
+	private String role;
 	
-	AuthOption(String option) {
-		this.option = option;
+	Role(String role) {
+		this.role = role;
 	}
-	
+
 	@Override
 	public String getKey() {
 		return name();
@@ -20,7 +20,7 @@ public enum AuthOption implements EnumModel{
 
 	@Override
 	public String getValue() {
-		return option;
+		return role;
 	}
 
 }

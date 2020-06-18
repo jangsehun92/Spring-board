@@ -1,5 +1,7 @@
 package jsh.project.board.article.enums;
 
+import jsh.project.board.global.enumModel.EnumModel;
+
 public enum UserCategory implements EnumModel{
 	
 	COMMUNITY("community"),

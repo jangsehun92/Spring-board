@@ -24,6 +24,7 @@ import jsh.project.board.account.dto.AccountPasswordResetRequestDto;
 import jsh.project.board.account.dto.AccountResponseDto;
 import jsh.project.board.account.dto.AuthDto;
 import jsh.project.board.account.enums.AuthOption;
+import jsh.project.board.account.enums.Role;
 import jsh.project.board.account.exception.AccountNotEmailChecked;
 import jsh.project.board.account.exception.AccountNotFoundException;
 import jsh.project.board.account.exception.BadAuthRequestException;
@@ -55,7 +56,7 @@ public class AccountServiceImpl implements AccountService{
 	public void register(AccountCreateDto dto) throws Exception {
 		dto.checkPassword();
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
-		dto.setRole("ROLE_USER");
+		dto.setRole(Role.USER.getValue());
 		accountDao.save(dto);
 		//이메일인증관련 테이블에 이메일과 인증키 저장
 		AuthDto authDto = createAuth(dto.getEmail(), AuthOption.SIGNUP);
@@ -179,7 +180,7 @@ public class AccountServiceImpl implements AccountService{
 		if(account == null) {
 			throw new AccountNotFoundException();
 		}
-		if(authDto == null || authDto.isAuthExpired() || !dto.getAuthKey().equals(authDto.getAuthKey()) || !dto.getAuthOption().equals(AuthOption.RESET.getOption())) {
+		if(authDto == null || authDto.isAuthExpired() || !dto.getAuthKey().equals(authDto.getAuthKey()) || !dto.getAuthOption().equals(AuthOption.RESET.getValue())) {
 			throw new BadAuthRequestException();
 		}
 		
@@ -195,7 +196,7 @@ public class AccountServiceImpl implements AccountService{
 		log.info("accountService.resetPasswordConfirm(AccountAuthRequestDto dto) : "+dto.toString());
 		AuthDto authDto = authDao.findByEmail(dto.getEmail());
 		
-		if(authDto == null || authDto.isAuthExpired() || !dto.getAuthKey().equals(authDto.getAuthKey()) || !dto.getAuthOption().equals(AuthOption.SIGNUP.getOption())) {
+		if(authDto == null || authDto.isAuthExpired() || !dto.getAuthKey().equals(authDto.getAuthKey()) || !dto.getAuthOption().equals(AuthOption.SIGNUP.getValue())) {
 			throw new BadAuthRequestException();
 		}
 		accountDao.activetion(dto.getEmail());
@@ -208,7 +209,7 @@ public class AccountServiceImpl implements AccountService{
 		log.info("accountService.resetPasswordConfirm(AccountAuthRequestDto dto) : "+dto.toString());
 		AuthDto authDto = authDao.findByEmail(dto.getEmail());
 		
-		if (authDto == null || authDto.isAuthExpired() || !dto.getAuthKey().equals(authDto.getAuthKey()) || !dto.getAuthOption().equals(AuthOption.RESET.getOption())) {
+		if (authDto == null || authDto.isAuthExpired() || !dto.getAuthKey().equals(authDto.getAuthKey()) || !dto.getAuthOption().equals(AuthOption.RESET.getValue())) {
 			throw new BadAuthRequestException();
 		}
 	}
@@ -217,13 +218,13 @@ public class AccountServiceImpl implements AccountService{
 	private AuthDto createAuth(String email, AuthOption authOption) {
 		Map<String, String> paramMap = new HashMap<>();
 		paramMap.put("email", email);
-		paramMap.put("authOption", authOption.getOption());
+		paramMap.put("authOption", authOption.getValue());
 		
 		AuthDto authDto = null;
 		
 		if(authDao.authCheck(paramMap) == 0) {
 			String authKey = new AuthKey().getKey();
-			authDto = new AuthDto(email, authKey, authOption.getOption());
+			authDto = new AuthDto(email, authKey, authOption.getValue());
 			authDao.authSave(authDto);
 		}else {
 			authDto = updateAuth(email);

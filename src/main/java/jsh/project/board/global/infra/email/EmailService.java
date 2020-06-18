@@ -15,11 +15,11 @@ public class EmailService {
 	}
 	
 	public void sendEmail(AuthDto dto) throws Exception {
-		if(dto.isAuthOption().equals(AuthOption.SIGNUP.getOption())) {
+		if(dto.isAuthOption().equals(AuthOption.SIGNUP.getValue())) {
 			signupEmail(dto);
 		}
 		
-		if(dto.isAuthOption().equals(AuthOption.RESET.getOption())) {
+		if(dto.isAuthOption().equals(AuthOption.RESET.getValue())) {
 			passwordResetEmail(dto);
 		}
 	}

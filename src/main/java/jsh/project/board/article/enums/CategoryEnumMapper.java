@@ -13,7 +13,7 @@ public class CategoryEnumMapper {
 	}
 	
 	public String getCategory(String category) {
-		return AllCategory.valueOf(category.toUpperCase()).getCategory();
+		return AllCategory.valueOf(category.toUpperCase()).getValue();
 	}
 	
 	public List<CategoryDto> getCategorys(String category){

@@ -5,6 +5,7 @@ public class ResponseArticleUpdateDto {
 	private int id;
 	private int accountId;
 	private String category;
+	private int importance;
 	private String title;
 	private String content;
 	
@@ -34,6 +35,14 @@ public class ResponseArticleUpdateDto {
 	
 	public void setCategory(String category) {
 		this.category = category;
+	}
+	
+	public int getImportance() {
+		return importance;
+	}
+	
+	public void setImportance(int importance) {
+		this.importance = importance;
 	}
 
 	public String getTitle() {

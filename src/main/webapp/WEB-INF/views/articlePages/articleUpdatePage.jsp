@@ -62,6 +62,11 @@ function uploadSummernoteImageFile(file, editor) {
 
 function check_form(){
 	var inputForm_content = $("#content").val().replace(/\s|/gi,'');
+	var importance = $("#select_importance option:selected").val();
+	
+	if(importance==null){
+		importance = 0;
+	}
 	
 	if(inputForm_content==""){
 		alert("내용을 입력해주세요.");
@@ -74,6 +79,7 @@ function check_form(){
 			id : "${responseDto.id}",
 			accountId : "${responseDto.accountId}",
 			category : $("#select_category option:selected").val(),
+			importance : importance,
 			title : $("#title").val(),
 			content : $("#content").val(),
 		}
@@ -115,6 +121,18 @@ function check_form(){
 						</select>
 					</td>
 				<tr>
+				<c:if test="${responseDto.category eq 'notice' }">
+					<sec:authorize access="hasRole('ROLE_ADMIN')">
+					<tr>
+						<td>
+							<select id="select_importance" class="form-control">
+								<option value="0" <c:if test="${responseDto.importance eq 0 }"> selected </c:if>>일반</option>
+								<option value="1" <c:if test="${responseDto.importance eq 1 }"> selected </c:if>>필수</option>
+							</select>
+						</td>
+					</tr>
+					</sec:authorize>
+				</c:if>
 				<tr>
 					<td><input id="title" name="title" type="text" class="form-control" placeholder="제목" maxlength="50" value="${responseDto.title }"></td>
 				</tr>

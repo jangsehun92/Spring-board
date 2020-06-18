@@ -1,6 +1,7 @@
 package jsh.project.board.article;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -8,7 +9,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -23,15 +23,18 @@ import org.slf4j.LoggerFactory;
 
 import jsh.project.board.article.dao.ArticleDao;
 import jsh.project.board.article.dto.request.RequestArticleCreateDto;
+import jsh.project.board.article.dto.request.RequestArticleDeleteDto;
 import jsh.project.board.article.dto.request.RequestArticleDetailDto;
+import jsh.project.board.article.dto.request.RequestArticleUpdateDto;
 import jsh.project.board.article.dto.request.RequestArticlesDto;
+import jsh.project.board.article.dto.request.like.RequestLikeDto;
 import jsh.project.board.article.dto.response.ResponseArticleDetailDto;
 import jsh.project.board.article.dto.response.ResponseArticleDto;
+import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
 import jsh.project.board.article.dto.response.ResponseBoardDto;
 import jsh.project.board.article.enums.AdminCategory;
 import jsh.project.board.article.enums.UserCategory;
 import jsh.project.board.article.service.ArticleServiceImpl;
-import jsh.project.board.global.infra.util.Pagination;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ArticleServiceTest {
@@ -41,7 +44,10 @@ public class ArticleServiceTest {
 	private ArticleDao articleDao;
 	
 	@InjectMocks
-	private ArticleServiceImpl ArticleService;
+	private ArticleServiceImpl articleService;
+	
+	@Mock
+	private ResponseArticleDetailDto responseArticleDetailDto;
 	
 	@Spy
 	private List<ResponseArticleDto> articles = new ArrayList<ResponseArticleDto>();
@@ -51,20 +57,12 @@ public class ArticleServiceTest {
 	
 	@Before
 	public void setUp() {
-		log.info("setUp : noticeArticles");
-		for(int i = 1; i <=3; i++) {
-			ResponseArticleDto responseArticleDto = new ResponseArticleDto();
-			responseArticleDto.setId(i);
-			responseArticleDto.setCategory(AdminCategory.NOTICE.getValue());
-			responseArticleDto.setAccountId(1);
-			responseArticleDto.setTitle("testNoticeTitle");
-			responseArticleDto.setNickname("admin");
-			responseArticleDto.setLikeCount(0);
-			responseArticleDto.setReplyCount(0);
-			responseArticleDto.setViewCount(0);
-			articles.add(responseArticleDto);
-		}
-		
+		setArticleList();
+		setNoticeArticleListI();
+		responseArticleDetailDto = new ResponseArticleDetailDto();
+	}
+	
+	public void setArticleList() {
 		log.info("setUp : articles");
 		for(int i = 1; i <=10; i++) {
 			ResponseArticleDto responseArticleDto = new ResponseArticleDto();
@@ -78,8 +76,22 @@ public class ArticleServiceTest {
 			responseArticleDto.setViewCount(0);
 			articles.add(responseArticleDto);
 		}
-		
-		
+	}
+	
+	public void setNoticeArticleListI() {
+		log.info("setUp : noticeArticles");
+		for(int i = 1; i <=3; i++) {
+			ResponseArticleDto responseArticleDto = new ResponseArticleDto();
+			responseArticleDto.setId(i);
+			responseArticleDto.setCategory(AdminCategory.NOTICE.getValue());
+			responseArticleDto.setAccountId(1);
+			responseArticleDto.setTitle("testNoticeTitle");
+			responseArticleDto.setNickname("admin");
+			responseArticleDto.setLikeCount(0);
+			responseArticleDto.setReplyCount(0);
+			responseArticleDto.setViewCount(0);
+			articles.add(responseArticleDto);
+		}
 	}
 	
 	@Test
@@ -97,36 +109,14 @@ public class ArticleServiceTest {
 		given(articleDao.selectNoticeTotalCount()).willReturn(3);
 		
 		//when
-		log.info(requestDto.toString());
-		
-		//Pagination객체를 만들 때, 필수 공지사항의 갯수만큼 표시할 일반 게시글의 수가 줄어 들어야한다.(ex: 필수 게시글이 3개이면 일반 게시글 7개로 총 10개 표시)
-		Pagination pagination = new Pagination(articleDao.selectTotalCount(requestDto), requestDto.getPage(),articleDao.selectNoticeTotalCount());
-		//게시글 리스트를 요청하는 DTO에 쿼리내에서 사용할 가져올 게시글의 범위를 셋팅해준다.
-		requestDto.setStartCount(pagination.getStartCount());
-		requestDto.setEndCount(pagination.getEndCount());
-		log.info(pagination.toString());
-		
-		//response할 전체 articles를 선언하고
-		List<ResponseArticleDto> selectArticles = new ArrayList<>();
-		//Pagination객체에서 Dao에서 필수 공지사항 게시글 범위만큼 가져와 addAll 한다.
-		selectArticles.addAll(articleDao.selectNoticeArticles(pagination.getNoticeScope()));
-		//requestDto에 셋팅한 일반 게시글 범위만큼 가져와 addAll 한다. 
-		selectArticles.addAll(articleDao.selectArticles(requestDto));
-		
-		//requestDto에서 ResponseDto 객체를 생성하여 가져온다.
-		ResponseBoardDto responseBoardDto = requestDto.toResponseDto();
-		//articles을 setter를 통해 넣는다.
-		responseBoardDto.setArticles(selectArticles);
-		//pagination객체를 responseDto에 setter를 통해 넣는다.
-		responseBoardDto.setPagination(pagination);
+		ResponseBoardDto responseBoardDto = articleService.getArticles(requestDto);
 		
 		//then
 		verify(articleDao, times(1)).selectNoticeTotalCount();
 		verify(articleDao, times(1)).selectTotalCount(requestDto);
-		verify(articleDao, times(1)).selectNoticeArticles(pagination.getNoticeScope());
+		verify(articleDao, times(1)).selectNoticeArticles(any());
 		verify(articleDao, times(1)).selectArticles(requestDto);
 		
-		assertThat(responseBoardDto.getArticles(), is(selectArticles));
 		/*
 		 * given에서 필수 공지사항 게시글의 갯수를 3개로 리턴되게 해놨기때문에, 
 		 * 필수 공지사항 게시글을 가져오는 범위는 1~3이고, 
@@ -145,41 +135,22 @@ public class ArticleServiceTest {
 	@Test
 	public void 단일_게시글_가져오기() {
 		//given
-		//request 객체 생성
 		RequestArticleDetailDto dto = new RequestArticleDetailDto();
 		dto.setId(1);
 		//login하였다면 SecurityContextHolder에서 principal객체 내에 있는 ID값을 넣어준다.
 		dto.setAccountId(0);
 		
-		//given으로 돌려줄 ResponseArticleDetailDto
-		ResponseArticleDetailDto articleDetailDto = new ResponseArticleDetailDto();
-		articleDetailDto.setId(1);
-		articleDetailDto.setAccountId(1);
-		articleDetailDto.setCategory(AdminCategory.NOTICE.getValue());
-		articleDetailDto.setNickname("tester");
-		articleDetailDto.setTitle("testTitle");
-		articleDetailDto.setContent("testContent");
-		articleDetailDto.setViewCount(0);
-		articleDetailDto.setLikeCount(1);
-		articleDetailDto.setReplyCount(0);
-		articleDetailDto.setRegdate(new Date());
-		
-		given(articleDao.selectArticle(dto.getId())).willReturn(articleDetailDto);
-		given(articleDao.articleLikeCheck(any())).willReturn(1);
+		given(articleDao.selectArticle(dto.getId())).willReturn(responseArticleDetailDto);
 		
 		//when
-		ResponseArticleDetailDto responseDto =  ArticleService.getArticle(dto);
+		ResponseArticleDetailDto responseDto =  articleService.getArticle(dto);
 		
 		//then
 		verify(articleDao, times(1)).updateViewCount(dto.getId());
 		verify(articleDao, times(1)).selectArticle(dto.getId());
 		verify(articleDao, times(1)).articleLikeCheck(any());
 		
-		assertThat(responseDto.getId(), is(1));
-		assertThat(responseDto.getAccountId(), is(1));
-		assertThat(responseDto.getCategory(), is("notice"));
-		assertThat(responseDto.getLikeCheck(), is(true));
-		assertThat(responseDto.getLikeCount(), is(1));
+		assertNotNull(responseDto);
 	}
 	
 	@Test
@@ -194,10 +165,74 @@ public class ArticleServiceTest {
 		
 		
 		//when
-		ArticleService.createArticle(dto);
+		articleService.createArticle(dto);
 		
 		//then
 		verify(articleDao, times(1)).insertArticle(any());
+	}
+	
+	@Test
+	public void 수정할_게시글_가져오기() {
+		//given
+		int articleId = 1;
+		
+		given(articleDao.selectUpdateArticle(articleId)).willReturn(new ResponseArticleUpdateDto());
+		
+		//when
+		ResponseArticleUpdateDto responseDto = articleService.getUpdateArticle(articleId);
+		
+		//then
+		verify(articleDao, times(1)).selectUpdateArticle(articleId);
+		
+		assertNotNull(responseDto);
+	}
+	
+	@Test
+	public void 게시글_수정() {
+		//given
+		RequestArticleUpdateDto dto = new RequestArticleUpdateDto();
+		dto.setId(1);
+		dto.setAccountId(1);
+		dto.setCategory(AdminCategory.NOTICE.getValue());
+		dto.setImportance(0);
+		dto.setTitle("update title");
+		dto.setContent("update content");
+		
+		//when
+		articleService.updateArticle(dto);
+		
+		//then
+		verify(articleDao, times(1)).updateArticle(any());
+	}
+	
+	@Test
+	public void 게시글_삭제() {
+		//given
+		RequestArticleDeleteDto dto = new RequestArticleDeleteDto();
+		dto.setArticleId(1);
+		dto.setAccountId(1);
+		
+		//when
+		articleService.deleteArticle(dto.getArticleId());
+		
+		//then
+		verify(articleDao, times(1)).deleteArticle(dto.getArticleId());
+		verify(articleDao, times(1)).deleteReplys(dto.getArticleId());
+		verify(articleDao, times(1)).deleteLikes(dto.getArticleId());
+	}
+	
+	@Test
+	public void 해당_게시글_좋아요() {
+		//given
+		RequestLikeDto dto = new RequestLikeDto();
+		dto.setArticleId(1);
+		dto.setAccountId(1);
+		
+		//when
+		articleService.like(dto);
+		
+		//then
+		verify(articleDao, times(1)).articleLikeCheck(dto);
 	}
 	
 

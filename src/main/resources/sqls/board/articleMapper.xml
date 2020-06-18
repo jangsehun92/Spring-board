@@ -40,6 +40,7 @@
 			id,
 			account_id AS accountId,
 			category,
+			importance,
 			title,
 			content
 		FROM
@@ -75,6 +76,7 @@
 			article_table
 		SET
 			category = #{category},
+			importance = #{importance},
 			title = #{title},
 			content = #{content},
 			modify_date = #{modifyDate}

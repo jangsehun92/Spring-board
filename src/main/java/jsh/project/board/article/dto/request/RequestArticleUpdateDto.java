@@ -11,6 +11,7 @@ public class RequestArticleUpdateDto implements getArticle{
 	private int id;
 	private int accountId;
 	private String category;
+	private int importance;
 	private String title;
 	private String content;
 	
@@ -41,6 +42,14 @@ public class RequestArticleUpdateDto implements getArticle{
 	public void setCategory(String category) {
 		this.category = category;
 	}
+	
+	public int getImportance() {
+		return importance;
+	}
+	
+	public void setImportance(int importance) {
+		this.importance = importance;
+	}
 
 	public String getTitle() {
 		return title;
@@ -62,7 +71,8 @@ public class RequestArticleUpdateDto implements getArticle{
 	public Article toArticle() {
 		final Article article = new Article();
 		article.setId(this.id);
-		article.setCategory(AllCategory.valueOf(this.category).getCategory());
+		article.setCategory(AllCategory.valueOf(this.category.toUpperCase()).getValue());
+		article.setImportance(this.importance);
 		article.setTitle(this.title);
 		article.setContent(this.content);
 		article.setModifyDate(new Date());

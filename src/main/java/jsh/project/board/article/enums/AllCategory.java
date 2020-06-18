@@ -1,6 +1,6 @@
 package jsh.project.board.article.enums;
 
-public enum AllCategory{
+public enum AllCategory implements EnumModel{
 	
 	NOTICE("notice"),
 	COMMUNITY("community"),
@@ -12,7 +12,13 @@ public enum AllCategory{
 		this.category = category;
 	}
 	
-	public String getCategory(){
+	@Override
+	public String getKey() {
+		return name();
+	}
+
+	@Override
+	public String getValue() {
 		return category;
 	}
 

@@ -8,6 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -21,7 +22,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jsh.project.board.article.dao.ArticleDao;
+import jsh.project.board.article.dto.request.RequestArticleCreateDto;
+import jsh.project.board.article.dto.request.RequestArticleDetailDto;
 import jsh.project.board.article.dto.request.RequestArticlesDto;
+import jsh.project.board.article.dto.response.ResponseArticleDetailDto;
 import jsh.project.board.article.dto.response.ResponseArticleDto;
 import jsh.project.board.article.dto.response.ResponseBoardDto;
 import jsh.project.board.article.enums.AdminCategory;
@@ -136,6 +140,64 @@ public class ArticleServiceTest {
 		//전체 페이지 수
 		assertThat(responseBoardDto.getPagination().getTotalPage(), is(15));
 		
+	}
+	
+	@Test
+	public void 단일_게시글_가져오기() {
+		//given
+		//request 객체 생성
+		RequestArticleDetailDto dto = new RequestArticleDetailDto();
+		dto.setId(1);
+		//login하였다면 SecurityContextHolder에서 principal객체 내에 있는 ID값을 넣어준다.
+		dto.setAccountId(0);
+		
+		//given으로 돌려줄 ResponseArticleDetailDto
+		ResponseArticleDetailDto articleDetailDto = new ResponseArticleDetailDto();
+		articleDetailDto.setId(1);
+		articleDetailDto.setAccountId(1);
+		articleDetailDto.setCategory(AdminCategory.NOTICE.getValue());
+		articleDetailDto.setNickname("tester");
+		articleDetailDto.setTitle("testTitle");
+		articleDetailDto.setContent("testContent");
+		articleDetailDto.setViewCount(0);
+		articleDetailDto.setLikeCount(1);
+		articleDetailDto.setReplyCount(0);
+		articleDetailDto.setRegdate(new Date());
+		
+		given(articleDao.selectArticle(dto.getId())).willReturn(articleDetailDto);
+		given(articleDao.articleLikeCheck(any())).willReturn(1);
+		
+		//when
+		ResponseArticleDetailDto responseDto =  ArticleService.getArticle(dto);
+		
+		//then
+		verify(articleDao, times(1)).updateViewCount(dto.getId());
+		verify(articleDao, times(1)).selectArticle(dto.getId());
+		verify(articleDao, times(1)).articleLikeCheck(any());
+		
+		assertThat(responseDto.getId(), is(1));
+		assertThat(responseDto.getAccountId(), is(1));
+		assertThat(responseDto.getCategory(), is("notice"));
+		assertThat(responseDto.getLikeCheck(), is(true));
+		assertThat(responseDto.getLikeCount(), is(1));
+	}
+	
+	@Test
+	public void 게시글_입력() {
+		//given
+		RequestArticleCreateDto dto = new RequestArticleCreateDto();
+		dto.setAccountId(1);
+		dto.setCategory(AdminCategory.NOTICE.getValue());
+		dto.setContent("testContent");
+		dto.setImportance(1);
+		dto.setTitle("중요한 공지사항");
+		
+		
+		//when
+		ArticleService.createArticle(dto);
+		
+		//then
+		verify(articleDao, times(1)).insertArticle(any());
 	}
 	
 

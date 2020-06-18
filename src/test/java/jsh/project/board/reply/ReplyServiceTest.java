@@ -74,6 +74,7 @@ public class ReplyServiceTest {
 		dto.setArticleId(1);
 		dto.setAccountId(1);
 		dto.setContent("test");
+		
 		//when
 		replyService.saveReply(dto);
 		

@@ -26,7 +26,7 @@ public class RequestArticleDetailDto {
 		this.accountId = accountId;
 	}
 	
-	public RequestLikeDto getLikeDto() {
+	public RequestLikeDto toRequestLikeDto() {
 		RequestLikeDto dto = new RequestLikeDto();
 		dto.setArticleId(this.id);
 		dto.setAccountId(this.accountId);

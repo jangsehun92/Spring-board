@@ -83,7 +83,7 @@ public class ArticleServiceImpl implements ArticleService{
 		log.info(dto.toString());
 		articleDao.updateViewCount(dto.getId());
 		ResponseArticleDetailDto responseDto = articleDao.selectArticle(dto.getId());
-		responseDto.setLikeCheck(articleDao.articleLikeCheck(dto.getLikeDto()));
+		responseDto.setLikeCheck(articleDao.articleLikeCheck(dto.toRequestLikeDto()));
 		log.info(responseDto.toString());
 		return responseDto;
 	}

@@ -60,7 +60,7 @@ function check_form(){
 	var importance = $("#select_importance option:selected").val();
 	
 	if(importance==null){
-		importance = 0;
+		importance = "NOMAL";
 	}
 	
 	if(inputForm_content==""){
@@ -121,8 +121,10 @@ function check_form(){
 					<tr>
 						<td>
 							<select id="select_importance" class="form-control">
-								<option value="0" selected>일반</option>
-								<option value="1">필수</option>
+							<c:forEach items="${articleImportance }" var="importance">
+								<option value="${importance.key}"
+									<c:if test="${responseDto.importance eq importance.value }"> selected </c:if>>${importance.key }</option>
+							</c:forEach>
 							</select>
 						</td>
 					</tr>

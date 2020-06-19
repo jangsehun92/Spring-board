@@ -6,6 +6,8 @@ import javax.validation.constraints.NotBlank;
 
 import jsh.project.board.article.domain.Article;
 import jsh.project.board.article.domain.Article.getArticle;
+import jsh.project.board.article.enums.AllCategory;
+import jsh.project.board.article.enums.ArticleImportance;
 
 public class RequestArticleCreateDto implements getArticle{
 	
@@ -34,15 +36,15 @@ public class RequestArticleCreateDto implements getArticle{
 	}
 	
 	public void setCategory(String category) {
-		this.category = category;
+		this.category = AllCategory.valueOf(category.toUpperCase()).getValue();
 	}
 	
 	public int getImportance() {
 		return importance;
 	}
 	
-	public void setImportance(int importance) {
-		this.importance = importance;
+	public void setImportance(String importance) {
+		this.importance = Integer.parseInt(ArticleImportance.valueOf(importance.toUpperCase()).getValue());
 	}
 	
 	public String getTitle() {

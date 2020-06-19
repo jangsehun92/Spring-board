@@ -73,8 +73,8 @@
 					article_table.regdate
 				FROM 
 					article_table JOIN account_table ON article_table.account_id = account_table.id 
-					LEFT JOIN reply_table ON article_table.id = reply_table.article_id
-					LEFT JOIN article_like_table ON article_table.id = article_like_table.article_id 
+							 LEFT JOIN reply_table ON article_table.id = reply_table.article_id
+							 LEFT JOIN article_like_table ON article_table.id = article_like_table.article_id 
 				WHERE 
 					category = LOWER('notice') AND
 					article_table.importance = 1

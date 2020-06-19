@@ -2,9 +2,12 @@ package jsh.project.board.article.dto.request;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotBlank;
+
 import jsh.project.board.article.domain.Article;
 import jsh.project.board.article.domain.Article.getArticle;
 import jsh.project.board.article.enums.AllCategory;
+import jsh.project.board.article.enums.ArticleImportance;
 
 public class RequestArticleUpdateDto implements getArticle{
 	
@@ -12,7 +15,9 @@ public class RequestArticleUpdateDto implements getArticle{
 	private int accountId;
 	private String category;
 	private int importance;
+	@NotBlank(message = "제목을 입력해주세요.")
 	private String title;
+	@NotBlank(message = "내용을 입력해주세요.")
 	private String content;
 	
 	public RequestArticleUpdateDto() {
@@ -40,15 +45,15 @@ public class RequestArticleUpdateDto implements getArticle{
 	}
 	
 	public void setCategory(String category) {
-		this.category = category;
+		this.category = AllCategory.valueOf(category.toUpperCase()).getValue();
 	}
 	
 	public int getImportance() {
 		return importance;
 	}
 	
-	public void setImportance(int importance) {
-		this.importance = importance;
+	public void setImportance(String importance) {
+		this.importance = Integer.parseInt(ArticleImportance.valueOf(importance.toUpperCase()).getValue());
 	}
 
 	public String getTitle() {
@@ -64,14 +69,14 @@ public class RequestArticleUpdateDto implements getArticle{
 	}
 
 	public void setContent(String content) {
-		this.content = content;
+		this.content = content.trim();
 	}
 	
 	@Override
 	public Article toArticle() {
 		final Article article = new Article();
 		article.setId(this.id);
-		article.setCategory(AllCategory.valueOf(this.category.toUpperCase()).getValue());
+		article.setCategory(this.category);
 		article.setImportance(this.importance);
 		article.setTitle(this.title);
 		article.setContent(this.content);

@@ -65,7 +65,7 @@ function check_form(){
 	var importance = $("#select_importance option:selected").val();
 	
 	if(importance==null){
-		importance = 0;
+		importance = "NOMAL";
 	}
 	
 	if(inputForm_content==""){
@@ -95,7 +95,7 @@ function check_form(){
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			if(code == 'C006'){
+			if(code == 'C004' || code =='C006'){
 				console.log(code +" : "+jsonValue.message);
 				alert(jsonValue.message);
 				history.back();
@@ -126,8 +126,10 @@ function check_form(){
 					<tr>
 						<td>
 							<select id="select_importance" class="form-control">
-								<option value="0" <c:if test="${responseDto.importance eq 0 }"> selected </c:if>>일반</option>
-								<option value="1" <c:if test="${responseDto.importance eq 1 }"> selected </c:if>>필수</option>
+							<c:forEach items="${articleImportance }" var="importance">
+								<option value="${importance.key}"
+									<c:if test="${responseDto.importance eq importance.value }"> selected </c:if>>${importance.key }</option>
+							</c:forEach>
 							</select>
 						</td>
 					</tr>

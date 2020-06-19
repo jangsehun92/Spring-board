@@ -2,6 +2,7 @@ package jsh.project.board.article.controller;
 
 import java.security.Principal;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import jsh.project.board.account.domain.Account;
+import jsh.project.board.account.enums.Role;
 import jsh.project.board.article.dto.request.RequestArticleCreateDto;
 import jsh.project.board.article.dto.request.RequestArticleDeleteDto;
 import jsh.project.board.article.dto.request.RequestArticleDetailDto;
@@ -33,6 +35,7 @@ import jsh.project.board.article.dto.request.like.RequestLikeDto;
 import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
 import jsh.project.board.article.dto.response.ResponseBoardDto;
 import jsh.project.board.article.enums.CategoryEnumMapper;
+import jsh.project.board.article.enums.ImportanceEnumMapper;
 import jsh.project.board.article.service.ArticleService;
 
 @Controller
@@ -42,10 +45,13 @@ public class ArticleController {
 	
 	private ArticleService articleService;
 	private CategoryEnumMapper categoryEnumMapper;
+	private ImportanceEnumMapper importanceEnumMapper;
 	
-	public ArticleController(ArticleService articleService, CategoryEnumMapper categoryEnumMapper) {
+	public ArticleController(ArticleService articleService, CategoryEnumMapper categoryEnumMapper, ImportanceEnumMapper importanceEnumMapper) {
 		this.articleService = articleService;
 		this.categoryEnumMapper = categoryEnumMapper;
+		this.importanceEnumMapper = importanceEnumMapper;
+		
 	}
 	
 	// 공지사항 Aritcles
@@ -59,7 +65,7 @@ public class ArticleController {
 	public String articleListByCategory(@PathVariable String category, RequestArticlesDto dto, Model model){
 		log.info("GET /articles/"+category+"?page="+dto.getPage());
 		dto.setCategory(categoryEnumMapper.getCategory(category));
-		ResponseBoardDto responseBoardDto = dto.isNotice()?articleService.getNoticeArticles(dto):articleService.getArticles(dto);
+		ResponseBoardDto responseBoardDto = categoryEnumMapper.isNoticeCategory(dto.getCategory())?articleService.getNoticeArticles(dto):articleService.getArticles(dto);
 		model.addAttribute("responseBoardDto", responseBoardDto);
 		return "articlePages/articles";
 	}
@@ -76,6 +82,7 @@ public class ArticleController {
 	// 단일 Article 보기 
 	@GetMapping("/article/{id}")
 	public String article(@PathVariable("id") int id, Model model, Principal principal, RequestArticleDetailDto dto) {
+		log.info("GET /article/"+id);
 		if(principal != null) {
 			Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			dto.setAccountId(account.getId());
@@ -85,10 +92,11 @@ public class ArticleController {
 		return "articlePages/articleDetail";
 	}
 	
-	// 추천
+	// 해당 게시글 추천
 	@PreAuthorize("(#dto.accountId == principal.id) and (#dto.articleId == #id)")
 	@PostMapping("/article/like/{id}")
 	public @ResponseBody ResponseEntity<HttpStatus> like(@PathVariable("id")int id, @RequestBody RequestLikeDto dto){
+		log.info("POST /article/like/"+id);
 		articleService.like(dto);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
@@ -96,6 +104,7 @@ public class ArticleController {
 	// 글 작성 페이지 요청(일반)
 	@GetMapping("/articles/{category}/create")
 	public String articleCreateForm(@PathVariable("category") String category, Model model) {
+		log.info("POST /articles/"+category+"/create");
 		model.addAttribute("category", categoryEnumMapper.getCategory(category));
 		model.addAttribute("categorys", categoryEnumMapper.getUserCategory());
 		return "articlePages/articleCreatePage";
@@ -105,18 +114,23 @@ public class ArticleController {
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@GetMapping("/admin/articles/{category}/create")
 	public String adminArticleCreateForm(@PathVariable("category") String category, Model model) {
+		log.info("POST /admin/articles/"+category+"/create");
 		model.addAttribute("category", categoryEnumMapper.getCategory(category));
 		model.addAttribute("categorys", categoryEnumMapper.getAdminCategory());
+		model.addAttribute("articleImportance", importanceEnumMapper.getImportanceList());
 		return "articlePages/articleCreatePage";
 	}
 	
 	// 글 수정 페이지 요청
 	@PreAuthorize("((#dto.accountId == principal.id) and (#dto.id == #id)) or (hasAuthority('ROLE_ADMIN'))")
 	@PostMapping("/article/edit/{id}")
-	public String articleUpdateForm(@PathVariable("id") int id, Model model, RequestArticleInfoDto dto) {
+	public String articleUpdateForm(@PathVariable("id") int id, Model model, RequestArticleInfoDto dto, HttpServletRequest request) {
 		log.info("POST /article/edit/"+id);
 		ResponseArticleUpdateDto responseDto = articleService.getUpdateArticle(dto.getId());
 		model.addAttribute("categorys", categoryEnumMapper.getCategorys(responseDto.getCategory()));
+		if(request.isUserInRole(Role.ADMIN.getValue()) && categoryEnumMapper.isNoticeCategory(responseDto.getCategory())) {
+			model.addAttribute("articleImportance", importanceEnumMapper.getImportanceList());
+		}
 		model.addAttribute("responseDto", responseDto);
 		return "articlePages/articleUpdatePage";
 	}
@@ -125,7 +139,6 @@ public class ArticleController {
 	@PreAuthorize("(#dto.accountId == principal.id)")
 	@PostMapping("/article")
 	public ResponseEntity<Integer> createArticle(@RequestBody @Valid RequestArticleCreateDto dto){
-		dto.setCategory(categoryEnumMapper.getCategory(dto.getCategory()));
 		log.info("POST /article");
 		return new ResponseEntity<>(articleService.createArticle(dto),HttpStatus.OK);
 	}
@@ -133,7 +146,7 @@ public class ArticleController {
 	// 글 수정
 	@PreAuthorize("((#dto.accountId == principal.id) and (#dto.id == #id)) or (hasAuthority('ROLE_ADMIN'))")
 	@PatchMapping("/article/{id}")
-	public ResponseEntity<HttpStatus> updateArticle(@PathVariable("id") int id, @RequestBody RequestArticleUpdateDto dto) {
+	public ResponseEntity<HttpStatus> updateArticle(@PathVariable("id") int id, @RequestBody @Valid RequestArticleUpdateDto dto) {
 		log.info("PATCH /article/" + id);
 		articleService.updateArticle(dto);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
@@ -151,6 +164,7 @@ public class ArticleController {
 	// 파일 업로드
 	@PostMapping("/article/image")
 	public ResponseEntity<String> imageUpload(@RequestParam("file") MultipartFile file){
+		log.info("POST /article/image uploadFileInfo { name : "+file.getOriginalFilename() + " size :  "+ file.getSize() + " type : " + file.getContentType() + " } ");
 		return new ResponseEntity<>(articleService.uploadFile(file),HttpStatus.OK);
 	}
 }

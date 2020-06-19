@@ -16,19 +16,21 @@ public class CategoryEnumMapper {
 		return AllCategory.valueOf(category.toUpperCase()).getValue();
 	}
 	
-	public List<CategoryDto> getCategorys(String category){
+	public boolean isNoticeCategory(String category) {
 		boolean result = false;
 		for(AdminCategory adminCategorys : AdminCategory.values()) {
-			if(adminCategorys.getValue().equals(category)) {
+			if(adminCategorys.getKey().equals(category.toUpperCase())) {
 				result = true;
 			}
 		}
-		
-		if(result) {
+		return result;
+	}
+	
+	public List<CategoryDto> getCategorys(String category){
+		if(isNoticeCategory(category)) {
 			return getAdminCategory();
-		}else {
-			return getUserCategory();
 		}
+		return getUserCategory();
 	}
 		
 	

@@ -33,6 +33,7 @@ import jsh.project.board.article.dto.response.ResponseArticleDto;
 import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
 import jsh.project.board.article.dto.response.ResponseBoardDto;
 import jsh.project.board.article.enums.AdminCategory;
+import jsh.project.board.article.enums.ArticleImportance;
 import jsh.project.board.article.enums.UserCategory;
 import jsh.project.board.article.service.ArticleServiceImpl;
 
@@ -160,7 +161,7 @@ public class ArticleServiceTest {
 		dto.setAccountId(1);
 		dto.setCategory(AdminCategory.NOTICE.getValue());
 		dto.setContent("testContent");
-		dto.setImportance(1);
+		dto.setImportance(ArticleImportance.IMPORTANCE.getKey());
 		dto.setTitle("중요한 공지사항");
 		
 		
@@ -194,7 +195,7 @@ public class ArticleServiceTest {
 		dto.setId(1);
 		dto.setAccountId(1);
 		dto.setCategory(AdminCategory.NOTICE.getValue());
-		dto.setImportance(0);
+		dto.setImportance(ArticleImportance.NOMAL.getKey());
 		dto.setTitle("update title");
 		dto.setContent("update content");
 		

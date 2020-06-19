@@ -116,7 +116,7 @@ function check_form(){
 						<select id = "select_category" class="form-control">
 							<c:forEach items="${categorys }" var="categorys">
 								<option value="${categorys.key}"
-									<c:if test="${responseDto.category eq categorys.value }"> selected </c:if>>${categorys.value }</option>
+									<c:if test="${responseDto.category eq categorys.value }"> selected </c:if>>${categorys.key }</option>
 							</c:forEach>
 						</select>
 					</td>

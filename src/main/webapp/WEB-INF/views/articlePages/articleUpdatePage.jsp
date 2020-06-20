@@ -121,7 +121,8 @@ function check_form(){
 						</select>
 					</td>
 				<tr>
-				<c:if test="${responseDto.category eq 'notice' }">
+				<!-- 게시글 중요도 List가 Null이 아니면서 ADMIN 계정일 경우에만 게시글 중요도 선택가능 -->
+				<c:if test="${articleImportance != null}">
 					<sec:authorize access="hasRole('ROLE_ADMIN')">
 					<tr>
 						<td>

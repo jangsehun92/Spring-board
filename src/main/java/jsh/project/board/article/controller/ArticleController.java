@@ -51,7 +51,6 @@ public class ArticleController {
 		this.articleService = articleService;
 		this.categoryEnumMapper = categoryEnumMapper;
 		this.importanceEnumMapper = importanceEnumMapper;
-		
 	}
 	
 	// 공지사항 Aritcles

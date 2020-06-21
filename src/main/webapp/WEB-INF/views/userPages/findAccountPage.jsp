@@ -19,7 +19,7 @@ function check_form(){
 	var name = $("#name").val().replace(/\s|/gi,'');
 	var birth = $("#birth").val().replace(/\s|/gi,'');
 	
-	var AccountFindRequestDto = {
+	var RequestFindAccountDto = {
 		name : $("#name").val(),
 		birth : $("#birth").val(),
 	}
@@ -29,12 +29,12 @@ function check_form(){
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
 		dataType : "JSON",
-		data: JSON.stringify(AccountFindRequestDto),
+		data: JSON.stringify(RequestFindAccountDto),
 		success:function(data){
 			$("#main").empty();
 				$("#main").append(
 				"<h1>가입한 계정</h1>"+
-				"<table class='col-md-6 table table-hover'>"+
+				"<table class='table table-bordered'>"+
 					"<thead class='thead-dark'>"+
 							"<tr>"+
 								"<td class='col-md-5'>가입한 Email</td>"+

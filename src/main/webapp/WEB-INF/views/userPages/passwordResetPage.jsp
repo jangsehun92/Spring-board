@@ -18,7 +18,7 @@
 <body>
 <script type="text/javascript">
 function check_form(){
-	var AccountPasswordResetDto = {
+	var RequestPasswordResetDto = {
 		email : "${dto.email}",
 		password : $("#password").val(),
 		passwordCheck : $("#passwordCheck").val(),
@@ -30,7 +30,7 @@ function check_form(){
 		url:"/account/resetPassword",
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
-		data: JSON.stringify(AccountPasswordResetDto),
+		data: JSON.stringify(RequestPasswordResetDto),
 		success:function(data){
 			alert("비밀번호 재설정이 완료되었습니다.");
 			location.href="/login";

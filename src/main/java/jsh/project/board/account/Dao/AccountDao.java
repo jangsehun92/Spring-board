@@ -4,28 +4,28 @@ import java.util.List;
 import java.util.Map;
 
 import jsh.project.board.account.domain.Account;
-import jsh.project.board.account.dto.AccountCreateDto;
-import jsh.project.board.account.dto.AccountEmailDto;
-import jsh.project.board.account.dto.AccountFindRequestDto;
-import jsh.project.board.account.dto.AccountFindResponseDto;
-import jsh.project.board.account.dto.AccountResponseDto;
+import jsh.project.board.account.dto.request.RequestAccountCreateDto;
+import jsh.project.board.account.dto.request.RequestEmailDto;
+import jsh.project.board.account.dto.request.RequestFindAccountDto;
+import jsh.project.board.account.dto.response.ResponseFindAccountDto;
+import jsh.project.board.account.dto.response.ResponseAccountDto;
 
 public interface AccountDao {
-	public void save(AccountCreateDto dto);
+	public void save(RequestAccountCreateDto dto);
 	
 	public Account findByEmail(String email);
 	
 	public void edit(Account dto);
 	
-	public AccountResponseDto findById(int id);
+	public ResponseAccountDto findById(int id);
 	
 	public void updateLoginDate(String email);
 	
 	public void updatePassword(Account account);
 	
-	public int findEmail(AccountEmailDto dto);
+	public int findEmail(RequestEmailDto dto);
 	
-	public List<AccountFindResponseDto> findAccount(AccountFindRequestDto dto);
+	public List<ResponseFindAccountDto> findAccount(RequestFindAccountDto dto);
 	
 	public void activetion(String email);
 	

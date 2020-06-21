@@ -1,12 +1,12 @@
-package jsh.project.board.account.dto;
+package jsh.project.board.account.dto.response;
 
 import java.sql.Date;
 
-public class AccountFindResponseDto {
+public class ResponseFindAccountDto {
 	private String email;
 	private Date regdate;
 
-	public AccountFindResponseDto() {
+	public ResponseFindAccountDto() {
 		
 	}
 

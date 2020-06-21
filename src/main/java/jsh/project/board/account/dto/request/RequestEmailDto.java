@@ -1,14 +1,14 @@
-package jsh.project.board.account.dto;
+package jsh.project.board.account.dto.request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-public class AccountEmailDto {
+public class RequestEmailDto {
 	@NotBlank(message = "이메일을 입력해주세요. ")
 	@Email(message = "올바른 형식의 이메일 주소여야합니다. ")
 	private String email;
 	
-	public AccountEmailDto() {
+	public RequestEmailDto() {
 		
 	}
 

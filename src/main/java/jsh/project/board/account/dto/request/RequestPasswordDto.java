@@ -1,11 +1,11 @@
-package jsh.project.board.account.dto;
+package jsh.project.board.account.dto.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import jsh.project.board.account.exception.PasswordCheckFailedException;
 
-public class AccountPasswordDto {
+public class RequestPasswordDto {
 	
 	@NotBlank(message = "이전 비밀번호를 입력해주세요.")
 	private String beforePassword;
@@ -14,7 +14,7 @@ public class AccountPasswordDto {
 	@NotBlank(message = "바꿀 비밀번호를 재입력해주세요.")
 	private String afterPasswordCheck;
 	
-	public AccountPasswordDto() {
+	public RequestPasswordDto() {
 		
 	}
 

@@ -7,14 +7,14 @@
   <typeAliases>
   	<!-- Account 관련  -->
   	<typeAlias type="jsh.project.board.account.domain.Account" alias="Account"/>
-  	<typeAlias type="jsh.project.board.account.dto.AccountResponseDto" alias="AccountResponseDto"/>
-  	<typeAlias type="jsh.project.board.account.dto.AccountEmailDto" alias="AccountEmailDto"/>
-  	<typeAlias type="jsh.project.board.account.dto.AccountCreateDto" alias="AccountCreateDto"/>
-  	<typeAlias type="jsh.project.board.account.dto.AccountFindRequestDto" alias="AccountFindRequestDto"/>
-  	<typeAlias type="jsh.project.board.account.dto.AccountFindResponseDto" alias="AccountFindResponseDto"/>
-  	<typeAlias type="jsh.project.board.account.dto.AccountAuthRequestDto" alias="AccountAuthRequestDto"/>
-  	<typeAlias type="jsh.project.board.account.dto.AccountPasswordResetRequestDto" alias="AccountPasswordResetRequestDto"/>
-  	<typeAlias type="jsh.project.board.account.dto.AccountPasswordDto" alias="AccountPasswordDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.response.ResponseAccountDto" alias="ResponseAccountDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.request.RequestEmailDto" alias="RequestEmailDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.request.RequestAccountCreateDto" alias="RequestAccountCreateDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.request.RequestFindAccountDto" alias="RequestFindAccountDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.response.ResponseFindAccountDto" alias="ResponseFindAccountDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.request.RequestEmailConfirmDto" alias="RequestEmailConfirmDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.request.RequestPasswordResetDto" alias="RequestPasswordResetDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.request.RequestPasswordDto" alias="RequestPasswordDto"/>
   	<typeAlias type="jsh.project.board.account.dto.AuthDto" alias="AuthDto"/>
   	
   	<!-- Article 관련 -->

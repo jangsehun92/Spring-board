@@ -19,8 +19,8 @@
 <script type="text/javascript">
 //한 > 영 & 영 > 한 변환 자바스크립트 오픈소스 라이브러리
 var inko = new Inko();
-function check_form(){
-	var AccountPasswordResetRequestDto = {
+function sendEmail(){
+	var RequestAccountResetDto = {
 		email : $("#email").val(),
 		name : $("#name").val(),
 		birth : $("#birth").val()
@@ -30,7 +30,7 @@ function check_form(){
 		url:"/account/reset",
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
-		data: JSON.stringify(AccountPasswordResetRequestDto),
+		data: JSON.stringify(RequestAccountResetDto),
 		success:function(data){
 			alert("비밀번호 초기화 인증 이메일을 보냈습니다.");
 			location.href="/account/sendEmail?email="+$("#email").val();
@@ -65,6 +65,14 @@ function check_form(){
 	});
 }
 
+function resetCofirm(){
+	if(confirm("해당정보로 가입한 이메일로 인증이메일을 발송하시겠습니까?")){
+		sendEmail();
+	}else{
+		return;
+	}
+}
+
 
 </script>
 	<div class="container" style="margin-top: 80px;">
@@ -86,7 +94,7 @@ function check_form(){
 								<input type="text" class="form-control input-sm" id="birth" name="birth" placeholder="생년월일(ex:920409)" maxlength="6" style="margin-top: 10px;">
 								<small id="error_birth" class="error"></small>
 							</fieldset>
-							<input type="button" class="btn btn-primary btn-block" value="찾기" style="margin-top: 10px;" onclick="return check_form();">
+							<input type="button" class="btn btn-primary btn-block" value="찾기" style="margin-top: 10px;" onclick="return resetCofirm();">
 							<small id="error_account" class="error"></small>
 						</form:form>
 					</div>

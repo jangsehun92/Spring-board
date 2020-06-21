@@ -44,6 +44,11 @@ function check_form(){
 function join(){
 	location.href="/account/join";
 }
+
+function findAccount(){
+	location.href="/account/find-email";
+	
+}
 </script>
 
 	<div class="container" style="margin-top: 80px; align-items: center;">
@@ -64,6 +69,9 @@ function join(){
 					<button class="btn btn-primary btn-block" type="submit" style="margin-top: 10px;">로그인</button>
 					
 					<button class="btn btn-primary btn-block" type="button" style="margin-top: 10px;" onclick="join();">회원가입</button>
+					
+					<button class="btn btn-primary btn-block" type="button" style="margin-top: 10px;" onclick="findAccount();">계정 찾기</button>
+					
 				</form:form>
 					
 			</div>

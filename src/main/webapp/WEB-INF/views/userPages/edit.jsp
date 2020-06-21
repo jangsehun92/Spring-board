@@ -20,7 +20,7 @@
 function edit(){
 	var nickname = $("#user_nickname").val().replace(/\s|/gi,'');
 	
-	var accountEditRequestDto = {
+	var RequestEditAccountDto = {
 		nickname : nickname
 	}
 		
@@ -28,7 +28,7 @@ function edit(){
 			url:"/account/${principal.id }",
 			type:"patch",
 			contentType : "application/json; charset=UTF-8",
-			data: JSON.stringify(accountEditRequestDto),
+			data: JSON.stringify(RequestEditAccountDto),
 			success:function(data){
 				alert("회원정보가 수정되었습니다.");
 				location.href="/account/edit";

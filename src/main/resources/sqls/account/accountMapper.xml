@@ -16,7 +16,7 @@
 		<result property="lastLoginDate" column="last_login_date"/>
 	</resultMap>
 
-	<insert id="save" parameterType="AccountCreateDto">
+	<insert id="save" parameterType="RequestAccountCreateDto">
 		INSERT INTO 
 			account_table values(
 				account_seq.NEXTVAL,
@@ -54,7 +54,7 @@
 			email = #{email}
 	</select>
 	
-	<select id="findById" parameterType="int" resultType="AccountResponseDto">
+	<select id="findById" parameterType="int" resultType="ResponseAccountDto">
 		SELECT 
 			id,
 			nickname
@@ -84,7 +84,7 @@
 			email = #{email}
 	</update>
 	
-	<select id="findAccount" parameterType="AccountFindRequestDto" resultType="AccountFindResponseDto">
+	<select id="findAccount" parameterType="RequestFindAccountDto" resultType="ResponseFindAccountDto">
 		SELECT
 			email,
 			regdate
@@ -134,7 +134,7 @@
 			email = #{email}
 	</update>
 	
-	<select id="emailCheck" parameterType="AccountEmailDto" resultType="int">
+	<select id="emailCheck" parameterType="RequestEmailDto" resultType="int">
 		SELECT 
 			count(email)
 		FROM 

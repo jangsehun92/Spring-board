@@ -52,7 +52,7 @@ function check_form(){
 		return false;
 	} 
 	
-	var accountCreateDto = {
+	var RequestAccountCreateDto = {
 			email : $("#email").val(),
 			password : inko.ko2en($("#password").val()),
 			passwordCheck : inko.ko2en($("#passwordCheck").val()),
@@ -65,7 +65,7 @@ function check_form(){
 		url:"/account/join",
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
-		data: JSON.stringify(accountCreateDto),
+		data: JSON.stringify(RequestAccountCreateDto),
 		success:function(data){
 			alert("인증 이메일이 발송 되었습니다.");
 			location.href="/account/sendEmail?email="+$("#email").val();

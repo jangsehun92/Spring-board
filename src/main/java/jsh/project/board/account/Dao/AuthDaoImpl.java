@@ -5,8 +5,8 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import jsh.project.board.account.dto.AccountAuthRequestDto;
 import jsh.project.board.account.dto.AuthDto;
+import jsh.project.board.account.dto.request.RequestEmailConfirmDto;
 
 @Repository
 public class AuthDaoImpl implements AuthDao{
@@ -38,7 +38,7 @@ public class AuthDaoImpl implements AuthDao{
 	}
 	
 	@Override
-	public void authKeyExpired(AccountAuthRequestDto dto) {
+	public void authKeyExpired(RequestEmailConfirmDto dto) {
 		sqlSession.update("authMapper.expired",dto);
 	}
 

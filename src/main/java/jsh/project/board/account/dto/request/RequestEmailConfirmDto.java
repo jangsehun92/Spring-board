@@ -1,18 +1,18 @@
-package jsh.project.board.account.dto;
+package jsh.project.board.account.dto.request;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class AccountAuthRequestDto {
+public class RequestEmailConfirmDto {
 	private String email;
 	private String authKey;
 	private String authOption;
 	
-	public AccountAuthRequestDto() {
+	public RequestEmailConfirmDto() {
 		
 	}
 	
-	public AccountAuthRequestDto(String email, String authKey, String authOption) {
+	public RequestEmailConfirmDto(String email, String authKey, String authOption) {
 		this.email = email;
 		this.authKey = authKey;
 		this.authOption = authOption;

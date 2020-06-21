@@ -17,7 +17,7 @@
 <body>
 <script type="text/javascript">
 function check_form(){
-	var AccountPasswordDto = {
+	var RequestPasswordDto = {
 		beforePassword : $("#beforePassword").val(),
 		afterPassword : $("#afterPassword").val(),
 		afterPasswordCheck : $("#afterPasswordCheck").val()
@@ -27,7 +27,7 @@ function check_form(){
 		url:"/account/passwordChange",
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
-		data: JSON.stringify(AccountPasswordDto),
+		data: JSON.stringify(RequestPasswordDto),
 		success:function(data){
 			alert("비밀번호 변경을 완료하였습니다. 다시 로그인해주세요.");
 			logout();

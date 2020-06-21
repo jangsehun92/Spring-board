@@ -13,16 +13,16 @@ import org.springframework.transaction.annotation.Transactional;
 import jsh.project.board.account.dao.AccountDao;
 import jsh.project.board.account.dao.AuthDao;
 import jsh.project.board.account.domain.Account;
-import jsh.project.board.account.dto.AccountAuthRequestDto;
-import jsh.project.board.account.dto.AccountCreateDto;
-import jsh.project.board.account.dto.AccountEmailDto;
-import jsh.project.board.account.dto.AccountFindRequestDto;
-import jsh.project.board.account.dto.AccountFindResponseDto;
-import jsh.project.board.account.dto.AccountPasswordDto;
-import jsh.project.board.account.dto.AccountPasswordResetDto;
-import jsh.project.board.account.dto.AccountPasswordResetRequestDto;
-import jsh.project.board.account.dto.AccountResponseDto;
 import jsh.project.board.account.dto.AuthDto;
+import jsh.project.board.account.dto.request.RequestEmailConfirmDto;
+import jsh.project.board.account.dto.request.RequestAccountCreateDto;
+import jsh.project.board.account.dto.request.RequestEmailDto;
+import jsh.project.board.account.dto.request.RequestFindAccountDto;
+import jsh.project.board.account.dto.request.RequestPasswordDto;
+import jsh.project.board.account.dto.request.RequestPasswordResetDto;
+import jsh.project.board.account.dto.request.RequestAccountResetDto;
+import jsh.project.board.account.dto.response.ResponseFindAccountDto;
+import jsh.project.board.account.dto.response.ResponseAccountDto;
 import jsh.project.board.account.enums.AuthOption;
 import jsh.project.board.account.enums.Role;
 import jsh.project.board.account.exception.AccountNotEmailChecked;
@@ -53,7 +53,7 @@ public class AccountServiceImpl implements AccountService{
 	//회원가입
 	@Transactional
 	@Override
-	public void register(AccountCreateDto dto) throws Exception {
+	public void register(RequestAccountCreateDto dto) throws Exception {
 		dto.checkPassword();
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 		dto.setRole(Role.USER.getValue());
@@ -65,8 +65,8 @@ public class AccountServiceImpl implements AccountService{
 	
 	//계정 정보 찾기
 	@Override
-	public AccountResponseDto accountInfo(int id) {
-		AccountResponseDto accountResponseDto = accountDao.findById(id);
+	public ResponseAccountDto accountInfo(int id) {
+		ResponseAccountDto accountResponseDto = accountDao.findById(id);
 		return accountResponseDto;
 	}
 	
@@ -80,7 +80,7 @@ public class AccountServiceImpl implements AccountService{
 	//비밀번호 변경
 	@Transactional
 	@Override
-	public void passwordChange(Account account, AccountPasswordDto dto) {
+	public void passwordChange(Account account, RequestPasswordDto dto) {
 		dto.checkPassword();
 		if(!passwordEncoder.matches(dto.getBeforePassword(), account.getPassword())) {
 			throw new PasswordNotMatchException();
@@ -123,7 +123,7 @@ public class AccountServiceImpl implements AccountService{
 	
 	//회원가입 시 이메일 중복 체크
 	@Override
-	public void emailCheck(AccountEmailDto dto) {
+	public void emailCheck(RequestEmailDto dto) {
 		if(accountDao.findEmail(dto) != 0) {
 			throw new EmailAlreadyUsedException();
 		}
@@ -131,8 +131,8 @@ public class AccountServiceImpl implements AccountService{
 	
 	//가입한 계정 찾기
 	@Override
-	public List<AccountFindResponseDto> findAccount(AccountFindRequestDto dto) throws AccountNotFoundException {
-		List<AccountFindResponseDto> list = accountDao.findAccount(dto);
+	public List<ResponseFindAccountDto> findAccount(RequestFindAccountDto dto) throws AccountNotFoundException {
+		List<ResponseFindAccountDto> list = accountDao.findAccount(dto);
 		if(list.isEmpty()) {
 			throw new AccountNotFoundException();
 		}
@@ -142,7 +142,7 @@ public class AccountServiceImpl implements AccountService{
 	//인증 이메일 재발송
 	@Transactional
 	@Override
-	public void resendEmail(AccountEmailDto dto) throws Exception {
+	public void resendEmail(RequestEmailDto dto) throws Exception {
 		AuthDto authDto = updateAuth(dto.getEmail());
 		sendEmail(authDto);
 	}
@@ -150,7 +150,7 @@ public class AccountServiceImpl implements AccountService{
 	//비밀번호 초기화 인증이메일 발송
 	@Transactional
 	@Override
-	public void sendResetEmail(AccountPasswordResetRequestDto dto) throws Exception {
+	public void sendResetEmail(RequestAccountResetDto dto) throws Exception {
 		Account account = accountDao.findByEmail(dto.getEmail());
 		
 		if(account==null) {
@@ -172,7 +172,7 @@ public class AccountServiceImpl implements AccountService{
 	//비밀번호 재설정(초기화)
 	@Transactional
 	@Override
-	public void resetPassword(AccountPasswordResetDto dto) {
+	public void resetPassword(RequestPasswordResetDto dto) {
 		dto.checkPassword();
 		Account account = accountDao.findByEmail(dto.getEmail());
 		AuthDto authDto = authDao.findByEmail(dto.getEmail());
@@ -192,7 +192,7 @@ public class AccountServiceImpl implements AccountService{
 	//회원가입 이메일 인증
 	@Transactional
 	@Override
-	public void signUpConfirm(AccountAuthRequestDto dto) {
+	public void signUpConfirm(RequestEmailConfirmDto dto) {
 		log.info("accountService.resetPasswordConfirm(AccountAuthRequestDto dto) : "+dto.toString());
 		AuthDto authDto = authDao.findByEmail(dto.getEmail());
 		
@@ -205,7 +205,7 @@ public class AccountServiceImpl implements AccountService{
 	
 	//비밀번호 초기화 이메일 인증
 	@Override
-	public void resetPasswordConfirm(AccountAuthRequestDto dto) {
+	public void resetPasswordConfirm(RequestEmailConfirmDto dto) {
 		log.info("accountService.resetPasswordConfirm(AccountAuthRequestDto dto) : "+dto.toString());
 		AuthDto authDto = authDao.findByEmail(dto.getEmail());
 		

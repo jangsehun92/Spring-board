@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jsh.project.board.account.dto.AccountPasswordResetRequestDto;
+import jsh.project.board.account.dto.request.RequestAccountResetDto;
 
 @SuppressWarnings("serial")
 public class Account implements UserDetails{
@@ -130,7 +130,7 @@ public class Account implements UserDetails{
 		return enabled;
 	}
 	
-	public boolean findAccountCheck(AccountPasswordResetRequestDto dto) {
+	public boolean findAccountCheck(RequestAccountResetDto dto) {
 		if(!this.name.equals(dto.getName()) || !this.birth.equals(dto.getBirth())) {
 			return false;
 		}

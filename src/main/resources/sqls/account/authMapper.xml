@@ -56,7 +56,7 @@
 			expired = 0
 	</update>
 	
-	<update id="expired" parameterType="AccountAuthRequestDto">
+	<update id="expired" parameterType="RequestEmailConfirmDto">
 		UPDATE auth_table
 		SET expired = 1,
 			expired_date = SYSDATE

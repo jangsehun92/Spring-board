@@ -7,11 +7,11 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import jsh.project.board.account.domain.Account;
-import jsh.project.board.account.dto.AccountCreateDto;
-import jsh.project.board.account.dto.AccountEmailDto;
-import jsh.project.board.account.dto.AccountFindRequestDto;
-import jsh.project.board.account.dto.AccountFindResponseDto;
-import jsh.project.board.account.dto.AccountResponseDto;
+import jsh.project.board.account.dto.request.RequestAccountCreateDto;
+import jsh.project.board.account.dto.request.RequestEmailDto;
+import jsh.project.board.account.dto.request.RequestFindAccountDto;
+import jsh.project.board.account.dto.response.ResponseFindAccountDto;
+import jsh.project.board.account.dto.response.ResponseAccountDto;
 
 @Repository
 public class AccountDaoImpl implements AccountDao{
@@ -23,7 +23,7 @@ public class AccountDaoImpl implements AccountDao{
 	}
 	
 	@Override
-	public void save(AccountCreateDto dto) {
+	public void save(RequestAccountCreateDto dto) {
 		sqlSession.insert("accountMapper.save",dto);
 	}
 	
@@ -33,7 +33,7 @@ public class AccountDaoImpl implements AccountDao{
 	}
 	
 	@Override
-	public AccountResponseDto findById(int id) {
+	public ResponseAccountDto findById(int id) {
 		return sqlSession.selectOne("accountMapper.findById", id);
 	}
 	
@@ -53,12 +53,12 @@ public class AccountDaoImpl implements AccountDao{
 	}
 	
 	@Override
-	public int findEmail(AccountEmailDto dto) {
+	public int findEmail(RequestEmailDto dto) {
 		return sqlSession.selectOne("accountMapper.emailCheck",dto);
 	}
 	
 	@Override
-	public List<AccountFindResponseDto> findAccount(AccountFindRequestDto dto){
+	public List<ResponseFindAccountDto> findAccount(RequestFindAccountDto dto){
 		return sqlSession.selectList("accountMapper.findAccount", dto);
 	}
 	

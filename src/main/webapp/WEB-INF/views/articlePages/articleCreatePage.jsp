@@ -51,6 +51,7 @@ function uploadSummernoteImageFile(file, editor) {
 		processData : false,
 		success : function(data) {
         	//editor에 저장된 이미지를 가져와 보여줘야하기 때문에 항상 업로드된 파일의 url이 있어야 한다.
+        	console.log(data);
 			$(editor).summernote('insertImage',data);
 		}
 	});

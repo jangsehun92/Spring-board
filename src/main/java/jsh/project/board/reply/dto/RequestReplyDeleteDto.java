@@ -1,9 +1,9 @@
 package jsh.project.board.reply.dto;
 
 import jsh.project.board.reply.domain.Reply;
-import jsh.project.board.reply.domain.Reply.getReply;
+import jsh.project.board.reply.domain.Reply.ReplyConverter;
 
-public class RequestReplyDeleteDto implements getReply{
+public class RequestReplyDeleteDto implements ReplyConverter{
 	
 	private int id;
 	private int articleId;

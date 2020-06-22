@@ -5,9 +5,9 @@ import java.util.Date;
 import javax.validation.constraints.NotBlank;
 
 import jsh.project.board.reply.domain.Reply;
-import jsh.project.board.reply.domain.Reply.getReply;
+import jsh.project.board.reply.domain.Reply.ReplyConverter;
 
-public class RequestReplyCreateDto implements getReply{
+public class RequestReplyCreateDto implements ReplyConverter{
 	
 	private int articleId;
 	private int accountId;

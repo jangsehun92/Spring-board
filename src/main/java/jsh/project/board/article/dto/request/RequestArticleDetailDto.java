@@ -1,9 +1,9 @@
 package jsh.project.board.article.dto.request;
 
-import jsh.project.board.article.domain.Article.LikeDtoTransform;
+import jsh.project.board.article.domain.Article.LikeDtoConverter;
 import jsh.project.board.article.dto.request.like.RequestLikeDto;
 
-public class RequestArticleDetailDto implements LikeDtoTransform {
+public class RequestArticleDetailDto implements LikeDtoConverter {
 	private int id;
 	private int accountId;
 	

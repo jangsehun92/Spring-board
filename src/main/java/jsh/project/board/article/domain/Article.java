@@ -92,7 +92,7 @@ public class Article {
 		Article toArticle();
 	}
 	
-	public interface LikeDtoTransform{
+	public interface LikeDtoConverter{
 		RequestLikeDto toLikeDto();
 	}
 

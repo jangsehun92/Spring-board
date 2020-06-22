@@ -76,7 +76,7 @@ public class Reply {
 		this.modifyDate = modifyDate;
 	}
 	
-	public interface getReply{
+	public interface ReplyConverter{
 		Reply toReply();
 	}
 	

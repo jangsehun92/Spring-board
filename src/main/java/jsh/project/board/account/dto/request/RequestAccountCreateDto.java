@@ -4,6 +4,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+import jsh.project.board.account.enums.Role;
 import jsh.project.board.account.exception.PasswordCheckFailedException;
 
 public class RequestAccountCreateDto {
@@ -78,8 +79,8 @@ public class RequestAccountCreateDto {
 		return role;
 	}
 	
-	public void setRole(String role) {
-		this.role = role;
+	public void setRole(Role role) {
+		this.role = role.getValue();
 	}
 	
 	public void checkPassword() {

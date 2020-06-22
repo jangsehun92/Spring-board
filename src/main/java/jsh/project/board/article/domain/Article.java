@@ -2,6 +2,8 @@ package jsh.project.board.article.domain;
 
 import java.util.Date;
 
+import jsh.project.board.article.dto.request.like.RequestLikeDto;
+
 public class Article {
 	
 	private int id;
@@ -86,8 +88,12 @@ public class Article {
 		return "Article {id : "+id + " accountId : " + accountId + " category : " + category + " importance : " + importance + " title : " + title + " content : " + content + " regdate : " + regdate + " modifyDate : " + modifyDate;
 	}
 	
-	public interface getArticle{
+	public interface ArticleConverter{
 		Article toArticle();
+	}
+	
+	public interface LikeDtoTransform{
+		RequestLikeDto toLikeDto();
 	}
 
 	

@@ -38,8 +38,8 @@ public class AccountDaoImpl implements AccountDao{
 	}
 	
 	@Override
-	public void edit(Account dto) {
-		sqlSession.update("accountMapper.edit", dto);
+	public void edit(Account account) {
+		sqlSession.update("accountMapper.edit", account);
 	}
 	
 	@Override

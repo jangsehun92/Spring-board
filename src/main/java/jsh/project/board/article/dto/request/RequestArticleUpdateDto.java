@@ -5,11 +5,11 @@ import java.util.Date;
 import javax.validation.constraints.NotBlank;
 
 import jsh.project.board.article.domain.Article;
-import jsh.project.board.article.domain.Article.getArticle;
+import jsh.project.board.article.domain.Article.ArticleConverter;
 import jsh.project.board.article.enums.AllCategory;
 import jsh.project.board.article.enums.ArticleImportance;
 
-public class RequestArticleUpdateDto implements getArticle{
+public class RequestArticleUpdateDto implements ArticleConverter{
 	
 	private int id;
 	private int accountId;

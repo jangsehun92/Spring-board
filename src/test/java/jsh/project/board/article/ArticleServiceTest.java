@@ -154,16 +154,48 @@ public class ArticleServiceTest {
 		assertNotNull(responseDto);
 	}
 	
-	@Test
 	public void 게시글_입력() {
 		//given
 		RequestArticleCreateDto dto = new RequestArticleCreateDto();
 		dto.setAccountId(1);
-		dto.setCategory(AdminCategory.NOTICE.getValue());
+		dto.setCategory("community");
 		dto.setContent("testContent");
 		dto.setImportance(ArticleImportance.IMPORTANCE.getKey());
 		dto.setTitle("중요한 공지사항");
 		
+		//when
+		articleService.createArticle(dto);
+		
+		//then
+		verify(articleDao, times(1)).insertArticle(any());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void 게시글_카테고리_잘못_입력() {
+		//given
+		RequestArticleCreateDto dto = new RequestArticleCreateDto();
+		dto.setAccountId(1);
+		dto.setCategory("Event");
+		dto.setContent("testContent");
+		dto.setImportance(ArticleImportance.IMPORTANCE.getKey());
+		dto.setTitle("중요한 공지사항");
+		
+		//when
+		articleService.createArticle(dto);
+		
+		//then
+		verify(articleDao, times(1)).insertArticle(any());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void 게시글_중요도_잘못_입력() {
+		//given
+		RequestArticleCreateDto dto = new RequestArticleCreateDto();
+		dto.setAccountId(1);
+		dto.setCategory("notice");
+		dto.setContent("testContent");
+		dto.setImportance("Not Nomal");
+		dto.setTitle("중요한 공지사항");
 		
 		//when
 		articleService.createArticle(dto);
@@ -176,7 +208,6 @@ public class ArticleServiceTest {
 	public void 수정할_게시글_가져오기() {
 		//given
 		int articleId = 1;
-		
 		given(articleDao.selectUpdateArticle(articleId)).willReturn(new ResponseArticleUpdateDto());
 		
 		//when

@@ -8,6 +8,11 @@ public class RequestLikeDto {
 	public RequestLikeDto() {
 		
 	}
+	
+	public RequestLikeDto(int articleId, int accountId) {
+		this.articleId = articleId;
+		this.accountId = accountId;
+	}
 
 	public int getArticleId() {
 		return articleId;
@@ -24,6 +29,5 @@ public class RequestLikeDto {
 	public void setAccountId(int accountId) {
 		this.accountId = accountId;
 	}
-	
 
 }

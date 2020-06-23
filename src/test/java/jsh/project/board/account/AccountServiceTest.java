@@ -10,9 +10,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import org.hamcrest.core.IsNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +28,11 @@ import jsh.project.board.account.dao.AccountDao;
 import jsh.project.board.account.dao.AuthDao;
 import jsh.project.board.account.dto.request.RequestAccountCreateDto;
 import jsh.project.board.account.dto.request.RequestEmailDto;
+import jsh.project.board.account.dto.request.RequestFindAccountDto;
+import jsh.project.board.account.dto.response.ResponseAccountDto;
+import jsh.project.board.account.dto.response.ResponseFindAccountDto;
 import jsh.project.board.account.enums.Role;
+import jsh.project.board.account.exception.AccountNotFoundException;
 import jsh.project.board.account.exception.EmailAlreadyUsedException;
 import jsh.project.board.account.service.AccountServiceImpl;
 import jsh.project.board.global.infra.email.EmailService;
@@ -52,10 +56,16 @@ public class AccountServiceTest {
 	@Mock
 	private EmailService emailService;
 	
+	@Spy
+	ResponseFindAccountDto responseDto;
+	
 	
 	@Before
 	public void setUp() {
-		
+		//가입한 계정 찾기
+		responseDto = new ResponseFindAccountDto();
+		responseDto.setEmail("jangsehun1992@gmail.com");
+		responseDto.setRegdate(new Date());
 	}
 	
 	@Test
@@ -107,6 +117,60 @@ public class AccountServiceTest {
 		verify(authDao, times(1)).authSave(any());
 		verify(emailService, times(1)).sendEmail(any());
 	}
+	
+	@Test
+	public void 해당_계정_정보_보기() {
+		//given
+		int accountId = 1;
+		
+		ResponseAccountDto responseDto = new ResponseAccountDto();
+		responseDto.setId(1);
+		responseDto.setNickname("tester");
+		
+		given(accountDao.findById(accountId)).willReturn(responseDto);
+		//when
+		ResponseAccountDto responseAccountDto = accountService.accountInfo(accountId);
+		
+		//then
+		assertNotNull(responseAccountDto);
+		assertThat(responseAccountDto.getId(), is(1));
+		assertThat(responseAccountDto.getNickname(), is("tester"));
+	}
+	
+	@Test
+	public void 가입한_계정_찾기() {
+		//given
+		RequestFindAccountDto requestDto = new RequestFindAccountDto();
+		requestDto.setName("장세훈");
+		requestDto.setBirth("920409");
+		
+		List<ResponseFindAccountDto> accountList = new ArrayList<ResponseFindAccountDto>();
+		accountList.add(responseDto);
+		
+		given(accountDao.findAccount(requestDto)).willReturn(accountList);
+		//when
+		
+		accountService.findAccount(requestDto);
+		
+		//then
+		assertThat(accountList.size(), is(1));
+		assertThat(accountList.get(0).getEmail(), is("jangsehun1992@gmail.com"));
+	}
+	
+	@Test(expected = AccountNotFoundException.class)
+	public void 가입한_계정_없는_경우() {
+		//given
+		RequestFindAccountDto requestDto = new RequestFindAccountDto();
+		requestDto.setName("장세훈");
+		requestDto.setBirth("920409");
+		
+		List<ResponseFindAccountDto> accountList = new ArrayList<ResponseFindAccountDto>();
+
+		given(accountDao.findAccount(requestDto)).willReturn(accountList);
+		//when
+		accountService.findAccount(requestDto);
+	}
+	
 	
 
 }

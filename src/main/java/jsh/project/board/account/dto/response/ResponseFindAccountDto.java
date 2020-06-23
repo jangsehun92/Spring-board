@@ -1,6 +1,6 @@
 package jsh.project.board.account.dto.response;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class ResponseFindAccountDto {
 	private String email;

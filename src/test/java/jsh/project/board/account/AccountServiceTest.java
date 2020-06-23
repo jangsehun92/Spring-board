@@ -26,7 +26,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jsh.project.board.account.dao.AccountDao;
 import jsh.project.board.account.dao.AuthDao;
+import jsh.project.board.account.domain.Account;
 import jsh.project.board.account.dto.request.RequestAccountCreateDto;
+import jsh.project.board.account.dto.request.RequestAccountEditDto;
 import jsh.project.board.account.dto.request.RequestEmailDto;
 import jsh.project.board.account.dto.request.RequestFindAccountDto;
 import jsh.project.board.account.dto.response.ResponseAccountDto;
@@ -57,13 +59,25 @@ public class AccountServiceTest {
 	private EmailService emailService;
 	
 	@Spy
-	ResponseFindAccountDto responseDto;
+	ResponseFindAccountDto responseDto = new ResponseFindAccountDto();
 	
+	@Spy
+	Account account = new Account();
 	
 	@Before
 	public void setUp() {
-		//가입한 계정 찾기
-		responseDto = new ResponseFindAccountDto();
+		//계정 
+		account.setId(1);
+		account.setName("장세훈");
+		account.setNickname("tester");
+		account.setPassword("password");
+		account.setBirth("920409");
+		account.setRegdate(new Date());
+		account.setLocked(0);
+		account.setFailureCount(0);
+		account.setLastLoginDate(new Date());
+		
+		//가입한 계정
 		responseDto.setEmail("jangsehun1992@gmail.com");
 		responseDto.setRegdate(new Date());
 	}
@@ -148,8 +162,8 @@ public class AccountServiceTest {
 		accountList.add(responseDto);
 		
 		given(accountDao.findAccount(requestDto)).willReturn(accountList);
-		//when
 		
+		//when
 		accountService.findAccount(requestDto);
 		
 		//then
@@ -167,10 +181,27 @@ public class AccountServiceTest {
 		List<ResponseFindAccountDto> accountList = new ArrayList<ResponseFindAccountDto>();
 
 		given(accountDao.findAccount(requestDto)).willReturn(accountList);
+		
 		//when
 		accountService.findAccount(requestDto);
 	}
 	
+	@Test
+	public void 회원_정보_수정() {
+		//given
+		RequestAccountEditDto requestDto = new RequestAccountEditDto();
+		requestDto.setNickname("changeNickname");
+		
+		account.setNickname(requestDto.getNickname());
+		
+		//when
+		accountService.accountEdit(account);
+		
+		//then
+		verify(accountDao, times(1)).edit(account);
+		
+		assertThat(account.getNickname(), is(requestDto.getNickname()));
+	}
 	
 
 }

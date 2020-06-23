@@ -1,6 +1,6 @@
 package jsh.project.board.account.domain;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 

@@ -2,15 +2,15 @@ package jsh.project.board.account.dto.request;
 
 import javax.validation.constraints.NotBlank;
 
-public class RequestEditAccountDto {
+public class RequestAccountEditDto {
 	@NotBlank(message = "닉네임을 입력해주세요.")
 	private String nickname;
 	
-	public RequestEditAccountDto() {
+	public RequestAccountEditDto() {
 		
 	}
 	
-	public RequestEditAccountDto(String nickname) {
+	public RequestAccountEditDto(String nickname) {
 		this.nickname = nickname;
 	}
 

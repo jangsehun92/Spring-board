@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jsh.project.board.account.domain.Account;
 import jsh.project.board.account.dto.request.RequestEmailConfirmDto;
 import jsh.project.board.account.dto.request.RequestAccountCreateDto;
-import jsh.project.board.account.dto.request.RequestEditAccountDto;
+import jsh.project.board.account.dto.request.RequestAccountEditDto;
 import jsh.project.board.account.dto.request.RequestEmailDto;
 import jsh.project.board.account.dto.request.RequestFindAccountDto;
 import jsh.project.board.account.dto.request.RequestPasswordDto;
@@ -94,7 +94,7 @@ public class AccountController {
     // 계정 정보(닉네임)변경 
     @PreAuthorize("(#id == principal.id)")
     @PatchMapping("/account/{id}")
-    public @ResponseBody ResponseEntity<HttpStatus> accountEdit(Principal principal, Authentication auth, Model model, @PathVariable("id")int id, @RequestBody @Valid RequestEditAccountDto dto) {
+    public @ResponseBody ResponseEntity<HttpStatus> accountEdit(Principal principal, Authentication auth, Model model, @PathVariable("id")int id, @RequestBody @Valid RequestAccountEditDto dto) {
     	log.info("PATCH /account/"+id);
     	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	account.setNickname(dto.getNickname());

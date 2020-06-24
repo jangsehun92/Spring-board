@@ -31,11 +31,13 @@ import jsh.project.board.account.dto.request.RequestAccountCreateDto;
 import jsh.project.board.account.dto.request.RequestAccountEditDto;
 import jsh.project.board.account.dto.request.RequestEmailDto;
 import jsh.project.board.account.dto.request.RequestFindAccountDto;
+import jsh.project.board.account.dto.request.RequestPasswordDto;
 import jsh.project.board.account.dto.response.ResponseAccountDto;
 import jsh.project.board.account.dto.response.ResponseFindAccountDto;
 import jsh.project.board.account.enums.Role;
 import jsh.project.board.account.exception.AccountNotFoundException;
 import jsh.project.board.account.exception.EmailAlreadyUsedException;
+import jsh.project.board.account.exception.PasswordNotMatchException;
 import jsh.project.board.account.service.AccountServiceImpl;
 import jsh.project.board.global.infra.email.EmailService;
 
@@ -172,7 +174,7 @@ public class AccountServiceTest {
 	}
 	
 	@Test(expected = AccountNotFoundException.class)
-	public void 가입한_계정_없는_경우() {
+	public void 가입한_계정이_없는_경우() {
 		//given
 		RequestFindAccountDto requestDto = new RequestFindAccountDto();
 		requestDto.setName("장세훈");
@@ -202,6 +204,35 @@ public class AccountServiceTest {
 		
 		assertThat(account.getNickname(), is(requestDto.getNickname()));
 	}
+	
+	@Test
+	public void 비밀번호_변경() {
+		//given
+		RequestPasswordDto dto = new RequestPasswordDto();
+		dto.setBeforePassword("password");
+		dto.setAfterPassword("1234");
+		dto.setAfterPasswordCheck("1234");
+		
+		given(passwordEncoder.matches(any(), any())).willReturn(true);
+		//when
+		accountService.passwordChange(account, dto);
+		
+		//then
+		verify(accountDao, times(1)).updatePassword(account);
+	}
+	
+	@Test(expected = PasswordNotMatchException.class)
+	public void 비밀변호_변경_할때_기존_비밀번호가_다른경우() {
+		//given
+		RequestPasswordDto dto = new RequestPasswordDto();
+		dto.setBeforePassword("notMatch");
+		dto.setAfterPassword("1234");
+		dto.setAfterPasswordCheck("1234");
+		
+		//when
+		accountService.passwordChange(account, dto);
+	}
+	
 	
 
 }

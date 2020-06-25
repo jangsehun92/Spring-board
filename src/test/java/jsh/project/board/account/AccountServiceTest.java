@@ -27,19 +27,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import jsh.project.board.account.dao.AccountDao;
 import jsh.project.board.account.dao.AuthDao;
 import jsh.project.board.account.domain.Account;
+import jsh.project.board.account.dto.AuthDto;
 import jsh.project.board.account.dto.request.RequestAccountCreateDto;
 import jsh.project.board.account.dto.request.RequestAccountEditDto;
 import jsh.project.board.account.dto.request.RequestEmailDto;
 import jsh.project.board.account.dto.request.RequestFindAccountDto;
 import jsh.project.board.account.dto.request.RequestPasswordDto;
+import jsh.project.board.account.dto.request.RequestPasswordResetDto;
 import jsh.project.board.account.dto.response.ResponseAccountDto;
 import jsh.project.board.account.dto.response.ResponseFindAccountDto;
+import jsh.project.board.account.enums.AuthOption;
 import jsh.project.board.account.enums.Role;
 import jsh.project.board.account.exception.AccountNotFoundException;
+import jsh.project.board.account.exception.BadAuthRequestException;
 import jsh.project.board.account.exception.EmailAlreadyUsedException;
+import jsh.project.board.account.exception.PasswordCheckFailedException;
 import jsh.project.board.account.exception.PasswordNotMatchException;
 import jsh.project.board.account.service.AccountServiceImpl;
 import jsh.project.board.global.infra.email.EmailService;
+import jsh.project.board.global.infra.util.AuthKey;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccountServiceTest {
@@ -209,9 +215,9 @@ public class AccountServiceTest {
 	public void 비밀번호_변경() {
 		//given
 		RequestPasswordDto dto = new RequestPasswordDto();
-		dto.setBeforePassword("password");
-		dto.setAfterPassword("1234");
-		dto.setAfterPasswordCheck("1234");
+		dto.setBeforePassword("password1234");
+		dto.setAfterPassword("password1234");
+		dto.setAfterPasswordCheck("password1234");
 		
 		given(passwordEncoder.matches(any(), any())).willReturn(true);
 		//when
@@ -221,16 +227,103 @@ public class AccountServiceTest {
 		verify(accountDao, times(1)).updatePassword(account);
 	}
 	
+	@Test(expected = PasswordCheckFailedException.class)
+	public void 비밀번호_변경_할때_바꿀_비밀번호가_다른_경우() {
+		//given
+		RequestPasswordDto dto = new RequestPasswordDto();
+		dto.setBeforePassword("password");
+		dto.setAfterPassword("password1234");
+		dto.setAfterPasswordCheck("4321drowssap");
+		
+		//when
+		accountService.passwordChange(account, dto);
+	}
+	
 	@Test(expected = PasswordNotMatchException.class)
 	public void 비밀변호_변경_할때_기존_비밀번호가_다른경우() {
 		//given
 		RequestPasswordDto dto = new RequestPasswordDto();
-		dto.setBeforePassword("notMatch");
-		dto.setAfterPassword("1234");
-		dto.setAfterPasswordCheck("1234");
+		dto.setBeforePassword("password");
+		dto.setAfterPassword("password1234");
+		dto.setAfterPasswordCheck("password1234");
 		
 		//when
 		accountService.passwordChange(account, dto);
+	}
+	
+	@Test
+	public void 비밀번호_재설정() {
+		//given
+		String authKey = new AuthKey().getKey();
+		RequestPasswordResetDto dto = new RequestPasswordResetDto();
+		dto.setAuthKey(authKey);
+		dto.setEmail("jangsehun1992@gmail.com");
+		dto.setAuthOption(AuthOption.RESET.getValue());
+		dto.setPassword("password");
+		dto.setPasswordCheck("password");
+		
+		AuthDto authDto = new AuthDto();
+		authDto.setEmail("jangsehun1992@gmail.com");
+		authDto.setAuthKey(authKey);
+		authDto.setAuthOption(AuthOption.RESET.getValue());
+		authDto.setExpired(0);
+		
+		given(accountDao.findByEmail(dto.getEmail())).willReturn(account);
+		given(authDao.findByEmail(dto.getEmail())).willReturn(authDto);
+		//when
+		
+		accountService.resetPassword(dto);
+		
+		//then
+		assertThat(dto.getAuthKey(), is(authDto.getAuthKey()));
+	}
+	
+	@Test(expected = AccountNotFoundException.class)
+	public void 비밀번호_재설정_계정_정보를_찾을수_없는_경우() {
+		//given
+		String authKey = new AuthKey().getKey();
+		RequestPasswordResetDto dto = new RequestPasswordResetDto();
+		dto.setAuthKey(authKey);
+		dto.setEmail("jangsehun1992@gmail.com");
+		dto.setAuthOption(AuthOption.RESET.getValue());
+		dto.setPassword("password");
+		dto.setPasswordCheck("password");
+		
+		AuthDto authDto = new AuthDto();
+		authDto.setEmail("jangsehun1992@gmail.com");
+		authDto.setAuthKey(authKey);
+		authDto.setAuthOption(AuthOption.RESET.getValue());
+		authDto.setExpired(0);
+		
+		given(accountDao.findByEmail(dto.getEmail())).willReturn(null);
+		given(authDao.findByEmail(dto.getEmail())).willReturn(authDto);
+		
+		//when
+		accountService.resetPassword(dto);
+	}
+	
+	@Test(expected = BadAuthRequestException.class)
+	public void 비밀번호_재설정_인증_정보_오류인_경우() {
+		//given
+		String authKey = new AuthKey().getKey();
+		RequestPasswordResetDto dto = new RequestPasswordResetDto();
+		dto.setAuthKey(authKey);
+		dto.setEmail("jangsehun1992@gmail.com");
+		dto.setAuthOption(AuthOption.RESET.getValue());
+		dto.setPassword("password");
+		dto.setPasswordCheck("password");
+		
+		AuthDto authDto = new AuthDto();
+		authDto.setEmail("jangsehun1992@gmail.com");
+		authDto.setAuthKey(authKey);
+		authDto.setAuthOption(AuthOption.RESET.getValue());
+		authDto.setExpired(0);
+		
+		given(accountDao.findByEmail(dto.getEmail())).willReturn(account);
+		given(authDao.findByEmail(dto.getEmail())).willReturn(null);
+		
+		//when
+		accountService.resetPassword(dto);
 	}
 	
 	

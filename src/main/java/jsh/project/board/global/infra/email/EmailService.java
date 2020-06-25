@@ -15,11 +15,11 @@ public class EmailService {
 	}
 	
 	public void sendEmail(AuthDto dto) throws Exception {
-		if(dto.isAuthOption().equals(AuthOption.SIGNUP.getValue())) {
+		if(dto.getAuthOption().equals(AuthOption.SIGNUP.getValue())) {
 			signupEmail(dto);
 		}
 		
-		if(dto.isAuthOption().equals(AuthOption.RESET.getValue())) {
+		if(dto.getAuthOption().equals(AuthOption.RESET.getValue())) {
 			passwordResetEmail(dto);
 		}
 	}
@@ -33,7 +33,7 @@ public class EmailService {
 				.append("&authKey=")
 				.append(dto.getAuthKey())
 				.append("&authOption=")
-				.append(dto.isAuthOption())
+				.append(dto.getAuthOption())
 				.append("' target='_blenk'>인증하기</a>")
 				.toString());
 		sendMail.setFrom("jangsehun1992@gmail.com", "관리자");
@@ -43,14 +43,14 @@ public class EmailService {
 	
 	public void passwordResetEmail(AuthDto dto) throws Exception{
 		sendMail.setSubject("[ JSH Board Project ] 비밀번호 재설정 이메일 인증");
-		sendMail.setText(new StringBuffer().append("<h1>[비밀번호 변경 이메일 인증]</h1>")
+		sendMail.setText(new StringBuffer().append("<h1>[비밀번호 재설정 이메일 인증]</h1>")
 				.append("<p>아래 링크를 클릭하시면 인증이 완료됩니다.</p>")
 				.append("<a href='http://localhost:8081/account/resetConfirm?email=")
 				.append(dto.getEmail())
 				.append("&authKey=")
 				.append(dto.getAuthKey())
 				.append("&authOption=")
-				.append(dto.isAuthOption())
+				.append(dto.getAuthOption())
 				.append("' target='_blenk'>인증하기</a>")
 				.toString());
 		sendMail.setFrom("jangsehun1992@gmail.com", "관리자");

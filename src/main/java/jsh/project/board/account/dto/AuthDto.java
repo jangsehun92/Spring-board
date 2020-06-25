@@ -48,7 +48,7 @@ public class AuthDto {
 		return false;
 	}
 	
-	public String isAuthOption() {
+	public String getAuthOption() {
 		return authOption;
 	}
 

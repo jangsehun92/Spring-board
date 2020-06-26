@@ -13,9 +13,9 @@ import jsh.project.board.account.dto.response.ResponseAccountDto;
 public interface AccountDao {
 	public void save(RequestAccountCreateDto dto);
 	
-	public Account findByEmail(String email);
+	public Account selectAccount(String email);
 	
-	public void edit(Account dto);
+	public void updateAccount(Account dto);
 	
 	public ResponseAccountDto findById(int id);
 	
@@ -25,7 +25,7 @@ public interface AccountDao {
 	
 	public int findEmail(RequestEmailDto dto);
 	
-	public List<ResponseFindAccountDto> findAccount(RequestFindAccountDto dto);
+	public List<ResponseFindAccountDto> selectAccounts(RequestFindAccountDto dto);
 	
 	public void activetion(String email);
 	

@@ -81,7 +81,7 @@ public class AccountController {
     @GetMapping("/account/{id}")
     public @ResponseBody ResponseEntity<ResponseAccountDto> accountInfo(@PathVariable("id")int id) {
     	log.info("GET /account/"+id);
-    	return new ResponseEntity<>(accountService.accountInfo(id),HttpStatus.OK);
+    	return new ResponseEntity<>(accountService.getAccountInfo(id),HttpStatus.OK);
     }
     
     // 계정 정보(닉네임)변경 페이지 요청
@@ -98,7 +98,7 @@ public class AccountController {
     	log.info("PATCH /account/"+id);
     	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	account.setNickname(dto.getNickname());
-    	accountService.accountEdit(account);
+    	accountService.editAccount(account);
     	
     	Authentication newAuth = new UsernamePasswordAuthenticationToken(account, auth.getCredentials(), account.getAuthorities());
     	SecurityContextHolder.getContext().setAuthentication(newAuth);
@@ -125,7 +125,7 @@ public class AccountController {
     @GetMapping("/account/emailConfirm")
     public String emailConfirm(RequestEmailConfirmDto dto) {
     	log.info("GET /account/emailConfirm");
-    	accountService.signUpConfirm(dto);
+    	accountService.authConfirm(dto);
     	return "redirect:/login";
     }
     
@@ -148,7 +148,7 @@ public class AccountController {
     @PostMapping("/account/find-email")
     public @ResponseBody ResponseEntity<List<ResponseFindAccountDto>> findEmail(@RequestBody @Valid RequestFindAccountDto dto) throws Exception{
     	log.info("POST /account/find-email");
-    	return new ResponseEntity<>(accountService.findAccount(dto), HttpStatus.OK);
+    	return new ResponseEntity<>(accountService.getAccounts(dto), HttpStatus.OK);
     }
     
     // 비밀번호 찾기 페이지 요청 
@@ -170,7 +170,7 @@ public class AccountController {
     @GetMapping("/account/resetConfirm")
     public String resetRequest(RequestEmailConfirmDto dto, Model model) {
     	log.info("GET /account/resetConfirm");
-    	accountService.resetPasswordConfirm(dto);
+    	accountService.authConfirm(dto);
     	model.addAttribute("dto",dto);
     	return "userPages/passwordResetPage";
     }
@@ -195,7 +195,7 @@ public class AccountController {
     public @ResponseBody ResponseEntity<HttpStatus> passwordChange(Principal principal, @RequestBody @Valid RequestPasswordDto dto) {
     	log.info("POST /account/passwordChange");
     	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	accountService.passwordChange(account, dto);
+    	accountService.changePassword(account, dto);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     

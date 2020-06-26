@@ -7,14 +7,14 @@ import jsh.project.board.account.dto.request.RequestEmailConfirmDto;
 
 public interface AuthDao {
 	
-	public void authSave(AuthDto dto);
+	public void insertAuth(AuthDto dto);
 	
-	public AuthDto findByEmail(String email);
+	public AuthDto selectAuth(String email);
 	
-	public int authCheck(Map<String, String> paramMap);
+	public int checkAuth(Map<String, String> paramMap);
 	
-	public void updateAuthKey(AuthDto dto);
+	public void updateAuth(AuthDto dto);
 	
-	public void authKeyExpired(RequestEmailConfirmDto dto);
+	public void deleteAuth(RequestEmailConfirmDto dto);
 
 }

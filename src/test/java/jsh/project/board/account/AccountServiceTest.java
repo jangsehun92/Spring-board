@@ -100,7 +100,7 @@ public class AccountServiceTest {
 		accountService.emailCheck(dto);
 		
 		//then
-		assertNull(accountDao.findByEmail(dto.getEmail()));
+		assertNull(accountDao.selectAccount(dto.getEmail()));
 	}
 	
 	@Test(expected = EmailAlreadyUsedException.class)
@@ -115,7 +115,7 @@ public class AccountServiceTest {
 		accountService.emailCheck(dto);
 		
 		//then
-		assertThat(accountDao.findByEmail(dto.getEmail()),is(1));
+		assertThat(accountDao.selectAccount(dto.getEmail()),is(1));
 	}
 	
 	@Test
@@ -136,7 +136,7 @@ public class AccountServiceTest {
 		//then
 		verify(accountDao, times(1)).save(dto);
 		verify(passwordEncoder, times(1)).encode("1234");
-		verify(authDao, times(1)).authSave(any());
+		verify(authDao, times(1)).insertAuth(any());
 		verify(emailService, times(1)).sendEmail(any());
 	}
 	
@@ -151,7 +151,7 @@ public class AccountServiceTest {
 		
 		given(accountDao.findById(accountId)).willReturn(responseDto);
 		//when
-		ResponseAccountDto responseAccountDto = accountService.accountInfo(accountId);
+		ResponseAccountDto responseAccountDto = accountService.getAccountInfo(accountId);
 		
 		//then
 		assertNotNull(responseAccountDto);
@@ -169,10 +169,10 @@ public class AccountServiceTest {
 		List<ResponseFindAccountDto> accountList = new ArrayList<ResponseFindAccountDto>();
 		accountList.add(responseDto);
 		
-		given(accountDao.findAccount(requestDto)).willReturn(accountList);
+		given(accountDao.selectAccounts(requestDto)).willReturn(accountList);
 		
 		//when
-		accountService.findAccount(requestDto);
+		accountService.getAccounts(requestDto);
 		
 		//then
 		assertThat(accountList.size(), is(1));
@@ -188,10 +188,10 @@ public class AccountServiceTest {
 		
 		List<ResponseFindAccountDto> accountList = new ArrayList<ResponseFindAccountDto>();
 
-		given(accountDao.findAccount(requestDto)).willReturn(accountList);
+		given(accountDao.selectAccounts(requestDto)).willReturn(accountList);
 		
 		//when
-		accountService.findAccount(requestDto);
+		accountService.getAccounts(requestDto);
 	}
 	
 	@Test
@@ -203,10 +203,10 @@ public class AccountServiceTest {
 		account.setNickname(requestDto.getNickname());
 		
 		//when
-		accountService.accountEdit(account);
+		accountService.editAccount(account);
 		
 		//then
-		verify(accountDao, times(1)).edit(account);
+		verify(accountDao, times(1)).updateAccount(account);
 		
 		assertThat(account.getNickname(), is(requestDto.getNickname()));
 	}
@@ -221,7 +221,7 @@ public class AccountServiceTest {
 		
 		given(passwordEncoder.matches(any(), any())).willReturn(true);
 		//when
-		accountService.passwordChange(account, dto);
+		accountService.changePassword(account, dto);
 		
 		//then
 		verify(accountDao, times(1)).updatePassword(account);
@@ -236,7 +236,7 @@ public class AccountServiceTest {
 		dto.setAfterPasswordCheck("4321drowssap");
 		
 		//when
-		accountService.passwordChange(account, dto);
+		accountService.changePassword(account, dto);
 	}
 	
 	@Test(expected = PasswordNotMatchException.class)
@@ -248,7 +248,7 @@ public class AccountServiceTest {
 		dto.setAfterPasswordCheck("password1234");
 		
 		//when
-		accountService.passwordChange(account, dto);
+		accountService.changePassword(account, dto);
 	}
 	
 	@Test
@@ -268,8 +268,8 @@ public class AccountServiceTest {
 		authDto.setAuthOption(AuthOption.RESET.getValue());
 		authDto.setExpired(0);
 		
-		given(accountDao.findByEmail(dto.getEmail())).willReturn(account);
-		given(authDao.findByEmail(dto.getEmail())).willReturn(authDto);
+		given(accountDao.selectAccount(dto.getEmail())).willReturn(account);
+		given(authDao.selectAuth(dto.getEmail())).willReturn(authDto);
 		//when
 		
 		accountService.resetPassword(dto);
@@ -295,8 +295,8 @@ public class AccountServiceTest {
 		authDto.setAuthOption(AuthOption.RESET.getValue());
 		authDto.setExpired(0);
 		
-		given(accountDao.findByEmail(dto.getEmail())).willReturn(null);
-		given(authDao.findByEmail(dto.getEmail())).willReturn(authDto);
+		given(accountDao.selectAccount(dto.getEmail())).willReturn(null);
+		given(authDao.selectAuth(dto.getEmail())).willReturn(authDto);
 		
 		//when
 		accountService.resetPassword(dto);
@@ -319,8 +319,8 @@ public class AccountServiceTest {
 		authDto.setAuthOption(AuthOption.RESET.getValue());
 		authDto.setExpired(0);
 		
-		given(accountDao.findByEmail(dto.getEmail())).willReturn(account);
-		given(authDao.findByEmail(dto.getEmail())).willReturn(null);
+		given(accountDao.selectAccount(dto.getEmail())).willReturn(account);
+		given(authDao.selectAuth(dto.getEmail())).willReturn(null);
 		
 		//when
 		accountService.resetPassword(dto);

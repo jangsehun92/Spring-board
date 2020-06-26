@@ -59,7 +59,7 @@ public class RequestPasswordResetDto {
 		this.authOption = authOption;
 	}
 	
-	public RequestEmailConfirmDto toAuthDto() {
+	public RequestEmailConfirmDto toEmailConfirmDto() {
 		RequestEmailConfirmDto accountAuthRequestDto = new RequestEmailConfirmDto(email, authKey, authOption);
 		return accountAuthRequestDto;
 	}

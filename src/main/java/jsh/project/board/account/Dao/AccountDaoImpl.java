@@ -28,7 +28,7 @@ public class AccountDaoImpl implements AccountDao{
 	}
 	
 	@Override
-	public Account findByEmail(String email) {
+	public Account selectAccount(String email) {
 		return sqlSession.selectOne("accountMapper.findByEmail",email);
 	}
 	
@@ -38,7 +38,7 @@ public class AccountDaoImpl implements AccountDao{
 	}
 	
 	@Override
-	public void edit(Account account) {
+	public void updateAccount(Account account) {
 		sqlSession.update("accountMapper.edit", account);
 	}
 	
@@ -58,7 +58,7 @@ public class AccountDaoImpl implements AccountDao{
 	}
 	
 	@Override
-	public List<ResponseFindAccountDto> findAccount(RequestFindAccountDto dto){
+	public List<ResponseFindAccountDto> selectAccounts(RequestFindAccountDto dto){
 		return sqlSession.selectList("accountMapper.findAccount", dto);
 	}
 	

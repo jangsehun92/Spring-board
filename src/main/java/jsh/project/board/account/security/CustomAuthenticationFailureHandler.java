@@ -35,7 +35,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 		if(exception instanceof BadCredentialsException) {
 			String email = request.getParameter("email");
 			//해당 계정의 로그인실패 횟수를 가져온다.
-			int failureCount = accountService.accountFailureCount(email);
+			int failureCount = accountService.getAccountFailureCount(email);
 			failureCount += 1;
 			//로그인실패 횟수가 3이면 계정을 잠구고, 계정이 잠겼다는 페이지로 이동한다.
 			if(failureCount==3) {

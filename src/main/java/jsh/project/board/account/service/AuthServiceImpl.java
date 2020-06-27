@@ -27,15 +27,12 @@ public class AuthServiceImpl implements AuthService{
 		paramMap.put("email", email);
 		paramMap.put("authOption", authOption.getValue());
 		
-		AuthDto authDto = null;
-		
-		if(authDao.checkAuth(paramMap) == 0) {
-			String authKey = new AuthKey().getKey();
-			authDto = new AuthDto(email, authKey, authOption.getValue());
-			authDao.insertAuth(authDto);
-		}else {
-			authDto = updateAuthKey(email);
+		if(authDao.checkAuth(paramMap) != 0) {
+			return updateAuthKey(email);
 		}
+		
+		AuthDto authDto = new AuthDto(email, new AuthKey().getKey(), authOption.getValue());
+		authDao.insertAuth(authDto);
 		return authDto;
 	}
 

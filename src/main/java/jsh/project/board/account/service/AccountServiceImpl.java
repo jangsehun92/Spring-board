@@ -93,7 +93,7 @@ public class AccountServiceImpl implements AccountService{
 		return accountDao.failureCount(email);
 	}
 	
-	// 로그인 실패, 성공에 따른 failure_count 증가 및 초기화
+	// 로그인 실패, 성공에 따른 로그인 실패 횟수 증가 및 초기화
 	@Override
 	public void updateFailureCount(String email, int failureCount) {
 		Map<String, Object> paramMap = new HashMap<>();
@@ -102,7 +102,7 @@ public class AccountServiceImpl implements AccountService{
 		accountDao.updateFailureCount(paramMap);
 	}
 	
-	// 로그인 성공시 마지막로그인날짜 업데이트
+	// 로그인 성공시 마지막 로그인 날짜 업데이트
 	@Transactional
 	@Override
 	public void updateLoginDate(String email) {
@@ -155,15 +155,16 @@ public class AccountServiceImpl implements AccountService{
 		if(!account.findAccountCheck(dto)) { throw new FindAccountBadRequestException(); }
 		if(!account.isEnabled()) { throw new AccountNotEmailChecked(); }
 		
-		updateLocked(dto.getEmail(), 1);
-		AuthDto authDto = authService.createAuth(dto.getEmail(), AuthOption.RESET);
-		emailService.sendEmail(authDto);
+		updateLocked(dto.getEmail(), 1); //계정 잠굼
+		AuthDto authDto = authService.createAuth(dto.getEmail(), AuthOption.RESET); //인증키 생성
+		emailService.sendEmail(authDto); //이메일 발송
 	}
 	
 	// 비밀번호 재설정(초기화)
 	@Transactional
 	@Override
 	public void resetPassword(RequestPasswordResetDto dto) {
+		log.info(dto.toString());
 		dto.checkPassword();
 		Account account = accountDao.selectAccount(dto.getEmail());
 		AuthDto authDto = authService.getAuth(dto.getEmail());
@@ -184,7 +185,7 @@ public class AccountServiceImpl implements AccountService{
 	@Transactional
 	@Override
 	public void authConfirm(RequestEmailConfirmDto dto) {
-		log.info("accountService.authConfirm(AccountAuthRequestDto dto) : "+dto.toString());
+		log.info(dto.toString());
 		AuthDto authDto = authService.getAuth(dto.getEmail());
 		
 		if(authDto == null || authDto.isAuthExpired() || !dto.getAuthKey().equals(authDto.getAuthKey()) || !dto.getAuthOption().equals(authDto.getAuthOption())) {

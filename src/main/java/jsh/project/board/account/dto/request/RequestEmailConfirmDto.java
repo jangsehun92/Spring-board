@@ -51,7 +51,7 @@ public class RequestEmailConfirmDto {
 	
 	@Override
 	public String toString() {
-		return "email : " + email + " authKey = " + authKey + " authOption : " + authOption;
+		return "RequestEmailConfirmDto { email : " + email + " authKey = " + authKey + " authOption : " + authOption + " }";
 	}
 	
 	

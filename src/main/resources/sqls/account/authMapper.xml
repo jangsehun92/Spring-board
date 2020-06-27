@@ -48,8 +48,10 @@
 	</select>
 	
 	<update id="update" parameterType="AuthDto">
-		UPDATE auth_table
-		SET auth_key = #{authKey}
+		UPDATE 
+			auth_table
+		SET 
+			auth_key = #{authKey}
 		WHERE
 			email = #{email} AND
 			auth_option = #{authOption} AND
@@ -57,8 +59,10 @@
 	</update>
 	
 	<update id="expired" parameterType="RequestEmailConfirmDto">
-		UPDATE auth_table
-		SET expired = 1,
+		UPDATE 
+			auth_table
+		SET 
+			expired = 1,
 			expired_date = SYSDATE
 		WHERE
 			email = #{email} AND

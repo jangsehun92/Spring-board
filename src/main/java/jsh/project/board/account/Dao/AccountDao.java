@@ -4,32 +4,31 @@ import java.util.List;
 import java.util.Map;
 
 import jsh.project.board.account.domain.Account;
-import jsh.project.board.account.dto.request.RequestAccountCreateDto;
 import jsh.project.board.account.dto.request.RequestEmailDto;
 import jsh.project.board.account.dto.request.RequestFindAccountDto;
+import jsh.project.board.account.dto.response.ResponseAccountInfoDto;
 import jsh.project.board.account.dto.response.ResponseFindAccountDto;
-import jsh.project.board.account.dto.response.ResponseAccountDto;
 
 public interface AccountDao {
-	public void save(RequestAccountCreateDto dto);
+	public void insertAccount(Account dto);
 	
 	public Account selectAccount(String email);
 	
 	public void updateAccount(Account dto);
 	
-	public ResponseAccountDto findById(int id);
+	public ResponseAccountInfoDto selectAccountInfo(int id);
 	
 	public void updateLoginDate(String email);
 	
 	public void updatePassword(Account account);
 	
-	public int findEmail(RequestEmailDto dto);
+	public int selectEmailCount(RequestEmailDto dto);
 	
 	public List<ResponseFindAccountDto> selectAccounts(RequestFindAccountDto dto);
 	
-	public void activetion(String email);
+	public void updateEnabled(String email);
 	
-	public int failureCount(String email);
+	public int selectFailureCount(String email);
 	
 	public void updateFailureCount(Map<String, Object> paramMap);
 	

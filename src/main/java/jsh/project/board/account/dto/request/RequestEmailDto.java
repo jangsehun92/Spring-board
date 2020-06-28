@@ -20,6 +20,11 @@ public class RequestEmailDto {
 		this.email = email;
 	}
 	
+	@Override
+	public String toString() {
+		return "RequestEmailDto { email : " + email + " }";
+	}
+	
 	
 
 }

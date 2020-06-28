@@ -32,6 +32,19 @@ public class Account implements UserDetails{
 		return auth;
 	}
 	
+	public Account() {
+		
+	}
+	
+	public Account(String email, String password, String name, String birth, String nickname, String role) {
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.birth = birth;
+		this.nickname = nickname;
+		this.role = role;
+	}
+	
 	public int getId() {
 		return id;
 	}

@@ -4,6 +4,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+import jsh.project.board.account.domain.Account;
 import jsh.project.board.account.enums.Role;
 import jsh.project.board.account.exception.PasswordCheckFailedException;
 
@@ -87,6 +88,10 @@ public class RequestAccountCreateDto {
 		if(!password.equals(passwordCheck)) {
 			throw new PasswordCheckFailedException();
 		}
+	}
+	
+	public Account toAccount() {
+		return new Account(email, password, name, birth, nickname, role);
 	}
 	
 	@Override

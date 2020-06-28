@@ -20,7 +20,7 @@ import jsh.project.board.account.dto.request.RequestEmailDto;
 import jsh.project.board.account.dto.request.RequestFindAccountDto;
 import jsh.project.board.account.dto.request.RequestPasswordDto;
 import jsh.project.board.account.dto.request.RequestPasswordResetDto;
-import jsh.project.board.account.dto.response.ResponseAccountDto;
+import jsh.project.board.account.dto.response.ResponseAccountInfoDto;
 import jsh.project.board.account.dto.response.ResponseFindAccountDto;
 import jsh.project.board.account.enums.AuthOption;
 import jsh.project.board.account.enums.Role;
@@ -55,7 +55,7 @@ public class AccountServiceImpl implements AccountService{
 		dto.checkPassword();
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 		dto.setRole(Role.USER);
-		accountDao.save(dto);
+		accountDao.insertAccount(dto.toAccount());
 		//인증 테이블에 이메일과 인증키 저장
 		AuthDto authDto = authService.createAuth(dto.getEmail(), AuthOption.SIGNUP);
 		emailService.sendEmail(authDto);
@@ -63,8 +63,8 @@ public class AccountServiceImpl implements AccountService{
 	
 	//계정 정보 찾기
 	@Override
-	public ResponseAccountDto getAccountInfo(int id) {
-		ResponseAccountDto accountResponseDto = accountDao.findById(id);
+	public ResponseAccountInfoDto getAccountInfo(int id) {
+		ResponseAccountInfoDto accountResponseDto = accountDao.selectAccountInfo(id);
 		return accountResponseDto;
 	}
 	
@@ -90,7 +90,7 @@ public class AccountServiceImpl implements AccountService{
 	// 로그인 실패(비밀번호 틀림) 횟수 가져오기
 	@Override
 	public int getAccountFailureCount(String email) {
-		return accountDao.failureCount(email);
+		return accountDao.selectFailureCount(email);
 	}
 	
 	// 로그인 실패, 성공에 따른 로그인 실패 횟수 증가 및 초기화
@@ -122,7 +122,7 @@ public class AccountServiceImpl implements AccountService{
 	// 회원가입 시 이메일 중복 체크
 	@Override
 	public void emailCheck(RequestEmailDto dto) {
-		if(accountDao.findEmail(dto) != 0) {
+		if(accountDao.selectEmailCount(dto) != 0) {
 			throw new EmailAlreadyUsedException();
 		}
 	}
@@ -141,6 +141,7 @@ public class AccountServiceImpl implements AccountService{
 	@Transactional
 	@Override
 	public void resendEmail(RequestEmailDto dto) throws Exception {
+		log.info(dto.toString());
 		AuthDto authDto = authService.updateAuthKey(dto.getEmail());
 		emailService.sendEmail(authDto);
 	}
@@ -149,6 +150,7 @@ public class AccountServiceImpl implements AccountService{
 	@Transactional
 	@Override
 	public void sendResetEmail(RequestAccountResetDto dto) throws Exception {
+		log.info(dto.toString());
 		Account account = accountDao.selectAccount(dto.getEmail());
 		
 		if(account==null) { throw new AccountNotFoundException(); }
@@ -193,7 +195,7 @@ public class AccountServiceImpl implements AccountService{
 		}
 		
 		if(authDto.getAuthOption().equals(AuthOption.SIGNUP.getValue())) {
-			accountDao.activetion(dto.getEmail());
+			accountDao.updateEnabled(dto.getEmail());
 			authService.verification(dto);
 		}
 	}

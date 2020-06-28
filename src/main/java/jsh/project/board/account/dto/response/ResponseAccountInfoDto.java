@@ -1,11 +1,11 @@
 package jsh.project.board.account.dto.response;
 
-public class ResponseAccountDto {
+public class ResponseAccountInfoDto {
 	
 	private int id;
 	private String nickname;
 	
-	public ResponseAccountDto() {
+	public ResponseAccountInfoDto() {
 		
 	}
 

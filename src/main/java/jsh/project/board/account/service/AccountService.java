@@ -13,14 +13,14 @@ import jsh.project.board.account.dto.request.RequestPasswordDto;
 import jsh.project.board.account.dto.request.RequestPasswordResetDto;
 import jsh.project.board.account.dto.request.RequestAccountResetDto;
 import jsh.project.board.account.dto.response.ResponseFindAccountDto;
-import jsh.project.board.account.dto.response.ResponseAccountDto;
+import jsh.project.board.account.dto.response.ResponseAccountInfoDto;
 
 public interface AccountService {
 	
 	//회원가입
 	public void register(RequestAccountCreateDto dto) throws Exception;
 	//해당 유저 정보 가져오기
-	public ResponseAccountDto getAccountInfo(int id);
+	public ResponseAccountInfoDto getAccountInfo(int id);
 	//사용자 정보 수정
 	public void editAccount(Account account);
 	//비밀번호 변경

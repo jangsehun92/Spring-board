@@ -33,7 +33,7 @@ import jsh.project.board.account.dto.request.RequestPasswordDto;
 import jsh.project.board.account.dto.request.RequestPasswordResetDto;
 import jsh.project.board.account.dto.request.RequestAccountResetDto;
 import jsh.project.board.account.dto.response.ResponseFindAccountDto;
-import jsh.project.board.account.dto.response.ResponseAccountDto;
+import jsh.project.board.account.dto.response.ResponseAccountInfoDto;
 import jsh.project.board.account.service.AccountService;
 
 @Controller
@@ -79,7 +79,7 @@ public class AccountController {
     
     // 해당 계정 정보 가져오기
     @GetMapping("/account/{id}")
-    public @ResponseBody ResponseEntity<ResponseAccountDto> accountInfo(@PathVariable("id")int id) {
+    public @ResponseBody ResponseEntity<ResponseAccountInfoDto> accountInfo(@PathVariable("id")int id) {
     	log.info("GET /account/"+id);
     	return new ResponseEntity<>(accountService.getAccountInfo(id),HttpStatus.OK);
     }

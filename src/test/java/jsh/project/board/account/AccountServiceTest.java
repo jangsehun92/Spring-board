@@ -34,7 +34,7 @@ import jsh.project.board.account.dto.request.RequestEmailDto;
 import jsh.project.board.account.dto.request.RequestFindAccountDto;
 import jsh.project.board.account.dto.request.RequestPasswordDto;
 import jsh.project.board.account.dto.request.RequestPasswordResetDto;
-import jsh.project.board.account.dto.response.ResponseAccountDto;
+import jsh.project.board.account.dto.response.ResponseAccountInfoDto;
 import jsh.project.board.account.dto.response.ResponseFindAccountDto;
 import jsh.project.board.account.enums.AuthOption;
 import jsh.project.board.account.enums.Role;
@@ -44,6 +44,7 @@ import jsh.project.board.account.exception.EmailAlreadyUsedException;
 import jsh.project.board.account.exception.PasswordCheckFailedException;
 import jsh.project.board.account.exception.PasswordNotMatchException;
 import jsh.project.board.account.service.AccountServiceImpl;
+import jsh.project.board.account.service.AuthServiceImpl;
 import jsh.project.board.global.infra.email.EmailService;
 import jsh.project.board.global.infra.util.AuthKey;
 
@@ -61,6 +62,9 @@ public class AccountServiceTest {
 	private AccountServiceImpl accountService;
 	
 	@Mock
+	private AuthServiceImpl authService;
+	
+	@Mock
 	private PasswordEncoder passwordEncoder;
 	
 	@Mock
@@ -70,16 +74,14 @@ public class AccountServiceTest {
 	ResponseFindAccountDto responseDto = new ResponseFindAccountDto();
 	
 	@Spy
-	Account account = new Account();
+	Account account = new Account("jangsehun1992@gmail", "password", "장세훈", "920409", "tester", "ROLE_ADMIN");
+	
 	
 	@Before
 	public void setUp() {
 		//계정 
+		
 		account.setId(1);
-		account.setName("장세훈");
-		account.setNickname("tester");
-		account.setPassword("password");
-		account.setBirth("920409");
 		account.setRegdate(new Date());
 		account.setLocked(0);
 		account.setFailureCount(0);
@@ -109,7 +111,7 @@ public class AccountServiceTest {
 		RequestEmailDto dto = new RequestEmailDto();
 		dto.setEmail("jangsehun1992@gmail.com");
 		
-		given(accountDao.findEmail(dto)).willReturn(1);
+		given(accountDao.selectEmailCount(dto)).willReturn(1);
 		
 		//when
 		accountService.emailCheck(dto);
@@ -130,13 +132,19 @@ public class AccountServiceTest {
 		dto.setBirth("920409");
 		dto.setRole(Role.USER);
 		
+		AuthDto authDto = new AuthDto();
+		authDto.setEmail("jangsehun1992@gmail.com");
+		authDto.setAuthKey(new AuthKey().getKey());
+		authDto.setAuthOption(AuthOption.RESET.getValue());
+		authDto.setExpired(1);
+		
 		//when
 		accountService.register(dto);
 		
 		//then
-		verify(accountDao, times(1)).save(dto);
+		verify(accountDao, times(1)).insertAccount(any());
 		verify(passwordEncoder, times(1)).encode("1234");
-		verify(authDao, times(1)).insertAuth(any());
+		verify(authService, times(1)).createAuth(any(),any());
 		verify(emailService, times(1)).sendEmail(any());
 	}
 	
@@ -145,13 +153,13 @@ public class AccountServiceTest {
 		//given
 		int accountId = 1;
 		
-		ResponseAccountDto responseDto = new ResponseAccountDto();
+		ResponseAccountInfoDto responseDto = new ResponseAccountInfoDto();
 		responseDto.setId(1);
 		responseDto.setNickname("tester");
 		
-		given(accountDao.findById(accountId)).willReturn(responseDto);
+		given(accountDao.selectAccountInfo(accountId)).willReturn(responseDto);
 		//when
-		ResponseAccountDto responseAccountDto = accountService.getAccountInfo(accountId);
+		ResponseAccountInfoDto responseAccountDto = accountService.getAccountInfo(accountId);
 		
 		//then
 		assertNotNull(responseAccountDto);
@@ -269,7 +277,7 @@ public class AccountServiceTest {
 		authDto.setExpired(0);
 		
 		given(accountDao.selectAccount(dto.getEmail())).willReturn(account);
-		given(authDao.selectAuth(dto.getEmail())).willReturn(authDto);
+		given(authService.getAuth(dto.getEmail())).willReturn(authDto);
 		//when
 		
 		accountService.resetPassword(dto);
@@ -296,7 +304,6 @@ public class AccountServiceTest {
 		authDto.setExpired(0);
 		
 		given(accountDao.selectAccount(dto.getEmail())).willReturn(null);
-		given(authDao.selectAuth(dto.getEmail())).willReturn(authDto);
 		
 		//when
 		accountService.resetPassword(dto);
@@ -317,10 +324,9 @@ public class AccountServiceTest {
 		authDto.setEmail("jangsehun1992@gmail.com");
 		authDto.setAuthKey(authKey);
 		authDto.setAuthOption(AuthOption.RESET.getValue());
-		authDto.setExpired(0);
+		authDto.setExpired(1);
 		
 		given(accountDao.selectAccount(dto.getEmail())).willReturn(account);
-		given(authDao.selectAuth(dto.getEmail())).willReturn(null);
 		
 		//when
 		accountService.resetPassword(dto);

@@ -15,11 +15,12 @@ Spring Framework를 사용하여 게시판을 구현한다.
 * build tool : Maven 3.5.1
 * ORM : mybatis 3.4.6
 * DB : Oracle 11g
+* Security : spring security 5.2.2
 
 # 기능 목록
 프로젝트 공통 사항
   - spring security를 적용한다.
-  - csrf를 활성 한화다. 
+  - csrf를 활성화 한다. 
   - 발생할 수 있는 예외케이스에 대한 처리를 한다.
   - 목적에 맞는 request/response DTO 객체를 사용한다.
   - GlobalExceptionHandler클래스에서 exception을 처리한다.

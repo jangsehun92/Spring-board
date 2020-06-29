@@ -278,8 +278,8 @@ public class AccountServiceTest {
 		
 		given(accountDao.selectAccount(dto.getEmail())).willReturn(account);
 		given(authService.getAuth(dto.getEmail())).willReturn(authDto);
-		//when
 		
+		//when
 		accountService.resetPassword(dto);
 		
 		//then

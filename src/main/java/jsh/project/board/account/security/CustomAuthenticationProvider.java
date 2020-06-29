@@ -15,7 +15,7 @@ import jsh.project.board.account.domain.Account;
 
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 	private static final org.slf4j.Logger log = LoggerFactory.getLogger(CustomAuthenticationProvider.class);
-
+	
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
 
@@ -45,6 +45,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 			throw new LockedException(email);
 		}
 		//...
+		
+		
 		return new UsernamePasswordAuthenticationToken(account, password, account.getAuthorities());
 	}
 

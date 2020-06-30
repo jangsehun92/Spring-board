@@ -4,8 +4,8 @@ import jsh.project.board.global.enumModel.EnumModel;
 
 public enum UserCategory implements EnumModel{
 	
-	COMMUNITY("community"),
-	QUESTIONS("questions");
+	COMMUNITY("커뮤니티"),
+	QUESTIONS("질문");
 	
 	private String category;
 	

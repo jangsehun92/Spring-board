@@ -1,9 +1,14 @@
-package jsh.project.board.article.enums;
+package jsh.project.board.article.enums.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+
+import jsh.project.board.article.enums.AdminCategory;
+import jsh.project.board.article.enums.AllCategory;
+import jsh.project.board.article.enums.UserCategory;
+import jsh.project.board.article.enums.dto.CategoryDto;
 
 @Component
 public class CategoryEnumMapper {
@@ -13,7 +18,7 @@ public class CategoryEnumMapper {
 	}
 	
 	public String getCategory(String category) {
-		return AllCategory.valueOf(category.toUpperCase()).getValue();
+		return AllCategory.valueOf(category.toUpperCase()).getKey();
 	}
 	
 	public boolean isNoticeCategory(String category) {

@@ -4,7 +4,7 @@ import jsh.project.board.global.enumModel.EnumModel;
 
 public enum AdminCategory implements EnumModel{
 	
-	NOTICE("notice");
+	NOTICE("공지사항");
 	
 	private final String category;
 	

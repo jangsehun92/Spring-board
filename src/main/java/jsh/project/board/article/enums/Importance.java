@@ -2,13 +2,13 @@ package jsh.project.board.article.enums;
 
 import jsh.project.board.global.enumModel.EnumModel;
 
-public enum ArticleImportance implements EnumModel{
-	NOMAL(0),
-	IMPORTANCE(1);
+public enum Importance implements EnumModel{
+	일반(0),
+	중요(1);
 	
 	private int importance;
 	
-	private ArticleImportance(int importance) {
+	private Importance(int importance) {
 		this.importance = importance;
 	}
 
@@ -21,7 +21,4 @@ public enum ArticleImportance implements EnumModel{
 	public String getValue() {
 		return Integer.toString(importance);
 	}
-	
-	
-
 }

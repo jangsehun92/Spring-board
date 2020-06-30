@@ -34,8 +34,8 @@ import jsh.project.board.article.dto.request.RequestArticlesDto;
 import jsh.project.board.article.dto.request.like.RequestLikeDto;
 import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
 import jsh.project.board.article.dto.response.ResponseBoardDto;
-import jsh.project.board.article.enums.CategoryEnumMapper;
-import jsh.project.board.article.enums.ImportanceEnumMapper;
+import jsh.project.board.article.enums.mapper.CategoryEnumMapper;
+import jsh.project.board.article.enums.mapper.ImportanceEnumMapper;
 import jsh.project.board.article.service.ArticleService;
 
 @Controller
@@ -126,6 +126,7 @@ public class ArticleController {
 	public String articleUpdateForm(@PathVariable("id") int id, Model model, RequestArticleInfoDto dto, HttpServletRequest request) {
 		log.info("POST /article/edit/"+id);
 		ResponseArticleUpdateDto responseDto = articleService.getUpdateArticle(dto.getId());
+		model.addAttribute("category", categoryEnumMapper.getCategory(responseDto.getCategory()));
 		model.addAttribute("categorys", categoryEnumMapper.getCategorys(responseDto.getCategory()));
 		if(request.isUserInRole(Role.ADMIN.getValue()) && categoryEnumMapper.isNoticeCategory(responseDto.getCategory())) {
 			model.addAttribute("articleImportance", importanceEnumMapper.getImportanceList());
@@ -139,6 +140,7 @@ public class ArticleController {
 	@PostMapping("/article")
 	public ResponseEntity<Integer> createArticle(@RequestBody @Valid RequestArticleCreateDto dto){
 		log.info("POST /article");
+		log.info(dto.toString());
 		return new ResponseEntity<>(articleService.createArticle(dto),HttpStatus.OK);
 	}
 	

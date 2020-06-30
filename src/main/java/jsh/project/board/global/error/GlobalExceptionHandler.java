@@ -51,10 +51,13 @@ public class GlobalExceptionHandler {
 	 * 지원하지 않은 HTTP method 호출 할 경우 발생
 	 */
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-	protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+	protected Object handleHttpRequestMethodNotSupportedException(HttpServletRequest request, HttpRequestMethodNotSupportedException e) {
 		log.error("handleHttpRequestMethodNotSupportedException", e);
-		final ErrorResponse response = new ErrorResponse(ErrorCode.METHOD_NOT_ALLOWED);
-		return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
+		if(isAjax(request)) {
+			final ErrorResponse response = new ErrorResponse(ErrorCode.METHOD_NOT_ALLOWED);
+			return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
+		}
+		return redirectMainUrl;
 	}
 
 	/**
@@ -78,10 +81,10 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(BusinessException.class)
 	protected Object handleBusinessException(HttpServletRequest request, final BusinessException e) {
 		log.error("handleBusinessException", e);
-		final ErrorCode errorCode = e.getErrorCode();
-		final ErrorResponse response = new ErrorResponse(errorCode);
-		log.error(response.getCode() + " : " + response.getMessage());
+		log.error(e.getErrorCode().getCode() + " : " + e.getErrorCode().getMessage());
 		if(isAjax(request)) {
+			final ErrorCode errorCode = e.getErrorCode();
+			final ErrorResponse response = new ErrorResponse(errorCode);
 			return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
 		}
 		return redirectMainUrl;
@@ -93,10 +96,10 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(EmailException.class)
 	protected Object handleBusinessException(HttpServletRequest request, final EmailException e) {
 		log.error("handleEmailException", e);
-		final ErrorCode errorCode = e.getErrorCode();
-		final ErrorResponse response = new ErrorResponse(errorCode);
-		log.error(response.getCode() + " : " + response.getMessage());
+		log.error(e.getErrorCode().getCode() + " : " + e.getErrorCode().getMessage());
 		if(isAjax(request)) {
+			final ErrorCode errorCode = e.getErrorCode();
+			final ErrorResponse response = new ErrorResponse(errorCode);
 			return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
 		}
 		return redirectAuthDenied;

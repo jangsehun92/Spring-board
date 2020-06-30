@@ -20,6 +20,7 @@ import jsh.project.board.article.dto.response.ResponseArticleDetailDto;
 import jsh.project.board.article.dto.response.ResponseArticleDto;
 import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
 import jsh.project.board.article.dto.response.ResponseBoardDto;
+import jsh.project.board.article.exception.ArticleNotFoundException;
 import jsh.project.board.global.infra.util.Pagination;
 import jsh.project.board.global.infra.util.FileService;
 
@@ -81,8 +82,11 @@ public class ArticleServiceImpl implements ArticleService{
 	@Override
 	public ResponseArticleDetailDto getArticle(RequestArticleDetailDto dto) {
 		log.info(dto.toString());
-		articleDao.updateViewCount(dto.getId());
 		ResponseArticleDetailDto responseDto = articleDao.selectArticle(dto.getId());
+		if(responseDto == null) {
+			throw new ArticleNotFoundException();
+		}
+		articleDao.updateViewCount(dto.getId());
 		responseDto.setLikeCheck(articleDao.articleLikeCheck(dto.toLikeDto()));
 		log.info(responseDto.toString());
 		return responseDto;

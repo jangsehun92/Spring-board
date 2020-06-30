@@ -42,7 +42,7 @@ function articleDelete(id){
 		contentType : "application/json; charset=UTF-8",
 		data: JSON.stringify(requestArticleDeleteDto), 
 		success:function(data){
-			history.back();
+			location.href="/articles/${responseDto.category }";
 		},
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);

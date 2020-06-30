@@ -21,7 +21,8 @@ public enum ErrorCode {
 	PASSWORD_CHECK_FAILED(400, "A009", " 비밀번호가 서로 다릅니다."),
 	
 	//article
-	NOT_LOGIN(400, "B001", " 로그인이 필요한 서비스입니다.");
+	NOT_LOGIN(400, "B001", " 로그인이 필요한 서비스입니다."),
+	ARTICLE_NOT_FOUND(400, "B002", "해당 게시글을 찾을 수 없습니다.");
 	
 	
 	private int status;

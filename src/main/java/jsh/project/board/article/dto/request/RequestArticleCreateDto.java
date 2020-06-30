@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import jsh.project.board.article.domain.Article;
 import jsh.project.board.article.domain.Article.ArticleConverter;
 import jsh.project.board.article.enums.AllCategory;
-import jsh.project.board.article.enums.ArticleImportance;
+import jsh.project.board.article.enums.Importance;
 
 public class RequestArticleCreateDto implements ArticleConverter{
 	
@@ -44,7 +44,7 @@ public class RequestArticleCreateDto implements ArticleConverter{
 	}
 	
 	public void setImportance(String importance) {
-		this.importance = Integer.parseInt(ArticleImportance.valueOf(importance.toUpperCase()).getValue());
+		this.importance = Integer.parseInt(Importance.valueOf(importance.toUpperCase()).getValue());
 	}
 	
 	public String getTitle() {
@@ -73,6 +73,11 @@ public class RequestArticleCreateDto implements ArticleConverter{
 		article.setContent(this.content);
 		article.setRegdate(new Date());
 		return article;
+	}
+	
+	@Override
+	public String toString() {
+		return "RequestArticleCreateDto { accountId : "+accountId + " category : " + category + " importance : " + importance + " content : " + content + " }";
 	}
 
 }

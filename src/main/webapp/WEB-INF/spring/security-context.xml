@@ -8,7 +8,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 		
     <http auto-config="true" use-expressions="true"  >
-    	<intercept-url pattern="/" requires-channel="https" access="permitAll"/>
+    	<intercept-url pattern="/" requires-channel="https" access="permiatAll"/>
         <intercept-url pattern="/articles" access="permitAll" />
         <intercept-url pattern="/account" method="GET" access="permitAll" />
         <intercept-url pattern="/account" method="POST" access="permitAll" />

@@ -23,7 +23,6 @@ Spring Framework를 사용하여 게시판을 구현한다.
   - csrf를 활성화 한다. 
     1. 공통적으로 사용하는 header 페이지 내에 <meta> 태그를 사용하여 csrf 값을 셋팅한다.
     2. 비동기 요청인 경우 ajax_header.js 내에서 ajaxSend를 통해 csrf token값을 셋팅한다.
-  - 발생할 수 있는 예외케이스에 대한 처리를 한다.
   - 목적에 맞는 request/response DTO 객체를 사용한다.
   - GlobalExceptionHandler클래스에서 exception을 처리한다.
     1. 비동기 요청은 ErrorResponse를 리턴한다.

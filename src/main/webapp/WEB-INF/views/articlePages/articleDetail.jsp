@@ -7,8 +7,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>게시글</title>
+<meta charset="UTF-8">
+<title>게시글</title>
 </head>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.5.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/ajax_header.js"></script>

@@ -5,10 +5,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta id="_csrf" name="_csrf" content="${_csrf.token}"/>
-	<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}"/>
-	<title>Board Project</title>
+<meta charset="UTF-8">
+<meta id="_csrf" name="_csrf" content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}"/>
+<title>Board Project</title>
 </head>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.5.0.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">

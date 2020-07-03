@@ -73,6 +73,11 @@ public class RequestArticleUpdateDto implements ArticleConverter{
 	}
 	
 	@Override
+	public String toString() {
+		return "RequestArticleupdateDto { id : " + id + " accountId : " + accountId + " category : " + category + " importance : " + importance + " title : " + title + " content : " + content + " }";
+	}
+	
+	@Override
 	public Article toArticle() {
 		final Article article = new Article();
 		article.setId(this.id);

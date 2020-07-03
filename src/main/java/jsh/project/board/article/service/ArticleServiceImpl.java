@@ -95,6 +95,7 @@ public class ArticleServiceImpl implements ArticleService{
 	@Transactional
 	@Override
 	public int createArticle(RequestArticleCreateDto dto) {
+		log.info(dto.toString());
 		Article article = dto.toArticle();
 		articleDao.insertArticle(article);
 		log.info(article.toString());
@@ -110,6 +111,7 @@ public class ArticleServiceImpl implements ArticleService{
 	@Transactional
 	@Override
 	public void updateArticle(RequestArticleUpdateDto dto) {
+		log.info(dto.toString());
 		articleDao.updateArticle(dto.toArticle());
 	}
 	
@@ -133,6 +135,7 @@ public class ArticleServiceImpl implements ArticleService{
 	
 	@Override
 	public String uploadFile(MultipartFile file) {
+		log.info("uploadFileInfo { name : "+file.getOriginalFilename() + " size :  "+ file.getSize() + " type : " + file.getContentType() + " } ");
 		return fileService.upload(file);
 	}
 	

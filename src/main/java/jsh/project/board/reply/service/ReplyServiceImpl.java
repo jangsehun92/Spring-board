@@ -2,6 +2,8 @@ package jsh.project.board.reply.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +16,7 @@ import jsh.project.board.reply.dto.ResponseReplyDto;
 @Service
 public class ReplyServiceImpl implements ReplyService{
 	
+	private static final Logger log = LoggerFactory.getLogger(ReplyServiceImpl.class);
 	private ReplyDao replyDao;
 	
 	public ReplyServiceImpl(ReplyDao replyDao) {
@@ -28,18 +31,21 @@ public class ReplyServiceImpl implements ReplyService{
 	@Transactional
 	@Override
 	public void saveReply(RequestReplyCreateDto dto) {
+		log.info(dto.toString());
 		replyDao.insertReply(dto.toReply());
 	}
 	
 	@Transactional
 	@Override
 	public void modifyReply(RequestReplyUpdateDto dto) {
+		log.info(dto.toString());
 		replyDao.updateReply(dto.toReply());
 	}
 	
 	@Transactional
 	@Override
 	public void enabledReply(RequestReplyDeleteDto dto) {
+		log.info(dto.toString());
 		replyDao.deleteReply(dto.toReply());
 	}
 	

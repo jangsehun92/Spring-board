@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,8 +24,6 @@ import jsh.project.board.reply.service.ReplyService;
 @Controller
 public class ReplyController {
 	
-	private static final Logger log = LoggerFactory.getLogger(ReplyController.class);
-	
 	private ReplyService replyService;
 	
 	public ReplyController(ReplyService resplyService) {
@@ -37,7 +33,6 @@ public class ReplyController {
 	// 해당 게시글 전체 댓글 가져오기
 	@GetMapping("/replys/{articleId}")
 	public ResponseEntity<List<ResponseReplyDto>> replys(@PathVariable("articleId")int articleId){
-		log.info("GET /replys/"+articleId);
 		return new ResponseEntity<>(replyService.getReplys(articleId), HttpStatus.OK);
 	}
 	
@@ -45,7 +40,6 @@ public class ReplyController {
 	@PreAuthorize("(#dto.accountId == principal.id)")
 	@PostMapping("/reply")
 	public ResponseEntity<HttpStatus> createReply(@RequestBody @Valid RequestReplyCreateDto dto){
-		log.info("POST /reply "+ dto.toString());
 		replyService.saveReply(dto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -54,7 +48,6 @@ public class ReplyController {
 	@PreAuthorize("(#dto.accountId == principal.id) and (#dto.id == #id)")
 	@PatchMapping("/reply/{id}")
 	public ResponseEntity<HttpStatus> updateReply(@PathVariable("id")int id, @RequestBody @Valid RequestReplyUpdateDto dto){
-		log.info("PATCH /reply/"+id + " " + dto.toString());
 		replyService.modifyReply(dto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -63,7 +56,6 @@ public class ReplyController {
 	@PreAuthorize("((#dto.accountId == principal.id) and (#dto.id == #id)) or (hasAuthority('ROLE_ADMIN'))")
 	@DeleteMapping("/reply/{id}")
 	public ResponseEntity<HttpStatus> deleteReply(@PathVariable("id")int id, @RequestBody RequestReplyDeleteDto dto){
-		log.info("DELETE /reply/"+id + " " + dto.toString());
 		replyService.enabledReply(dto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

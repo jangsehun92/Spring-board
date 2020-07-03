@@ -111,5 +111,5 @@ public class ReplyServiceTest {
 		//then
 		verify(replyDao, times(1)).deleteReply(any());
 	}
-
+	
 }

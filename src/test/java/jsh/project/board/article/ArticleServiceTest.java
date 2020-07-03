@@ -268,5 +268,4 @@ public class ArticleServiceTest {
 		verify(articleDao, times(1)).articleLikeCheck(dto);
 	}
 	
-
 }

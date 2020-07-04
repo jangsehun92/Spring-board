@@ -105,14 +105,18 @@ public class ArticleServiceImpl implements ArticleService{
 	@Transactional
 	@Override
 	public ResponseArticleUpdateDto getUpdateArticle(int id) {
-		return articleDao.selectUpdateArticle(id);
+		ResponseArticleUpdateDto dto = articleDao.selectUpdateArticle(id);
+		log.info(dto.toString());
+		return dto;
 	}
 	
 	@Transactional
 	@Override
 	public void updateArticle(RequestArticleUpdateDto dto) {
 		log.info(dto.toString());
-		articleDao.updateArticle(dto.toArticle());
+		Article article = dto.toArticle();
+		log.info(article.toString());
+		articleDao.updateArticle(article);
 	}
 	
 	@Transactional
@@ -126,10 +130,13 @@ public class ArticleServiceImpl implements ArticleService{
 	@Transactional
 	@Override
 	public void like(RequestLikeDto dto) {
+		log.info(dto.toString());
 		if(articleDao.articleLikeCheck(dto)==0) {
 			articleDao.insertLike(dto);
+			log.info("insertLike");
 		}else {
 			articleDao.deleteLike(dto);
+			log.info("deleteLike");
 		}
 	}
 	

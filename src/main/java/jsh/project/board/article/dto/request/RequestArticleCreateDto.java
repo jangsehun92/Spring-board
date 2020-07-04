@@ -1,7 +1,5 @@
 package jsh.project.board.article.dto.request;
 
-import java.util.Date;
-
 import javax.validation.constraints.NotBlank;
 
 import jsh.project.board.article.domain.Article;
@@ -65,13 +63,7 @@ public class RequestArticleCreateDto implements ArticleConverter{
 	
 	@Override
 	public Article toArticle() {
-		final Article article = new Article();
-		article.setAccountId(this.accountId);
-		article.setCategory(this.category);
-		article.setImportance(this.importance);
-		article.setTitle(this.title);
-		article.setContent(this.content);
-		article.setRegdate(new Date());
+		final Article article = new Article(this);
 		return article;
 	}
 	

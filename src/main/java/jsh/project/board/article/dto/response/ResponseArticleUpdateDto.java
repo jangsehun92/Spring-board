@@ -61,5 +61,12 @@ public class ResponseArticleUpdateDto {
 		this.content = content;
 	}
 	
+	@Override
+	public String toString() {
+		return "ResponseArticleUpdateDto { id : " + id + " accountId : " + accountId 
+					+ " category : " + category + " importance : " + importance 
+					+ " title : " + title + " content : " + content + " }";
+	}
+	
 
 }

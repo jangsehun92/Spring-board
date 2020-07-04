@@ -1,7 +1,5 @@
 package jsh.project.board.reply.dto;
 
-import java.util.Date;
-
 import javax.validation.constraints.NotBlank;
 
 import jsh.project.board.reply.domain.Reply;
@@ -49,10 +47,7 @@ public class RequestReplyCreateDto implements ReplyConverter{
 	
 	@Override
 	public Reply toReply() {
-		final Reply reply = new Reply(this.articleId, this.accountId);
-		reply.setContent(this.content);
-		reply.setRegdate(new Date());
-		reply.setEnabled(1);
+		final Reply reply = new Reply(this);
 		return reply;
 	}
 

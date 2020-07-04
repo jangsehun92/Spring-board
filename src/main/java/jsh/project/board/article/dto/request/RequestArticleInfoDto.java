@@ -25,6 +25,11 @@ public class RequestArticleInfoDto {
 		this.accountId = accountId;
 	}
 	
+	@Override
+	public String toString() {
+		return "RequestArticleInfoDto { id : " + id + " accountId : " + accountId + " }";
+	}
+	
 	
 
 }

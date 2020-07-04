@@ -2,7 +2,8 @@ package jsh.project.board.article.domain;
 
 import java.util.Date;
 
-import jsh.project.board.article.dto.request.like.RequestLikeDto;
+import jsh.project.board.article.dto.request.RequestArticleCreateDto;
+import jsh.project.board.article.dto.request.RequestArticleUpdateDto;
 
 public class Article {
 	
@@ -15,86 +16,66 @@ public class Article {
 	private Date regdate;
 	private Date modifyDate;
 	
-	public Article() {
-		
+	public Article(RequestArticleCreateDto dto) {
+		this.accountId = dto.getAccountId();
+		this.category = dto.getCategory();
+		this.importance = dto.getImportance();
+		this.title = dto.getTitle();
+		this.content = dto.getContent();
+		this.regdate = new Date();
+	}
+	
+	public Article(RequestArticleUpdateDto dto) {
+		this.id = dto.getId();
+		this.category = dto.getCategory();
+		this.importance = dto.getImportance();
+		this.title = dto.getTitle();
+		this.content = dto.getContent();
+		this.modifyDate = new Date();
 	}
 	
 	public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public int getAccountId() {
 		return accountId;
 	}
 
-	public void setAccountId(int accountId) {
-		this.accountId = accountId;
-	}
-	
 	public String getCategory() {
 		return category;
-	}
-	
-	public void setCategory(String category) {
-		this.category = category;
 	}
 	
 	public int getImportance() {
 		return importance;
 	}
 	
-	public void setImportance(int importance) {
-		this.importance = importance;
-	}
-
 	public String getTitle() {
 		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public String getContent() {
 		return content;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
-	}
-
 	public Date getRegdate() {
 		return regdate;
 	}
 
-	public void setRegdate(Date regdate) {
-		this.regdate = regdate;
-	}
-	
 	public Date getModifyDate() {
 		return modifyDate;
 	}
 	
-	public void setModifyDate(Date modifyDate) {
-		this.modifyDate = modifyDate;
-	}
-	
 	@Override
 	public String toString() {
-		return "Article {id : "+id + " accountId : " + accountId + " category : " + category + " importance : " + importance + " title : " + title + " content : " + content + " regdate : " + regdate + " modifyDate : " + modifyDate;
+		return "Article { id : "+id + " accountId : " + accountId 
+					+ " category : " + category + " importance : " + importance 
+					+ " title : " + title + " content : " + content + " regdate : " 
+					+ regdate + " modifyDate : " + modifyDate + " }";
 	}
 	
 	public interface ArticleConverter{
 		Article toArticle();
 	}
-	
-	public interface LikeDtoConverter{
-		RequestLikeDto toLikeDto();
-	}
-
 	
 }

@@ -44,9 +44,7 @@ public class RequestReplyDeleteDto implements ReplyConverter{
 
 	@Override
 	public Reply toReply() {
-		final Reply reply = new Reply(this.articleId);
-		reply.setId(this.id);
-		reply.setEnabled(0);
+		final Reply reply = new Reply(this);
 		return reply;
 	}
 	

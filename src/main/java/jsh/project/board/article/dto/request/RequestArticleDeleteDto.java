@@ -1,7 +1,7 @@
 package jsh.project.board.article.dto.request;
 
-import jsh.project.board.article.domain.Article.LikeDtoConverter;
 import jsh.project.board.article.dto.request.like.RequestLikeDto;
+import jsh.project.board.article.dto.request.like.RequestLikeDto.LikeDtoConverter;
 
 public class RequestArticleDeleteDto implements LikeDtoConverter{
 	private int articleId;

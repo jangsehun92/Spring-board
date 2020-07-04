@@ -29,5 +29,14 @@ public class RequestLikeDto {
 	public void setAccountId(int accountId) {
 		this.accountId = accountId;
 	}
+	
+	@Override
+	public String toString() {
+		return "RequestLikeDto { articleId : " + articleId + " accountId : " + accountId + " }";
+	}
+	
+	public interface LikeDtoConverter{
+		RequestLikeDto toLikeDto();
+	}
 
 }

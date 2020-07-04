@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jsh.project.board.reply.dao.ReplyDao;
+import jsh.project.board.reply.domain.Reply;
 import jsh.project.board.reply.dto.RequestReplyCreateDto;
 import jsh.project.board.reply.dto.RequestReplyDeleteDto;
 import jsh.project.board.reply.dto.RequestReplyUpdateDto;
@@ -32,21 +33,27 @@ public class ReplyServiceImpl implements ReplyService{
 	@Override
 	public void saveReply(RequestReplyCreateDto dto) {
 		log.info(dto.toString());
-		replyDao.insertReply(dto.toReply());
+		Reply reply = dto.toReply();
+		log.info(reply.toString());
+		replyDao.insertReply(reply);
 	}
 	
 	@Transactional
 	@Override
 	public void modifyReply(RequestReplyUpdateDto dto) {
 		log.info(dto.toString());
-		replyDao.updateReply(dto.toReply());
+		Reply reply = dto.toReply();
+		log.info(reply.toString());
+		replyDao.updateReply(reply);
 	}
 	
 	@Transactional
 	@Override
 	public void enabledReply(RequestReplyDeleteDto dto) {
 		log.info(dto.toString());
-		replyDao.deleteReply(dto.toReply());
+		Reply reply = dto.toReply();
+		log.info(reply.toString());
+		replyDao.deleteReply(reply);
 	}
 	
 }

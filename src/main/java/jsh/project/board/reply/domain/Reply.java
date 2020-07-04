@@ -2,6 +2,10 @@ package jsh.project.board.reply.domain;
 
 import java.util.Date;
 
+import jsh.project.board.reply.dto.RequestReplyCreateDto;
+import jsh.project.board.reply.dto.RequestReplyDeleteDto;
+import jsh.project.board.reply.dto.RequestReplyUpdateDto;
+
 public class Reply {
 	
 	private int id;
@@ -12,68 +16,62 @@ public class Reply {
 	private Date modifyDate;
 	private int enabled;
 	
-	public Reply(int articleId) {
-		this.articleId = articleId;
+	public Reply(RequestReplyCreateDto dto) {
+		this.articleId = dto.getArticleId();
+		this.accountId = dto.getAccountId();
+		this.content = dto.getContent();
+		this.regdate = new Date();
+		this.enabled = 1;
 	}
-	public Reply(int articleId, int accountId) {
-		this.articleId = articleId;
-		this.accountId = accountId;
+	
+	public Reply(RequestReplyUpdateDto dto) {
+		this.id = dto.getId();
+		this.articleId = dto.getArticleId();
+		this.accountId = dto.getAccountId();
+		this.content = dto.getContent();
+		this.modifyDate = new Date();
+	}
+	
+	public Reply(RequestReplyDeleteDto dto) {
+		this.id = dto.getId();
+		this.articleId = dto.getArticleId();
+		this.enabled = 0;
 	}
 	
 	public int getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public int getArticleId() {
 		return articleId;
-	}
-
-	public void setArticleId(int articleId) {
-		this.articleId = articleId;
 	}
 
 	public int getAccountId() {
 		return accountId;
 	}
 
-	public void setAccountId(int accountId) {
-		this.accountId = accountId;
-	}
-
 	public String getContent() {
 		return content;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
-	}
-	
-	public int getEnabled() {
-		return enabled;
-	}
-	
-	public void setEnabled(int enabled) {
-		this.enabled= enabled;
-	}
-	
 	public Date getRegdate() {
 		return regdate;
-	}
-	
-	public void setRegdate(Date regdate) {
-		this.regdate = regdate;
 	}
 	
 	public Date getModifyDate() {
 		return modifyDate;
 	}
 	
-	public void setModifyDate(Date modifyDate) {
-		this.modifyDate = modifyDate;
+	public int getEnabled() {
+		return enabled;
+	}
+	
+	@Override
+	public String toString() {
+		return "Reply { id : " + id + " articleId : " + articleId 
+					+ " accountId : " + accountId + " content : " + content 
+					+ " regdate : " + regdate + " modifyDate " + modifyDate 
+					+ " enabled : " + enabled + " } ";
 	}
 	
 	public interface ReplyConverter{

@@ -56,6 +56,11 @@ public class ArticleController {
 		return "redirect:/articles/notice";
 	}
 	
+	@RequestMapping("/test")
+	public @ResponseBody ResponseEntity<String> test(){
+		return new ResponseEntity<>("test", HttpStatus.OK);
+	}
+	
 	// category별 Aritcles 
 	@GetMapping("/articles/{category}")
 	public String articleListByCategory(@PathVariable String category, RequestArticlesDto dto, Model model){

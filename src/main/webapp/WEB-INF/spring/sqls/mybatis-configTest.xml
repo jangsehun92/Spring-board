@@ -7,14 +7,14 @@
   <typeAliases>
   	<!-- Account 관련  -->
   	<typeAlias type="jsh.project.board.account.domain.Account" alias="Account"/>
-  	<typeAlias type="jsh.project.board.account.dto.AccountResponseDto" alias="AccountResponseDto"/>
-  	<typeAlias type="jsh.project.board.account.dto.AccountEmailDto" alias="AccountEmailDto"/>
-  	<typeAlias type="jsh.project.board.account.dto.AccountCreateDto" alias="AccountCreateDto"/>
-  	<typeAlias type="jsh.project.board.account.dto.AccountFindRequestDto" alias="AccountFindRequestDto"/>
-  	<typeAlias type="jsh.project.board.account.dto.AccountFindResponseDto" alias="AccountFindResponseDto"/>
-  	<typeAlias type="jsh.project.board.account.dto.AccountAuthRequestDto" alias="AccountAuthRequestDto"/>
-  	<typeAlias type="jsh.project.board.account.dto.AccountPasswordResetRequestDto" alias="AccountPasswordResetRequestDto"/>
-  	<typeAlias type="jsh.project.board.account.dto.AccountPasswordDto" alias="AccountPasswordDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.response.ResponseAccountInfoDto" alias="ResponseAccountInfoDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.request.RequestEmailDto" alias="RequestEmailDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.request.RequestAccountCreateDto" alias="RequestAccountCreateDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.request.RequestFindAccountDto" alias="RequestFindAccountDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.response.ResponseFindAccountDto" alias="ResponseFindAccountDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.request.RequestEmailConfirmDto" alias="RequestEmailConfirmDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.request.RequestPasswordResetDto" alias="RequestPasswordResetDto"/>
+  	<typeAlias type="jsh.project.board.account.dto.request.RequestPasswordDto" alias="RequestPasswordDto"/>
   	<typeAlias type="jsh.project.board.account.dto.AuthDto" alias="AuthDto"/>
   	
   	<!-- Article 관련 -->
@@ -38,14 +38,13 @@
   </typeHandlers> 
 
   <!-- mapper의 위치를 잡아준다. -->
-  <!-- <mappers>
-    게시판 관련
-  	<mapper resource="file:src/main/resources/sqls/board/boardMapper.xml"/>
-  	<mapper resource="file:src/main/resources/sqls/board/articleMapper.xml"/>
-  	<mapper resource="file:src/main/resources/sqls/board/articleLikeMapper.xml"/>
-  	<mapper resource="file:src/main/resources/sqls/board/replyMapper.xml"/>
-  	<mapper resource="file:src/main/resources/sqls/account/accountMapper.xml"/>
-  	<mapper resource="file:src/main/resources/sqls/account/authMapper.xml"/>
+<!--   <mappers>
+	<mapper resource="classpath:sqls/board/boardMapper.xml"/>
+ 	<mapper resource="file:src/main/webapp/WEB-INF/spring/sqls/mapper/board/articleMapper.xml"/>
+  	<mapper resource="file:src/main/webapp/WEB-INF/spring/sqls/mapper/board/articleLikeMapper.xml"/>
+  	<mapper resource="file:src/main/webapp/WEB-INF/spring/sqls/mapper/board/replyMapper.xml"/>
+  	<mapper resource="file:src/main/webapp/WEB-INF/spring/sqls/mapper/account/accountMapper.xml"/>
+  	<mapper resource="file:src/main/webapp/WEB-INF/spring/sqls/mapper/account/authMapper.xml"/>
   </mappers> -->
   
 

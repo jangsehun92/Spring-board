@@ -94,6 +94,7 @@ public class ArticleController {
 	@PreAuthorize("(#dto.accountId == principal.id) and (#dto.articleId == #id)")
 	@PostMapping("/article/like/{id}")
 	public @ResponseBody ResponseEntity<HttpStatus> like(@PathVariable("id")int id, @RequestBody RequestLikeDto dto){
+		System.out.println("test");
 		articleService.like(dto);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}

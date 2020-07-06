@@ -56,11 +56,6 @@ public class ArticleController {
 		return "redirect:/articles/notice";
 	}
 	
-	@RequestMapping("/test")
-	public @ResponseBody ResponseEntity<String> test(){
-		return new ResponseEntity<>("test", HttpStatus.OK);
-	}
-	
 	// category별 Aritcles 
 	@GetMapping("/articles/{category}")
 	public String articleListByCategory(@PathVariable String category, RequestArticlesDto dto, Model model){
@@ -94,7 +89,6 @@ public class ArticleController {
 	@PreAuthorize("(#dto.accountId == principal.id) and (#dto.articleId == #id)")
 	@PostMapping("/article/like/{id}")
 	public @ResponseBody ResponseEntity<HttpStatus> like(@PathVariable("id")int id, @RequestBody RequestLikeDto dto){
-		System.out.println("test");
 		articleService.like(dto);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}

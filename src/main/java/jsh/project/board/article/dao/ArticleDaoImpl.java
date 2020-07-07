@@ -16,7 +16,7 @@ import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
 @Repository
 public class ArticleDaoImpl implements ArticleDao{
 	
-	private SqlSession sqlSession;
+	private final SqlSession sqlSession;
 	
 	public ArticleDaoImpl(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;

@@ -28,8 +28,8 @@ import jsh.project.board.global.infra.util.FileService;
 public class ArticleServiceImpl implements ArticleService{
 	private static final Logger log = LoggerFactory.getLogger(ArticleServiceImpl.class);
 	
-	private ArticleDao articleDao;
-	private FileService fileService;
+	private final ArticleDao articleDao;
+	private final FileService fileService;
 	
 	public ArticleServiceImpl(ArticleDao articleDao, FileService fileService) {
 		this.articleDao = articleDao;

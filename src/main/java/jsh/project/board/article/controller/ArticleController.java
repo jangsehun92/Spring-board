@@ -40,9 +40,9 @@ import jsh.project.board.article.service.ArticleService;
 @Controller
 public class ArticleController {
 	
-	private ArticleService articleService;
-	private CategoryEnumMapper categoryEnumMapper;
-	private ImportanceEnumMapper importanceEnumMapper;
+	private final ArticleService articleService;
+	private final CategoryEnumMapper categoryEnumMapper;
+	private final ImportanceEnumMapper importanceEnumMapper;
 	
 	public ArticleController(ArticleService articleService, CategoryEnumMapper categoryEnumMapper, ImportanceEnumMapper importanceEnumMapper) {
 		this.articleService = articleService;

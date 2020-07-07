@@ -16,9 +16,9 @@ import jsh.project.board.reply.dto.ResponseReplyDto;
 
 @Service
 public class ReplyServiceImpl implements ReplyService{
-	
 	private static final Logger log = LoggerFactory.getLogger(ReplyServiceImpl.class);
-	private ReplyDao replyDao;
+	
+	private final ReplyDao replyDao;
 	
 	public ReplyServiceImpl(ReplyDao replyDao) {
 		this.replyDao = replyDao;

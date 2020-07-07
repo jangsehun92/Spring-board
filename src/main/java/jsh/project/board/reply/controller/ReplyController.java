@@ -24,7 +24,7 @@ import jsh.project.board.reply.service.ReplyService;
 @Controller
 public class ReplyController {
 	
-	private ReplyService replyService;
+	private final ReplyService replyService;
 	
 	public ReplyController(ReplyService resplyService) {
 		this.replyService = resplyService;

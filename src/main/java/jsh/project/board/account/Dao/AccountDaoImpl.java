@@ -15,7 +15,7 @@ import jsh.project.board.account.dto.response.ResponseFindAccountDto;
 @Repository
 public class AccountDaoImpl implements AccountDao{
 	
-	private SqlSession sqlSession;
+	private final SqlSession sqlSession;
 	
 	public AccountDaoImpl(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;

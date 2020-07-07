@@ -11,7 +11,7 @@ import jsh.project.board.reply.dto.ResponseReplyDto;
 @Repository
 public class ReplyDaoImpl implements ReplyDao{
 	
-	private SqlSession sqlSession;
+	private final SqlSession sqlSession;
 	
 	public ReplyDaoImpl(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;

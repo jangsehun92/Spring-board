@@ -11,7 +11,7 @@ import jsh.project.board.account.dto.request.RequestEmailConfirmDto;
 @Repository
 public class AuthDaoImpl implements AuthDao{
 	
-	private SqlSession sqlSession;
+	private final SqlSession sqlSession;
 	
 	public AuthDaoImpl(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;

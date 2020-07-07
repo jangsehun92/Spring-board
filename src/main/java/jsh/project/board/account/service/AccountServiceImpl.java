@@ -36,10 +36,10 @@ import jsh.project.board.global.infra.email.EmailService;
 public class AccountServiceImpl implements AccountService{
 	private static final Logger log = LoggerFactory.getLogger(AccountServiceImpl.class);
 	
-	private AccountDao accountDao;
-	private PasswordEncoder passwordEncoder;
-	private AuthService authService;
-	private EmailService emailService;
+	private final AccountDao accountDao;
+	private final PasswordEncoder passwordEncoder;
+	private final AuthService authService;
+	private final EmailService emailService;
 	
 	public AccountServiceImpl(AccountDao accountDao, AuthService authService, PasswordEncoder passwordEncoder, EmailService emailService) {
 		this.accountDao = accountDao;
@@ -174,7 +174,9 @@ public class AccountServiceImpl implements AccountService{
 		if(account == null) {
 			throw new AccountNotFoundException();
 		}
-		if(authDto == null || authDto.isAuthExpired() || !dto.getAuthKey().equals(authDto.getAuthKey()) || !dto.getAuthOption().equals(authDto.getAuthOption())) {
+		if(authDto == null || authDto.isAuthExpired() 
+				|| !dto.getAuthKey().equals(authDto.getAuthKey()) 
+				|| !dto.getAuthOption().equals(authDto.getAuthOption())) {
 			throw new BadAuthRequestException();
 		}
 		
@@ -190,7 +192,9 @@ public class AccountServiceImpl implements AccountService{
 		log.info(dto.toString());
 		AuthDto authDto = authService.getAuth(dto.getEmail());
 		
-		if(authDto == null || authDto.isAuthExpired() || !dto.getAuthKey().equals(authDto.getAuthKey()) || !dto.getAuthOption().equals(authDto.getAuthOption())) {
+		if (authDto == null || authDto.isAuthExpired() 
+				|| !dto.getAuthKey().equals(authDto.getAuthKey())
+				|| !dto.getAuthOption().equals(authDto.getAuthOption())) {
 			throw new BadAuthRequestException();
 		}
 		

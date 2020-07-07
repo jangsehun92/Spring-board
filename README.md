@@ -93,6 +93,7 @@ Spring Framework를 사용하여 게시판을 구현한다.
 ## 게시판
 공통 사항
   - 카테고리를 기준으로 게시판을 나눈다.
+  - 현재 어떤 카테고리의 게시판을 보고 있는지 표시한다.
   - 게시글의 카테고리, 정렬, 검색, 페이징처리를 위한 값들을 가질 수 있는 공통된 requestDto를 사용한다.
   - 허용 가능한 카테고리 값을 제한하기 위해 Enum클래스를 활용한다.
   - 게시글 작성,수정,삭제는 해당 글을 작성한 계정이어야 한다.
@@ -165,17 +166,3 @@ Spring Framework를 사용하여 게시판을 구현한다.
   - 댓글을 삭제 요청하면 해당 댓글을 비활성화 시킨 후, '삭제된 댓글입니다.' 로 표시한다.
   - 비활성화 된 댓글은 수정을 할 수 없다.
 
-
-
-
-------------------
-1. Oracle + Mybatis환경 에서 Date값을 다루기 위해 CumstomDateHandler 등록한다.
-(java.sql.Date 타입은 org.apache.ibatis.type.SqlDateTypeHandler를 통해 date 값을 yyyy-mm-dd로 반환 > json타입으로 받을경우 unixTime으로 받아와서 시,분,초를 표시할 수 없다. [해결 방법 : DateTypeHandler를 cumstom하여 등록한다.])
-  - [ 참고 : https://taetaetae.github.io/2017/03/23/oracle-mybatis-date/ ]
-
-2. @PreAuthorize
-  - 요청이 들어와서 해당 메소드가 실행 되기 전에 권한을 검사하는 어노테이션이다.
-  
-3. @Vaild
-  - 해당 객체의 필드에 유효성검사를 할 수 있는 어노테이션이다.
-  - @Notblank, @Email, @Pattern 등을 사용할 수 있다.

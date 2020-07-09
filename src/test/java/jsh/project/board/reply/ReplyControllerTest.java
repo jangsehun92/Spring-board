@@ -1,6 +1,5 @@
 package jsh.project.board.reply;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -64,7 +63,8 @@ public class ReplyControllerTest{
 		int articleId = 177;
 		
 		//when
-		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/replys/"+articleId));
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+				.get("/replys/"+articleId));
 		
 		//then
 		resultActions
@@ -82,8 +82,8 @@ public class ReplyControllerTest{
 		String content = objectMapper.writer().writeValueAsString(resultMap);
 		
 		//when
-		ResultActions resultActions = mockMvc
-				.perform(post("/reply")
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+				.post("/reply")
 				.contentType(contentType)
 				.content(content));
 		
@@ -106,8 +106,8 @@ public class ReplyControllerTest{
 		String content = objectMapper.writer().writeValueAsString(resultMap);
 		
 		//when
-		ResultActions resultActions = mockMvc
-				.perform(MockMvcRequestBuilders.patch("/reply/"+id)
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+				.patch("/reply/"+id)
 				.contentType(contentType)
 				.content(content));
 		
@@ -129,8 +129,8 @@ public class ReplyControllerTest{
 		String content = objectMapper.writer().writeValueAsString(resultMap);
 		
 		//when
-		ResultActions resultActions = mockMvc
-				.perform(MockMvcRequestBuilders.delete("/reply/"+id)
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+				.delete("/reply/"+id)
 				.contentType(contentType)
 				.content(content));
 		

@@ -1,6 +1,5 @@
 package jsh.project.board.article;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -63,15 +62,14 @@ public class ArticleControllerTest{
 					.build();
 	}
 	
-
-	
 	@Test
 	public void 공지사항_게시글_가져오기() throws Exception{
 		//given
 		String category = "notice";
 		
 		//when
-		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/articles/"+category));
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+				.get("/articles/"+category));
 		
 		//then
 		resultActions
@@ -85,7 +83,8 @@ public class ArticleControllerTest{
 		String category = "community";
 		
 		//when
-		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/articles/"+category));
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+				.get("/articles/"+category));
 		
 		//then
 		resultActions
@@ -99,7 +98,8 @@ public class ArticleControllerTest{
 		String accountId = "1";
 		
 		//when
-		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/articles/account/"+accountId));
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+				.get("/articles/account/"+accountId));
 		
 		//then
 		resultActions
@@ -113,7 +113,8 @@ public class ArticleControllerTest{
 		String articleId = "177";
 		
 		//when
-		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/article/"+articleId));
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+				.get("/article/"+articleId));
 		
 		//then
 		resultActions
@@ -131,8 +132,8 @@ public class ArticleControllerTest{
 		String content = objectMapper.writer().writeValueAsString(dto);
 		
 		//when
-		ResultActions resultActions = mockMvc
-				.perform(post("/article/like/177")
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+				.post("/article/like/177")
 				.contentType(contentType)
 				.content(content));
 		
@@ -146,8 +147,8 @@ public class ArticleControllerTest{
 		String category = "community";
 		
 		// when
-		ResultActions resultActions = mockMvc
-				.perform(MockMvcRequestBuilders.get("/articles/"+category+"/create"));
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+				.get("/articles/"+category+"/create"));
 
 		// then
 		resultActions
@@ -164,8 +165,8 @@ public class ArticleControllerTest{
 		String category = "notice";
 		
 		// when
-		ResultActions resultActions = mockMvc
-				.perform(MockMvcRequestBuilders.get("/admin/articles/"+category+"/create"));
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+				.get("/admin/articles/"+category+"/create"));
 
 		// then
 		resultActions
@@ -190,8 +191,8 @@ public class ArticleControllerTest{
 		String content = objectMapper.writer().writeValueAsString(resultMap);
 		
 		//when
-		ResultActions resultActions = mockMvc
-				.perform(post("/article")
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+				.post("/article")
 				.contentType(contentType)
 				.content(content));
 		
@@ -215,8 +216,8 @@ public class ArticleControllerTest{
 		String content = objectMapper.writer().writeValueAsString(resultMap);
 		
 		//when
-		ResultActions resultActions = mockMvc
-				.perform(MockMvcRequestBuilders.patch("/article/"+id)
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+				.patch("/article/"+id)
 				.contentType(contentType)
 				.content(content));
 		
@@ -236,8 +237,8 @@ public class ArticleControllerTest{
 		String content = objectMapper.writer().writeValueAsString(resultMap);
 		
 		//when
-		ResultActions resultActions = mockMvc
-				.perform(MockMvcRequestBuilders.delete("/article/"+id)
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+				.delete("/article/"+id)
 				.contentType(contentType)
 				.content(content));
 		//then
@@ -250,8 +251,8 @@ public class ArticleControllerTest{
 		MockMultipartFile file = new MockMultipartFile("file", "testFile.txt", "text/plain", "test".getBytes());
 		
 		//when
-		ResultActions resultActions = mockMvc
-				.perform(MockMvcRequestBuilders.multipart("/article/image")
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+				.multipart("/article/image")
 				.file(file));
 		
 		//then

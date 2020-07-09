@@ -20,8 +20,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jsh.project.board.account.dao.AccountDao;
@@ -50,7 +48,6 @@ import jsh.project.board.global.infra.util.AuthKey;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccountServiceTest {
-	private static final Logger log = LoggerFactory.getLogger(AccountServiceTest.class);
 	
 	@Mock
 	private AccountDao accountDao;

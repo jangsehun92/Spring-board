@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -28,7 +27,6 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jsh.project.board.account.controller.AccountController;
-import jsh.project.board.account.service.AuthServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml",
@@ -45,9 +43,6 @@ public class AccountControllerTest{
 	
 	@InjectMocks
 	AccountController accountController;
-	
-	@Mock
-	AuthServiceImpl authService;
 	
 	private ObjectMapper objectMapper = new ObjectMapper();
 	
@@ -69,7 +64,8 @@ public class AccountControllerTest{
 		String url = "/login";
 		
 		//when
-		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get(url));
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+				.get(url));
 		
 		//then
 		resultActions
@@ -83,7 +79,8 @@ public class AccountControllerTest{
 		String url = "/account/join";
 		
 		//when
-		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get(url));
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+				.get(url));
 		
 		//then
 		resultActions
@@ -160,7 +157,6 @@ public class AccountControllerTest{
 			.andExpect(forwardedUrl("/WEB-INF/views/userPages/edit.jsp"));
 	}
 	
-	//security 관련 설정 후 다시 시도
 	@Test
 	public void 회원_정보_수정() throws Exception{
 		//given
@@ -240,6 +236,7 @@ public class AccountControllerTest{
 				.post(url)
 				.contentType(contentType)
 				.content(content));
+		
 		//then
 		resultActions
 			.andExpect(status().is(200));
@@ -277,6 +274,7 @@ public class AccountControllerTest{
 				.post(url)
 				.contentType(contentType)
 				.content(content));
+		
 		//then
 		resultActions
 			.andExpect(status().is(200));

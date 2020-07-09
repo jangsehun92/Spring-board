@@ -143,14 +143,14 @@ public class ArticleControllerTest{
 	
 	@Test
 	public void 일반_게시글_작성_요청() throws Exception {
-		// given
+		//given
 		String category = "community";
 		
-		// when
+		//when
 		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
 				.get("/articles/"+category+"/create"));
 
-		// then
+		//then
 		resultActions
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("category"))
@@ -161,14 +161,14 @@ public class ArticleControllerTest{
 	
 	@Test
 	public void 관리자_게시글_작성_요청() throws Exception {
-		// given
+		//given
 		String category = "notice";
 		
-		// when
+		//when
 		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
 				.get("/admin/articles/"+category+"/create"));
 
-		// then
+		//then
 		resultActions
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("category"))

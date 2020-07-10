@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -71,6 +72,7 @@ public class ReplyControllerTest{
 			.andExpect(status().is(200));
 	}
 	
+	@WithUserDetails (value = "jangsehun92@gmail.com", userDetailsServiceBeanName = "userService")
 	@Test
 	public void 댓글_입력() throws Exception{
 		//given
@@ -92,13 +94,14 @@ public class ReplyControllerTest{
 			.andExpect(status().isOk());
 	}
 	
+	@WithUserDetails (value = "jangsehun92@gmail.com", userDetailsServiceBeanName = "userService")
 	@Test
 	public void 댓글_수정() throws Exception {
 		//given
-		int id = 61;
+		int id = 67;
 		
 		Map<String, String> resultMap = new HashMap<String, String>();
-		resultMap.put("id", "61");
+		resultMap.put("id", "67");
 		resultMap.put("articleId","177");
 		resultMap.put("accountId", "21");
 		resultMap.put("content", "댓글 수정");
@@ -116,6 +119,7 @@ public class ReplyControllerTest{
 			.andExpect(status().isOk());
 	}
 	
+	@WithUserDetails (value = "jangsehun92@gmail.com", userDetailsServiceBeanName = "userService")
 	@Test
 	public void 댓글_삭제() throws Exception {
 		//given

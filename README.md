@@ -31,8 +31,7 @@ Spring Framework를 사용하여 게시판을 구현한다.
   - 유효성 검사는 서버에서 검사한다.(@Vaild 어노테이션을 활용한다.)
   - @transactional 어노테이션을 활용하여 Unchecked Exception이 발생하면 관련 작업(DB)을 롤백한다.
   - client 단에서 ErrorReponse 내의 errorCode에 따라 처리한다.
-  - Mockito를 이용하여 service단을 테스트한다.
-  - 통합 테스트 코드를 작성한다.
+  - Mockito를 이용하여 테스트 코드를 작성한다.
   - https를 적용한다.
 
   

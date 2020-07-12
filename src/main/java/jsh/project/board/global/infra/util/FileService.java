@@ -34,7 +34,7 @@ public class FileService {
 		return getFileUrl();
 	}
 	
-	//날짜별로 폴더를 생성한다.
+	// 날짜별로 폴더를 생성한다.
 	public void setFileDirectory() {
 		Calendar calendar = Calendar.getInstance();
 		
@@ -52,12 +52,12 @@ public class FileService {
 		this.savedPath = sb.toString();
 	}
 	
-	//랜덤하게 파일이름을 만든다.
+	// 랜덤하게 파일이름을 만든다.
 	public void setSavedFileName(String originalFileName) {
 		savedFileName = UUID.randomUUID() + originalFileName.substring(originalFileName.lastIndexOf("."));
 	}
 	
-	//저장경로 및 파일이름 리턴
+	// 저장경로 및 파일이름 리턴
 	public String getFileUrl() {
 		StringBuffer sb = new StringBuffer();
 		sb.append(pathUrl);
@@ -66,11 +66,10 @@ public class FileService {
 		return sb.toString();
 	}
 	
-	//파일 저장을 저장한다.
+	// 파일을 저장한다.
 	public void writerFile(MultipartFile file) {
 		//1.
 		FileOutputStream fos = null;
-
 		byte[] data;
 		
 		try {
@@ -86,16 +85,5 @@ public class FileService {
 				e.printStackTrace();
 			}
 		}
-// 		2.
-//		FileUtils을 사용하여 할 수 있다.		
-//		File targetFile = new File(rootDirectory + savedFileName);
-//		InputStream fileStream;
-//		try {
-//			fileStream = file.getInputStream();
-//			FileUtils.copyInputStreamToFile(fileStream, targetFile);	//파일 저장
-//		} catch (IOException e) {
-//			FileUtils.deleteQuietly(targetFile);
-//			e.printStackTrace();
-//		}
 	}
 }

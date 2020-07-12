@@ -11,7 +11,6 @@ import jsh.project.board.article.dto.response.ResponseArticleDto;
 import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
 
 public interface ArticleDao {
-	
 	public int selectNoticeTotalCount();
 	public List<ResponseArticleDto> selectNoticeArticles(Map<String, Integer> paramMap);
 	public int selectTotalCount(RequestArticlesDto dto);
@@ -27,5 +26,4 @@ public interface ArticleDao {
 	public int articleLikeCheck(RequestLikeDto dto);
 	public void insertLike(RequestLikeDto dto);
 	public void deleteLike(RequestLikeDto dto);
-	
 }

@@ -8,7 +8,6 @@ public class AuthKey {
 	private boolean lowerCheck = false;
 	
 	public String getKey() {
-		
 		return init();
 	}
 	

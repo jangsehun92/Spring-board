@@ -96,9 +96,4 @@ public class ArticleDaoImpl implements ArticleDao{
 	public void deleteLike(RequestLikeDto dto) {
 		sqlSession.insert("articleLikeMapper.deleteLike", dto);
 	}
-	
-	
-	
-	
-	
 }

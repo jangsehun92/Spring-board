@@ -80,10 +80,4 @@ public class AccountDaoImpl implements AccountDao{
 	public void updateLocked(Map<String, Object> paramMap) {
 		sqlSession.update("accountMapper.updateLocked", paramMap);
 	}
-
-	
-
-	
-
-	
 }

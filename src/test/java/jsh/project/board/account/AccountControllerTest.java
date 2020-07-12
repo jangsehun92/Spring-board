@@ -316,10 +316,5 @@ public class AccountControllerTest{
 		// then
 		resultActions.andExpect(status().is(200));
 	}
-	
-	
-	
-	
-	
 
 }

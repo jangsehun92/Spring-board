@@ -190,5 +190,4 @@ public class AccountController {
     public String authDenied() {
     	return "commonPages/authDenied";
     }
-    
 }

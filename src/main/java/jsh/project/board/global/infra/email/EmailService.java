@@ -18,7 +18,6 @@ public class EmailService {
 		if(dto.getAuthOption().equals(AuthOption.SIGNUP.getValue())) {
 			signupEmail(dto);
 		}
-		
 		if(dto.getAuthOption().equals(AuthOption.RESET.getValue())) {
 			passwordResetEmail(dto);
 		}

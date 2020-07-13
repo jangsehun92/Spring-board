@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import jsh.project.board.account.dto.request.RequestAccountResetDto;
 
 @SuppressWarnings("serial")
-public class Account implements UserDetails{
+public class Account implements UserDetails {
 	private int id;
 	private String email;
 	private String password;
@@ -24,18 +24,18 @@ public class Account implements UserDetails{
 	private int failureCount;
 	private Date regdate;
 	private Date lastLoginDate;
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		ArrayList<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
 		auth.add(new SimpleGrantedAuthority(role));
 		return auth;
 	}
-	
-	public Account() { 
-		
+
+	public Account() {
+
 	}
-	
+
 	public Account(String email, String password, String name, String birth, String nickname, String role) {
 		this.email = email;
 		this.password = password;
@@ -44,11 +44,11 @@ public class Account implements UserDetails{
 		this.nickname = nickname;
 		this.role = role;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -57,7 +57,7 @@ public class Account implements UserDetails{
 	public String getPassword() {
 		return password;
 	}
-	
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -66,68 +66,68 @@ public class Account implements UserDetails{
 	public String getUsername() {
 		return email;
 	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
-	public void setBirth(String birth) {
-		this.birth = birth;
+
+	public void setName(String name) {
+		this.name = name;
 	}
-	
+
 	public String getBirth() {
 		return birth;
 	}
-	
+
+	public void setBirth(String birth) {
+		this.birth = birth;
+	}
+
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
-	
+
 	public String getNickname() {
 		return nickname;
 	}
-	
+
 	public void setLocked(int locked) {
 		this.locked = locked;
+	}
+
+	public int getFailureCount() {
+		return failureCount;
 	}
 
 	public void setFailureCount(int failureCount) {
 		this.failureCount = failureCount;
 	}
-	
-	public int getFailureCount() {
-		return failureCount;
+
+	public Date getRegdate() {
+		return regdate;
 	}
-	
+
 	public void setRegdate(Date regdate) {
 		this.regdate = regdate;
 	}
-	
-	public Date getRegdate() {
-		return regdate;
+
+	public Date getLastLoginDate() {
+		return lastLoginDate;
 	}
 	
 	public void setLastLoginDate(Date lastLoginDate) {
 		this.lastLoginDate = lastLoginDate;
 	}
-	
-	public Date getLastLoginDate() {
-		return lastLoginDate;
-	}
-	
+
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
 	}
 
-	//true = 계정이 잠겨 있지않다.
+	// true = 계정이 잠겨 있지않다.
 	@Override
 	public boolean isAccountNonLocked() {
-		if(locked == 0) {
+		if (locked == 0) {
 			return true;
 		}
 		return false;
@@ -142,12 +142,16 @@ public class Account implements UserDetails{
 	public boolean isEnabled() {
 		return enabled;
 	}
-	
+
 	public boolean findAccountCheck(RequestAccountResetDto dto) {
-		if(!this.name.equals(dto.getName()) || !this.birth.equals(dto.getBirth())) {
+		if (!this.name.equals(dto.getName()) || !this.birth.equals(dto.getBirth())) {
 			return false;
 		}
 		return true;
 	}
 	
+	public interface AccountConverter{
+		Account toAccount();
+	}
+
 }

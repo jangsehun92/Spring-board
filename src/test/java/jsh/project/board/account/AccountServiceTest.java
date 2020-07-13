@@ -77,7 +77,6 @@ public class AccountServiceTest {
 	@Before
 	public void setUp() {
 		//계정 
-		
 		account.setId(1);
 		account.setRegdate(new Date());
 		account.setLocked(0);

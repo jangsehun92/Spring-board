@@ -74,7 +74,5 @@ public class RequestPasswordResetDto {
 	public String toString() {
 		return "AccountPasswordResetDto { email : " + email + ", password : " + password + " authKey : " + authKey + " authOption : " + authOption + " } ";
 	}
-	
-	
 
 }

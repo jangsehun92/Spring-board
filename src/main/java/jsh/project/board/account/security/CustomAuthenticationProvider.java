@@ -46,7 +46,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		}
 		//...
 		
-		
 		return new UsernamePasswordAuthenticationToken(account, password, account.getAuthorities());
 	}
 
@@ -54,5 +53,4 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	public boolean supports(Class<?> authentication) {
 		return true;
 	}
-
 }

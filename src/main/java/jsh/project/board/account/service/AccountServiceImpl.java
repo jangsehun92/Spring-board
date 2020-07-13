@@ -203,5 +203,4 @@ public class AccountServiceImpl implements AccountService{
 			authService.verification(dto);
 		}
 	}
-	
 }

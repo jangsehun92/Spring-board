@@ -79,5 +79,4 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 	public void setDefaultUrl(String defaultUrl) {
 		this.defaultUrl = defaultUrl;
 	}
-
 }

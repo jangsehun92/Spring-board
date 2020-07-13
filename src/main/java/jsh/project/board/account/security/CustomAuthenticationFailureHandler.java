@@ -68,5 +68,4 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 	private void accountLocked(String email) {
 		accountService.updateLocked(email, 1);
 	}
-	
 }

@@ -60,8 +60,6 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 		request.setAttribute("email", request.getParameter("email"));
 		final ErrorResponse errorResponse = new ErrorResponse(errorCode);
 		request.setAttribute("errorResponse", errorResponse);
-//		request.setAttribute("errorCode", errorCode.getCode());
-//		request.setAttribute("errorMessage",errorCode.getMessage());
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 	

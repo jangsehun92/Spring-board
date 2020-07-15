@@ -94,7 +94,7 @@
 			name = #{name} AND
 			birth = #{birth}
 	</select>
-	<!-- 로그인 성공 시 마지막로그인날짜 저장 -->
+	
 	<update id="updateLoginDate" parameterType="java.lang.String">
 		UPDATE
 			account_table
@@ -113,7 +113,6 @@
 			email = #{email}
 	</select>
 	
-	<!-- 로그인 실패&성공 시 실패카운트 증가 및 초기화 -->
 	<update id="updateFailureCount" parameterType="map">
 		UPDATE 
 			account_table

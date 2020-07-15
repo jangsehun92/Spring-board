@@ -41,6 +41,4 @@
 			article_id = #{id}
 	</delete>
 	
-	
-	
 </mapper>

@@ -153,6 +153,6 @@
 		WHERE 
 			b.rnum >= #{startCount}
 		]]>
-
 	</select>
+	
 </mapper>

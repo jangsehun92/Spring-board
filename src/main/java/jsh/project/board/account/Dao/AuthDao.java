@@ -11,7 +11,9 @@ public interface AuthDao {
 	
 	public AuthDto selectAuth(String email);
 	
-	public int checkAuth(Map<String, String> paramMap);
+	public int selectAuthCount(Map<String, String> paramMap);
+	
+	public boolean selectAuthCheck(Map<String, String> paramMap);
 	
 	public void updateAuth(AuthDto dto);
 	

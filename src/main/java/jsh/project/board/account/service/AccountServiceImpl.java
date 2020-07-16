@@ -169,38 +169,38 @@ public class AccountServiceImpl implements AccountService{
 		log.info(dto.toString());
 		dto.checkPassword();
 		Account account = accountDao.selectAccount(dto.getEmail());
-		AuthDto authDto = authService.getAuth(dto.getEmail());
 		
 		if(account == null) {
-			throw new AccountNotFoundException();
+			throw new AccountNotFoundException(); 
 		}
-		if(authDto == null || authDto.isAuthExpired() 
-				|| !dto.getAuthKey().equals(authDto.getAuthKey()) 
-				|| !dto.getAuthOption().equals(authDto.getAuthOption())) {
-			throw new BadAuthRequestException();
+		if(!authService.checkAuth(dto.toAuthCheckMap())) {
+			throw new BadAuthRequestException(); 
 		}
 		
 		account.setPassword(passwordEncoder.encode(dto.getPassword()));
 		accountDao.updatePassword(account);
-		authService.verification(dto.toEmailConfirmDto());
 	}
 	
-	//이메일 인증
+	// 이메일 인증
 	@Transactional
 	@Override
 	public void authConfirm(RequestEmailConfirmDto dto) {
 		log.info(dto.toString());
 		AuthDto authDto = authService.getAuth(dto.getEmail());
 		
-		if (authDto == null || authDto.isAuthExpired() 
-				|| !dto.getAuthKey().equals(authDto.getAuthKey())
-				|| !dto.getAuthOption().equals(authDto.getAuthOption())) {
+		if (authDto == null
+			|| authDto.isAuthExpired() 
+			|| !dto.getAuthKey().equals(authDto.getAuthKey()) 
+			|| !dto.getAuthOption().equals(authDto.getAuthOption())) {
 			throw new BadAuthRequestException();
 		}
-		
-		if(authDto.getAuthOption().equals(AuthOption.SIGNUP.getValue())) {
-			accountDao.updateEnabled(dto.getEmail());
-			authService.verification(dto);
-		}
+		authService.expired(dto);
 	}
+	
+	// 계정 활성화
+	@Override
+	public void activation(String email) {
+		accountDao.updateEnabled(email);
+	}
+	
 }

@@ -9,7 +9,7 @@
 		<result property="expiredDate" column="expried_date"/>
 	</resultMap>
 	
-	<insert id="create" parameterType="AuthDto">
+	<insert id="insertAuth" parameterType="AuthDto">
 		INSERT INTO 
 			auth_table
 		VALUES(
@@ -22,7 +22,7 @@
 		)
 	</insert>
 	
-	<select id="findByEmail" parameterType="java.lang.String" resultMap="AuthDtoResultMap">
+	<select id="selectAuth" parameterType="java.lang.String" resultMap="AuthDtoResultMap">
 		SELECT
 			email,
 			auth_key,
@@ -36,7 +36,7 @@
 			expired = 0
 	</select>
 	
-	<select id="authCheck" parameterType="map" resultType="int">
+	<select id="selectAuthCount" parameterType="map" resultType="int">
 		SELECT
 			count(email)
 		FROM
@@ -47,7 +47,19 @@
 			auth_option = #{authOption}
 	</select>
 	
-	<update id="update" parameterType="AuthDto">
+	<select id="selectAuthCheck" parameterType="map" resultType="boolean">
+		SELECT
+			count(email)
+		FROM
+			auth_table
+		WHERE
+			email = #{email} AND
+			expired = 1 AND
+			auth_option = #{authOption} AND
+			auth_key = #{authKey}
+	</select>
+	
+	<update id="updateAuth" parameterType="AuthDto">
 		UPDATE 
 			auth_table
 		SET 
@@ -58,7 +70,7 @@
 			expired = 0
 	</update>
 	
-	<update id="expired" parameterType="RequestEmailConfirmDto">
+	<update id="deleteAuth" parameterType="RequestEmailConfirmDto">
 		UPDATE 
 			auth_table
 		SET 

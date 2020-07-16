@@ -19,27 +19,32 @@ public class AuthDaoImpl implements AuthDao{
 	
 	@Override
 	public void insertAuth(AuthDto dto) {
-		sqlSession.insert("authMapper.create",dto);
+		sqlSession.insert("authMapper.insertAuth",dto);
 	}
 	
 	@Override
 	public AuthDto selectAuth(String email) {
-		return sqlSession.selectOne("authMapper.findByEmail", email);
+		return sqlSession.selectOne("authMapper.selectAuth", email);
 	}
 	
 	@Override
-	public int checkAuth(Map<String, String> paramMap) {
-		return sqlSession.selectOne("authMapper.authCheck", paramMap);
+	public int selectAuthCount(Map<String, String> paramMap) {
+		return sqlSession.selectOne("authMapper.selectAuthCount", paramMap);
+	}
+	
+	@Override
+	public boolean selectAuthCheck(Map<String, String> paramMap) {
+		return sqlSession.selectOne("authMapper.selectAuthCheck", paramMap);
 	}
 	
 	@Override
 	public void updateAuth(AuthDto dto) {
-		sqlSession.update("authMapper.update",dto);
+		sqlSession.update("authMapper.updateAuth",dto);
 	}
 	
 	@Override
 	public void deleteAuth(RequestEmailConfirmDto dto) {
-		sqlSession.update("authMapper.expired",dto);
+		sqlSession.update("authMapper.deleteAuth",dto);
 	}
 
 }

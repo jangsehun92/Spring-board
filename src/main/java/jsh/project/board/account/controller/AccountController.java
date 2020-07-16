@@ -112,6 +112,7 @@ public class AccountController {
     @GetMapping("/account/emailConfirm")
     public String emailConfirm(RequestEmailConfirmDto dto) {
     	accountService.authConfirm(dto);
+    	accountService.activation(dto.getEmail());
     	return "redirect:/login";
     }
     
@@ -190,4 +191,5 @@ public class AccountController {
     public String authDenied() {
     	return "commonPages/authDenied";
     }
+    
 }

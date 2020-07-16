@@ -28,6 +28,7 @@ import jsh.project.board.account.domain.Account;
 import jsh.project.board.account.dto.AuthDto;
 import jsh.project.board.account.dto.request.RequestAccountCreateDto;
 import jsh.project.board.account.dto.request.RequestAccountEditDto;
+import jsh.project.board.account.dto.request.RequestEmailConfirmDto;
 import jsh.project.board.account.dto.request.RequestEmailDto;
 import jsh.project.board.account.dto.request.RequestFindAccountDto;
 import jsh.project.board.account.dto.request.RequestPasswordDto;
@@ -142,6 +143,31 @@ public class AccountServiceTest {
 		verify(passwordEncoder, times(1)).encode("1234");
 		verify(authService, times(1)).createAuth(any(),any());
 		verify(emailService, times(1)).sendEmail(any());
+	}
+	
+	@Test
+	public void 이메일_인증() {
+		//given
+		String authKey = new AuthKey().getKey();
+		
+		RequestEmailConfirmDto dto = new RequestEmailConfirmDto();
+		dto.setEmail("jangsehun1992@gmail.com");
+		dto.setAuthKey(authKey);
+		dto.setAuthOption(AuthOption.SIGNUP.getValue());
+		
+		AuthDto authDto = new AuthDto();
+		authDto.setEmail("jangsehun1992@gmail.com");
+		authDto.setAuthKey(authKey);
+		authDto.setAuthOption(AuthOption.SIGNUP.getValue());
+		authDto.setExpired(0);
+		
+		given(authService.getAuth(dto.getEmail())).willReturn(authDto);
+		
+		//when
+		accountService.authConfirm(dto);
+		
+		//than
+		verify(authService).expired(dto);
 	}
 	
 	@Test
@@ -273,7 +299,7 @@ public class AccountServiceTest {
 		authDto.setExpired(0);
 		
 		given(accountDao.selectAccount(dto.getEmail())).willReturn(account);
-		given(authService.getAuth(dto.getEmail())).willReturn(authDto);
+		given(authService.checkAuth(dto.toAuthCheckMap())).willReturn(true);
 		
 		//when
 		accountService.resetPassword(dto);
@@ -327,7 +353,6 @@ public class AccountServiceTest {
 		//when
 		accountService.resetPassword(dto);
 	}
-	
 	
 
 }

@@ -27,7 +27,7 @@ public class AuthServiceImpl implements AuthService{
 		paramMap.put("email", email);
 		paramMap.put("authOption", authOption.getValue());
 		
-		if(authDao.checkAuth(paramMap) != 0) {
+		if(authDao.selectAuthCount(paramMap) != 0) {
 			return updateAuthKey(email);
 		}
 		
@@ -35,7 +35,7 @@ public class AuthServiceImpl implements AuthService{
 		authDao.insertAuth(authDto);
 		return authDto;
 	}
-
+	
 	@Override
 	public AuthDto updateAuthKey(String email) {
 		AuthDto authDto = authDao.selectAuth(email);
@@ -54,8 +54,13 @@ public class AuthServiceImpl implements AuthService{
 	}
 
 	@Override
-	public void verification(RequestEmailConfirmDto dto) {
+	public void expired(RequestEmailConfirmDto dto) {
 		authDao.deleteAuth(dto);
+	}
+
+	@Override
+	public boolean checkAuth(Map<String, String> paramMap) {
+		return authDao.selectAuthCheck(paramMap);
 	}
 
 }

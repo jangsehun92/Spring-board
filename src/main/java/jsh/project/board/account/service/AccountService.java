@@ -44,4 +44,6 @@ public interface AccountService {
 	public void resetPassword(RequestPasswordResetDto dto);
 	// 이메일 인증
 	public void authConfirm(RequestEmailConfirmDto dto);
+	// 계정 활성화
+	public void activation(String email);
 }

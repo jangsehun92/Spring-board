@@ -77,13 +77,6 @@ public class AccountServiceTest {
 	
 	@Before
 	public void setUp() {
-		//계정 
-		account.setId(1);
-		account.setRegdate(new Date());
-		account.setLocked(0);
-		account.setFailureCount(0);
-		account.setLastLoginDate(new Date());
-		
 		//가입한 계정
 		responseDto.setEmail("jangsehun1992@gmail.com");
 		responseDto.setRegdate(new Date());
@@ -230,7 +223,7 @@ public class AccountServiceTest {
 		RequestAccountEditDto requestDto = new RequestAccountEditDto();
 		requestDto.setNickname("changeNickname");
 		
-		account.setNickname(requestDto.getNickname());
+		account.changeAccountNickname(requestDto.getNickname());
 		
 		//when
 		accountService.editAccount(account);

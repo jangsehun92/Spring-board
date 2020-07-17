@@ -86,7 +86,7 @@ public class AccountController {
     @PatchMapping("/account/{id}")
     public @ResponseBody ResponseEntity<HttpStatus> accountEdit(Principal principal, Authentication auth, Model model, @PathVariable("id")int id, @RequestBody @Valid RequestAccountEditDto dto) {
     	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	account.setNickname(dto.getNickname());
+    	account.changeAccountNickname(dto.getNickname());
     	accountService.editAccount(account);
     	
     	Authentication newAuth = new UsernamePasswordAuthenticationToken(account, auth.getCredentials(), account.getAuthorities());

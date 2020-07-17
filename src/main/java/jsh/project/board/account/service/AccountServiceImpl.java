@@ -56,7 +56,7 @@ public class AccountServiceImpl implements AccountService{
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 		dto.setRole(Role.USER);
 		accountDao.insertAccount(dto.toAccount());
-		//인증 테이블에 이메일과 인증키 저장
+		
 		AuthDto authDto = authService.createAuth(dto.getEmail(), AuthOption.SIGNUP);
 		emailService.sendEmail(authDto);
 	}
@@ -83,7 +83,7 @@ public class AccountServiceImpl implements AccountService{
 		if(!passwordEncoder.matches(dto.getBeforePassword(), account.getPassword())) {
 			throw new PasswordNotMatchException();
 		}
-		account.setPassword(passwordEncoder.encode(dto.getAfterPassword()));
+		account.changeAccountPassword(passwordEncoder.encode(dto.getAfterPassword()));
 		accountDao.updatePassword(account);
 	}
 	
@@ -177,7 +177,7 @@ public class AccountServiceImpl implements AccountService{
 			throw new BadAuthRequestException(); 
 		}
 		
-		account.setPassword(passwordEncoder.encode(dto.getPassword()));
+		account.changeAccountPassword(passwordEncoder.encode(dto.getPassword()));
 		accountDao.updatePassword(account);
 	}
 	

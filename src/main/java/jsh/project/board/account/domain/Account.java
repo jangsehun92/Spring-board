@@ -35,6 +35,15 @@ public class Account implements UserDetails {
 	public Account() {
 
 	}
+	
+	public Account(Integer id, String name, String birth, String nickname, Integer locked, String role) {
+		this.id = id;
+		this.name = name;
+		this.birth = birth;
+		this.nickname = nickname;
+		this.locked = locked;
+		this.role = role;
+	}
 
 	public Account(String email, String password, String name, String birth, String nickname, String role) {
 		this.email = email;
@@ -49,17 +58,9 @@ public class Account implements UserDetails {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	@Override
 	public String getPassword() {
 		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	@Override
@@ -71,54 +72,26 @@ public class Account implements UserDetails {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getBirth() {
 		return birth;
-	}
-
-	public void setBirth(String birth) {
-		this.birth = birth;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
 	}
 
 	public String getNickname() {
 		return nickname;
 	}
 
-	public void setLocked(int locked) {
-		this.locked = locked;
-	}
-
 	public int getFailureCount() {
 		return failureCount;
-	}
-
-	public void setFailureCount(int failureCount) {
-		this.failureCount = failureCount;
 	}
 
 	public Date getRegdate() {
 		return regdate;
 	}
 
-	public void setRegdate(Date regdate) {
-		this.regdate = regdate;
-	}
-
 	public Date getLastLoginDate() {
 		return lastLoginDate;
 	}
 	
-	public void setLastLoginDate(Date lastLoginDate) {
-		this.lastLoginDate = lastLoginDate;
-	}
-
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
@@ -148,6 +121,14 @@ public class Account implements UserDetails {
 			return false;
 		}
 		return true;
+	}
+	
+	public void changeAccountNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	
+	public void changeAccountPassword(String password) {
+		this.password = password;
 	}
 	
 	public interface AccountConverter{

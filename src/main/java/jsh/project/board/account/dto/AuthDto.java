@@ -34,21 +34,21 @@ public class AuthDto {
 	public void setAuthKey(String authKey) {
 		this.authKey = authKey;
 	}
+	
+	public String getAuthOption() {
+		return authOption;
+	}
 
 	public void setAuthOption(String authOption) {
 		this.authOption = authOption;
 	}
-
+	
 	public void setExpired(boolean epried) {
 		this.expired = epried;
 	}
 	
 	public boolean isAuthExpired() {
 		return expired;
-	}
-	
-	public String getAuthOption() {
-		return authOption;
 	}
 	
 	public void setExpiredDate(Date expiredDate) {

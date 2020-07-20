@@ -1,10 +1,13 @@
 package jsh.project.board.account.dto;
 
+import java.util.Date;
+
 public class AuthDto {
 	private String email;
 	private String authKey;
 	private String authOption;
-	private int expired;
+	private boolean expired;
+	private Date expiredDate;
 	
 	public AuthDto() {
 		
@@ -14,7 +17,6 @@ public class AuthDto {
 		this.email = email;
 		this.authKey = authKey;
 		this.authOption = authOption;
-		this.expired = 0;
 	}
 	
 	public String getEmail() {
@@ -37,19 +39,24 @@ public class AuthDto {
 		this.authOption = authOption;
 	}
 
-	public void setExpired(int epried) {
+	public void setExpired(boolean epried) {
 		this.expired = epried;
 	}
 	
 	public boolean isAuthExpired() {
-		if(expired == 1) {
-			return true;
-		}
-		return false;
+		return expired;
 	}
 	
 	public String getAuthOption() {
 		return authOption;
+	}
+	
+	public void setExpiredDate(Date expiredDate) {
+		this.expiredDate = expiredDate;
+	}
+	
+	public Date getExpiredDate() {
+		return expiredDate;
 	}
 
 }

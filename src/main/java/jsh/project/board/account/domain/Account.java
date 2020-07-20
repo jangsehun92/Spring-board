@@ -18,7 +18,7 @@ public class Account implements UserDetails {
 	private String name;
 	private String birth;
 	private String nickname;
-	private int locked;
+	private boolean locked;
 	private boolean enabled;
 	private String role;
 	private int failureCount;
@@ -31,18 +31,20 @@ public class Account implements UserDetails {
 		auth.add(new SimpleGrantedAuthority(role));
 		return auth;
 	}
-
-	public Account() {
-
-	}
 	
-	public Account(Integer id, String name, String birth, String nickname, Integer locked, String role) {
+	public Account(Integer id, String email, String password, String name, String birth, String nickname, Boolean locked, Boolean enabled, String role, Integer failureCount, Date regdate, Date lastLoginDate) {
 		this.id = id;
+		this.email = email;
+		this.password = password;
 		this.name = name;
 		this.birth = birth;
 		this.nickname = nickname;
 		this.locked = locked;
+		this.enabled = enabled;
 		this.role = role;
+		this.failureCount = failureCount;
+		this.regdate = regdate;
+		this.lastLoginDate = lastLoginDate;
 	}
 
 	public Account(String email, String password, String name, String birth, String nickname, String role) {
@@ -96,14 +98,11 @@ public class Account implements UserDetails {
 	public boolean isAccountNonExpired() {
 		return true;
 	}
-
-	// true = 계정이 잠겨 있지않다.
+	
+	//true = 계정이 잠겨있다.
 	@Override
 	public boolean isAccountNonLocked() {
-		if (locked == 0) {
-			return true;
-		}
-		return false;
+		return locked;
 	}
 
 	@Override
@@ -116,7 +115,7 @@ public class Account implements UserDetails {
 		return enabled;
 	}
 
-	public boolean findAccountCheck(RequestAccountResetDto dto) {
+	public boolean check(RequestAccountResetDto dto) {
 		if (!this.name.equals(dto.getName()) || !this.birth.equals(dto.getBirth())) {
 			return false;
 		}

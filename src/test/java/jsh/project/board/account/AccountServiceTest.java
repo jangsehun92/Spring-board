@@ -126,7 +126,7 @@ public class AccountServiceTest {
 		authDto.setEmail("jangsehun1992@gmail.com");
 		authDto.setAuthKey(new AuthKey().getKey());
 		authDto.setAuthOption(AuthOption.RESET.getValue());
-		authDto.setExpired(1);
+		authDto.setExpired(true);
 		
 		//when
 		accountService.register(dto);
@@ -152,7 +152,7 @@ public class AccountServiceTest {
 		authDto.setEmail("jangsehun1992@gmail.com");
 		authDto.setAuthKey(authKey);
 		authDto.setAuthOption(AuthOption.SIGNUP.getValue());
-		authDto.setExpired(0);
+		authDto.setExpired(false);
 		
 		given(authService.getAuth(dto.getEmail())).willReturn(authDto);
 		
@@ -289,7 +289,7 @@ public class AccountServiceTest {
 		authDto.setEmail("jangsehun1992@gmail.com");
 		authDto.setAuthKey(authKey);
 		authDto.setAuthOption(AuthOption.RESET.getValue());
-		authDto.setExpired(0);
+		authDto.setExpired(false);
 		
 		given(accountDao.selectAccount(dto.getEmail())).willReturn(account);
 		given(authService.checkAuth(dto.toAuthCheckMap())).willReturn(true);
@@ -316,7 +316,7 @@ public class AccountServiceTest {
 		authDto.setEmail("jangsehun1992@gmail.com");
 		authDto.setAuthKey(authKey);
 		authDto.setAuthOption(AuthOption.RESET.getValue());
-		authDto.setExpired(0);
+		authDto.setExpired(false);
 		
 		given(accountDao.selectAccount(dto.getEmail())).willReturn(null);
 		
@@ -339,7 +339,7 @@ public class AccountServiceTest {
 		authDto.setEmail("jangsehun1992@gmail.com");
 		authDto.setAuthKey(authKey);
 		authDto.setAuthOption(AuthOption.RESET.getValue());
-		authDto.setExpired(1);
+		authDto.setExpired(true);
 		
 		given(accountDao.selectAccount(dto.getEmail())).willReturn(account);
 		
@@ -347,5 +347,4 @@ public class AccountServiceTest {
 		accountService.resetPassword(dto);
 	}
 	
-
 }

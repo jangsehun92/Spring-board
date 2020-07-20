@@ -154,7 +154,7 @@ public class AccountServiceImpl implements AccountService{
 		Account account = accountDao.selectAccount(dto.getEmail());
 		
 		if(account==null) { throw new AccountNotFoundException(); }
-		if(!account.findAccountCheck(dto)) { throw new FindAccountBadRequestException(); }
+		if(!account.check(dto)) { throw new FindAccountBadRequestException(); }
 		if(!account.isEnabled()) { throw new AccountNotEmailChecked(); }
 		
 		updateLocked(dto.getEmail(), 1); //계정 잠굼
@@ -170,12 +170,8 @@ public class AccountServiceImpl implements AccountService{
 		dto.checkPassword();
 		Account account = accountDao.selectAccount(dto.getEmail());
 		
-		if(account == null) {
-			throw new AccountNotFoundException(); 
-		}
-		if(!authService.checkAuth(dto.toAuthCheckMap())) {
-			throw new BadAuthRequestException(); 
-		}
+		if(account == null) { throw new AccountNotFoundException(); }
+		if(!authService.checkAuth(dto.toAuthCheckMap())) { throw new BadAuthRequestException(); }
 		
 		account.changeAccountPassword(passwordEncoder.encode(dto.getPassword()));
 		accountDao.updatePassword(account);

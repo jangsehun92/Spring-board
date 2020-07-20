@@ -38,7 +38,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		}
 		
 		//계정이 잠겨 있다면
-		if(!account.isAccountNonLocked()) {
+		if(account.isAccountNonLocked()) {
 			throw new LockedException(email);
 		}
 		//...

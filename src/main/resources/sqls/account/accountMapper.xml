@@ -1,36 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="accountMapper">	
-<!-- 
-	[ Account Table ]
-	id int PRIMARY KEY,
-	email varchar2(100) UNIQUE NOT NULL,
-	password varchar2(255) NOT NULL,
-	
-	name varchar2(10) NOT NULL,
-	birth varchar2(10) NOT NULL, 
-	nickname varchar2(30) NOT NULL,
-	locked int NOT NULL,
-	
-	enabled int NOT NULL,
-	user_role varchar2(10) NOT NULL,
-	
-	failure_count int NOT NULL,
-	regdate DATE NOT NULL,
-	last_login_date DATE NULL
- -->
 	<resultMap type="Account" id="AccountResultMap">
 		<constructor>
 			<idArg column="id" javaType="int"/>
+			<arg column="email" javaType="string"/>
+			<arg column="password" javaType="string"/>
 			<arg column="name" javaType="string"/>
 			<arg column="birth" javaType="string"/>
 			<arg column="nickname" javaType="string"/>
-			<arg column="locked" javaType="int"/>
+			<arg column="locked" javaType="boolean"/>
+			<arg column="enabled" javaType="boolean"/>
 			<arg column="role" javaType="string"/>
+			<arg column="failureCount" javaType="int"/>
+			<arg column="regdate" javaType="date"/>
+			<arg column="lastLoginDate" javaType="date"/>
 		</constructor>
-		<result property="email" column="email"/>
-		<result property="password" column="password"/>
-		<result property="enabled" column="enabled"/>
 	</resultMap>
 
 	<insert id="insertAccount" parameterType="Account">
@@ -61,10 +46,10 @@
 			nickname,
 			locked,
 			enabled,
-			user_role as role
-<!-- 			failure_count,
+			user_role as role,
+			failure_count as failureCount,
 			regdate,
-			last_login_date -->
+			last_login_date as lastLoginDate
 		FROM 
 			account_table
 		WHERE 

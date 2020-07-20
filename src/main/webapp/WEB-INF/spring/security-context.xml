@@ -28,8 +28,6 @@
         <intercept-url pattern="/article/edit/{id}" method="GET" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/article" method="PATCH" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/article" method="DELETE" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
-        <intercept-url pattern="/test1" access="permitAll" />
-        <intercept-url pattern="/test2" access="hasAnyRole('ROLE_ADMIN')" />
         
 		<!-- <anonymous enabled="true"/> -->
 		

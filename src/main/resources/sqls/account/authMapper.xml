@@ -5,7 +5,7 @@
 		<result property="email" column="email"/>
 		<result property="authKey" column="auth_key"/>
 		<result property="authOption" column="auth_option"/>
-		<result property="expired" column="expired"/>
+		<result property="expired" column="expired" javaType="boolean"/>
 		<result property="expiredDate" column="expried_date"/>
 	</resultMap>
 	

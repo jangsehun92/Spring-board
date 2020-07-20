@@ -185,7 +185,6 @@ public class AccountServiceImpl implements AccountService{
 		AuthDto authDto = authService.getAuth(dto.getEmail());
 		
 		if (authDto == null
-			|| authDto.isAuthExpired() 
 			|| !dto.getAuthKey().equals(authDto.getAuthKey()) 
 			|| !dto.getAuthOption().equals(authDto.getAuthOption())) {
 			throw new BadAuthRequestException();

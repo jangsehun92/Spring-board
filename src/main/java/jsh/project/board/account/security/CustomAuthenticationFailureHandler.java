@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -19,6 +21,7 @@ import jsh.project.board.global.error.ErrorResponse;
 import jsh.project.board.global.error.exception.ErrorCode;
 
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler{
+	private static final Logger log = LoggerFactory.getLogger(CustomAuthenticationFailureHandler.class);
 	
 	@Autowired
 	private AccountService accountService;
@@ -29,10 +32,12 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 		String errorUrl = "/account/status";
 		
 		if(exception instanceof InternalAuthenticationServiceException) {
+			log.info("InternalAuthenticationServiceException");
 			dispatcherForward(request,response, loginUrl, ErrorCode.ACCOUNT_NOT_FOUND);
 		}
 		
 		if(exception instanceof BadCredentialsException) {
+			log.info("BadCredentialsException");
 			String email = request.getParameter("email");
 			//해당 계정의 로그인실패 횟수를 가져온다.
 			int failureCount = accountService.getAccountFailureCount(email);
@@ -48,10 +53,12 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 		}
 		
 		if(exception instanceof DisabledException) {
+			log.info("DisabledException");
 			dispatcherForward(request,response, errorUrl, ErrorCode.ACCOUNT_DISABLED);
 		}
 		
 		if(exception instanceof LockedException) {
+			log.info("LockedException");
 			dispatcherForward(request,response, errorUrl, ErrorCode.ACCOUNT_LOCKED);
 		}
 	}

@@ -25,13 +25,6 @@ public class Account implements UserDetails {
 	private Date regdate;
 	private Date lastLoginDate;
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		ArrayList<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
-		auth.add(new SimpleGrantedAuthority(role));
-		return auth;
-	}
-	
 	public Account(Integer id, String email, String password, String name, String birth, String nickname, Boolean locked, Boolean enabled, String role, Integer failureCount, Date regdate, Date lastLoginDate) {
 		this.id = id;
 		this.email = email;
@@ -54,6 +47,13 @@ public class Account implements UserDetails {
 		this.birth = birth;
 		this.nickname = nickname;
 		this.role = role;
+	}
+	
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		ArrayList<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
+		auth.add(new SimpleGrantedAuthority(role));
+		return auth;
 	}
 
 	public int getId() {
@@ -99,7 +99,7 @@ public class Account implements UserDetails {
 		return true;
 	}
 	
-	//true = 잠기지않음.
+	//true = 계정이 잠기지 않은 상태
 	@Override
 	public boolean isAccountNonLocked() {
 		return locked;
@@ -110,6 +110,7 @@ public class Account implements UserDetails {
 		return true;
 	}
 
+	//true = 계정이 활성화된 상태
 	@Override
 	public boolean isEnabled() {
 		return enabled;
@@ -130,15 +131,15 @@ public class Account implements UserDetails {
 		this.password = password;
 	}
 	
-	public interface AccountConverter{
-		Account toAccount();
-	}
-	
 	@Override
 	public String toString() {
 		return "Account { id : " + id + " email : " + email + " password : " + password + " name : " + name + " birth : " + birth 
 				+ " nickname : " + nickname  + " locked : " + locked + " enabled : " + enabled + " role : " + role + " failureCount : " + failureCount 
 				+ " regdate : " + regdate + " lastLoginDate : " + lastLoginDate + " } "  ;
+	}
+	
+	public interface AccountConverter{
+		Account toAccount();
 	}
 
 }

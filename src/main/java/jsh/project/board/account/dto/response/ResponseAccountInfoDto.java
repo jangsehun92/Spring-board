@@ -24,5 +24,10 @@ public class ResponseAccountInfoDto {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
+	
+	@Override
+	public String toString() {
+		return "ResponseAccountInfoDto { id : " + id + " nickname : " + nickname + " }";
+	}
 
 }

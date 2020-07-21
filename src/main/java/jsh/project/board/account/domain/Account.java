@@ -99,7 +99,7 @@ public class Account implements UserDetails {
 		return true;
 	}
 	
-	//true = 계정이 잠겨있다.
+	//true = 잠기지않음.
 	@Override
 	public boolean isAccountNonLocked() {
 		return locked;
@@ -132,6 +132,13 @@ public class Account implements UserDetails {
 	
 	public interface AccountConverter{
 		Account toAccount();
+	}
+	
+	@Override
+	public String toString() {
+		return "Account { id : " + id + " email : " + email + " password : " + password + " name : " + name + " birth : " + birth 
+				+ " nickname : " + nickname  + " locked : " + locked + " enabled : " + enabled + " role : " + role + " failureCount : " + failureCount 
+				+ " regdate : " + regdate + " lastLoginDate : " + lastLoginDate + " } "  ;
 	}
 
 }

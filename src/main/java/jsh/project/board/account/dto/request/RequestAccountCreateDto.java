@@ -98,9 +98,8 @@ public class RequestAccountCreateDto implements AccountConverter{
 	
 	@Override
 	public String toString() {
-		return "AccountCreateDto { email : + " + email + "password : " + password + "passwordCheck : " + passwordCheck + " name : + " + name + " birth : " + birth + " nickname : " + nickname + "} ";
+		return "AccountCreateDto { email : + " + email + "password : " + password + "passwordCheck : " + passwordCheck + " name : + " + name 
+				+ " birth : " + birth + " nickname : " + nickname + " role : " + role + " } ";
 	}
-	
-	
 
 }

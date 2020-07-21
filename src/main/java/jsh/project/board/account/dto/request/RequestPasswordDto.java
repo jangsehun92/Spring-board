@@ -48,6 +48,9 @@ public class RequestPasswordDto {
 		}
 	}
 	
+	@Override
+	public String toString() {
+		return "RequestPasswordDto { beforePassword : " + beforePassword + " afterPassword : " + afterPassword + " afterPasswordCheck : " + afterPasswordCheck + " } " ;
+	}
 	
-
 }

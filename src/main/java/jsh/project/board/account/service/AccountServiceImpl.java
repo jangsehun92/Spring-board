@@ -48,37 +48,42 @@ public class AccountServiceImpl implements AccountService{
 		this.emailService = emailService;
 	}
 	
-	//회원가입
+	// 회원가입
 	@Transactional
 	@Override
 	public void register(RequestAccountCreateDto dto) throws Exception {
 		dto.checkPassword();
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 		dto.setRole(Role.USER);
-		accountDao.insertAccount(dto.toAccount());
+		log.info(dto.toString());
+		Account account = dto.toAccount();
+		log.info(account.toString());
+		accountDao.insertAccount(account);
 		
-		AuthDto authDto = authService.createAuth(dto.getEmail(), AuthOption.SIGNUP);
+		AuthDto authDto = authService.createAuth(account.getUsername(), AuthOption.SIGNUP);
 		emailService.sendEmail(authDto);
 	}
 	
-	//계정 정보 찾기
+	// 계정 정보 찾기
 	@Override
 	public ResponseAccountInfoDto getAccountInfo(int id) {
-		ResponseAccountInfoDto accountResponseDto = accountDao.selectAccountInfo(id);
-		return accountResponseDto;
+		return accountDao.selectAccountInfo(id);
 	}
 	
-	//회원정보 수정
+	// 회원정보 수정
 	@Transactional
 	@Override
 	public void editAccount(Account account) {
+		log.info(account.toString());
 		accountDao.updateAccount(account);
 	}
 	
-	//비밀번호 변경
+	// 비밀번호 변경
 	@Transactional
 	@Override
 	public void changePassword(Account account, RequestPasswordDto dto) {
+		log.info(account.toString());
+		log.info(dto.toString());
 		dto.checkPassword();
 		if(!passwordEncoder.matches(dto.getBeforePassword(), account.getPassword())) {
 			throw new PasswordNotMatchException();
@@ -90,6 +95,7 @@ public class AccountServiceImpl implements AccountService{
 	// 로그인 실패(비밀번호 틀림) 횟수 가져오기
 	@Override
 	public int getAccountFailureCount(String email) {
+		log.info(email);
 		return accountDao.selectFailureCount(email);
 	}
 	
@@ -106,6 +112,7 @@ public class AccountServiceImpl implements AccountService{
 	@Transactional
 	@Override
 	public void updateLoginDate(String email) {
+		log.info(email);
 		accountDao.updateLoginDate(email);
 	}
 	
@@ -122,6 +129,7 @@ public class AccountServiceImpl implements AccountService{
 	// 회원가입 시 이메일 중복 체크
 	@Override
 	public void emailCheck(RequestEmailDto dto) {
+		log.info(dto.toString());
 		if(accountDao.selectEmailCount(dto) != 0) {
 			throw new EmailAlreadyUsedException();
 		}
@@ -133,6 +141,9 @@ public class AccountServiceImpl implements AccountService{
 		List<ResponseFindAccountDto> list = accountDao.selectAccounts(dto);
 		if(list.isEmpty()) {
 			throw new AccountNotFoundException();
+		}
+		for(ResponseFindAccountDto responseFindAccountDto : list) {
+			log.info(responseFindAccountDto.toString());
 		}
 		return list;
 	}
@@ -184,9 +195,7 @@ public class AccountServiceImpl implements AccountService{
 		log.info(dto.toString());
 		AuthDto authDto = authService.getAuth(dto.getEmail());
 		
-		if (authDto == null
-			|| !dto.getAuthKey().equals(authDto.getAuthKey()) 
-			|| !dto.getAuthOption().equals(authDto.getAuthOption())) {
+		if (authDto == null || !dto.getAuthKey().equals(authDto.getAuthKey()) || !dto.getAuthOption().equals(authDto.getAuthOption())) {
 			throw new BadAuthRequestException();
 		}
 		authService.expired(dto);
@@ -195,6 +204,7 @@ public class AccountServiceImpl implements AccountService{
 	// 계정 활성화
 	@Override
 	public void activation(String email) {
+		log.info(email);
 		accountDao.updateEnabled(email);
 	}
 	

@@ -32,13 +32,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 			throw new BadCredentialsException(email);
 		}
 		
-		//이메일 인증을 하지않았다면(내부적으로 먼저 체크됨)
+		//이메일 인증을 하지않았다면
 		if(!account.isEnabled()) {
 			throw new DisabledException(email);
 		}
 		
 		//계정이 잠겨 있다면
-		if(account.isAccountNonLocked()) {
+		if(!account.isAccountNonLocked()) {
 			throw new LockedException(email);
 		}
 		//...

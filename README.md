@@ -24,7 +24,7 @@ Spring Framework를 사용하여 게시판을 구현한다.
     1. 공통적으로 사용하는 header 페이지 내에 meta 태그를 사용하여 csrf 값을 셋팅한다.
     2. 비동기 요청인 경우 ajax_header.js 내에서 ajaxSend를 통해 csrf token값을 셋팅한다.
   - 목적에 맞는 request/response DTO 객체를 사용한다.
-  - GlobalExceptionHandler클래스에서 exception을 처리한다.
+  - 예외를 한곳에서 처리하기 위해 @ControllerAdvice 어노테이션을 적용한 GlobalExceptionHandler클래스에서 exception을 처리한다.
     1. 비동기 요청은 ErrorResponse를 리턴한다.
     2. 비동기 요청이 아닐 경우 Error코드와 메시지를 출력하고, 메인페이지로 redirect 한다.
   - 권한에 따라 접근을 제한한다.(@PreAuthorize 어노테이션을 활용한다.)

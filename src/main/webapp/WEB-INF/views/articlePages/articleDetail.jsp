@@ -336,8 +336,6 @@ function login(){
 	return false;
 }
 </script>
-
-
 <body>
 <input type="hidden" id ="category" value="${responseDto.category }">
 <div id="container" class="container" style="margin-top: 50px">

@@ -47,7 +47,6 @@ function edit(){
 					alert(jsonValue.message);
 					console.log("code : " + jsonValue.code + " message : " + jsonValue.message);
 				}
-				//alert(jsonValue.message);
 			}
 		});
 }

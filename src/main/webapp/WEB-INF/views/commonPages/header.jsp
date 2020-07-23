@@ -72,7 +72,6 @@ $(function(){
 					</c:if>
 				</ul>
 			</div>
-			<!--/.nav-collapse -->
 		</div>
 	</nav>
 </body>

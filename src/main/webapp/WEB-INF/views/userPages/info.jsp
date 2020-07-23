@@ -66,7 +66,6 @@ function accountArticleList(id, page){
 								"<tr>"+
 									"<td class='col-md-6'><b>제목</b></td>"+
 									"<td class='col-md-1' align='right'><b>추천</b></td>"+
-									//"<td class='col-md-1' align='right'><b>작성자</b></td>"+
 									"<td class='col-md-1' align='right'><b>작성 날짜</b></td>"+
 								"</tr>"+
 							"</thead>"+
@@ -87,7 +86,6 @@ function accountArticleList(id, page){
 						"<tr>"+
 							"<td><a href='/article/"+data.articles[i].id+"'>"+data.articles[i].title+"</a></td>"+
 							"<td align='right'>"+data.articles[i].likeCount+"</td>"+
-							//"<td align='right'>"+data.articles[i].nickname+"</td>"+
 							"<td align='right'>"+uxin_timestamp(data.articles[i].regdate)+"</td>"+
 						"</tr>"
 					);

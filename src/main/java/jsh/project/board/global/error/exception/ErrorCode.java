@@ -6,7 +6,7 @@ public enum ErrorCode {
     METHOD_NOT_ALLOWED(405, "C002", " 유효하지 않은 요청입니다."),
     ENTITY_NOT_FOUND(400, "C003", " Entity Not Found"),
     INTERNAL_SERVER_ERROR(500, "C004", "서버 오류입니다."),
-    INVALID_TYPE_VALUE(400, "C005", " Invalid Type Value"),
+    INVALID_TYPE_VALUaE(400, "C005", " Invalid Type Value"),
     HANDLE_ACCESS_DENIED(403, "C006", "접근 권한이 없습니다."),
 
 	//account

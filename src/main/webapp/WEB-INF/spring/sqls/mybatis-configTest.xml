@@ -3,7 +3,6 @@
 
 <configuration >
 	
-  <!-- 패키지.클래스 까지 입력 -->
   <typeAliases>
   	<!-- Account 관련  -->
   	<typeAlias type="jsh.project.board.account.domain.Account" alias="Account"/>
@@ -37,17 +36,4 @@
   	<typeHandler handler="jsh.project.board.global.handler.CustomDateHandler"/>
   </typeHandlers> 
 
-  <!-- mapper의 위치를 잡아준다. -->
-<!--   <mappers>
-	<mapper resource="classpath:sqls/board/boardMapper.xml"/>
- 	<mapper resource="file:src/main/webapp/WEB-INF/spring/sqls/mapper/board/articleMapper.xml"/>
-  	<mapper resource="file:src/main/webapp/WEB-INF/spring/sqls/mapper/board/articleLikeMapper.xml"/>
-  	<mapper resource="file:src/main/webapp/WEB-INF/spring/sqls/mapper/board/replyMapper.xml"/>
-  	<mapper resource="file:src/main/webapp/WEB-INF/spring/sqls/mapper/account/accountMapper.xml"/>
-  	<mapper resource="file:src/main/webapp/WEB-INF/spring/sqls/mapper/account/authMapper.xml"/>
-  </mappers> -->
-  
-
-
 </configuration>
-

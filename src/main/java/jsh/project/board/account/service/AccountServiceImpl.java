@@ -138,14 +138,14 @@ public class AccountServiceImpl implements AccountService{
 	// 가입한 계정 찾기
 	@Override
 	public List<ResponseFindAccountDto> getAccounts(RequestFindAccountDto dto) throws AccountNotFoundException {
-		List<ResponseFindAccountDto> list = accountDao.selectAccounts(dto);
-		if(list.isEmpty()) {
+		List<ResponseFindAccountDto> accountList = accountDao.selectAccounts(dto);
+		if(accountList.isEmpty()) {
 			throw new AccountNotFoundException();
 		}
-		for(ResponseFindAccountDto responseFindAccountDto : list) {
+		for(ResponseFindAccountDto responseFindAccountDto : accountList) {
 			log.info(responseFindAccountDto.toString());
 		}
-		return list;
+		return accountList;
 	}
 	
 	// 인증 이메일 재발송
@@ -164,9 +164,15 @@ public class AccountServiceImpl implements AccountService{
 		log.info(dto.toString());
 		Account account = accountDao.selectAccount(dto.getEmail());
 		
-		if(account==null) { throw new AccountNotFoundException(); }
-		if(!account.check(dto)) { throw new FindAccountBadRequestException(); }
-		if(!account.isEnabled()) { throw new AccountNotEmailChecked(); }
+		if(account==null) { 
+			throw new AccountNotFoundException(); 
+		}
+		if(!account.check(dto)) { 
+			throw new FindAccountBadRequestException(); 
+		}
+		if(!account.isEnabled()) { 
+			throw new AccountNotEmailChecked(); 
+		}
 		
 		updateLocked(dto.getEmail(), 1); //계정 잠굼
 		AuthDto authDto = authService.createAuth(dto.getEmail(), AuthOption.RESET); //인증키 생성
@@ -181,8 +187,12 @@ public class AccountServiceImpl implements AccountService{
 		dto.checkPassword();
 		Account account = accountDao.selectAccount(dto.getEmail());
 		
-		if(account == null) { throw new AccountNotFoundException(); }
-		if(!authService.checkAuth(dto.toAuthCheckMap())) { throw new BadAuthRequestException(); }
+		if(account == null) { 
+			throw new AccountNotFoundException(); 
+		}
+		if(!authService.checkAuth(dto.toAuthCheckMap())) {
+			throw new BadAuthRequestException(); 
+		}
 		
 		account.changeAccountPassword(passwordEncoder.encode(dto.getPassword()));
 		accountDao.updatePassword(account);

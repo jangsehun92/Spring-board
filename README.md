@@ -1,5 +1,5 @@
-# Spring-board
-Spring Framework를 사용하여 게시판을 구현한다.
+# 게시판 프로젝트
+게시판 다운 게시판을 구현한다.
 
 ## Front-end
 * JavaScript

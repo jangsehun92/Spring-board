@@ -165,7 +165,8 @@ function replyCreate(){
 	var requestReplyCreateDto = {
 			articleId : "${responseDto.id}",
 			accountId : "${principal.id}",
-			content : $("#replyContent").val(),
+			replyGroup : 0,
+			content : $("#replyContent").val()
 	}
 	
 	$.ajax({
@@ -186,6 +187,41 @@ function replyCreate(){
 	});
 	return false;
 }
+
+//대댓글 입력 
+/* function replyToReply(id,replyGroup){
+	var content = $("#replyToReply-"+id).val().replace(/\s|/gi,'');
+	
+	if(content==""){
+		alert("댓글을 입력해주세요.");
+		$("#replyContent").val("");
+		$("#replyContent").focus();
+		return false;
+	}
+	
+	var requestReplyCreateDto = {
+			articleId : "${responseArticleDto.id}",
+			replyGroup : replyGroup,
+			content : content
+	}
+	
+	$.ajax({
+		url:"/reply",
+		type:"post",
+		contentType : "application/json; charset=UTF-8",
+		data: JSON.stringify(requestReplyCreateDto), 
+		success:function(data){
+			replyList("${responseArticleDto.id}");
+		},
+		error:function(request,status,error){
+			jsonValue = jQuery.parseJSON(request.responseText);
+			code = jsonValue.code;
+			console.log("errorCode : " + code);
+			alert(jsonValue.message);
+		}
+	});
+	return false;
+} */
 
 // 댓글 업데이트 요청
 function replyUpdateForm(id){

@@ -9,6 +9,9 @@ public class RequestReplyCreateDto implements ReplyConverter{
 	
 	private int articleId;
 	private int accountId;
+	private int replyGroup;
+	private int replyGroupOrder;
+	private int replyDepth;
 	@NotBlank(message = "내용을 입력해 주세요.")
 	private String content;
 	
@@ -31,6 +34,30 @@ public class RequestReplyCreateDto implements ReplyConverter{
 	public void setAccountId(int accountId) {
 		this.accountId = accountId;
 	}
+	
+	public int getReplyGroup() {
+		return replyGroup;
+	}
+	
+	public void setReplyGroup(int replyGroup) {
+		this.replyGroup = replyGroup;
+	}
+	
+	public int getReplyGroupOrder() {
+		return replyGroupOrder;
+	}
+
+	public void setReplyGroupOrder(int replyGroupOrder) {
+		this.replyGroupOrder = replyGroupOrder;
+	}
+
+	public int getReplyDepth() {
+		return replyDepth;
+	}
+
+	public void setReplyDepth(int replyDepth) {
+		this.replyDepth = replyDepth;
+	}
 
 	public String getContent() {
 		return content;
@@ -42,7 +69,12 @@ public class RequestReplyCreateDto implements ReplyConverter{
 	
 	@Override
 	public String toString() {
-		return "RequestReplyCreateDto { articleId : " + articleId + " accountId : " + accountId + " content : " + content + " }";
+		return "RequestReplyCreateDto { articleId : " + articleId 
+				+ " accountId : " + accountId 
+				+ " replyGroup : " + replyGroup
+				+ " replyGroupOrder : " + replyGroupOrder
+				+ " replyDepth : " + replyDepth
+				+ " content : " + content + " }";
 	}
 	
 	@Override

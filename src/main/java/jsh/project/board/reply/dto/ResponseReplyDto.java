@@ -8,6 +8,8 @@ public class ResponseReplyDto {
 	private int articleId;
 	private int accountId;
 	private String nickname;
+	private int replyGroup;
+	private int replyDepth;
 	private String content;
 	private Date regdate;
 	private Date modifyDate;
@@ -47,6 +49,22 @@ public class ResponseReplyDto {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+	
+	public int getReplyGroup() {
+		return replyGroup;
+	}
+
+	public void setReplyGroup(int replyGroup) {
+		this.replyGroup = replyGroup;
+	}
+
+	public int getReplyDepth() {
+		return replyDepth;
+	}
+
+	public void setReplyDepth(int replyDepth) {
+		this.replyDepth = replyDepth;
 	}
 
 	public String getContent() {

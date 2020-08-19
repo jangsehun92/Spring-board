@@ -11,6 +11,9 @@ public class Reply {
 	private int id;
 	private int articleId;
 	private int accountId;
+	private int replyGroup;
+	private int replyGroupOrder;
+	private int replyDepth;
 	private String content;
 	private Date regdate;
 	private Date modifyDate;
@@ -19,6 +22,7 @@ public class Reply {
 	public Reply(RequestReplyCreateDto dto) {
 		this.articleId = dto.getArticleId();
 		this.accountId = dto.getAccountId();
+		this.replyGroup = dto.getReplyGroup();
 		this.content = dto.getContent();
 		this.regdate = new Date();
 		this.enabled = 1;
@@ -49,6 +53,18 @@ public class Reply {
 	public int getAccountId() {
 		return accountId;
 	}
+	
+	public int getReplyGroup() {
+		return replyGroup;
+	}
+
+	public int getReplyGroupOrder() {
+		return replyGroupOrder;
+	}
+
+	public int getReplyDepth() {
+		return replyDepth;
+	}
 
 	public String getContent() {
 		return content;
@@ -68,9 +84,14 @@ public class Reply {
 	
 	@Override
 	public String toString() {
-		return "Reply { id : " + id + " articleId : " + articleId 
-					+ " accountId : " + accountId + " content : " + content 
-					+ " regdate : " + regdate + " modifyDate " + modifyDate 
+		return "Reply { id : " + id 
+					+ " articleId : " + articleId 
+					+ " accountId : " + accountId
+					+ " replyGroup : " + replyGroup 
+					+ " replyGroupOrder : " + replyGroupOrder
+					+ " replyDepth : " + replyDepth
+					+ " content : " + content + " regdate : " + regdate 
+					+ " modifyDate " + modifyDate 
 					+ " enabled : " + enabled + " } ";
 	}
 	

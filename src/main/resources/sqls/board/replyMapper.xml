@@ -8,6 +8,8 @@
 			reply_table.article_id AS articleId,
 			reply_table.account_id AS accountId,
 			account_table.nickname,
+			reply_table.reply_group AS replyGroup,
+			reply_table.reply_depth AS replyDepth,
 			reply_table.content,
 			reply_table.regdate,
 			reply_table.modify_date AS modifyDate,
@@ -16,7 +18,26 @@
 			reply_table JOIN account_table ON reply_table.account_id = account_table.id
 		WHERE 
 			reply_table.article_id = #{articleId}
-		ORDER BY reply_table.regdate
+		<!-- ORDER BY reply_table.regdate -->
+		ORDER BY reply_group, reply_group_order
+	</select>
+	
+	<select id="selectGroupCount" parameterType="int" resultType="int">
+		SELECT 
+			count(DISTINCT reply_group) 
+		FROM 
+			reply_table 
+		WHERE 
+			article_id = #{articleId}
+	</select>
+	
+	<select id="selectGroupOrderCount" parameterType="int" resultType="int">
+		SELECT
+			count(id)
+		FROM
+			reply_table 
+		WHERE
+			reply_group = #{group}
 	</select>
 	
 	<insert id="insertReply" parameterType="Reply">
@@ -27,6 +48,9 @@
 			reply_seq.nextval,
 			#{articleId},
 			#{accountId},
+			#{replyGroup},
+			#{replyGroupOrder},
+			#{replyDepth},
 			#{content},
 			#{regdate},
 			NULL,

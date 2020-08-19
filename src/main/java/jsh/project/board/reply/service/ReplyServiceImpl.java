@@ -33,6 +33,14 @@ public class ReplyServiceImpl implements ReplyService{
 	@Override
 	public void saveReply(RequestReplyCreateDto dto) {
 		log.info(dto.toString());
+		if(dto.getReplyGroup() != 0) {
+			dto.setReplyGroupOrder(replyDao.selectGroupOrderCount(dto.getReplyGroup())+1);
+			dto.setReplyDepth(1);
+		}else {
+			dto.setReplyGroup(replyDao.selectGroupCount(dto.getArticleId())+1);
+			dto.setReplyGroupOrder(1);
+			dto.setReplyDepth(0);
+		}
 		Reply reply = dto.toReply();
 		log.info(reply.toString());
 		replyDao.insertReply(reply);

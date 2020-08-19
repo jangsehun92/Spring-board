@@ -23,6 +23,16 @@ public class ReplyDaoImpl implements ReplyDao{
 	}
 	
 	@Override
+	public int selectGroupCount(int articleId) {
+		return sqlSession.selectOne("replyMapper.selectGroupCount",articleId);
+	}
+	
+	@Override
+	public int selectGroupOrderCount(int group) {
+		return sqlSession.selectOne("replyMapper.selectGroupOrderCount", group);
+	}
+	
+	@Override
 	public void insertReply(final Reply reply) {
 		sqlSession.insert("replyMapper.insertReply", reply);
 	}

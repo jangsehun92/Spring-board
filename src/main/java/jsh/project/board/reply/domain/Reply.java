@@ -23,6 +23,8 @@ public class Reply {
 		this.articleId = dto.getArticleId();
 		this.accountId = dto.getAccountId();
 		this.replyGroup = dto.getReplyGroup();
+		this.replyGroupOrder = dto.getReplyGroupOrder();
+		this.replyDepth = dto.getReplyDepth();
 		this.content = dto.getContent();
 		this.regdate = new Date();
 		this.enabled = 1;

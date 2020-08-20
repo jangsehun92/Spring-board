@@ -80,67 +80,161 @@ function replyList(id){
 				);
 			}
 			$.each(data, function(index, value) {
-				if(value.accountId == "${principal.id}"){
-					html += "<li class='list-group-item'>"+
+				if(value.replyDepth == 0){
+					if(value.accountId == "${principal.id}"){
+						html += "<li class='list-group-item'>"+
+								 	"<div style='position: relative; height: 100%'>"+
+								  		"<div>"+
+											"<div>"+
+												"<span>"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>";
+										if(value.modifyDate != null){
+											html +=
+												"<span class='text-muted'><small> ᛫ "+uxin_timestamp(value.modifyDate)+" 수정</small></span>";
+										}
+										if(value.enabled != 0){
+											html +=	
+												"<div id='dropdownForm-"+value.id+"' style='float: right;'>"+
+													"<a onClick='replyToReplyForm("+value.id+")'>답글</a> ᛫ "+
+													"<a onClick='replyUpdateForm("+value.id+")'>수정</a> ᛫ "+
+													"<a onClick='deleteConfirm("+value.id+")'>삭제</a>"+
+												"</div>";
+										}
+										html +=
+												"<div id='replyForm-"+value.id+"' style='white-space : pre-wrap;height: 100%'>"+
+													"<p id='reply-"+value.id+"'>"+value.content+"</p>"+
+												"</div>"+
+											"</div>"+
+										"</div>"+
+									"</div>"+
+								"</li>";
+					}else if('${principal.authorities}' == "[ROLE_ADMIN]"){
+						html += 
+							"<li class='list-group-item'>"+
 							 	"<div style='position: relative; height: 100%'>"+
 							  		"<div>"+
 										"<div>"+
 											"<span>"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>";
 									if(value.modifyDate != null){
-										html +="<span class='text-muted'><small> ᛫ "+uxin_timestamp(value.modifyDate)+" 수정</small></span>";
+										html +=
+											"<span class='text-muted'><small> ᛫ "+uxin_timestamp(value.modifyDate)+" 수정</small></span>";
 									}
 									if(value.enabled != 0){
-										html +=	"<div id='dropdownForm-"+value.id+"' style='float: right;'>"+
-														"<a onClick='replyUpdateForm("+value.id+")'>수정</a> ᛫ "+
-														"<a onClick='deleteConfirm("+value.id+")'>삭제</a>";
+										html +=	
+											"<div id='dropdownForm-"+value.id+"' style='float: right;'>"+
+												"<a onClick='replyToReplyForm("+value.id+")'>답글</a> ᛫ "+
+												"<a onClick='deleteConfirm("+value.id+")'>삭제</a>"+
+											"</div>";
 									}
-									html += "</div>"+
-												"<div id='replyForm-"+value.id+"' style='white-space : pre-wrap;height: 100%'>"+
-													"<p id='reply-"+value.id+"'>"+value.content+"</p>"+
-												"</div>"+
-										"</div>"+
-										"<div id='updateForm-"+value.id+"' style='display: none;'>"+
-											"<form method='post' action='/reply/"+value.id+"' onsubmit='return replyUpdate("+value.id+");'>"+
-												"<input type='hidden' name='_method' value='PUT'>"+
-												"<textarea id='replyContent-"+value.id+"' name='content' class='form-control z-depth-1' rows='3' maxlength='1000' placeholder='댓글을 입력해주세요.'>"+value.content+"</textarea>"+
-												"<input type='submit' style='width:50%' class='btn btn-success' value='수정'>"+
-												"<input type='button' style='width:50%' class='btn btn-primary' value='취소' onclick='replyForm("+value.id+")'>"+
-												"</form>"+
+									html += 
+											"<div id='replyForm-"+value.id+"' style='white-space : pre-wrap;height: 100%'>"+
+												"<p id='reply-"+value.id+"'>"+value.content+"</p>"+
+											"</div>"+
 										"</div>"+
 									"</div>"+
 								"</div>"+
 							"</li>";
-				}else if('${principal.authorities}' == "[ROLE_ADMIN]"){
-					html += "<li class='list-group-item'>"+
-				 	"<div style='position: relative; height: 100%'>"+
-				  		"<div>"+
-							"<div>"+
-								"<span>"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>";
+					}
+					else{
+						html +=
+							"<li class='list-group-item'><span>"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>";
 						if(value.modifyDate != null){
-							html +="<span class='text-muted'><small> ᛫ "+uxin_timestamp(value.modifyDate)+" 수정</small></span>";
+							html +=
+								"<span class='text-muted'><small> ᛫ "+uxin_timestamp(value.modifyDate)+" 수정</small></span>";
 						}
 						if(value.enabled != 0){
-							html +=	"<div id='dropdownForm-"+value.id+"' style='float: right;'>"+
-											"<a onClick='deleteConfirm("+value.id+")'>삭제</a>";
+							html +=	
+								"<div id='dropdownForm-"+value.id+"' style='float: right;'>"+
+									"<a onClick='replyToReplyForm("+value.id+")'>답글</a>"+
+								"</div>";
 						}
-						html += "</div>"+
-									"<div id='replyForm-"+value.id+"' style='white-space : pre-wrap;height: 100%'>"+
-										"<p id='reply-"+value.id+"'>"+value.content+"</p>"+
+						html +=	
+								"<div id='replyForm-"+value.id+"' style='white-space : pre-wrap;height: 100%'>"+
+									"<p id='reply-"+value.id+"'>"+value.content+"</p>"+
+								"</div>"+
+							"</li>";
+					}
+				}else{
+					if(value.accountId == "${principal.id}"){
+						html += "<li class='list-group-item'>"+
+								 	"<div style='position: relative; height: 100%'>"+
+								  		"<div>"+
+											"<div>"+
+												"<span style='margin-left:8px'>ㄴ"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>";
+										if(value.modifyDate != null){
+											html +=
+												"<span class='text-muted'><small> ᛫ "+uxin_timestamp(value.modifyDate)+" 수정</small></span>";
+										}
+										if(value.enabled != 0){
+											html +=	
+												"<div id='dropdownForm-"+value.id+"' style='float: right;'>"+
+													"<a onClick='replyUpdateForm("+value.id+")'>수정</a> ᛫ "+
+													"<a onClick='deleteConfirm("+value.id+")'>삭제</a>"+
+												"</div>";
+										}
+										html +=
+												"<div id='replyForm-"+value.id+"' style='white-space : pre-wrap;height: 100%'>"+
+													"<p id='reply-"+value.id+"' style='margin-left:20px'>"+value.content+"</p>"+
+												"</div>"+
+											"</div>"+
+										"</div>"+
+									"</div>"+
+								"</li>";
+					}else if('${principal.authorities}' == "[ROLE_ADMIN]"){
+						html += 
+							"<li class='list-group-item'>"+
+							 	"<div style='position: relative; height: 100%'>"+
+							  		"<div>"+
+										"<div>"+
+											"<span style='margin-left:8px'>ㄴ"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>";
+									if(value.modifyDate != null){
+										html +=
+											"<span class='text-muted'><small> ᛫ "+uxin_timestamp(value.modifyDate)+" 수정</small></span>";
+									}
+									if(value.enabled != 0){
+										html +=	
+											"<div id='dropdownForm-"+value.id+"' style='float: right;'>"+
+												"<a onClick='deleteConfirm("+value.id+")'>삭제</a>"+
+											"</div>";
+									}
+									html += 
+											"<div id='replyForm-"+value.id+"' style='white-space : pre-wrap;height: 100%'>"+
+												"<p id='reply-"+value.id+"' style='margin-left:20px'>"+value.content+"</p>"+
+											"</div>"+
+										"</div>"+
 									"</div>"+
 								"</div>"+
-						"</div>"+
-					"</div>"+
-				"</li>";
+							"</li>";
+					} else{
+						html +=
+							"<li class='list-group-item'><span style='margin-left:8px'>ㄴ"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>";
+						if(value.modifyDate != null){
+							html +=
+								"<span class='text-muted'><small> ᛫ "+uxin_timestamp(value.modifyDate)+" 수정</small></span>";
+						}
+						html +=	
+								"<div id='replyForm-"+value.id+"' style='white-space : pre-wrap;height: 100%'>"+
+									"<p id='reply-"+value.id+"' style='margin-left:20px'>"+value.content+"</p>"+
+								"</div>"+
+							"</li>";
+					}
 				}
 				
-				else{
-					html +="<li class='list-group-item'><span>"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>";
-					if(value.modifyDate != null){
-						html +="<span class='text-muted'><small> ᛫ "+uxin_timestamp(value.modifyDate)+" 수정</small></span>";
-					}
-					html +=			"<div style='white-space : pre-wrap;height: 100%'>"+value.content+"</div>"+
-							"</li>";
-				}
+				html +=
+					"<div id='updateForm-"+value.id+"' style='display: none;'>"+
+						"<form method='post' action='/reply/"+value.id+"' onsubmit='return replyUpdate("+value.id+");'>"+
+							"<input type='hidden' name='_method' value='PUT'>"+
+							"<textarea id='replyContent-"+value.id+"' name='content' class='form-control z-depth-1' rows='3' maxlength='1000' placeholder='댓글을 입력해주세요.'>"+value.content+"</textarea>"+
+							"<input type='submit' style='width:50%' class='btn btn-success' value='수정'>"+
+							"<input type='button' style='width:50%' class='btn btn-primary' value='취소' onclick='replyForm("+value.id+")'>"+
+							"</form>"+
+					"</div>"+
+					"<div id='replyToReplyForm-"+value.id+"' style='display: none;'>"+
+						"<form method='post' action='/reply' onsubmit='return replyToReply("+value.id+","+value.replyGroup+");'>"+
+							"<textarea id='replyToReply-"+value.id+"' name='content' class='form-control z-depth-1' rows='3' maxlength='1000' placeholder='답글을 입력해주세요.'></textarea>"+
+							"<input type='submit' style='width:50%' class='btn btn-success' value='입력'>"+
+							"<input type='button' style='width:50%' class='btn btn-primary' value='취소' onclick='replyForm("+value.id+")'>"+
+						"</form>"+
+					"</div>";
 				document.getElementById('replyList').innerHTML = html;
 			});
 		},
@@ -149,6 +243,62 @@ function replyList(id){
 		}
 	});
 	return false;
+}
+
+//댓글 입력 폼 요청
+function replyForm(id){
+	if("${principal.id}" == ""){
+		login();
+		return;
+	}
+	var dropdownForm = $("#dropdownForm-"+id);
+	var replyForm = $("#replyForm-"+id);
+	var updateForm = $("#updateForm-"+id);
+	var replyToReplyForm = $("#replyToReplyForm-"+id);
+	
+	updateForm.hide();
+	replyToReplyForm.hide();
+	replyForm.show();
+	dropdownForm.show();
+	$("#replyForm-"+id).focus();
+}
+
+// 댓글 업데이트 폼 요청
+function replyUpdateForm(id){
+	if("${principal.id}" == ""){
+		login();
+		return;
+	}
+	var dropdownForm = $("#dropdownForm-"+id);
+	var replyForm = $("#replyForm-"+id);
+	var updateForm = $("#updateForm-"+id);
+	var replyToReplyForm = $("#replyToReplyForm-"+id);
+	
+	$("#replyContent-"+id).val($("#reply-"+id).text());
+	replyForm.hide();
+	dropdownForm.hide();
+	replyToReplyForm.hide();
+	updateForm.show();
+	$("#replyContent-"+id).focus();
+}
+
+//대댓글 폼 요청
+function replyToReplyForm(id){
+	if("${principal.id}" == ""){
+		login();
+		return;
+	}
+	var dropdownForm = $("#dropdownForm-"+id);
+	var replyForm = $("#replyForm-"+id);
+	var updateForm = $("#updateForm-"+id);
+	var replyToReplyForm = $("#replyToReplyForm-"+id);
+	
+	$("#replyToReply-"+id).val("");
+	replyForm.show();
+	dropdownForm.hide();
+	updateForm.hide();
+	replyToReplyForm.show();
+	$("#replyToReply-"+id).focus();
 }
 
 //댓글 입력
@@ -189,7 +339,7 @@ function replyCreate(){
 }
 
 //대댓글 입력 
-/* function replyToReply(id,replyGroup){
+function replyToReply(id,replyGroup){
 	var content = $("#replyToReply-"+id).val().replace(/\s|/gi,'');
 	
 	if(content==""){
@@ -200,7 +350,8 @@ function replyCreate(){
 	}
 	
 	var requestReplyCreateDto = {
-			articleId : "${responseArticleDto.id}",
+			articleId : "${responseDto.id}",
+			accountId : "${principal.id}",
 			replyGroup : replyGroup,
 			content : content
 	}
@@ -221,32 +372,6 @@ function replyCreate(){
 		}
 	});
 	return false;
-} */
-
-// 댓글 업데이트 요청
-function replyUpdateForm(id){
-	var dropdownForm = $("#dropdownForm-"+id);
-	var replyForm = $("#replyForm-"+id);
-	var updateForm = $("#updateForm-"+id);
-	
-	$("#replyContent-"+id).val($("#reply-"+id).text());
-	replyForm.hide();
-	dropdownForm.hide();
-	updateForm.show();
-	$("#replyContent-"+id).focus();
-}
-
-// 댓글 폼 컨트롤
-function replyForm(id){
-	var dropdownForm = $("#dropdownForm-"+id);
-	var replyForm = $("#replyForm-"+id);
-	var updateForm = $("#updateForm-"+id);
-	
-	
-	replyForm.show();
-	dropdownForm.show();
-	updateForm.hide();
-	$("#replyForm-"+id).focus();
 }
 
 // 댓글 업데이트 

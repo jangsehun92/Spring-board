@@ -32,15 +32,16 @@ public class ReplyServiceImpl implements ReplyService{
 	@Transactional
 	@Override
 	public void saveReply(RequestReplyCreateDto dto) {
-		log.info(dto.toString());
+		//dto내에 그룹 값이 0이 아니면 대댓글로 본다.
 		if(dto.getReplyGroup() != 0) {
 			dto.setReplyGroupOrder(replyDao.selectGroupOrderCount(dto.getReplyGroup())+1);
 			dto.setReplyDepth(1);
-		}else {
+		}else { 
 			dto.setReplyGroup(replyDao.selectGroupCount(dto.getArticleId())+1);
 			dto.setReplyGroupOrder(1);
 			dto.setReplyDepth(0);
 		}
+		log.info(dto.toString());
 		Reply reply = dto.toReply();
 		log.info(reply.toString());
 		replyDao.insertReply(reply);

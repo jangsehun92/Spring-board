@@ -32,16 +32,10 @@ window.onload = function() {
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			if(code == 'C003'){
-				$(".error").empty();
-				for(var i in jsonValue.errors){
-					$("#user_nickname").focus();
-					$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
-				}
-			}
-			if(code == 'C006'){
+			if(code == 'A010'){
 				alert(jsonValue.message);
 				console.log("code : " + jsonValue.code + " message : " + jsonValue.message);
+				location.href = "/";
 			}
 		}
 	});

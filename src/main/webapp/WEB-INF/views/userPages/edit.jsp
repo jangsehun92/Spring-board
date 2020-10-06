@@ -43,7 +43,7 @@ function edit(){
 						$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
 					}
 				}
-				if(code == 'C006'){
+				if(code == 'C005'){
 					alert(jsonValue.message);
 					console.log("code : " + jsonValue.code + " message : " + jsonValue.message);
 				}

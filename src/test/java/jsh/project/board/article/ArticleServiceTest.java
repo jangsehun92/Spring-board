@@ -268,4 +268,40 @@ public class ArticleServiceTest {
 		verify(articleDao, times(1)).articleLikeCheck(dto);
 	}
 	
+	@Test
+	public void 카테고리_리스트_가져오기() {
+		//given
+		
+		//when
+		
+		//then
+	}
+	
+	@Test
+	public void 카테고리_입력() {
+		//given
+		
+		//when
+				
+		//then
+	}
+	
+	@Test
+	public void 카테고리_수정() {
+		//given
+		
+		//when
+				
+		//then
+	}
+	
+	@Test
+	public void 카테고리_삭제() {
+		//given
+		
+		//when
+				
+		//then
+	}
+	
 }

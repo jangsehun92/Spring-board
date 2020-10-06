@@ -29,6 +29,7 @@ import jsh.project.board.account.exception.AccountNotFoundException;
 import jsh.project.board.account.exception.BadAuthRequestException;
 import jsh.project.board.account.exception.EmailAlreadyUsedException;
 import jsh.project.board.account.exception.FindAccountBadRequestException;
+import jsh.project.board.account.exception.NotFoundAccountInfoException;
 import jsh.project.board.account.exception.PasswordNotMatchException;
 import jsh.project.board.global.infra.email.EmailService;
 
@@ -67,7 +68,11 @@ public class AccountServiceImpl implements AccountService{
 	// 계정 정보 찾기
 	@Override
 	public ResponseAccountInfoDto getAccountInfo(int id) {
-		return accountDao.selectAccountInfo(id);
+		ResponseAccountInfoDto responseAccountInfoDto = accountDao.selectAccountInfo(id);
+		if(responseAccountInfoDto == null) {
+			throw new NotFoundAccountInfoException();
+		}
+		return responseAccountInfoDto;
 	}
 	
 	// 회원정보 수정

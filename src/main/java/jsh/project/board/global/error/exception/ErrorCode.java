@@ -6,8 +6,7 @@ public enum ErrorCode {
     METHOD_NOT_ALLOWED(405, "C002", " 유효하지 않은 요청입니다."),
     ENTITY_NOT_FOUND(400, "C003", " Entity Not Found"),
     INTERNAL_SERVER_ERROR(500, "C004", "서버 오류입니다."),
-    INVALID_TYPE_VALUaE(400, "C005", " Invalid Type Value"),
-    HANDLE_ACCESS_DENIED(403, "C006", "접근 권한이 없습니다."),
+    HANDLE_ACCESS_DENIED(403, "C005", "접근 권한이 없습니다."),
 
 	//account
 	EMAIL_AREADY_USED(400, "A001", " 이미 사용중인 이메일입니다."),
@@ -19,6 +18,7 @@ public enum ErrorCode {
 	PASSWORD_NOT_MATCH(400, "A007", " 기존 비밀번호가 맞지 않습니다."),
 	ACCOUNT_BAD_REQUEST(400, "A008", " 계정 정보가 올바르지 않습니다."),
 	PASSWORD_CHECK_FAILED(400, "A009", " 비밀번호가 서로 다릅니다."),
+	ACCOUNT_INFO_NOT_FOUND(400,"A010", " 계정 정보를 찾을 수 없습니다."),
 	
 	//article
 	ARTICLE_NOT_FOUND(400, "B002", "해당 게시글을 찾을 수 없습니다.");

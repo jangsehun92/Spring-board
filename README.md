@@ -87,6 +87,12 @@
     - 인증 이메일 재발송 하기 전 인증 여부를 확인하고 인증을 완료한 계정이라면 로그인 화면으로 돌아간다.
     - 인증키와 옵션이 다르거나 이미 인증을 완료한 상태라면 유효하지 않은 요청으로 처리한다. 
     
+| Action | API | Parameter | Body | Success Response | Fail Response |
+|--------|-----|-----------|------|------------------|---------------|
+| 이메일 중복 확인 |GET /account/email|email=[String]|N/A|Status 200 OK|<ul><li> Invalid Input Value - 400 { code: "C001" errors: [{field: "email", value: "", reason: "이메일을 입력해주세요. "}], message: " 유효하지 않은 요청입니다.", status: 400}</li><li> Email Aready Used - 400 { code: "A001", errors: [], message: " 이미 사용중인 이메일입니다.", status: 400 } </li></ul>|
+|회원가입|POST /account/join| N/A |{ "email" : "user@email.com", "password" : "password1", "passwordCheck" : "password2", "name" : "userName", "birth" : "920409", "nickname" : "nickname"|Status 200 OK|<ul><li> Entity Not Found - 400 { code: "C003", errors: [{field: "password", value: "", reason: "최소 8자리의 소문자,대문자,숫자,특수문자가 포함되어야합니다. "},{field: "passwordCheck", value: "", reason: "비밀번호를 재입력해주세요."}], message: " Entity Not Found", status: 400]</li></ul>|
+|회원 정보 가져오기|GET /account/{id}|id=[Integer]| N/A | Status 200 OK { "id" : 1, "nickname" : "userNick" } | Account Info Not Found - 400 { code: "A010", errors: [], message: " 계정 정보를 찾을 수 없습니다.", status: 400
+|계정 정보 변경|PATCH /account/{id}|id=[Integer]|{ "nickname" : "newNick" }|Status 200 OK|---------------|
 ## 게시판
 게시판 조건
 1. 카테고리를 기준으로 게시판을 나눈다.

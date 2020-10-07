@@ -91,7 +91,7 @@
 |--------|-----|-----------|------|------------------|---------------|
 | 이메일 중복 확인 |GET /account/email|email=[String]|N/A|Status 200 OK|<ul><li> Invalid Input Value - 400 { code: "C001" errors: [{field: "email", value: "", reason: "이메일을 입력해주세요. "}], message: " 유효하지 않은 요청입니다.", status: 400}</li><li> Email Aready Used - 400 { code: "A001", errors: [], message: " 이미 사용중인 이메일입니다.", status: 400 } </li></ul>|
 |회원가입|POST /account/join| N/A |{ "email" : "user@email.com", "password" : "password1", "passwordCheck" : "password2", "name" : "userName", "birth" : "920409", "nickname" : "nickname"|Status 200 OK|<ul><li> Entity Not Found - 400 { code: "C003", errors: [{field: "password", value: "", reason: "최소 8자리의 소문자,대문자,숫자,특수문자가 포함되어야합니다. "},{field: "passwordCheck", value: "", reason: "비밀번호를 재입력해주세요."}], message: " Entity Not Found", status: 400]</li></ul>|
-|회원 정보 가져오기|GET /account/{id}|id=[Integer]| N/A | Status 200 OK { "id" : 1, "nickname" : "userNick" } | Account Info Not Found - 400 { code: "A010", errors: [], message: " 계정 정보를 찾을 수 없습니다.", status: 400
+|회원 정보 가져오기|GET /account/{id}|id=[Integer]| N/A | Status 200 OK { "id" : 1, "nickname" : "userNick" } | <ul><li>Account Info Not Found - 400 { code: "A010", errors: [], message: " 계정 정보를 찾을 수 없습니다.", status: 400</li></ul>
 |계정 정보 변경|PATCH /account/{id}|id=[Integer]|{ "nickname" : "newNick" }|Status 200 OK|---------------|
 ## 게시판
 게시판 조건
@@ -147,6 +147,9 @@
     - 검색 결과를 최신순,추천순,댓글순,조회순으로 정렬할 수 있다.
     - 검색 값을 표시하여 무엇을 검색했는지 확인 할 수 있다.
 
+| Action | API | Parameter | Body | Success Response | Fail Response |
+|--------|-----|-----------|------|------------------|---------------|
+|--------|-----|-----------|------|------------------|---------------|
 ## 댓글/대댓글
 댓글/대댓글 조건
 1. 댓글과 관련된 모든 요청은 비통기 통신을 통해 이루어 진다.

@@ -25,7 +25,7 @@
     1. 공통적으로 사용하는 header 페이지 내에 meta 태그를 사용하여 csrf 값을 셋팅한다.
     2. 비동기 요청인 경우 ajax_header.js 내에서 ajaxSend를 통해 csrf token값을 셋팅한다.
   - 목적에 맞는 request/response DTO 객체를 사용한다.
-  - 예외를 한곳에서 처리하기 위해 @ControllerAdvice 어노테이션을 적용한 GlobalExceptionHandler클래스에서 exception을 처리한다.
+  - 예외를 한곳에서 처리하기 위해 @ControllerAdvice 어노테이션을 적용한 GlobalExceptionHandler클래스에서 exception을 처리한다.(https://github.com/jangsehun92/Spring-board/blob/master/src/main/java/jsh/project/board/global/error/GlobalExceptionHandler.java)
     1. 비동기 요청은 ErrorResponse를 리턴한다.
     2. 비동기 요청이 아닐 경우 Error코드와 메시지를 출력하고, 메인페이지로 redirect 한다.
   - 유효성 검사는 서버에서 검사한다.
@@ -97,7 +97,8 @@
 |회원 정보 가져오기|GET /account/{id}|id=[Integer]| N/A | Status 200 OK { "id" : 1, "nickname" : "userNick" } | <ul><li>Account Info Not Found - 400 { code: "A010", errors: [], message: " 계정 정보를 찾을 수 없습니다.", status: 400</li></ul>
 |계정 정보 변경|PATCH /account/{id}|id=[Integer]|{ "nickname" : "newNick" }|Status 200 OK|<ul><li>Entity Not Found - 400 { code: "C003", errors: [{field: "nickname", value: "", reason: "닉네임을 입력해주세요."}], message: " Entity Not Found", status: 400</li></ul>|
 | 계정 찾기 |POST /account/find-email|N/A|{ "name" : "name", "birth" : "birth" }|Status 200 OK [{"email" : "email" , "date" : " data"}]|<ul><li>Entity Not Fount - 400 {"message":" Entity Not Found", "status":400, "code":"C003", "errors":[{"field":"birth","value":"","reason":"생년월일을 입력해주세요."},{"field":"name", "value":"", "reason":"이름을 입력해주세요."}]</li><li>Account Not Found - 400 {"message":" 계정을 찾을 수 없습니다.", "status":400, "code":"A004", "errors":[]}</li></ul>|
-| 비밀번호 재설정 |POST /account/reset|N/A|{ "email" : "email", "name" : "name", "birth" : "birth" }|Status 200 OK|<ul><li>Entity Not Fount - 400 {"message":" Entity Not Found","status":400,"code":"C003","errors":[{"field":"name","value":"","reason":"이름을 입력해주세요."},{"field":"email","value":"","reason":"이메일을 입력해 주세요."},{"field":"birth","value":"","reason":"생년월일을 입력해주세요."}]}</li></ul>|
+| 비밀번호 초기화 |POST /account/reset|N/A|{ "email" : "email", "name" : "name", "birth" : "birth" }|Status 200 OK|<ul><li>Entity Not Fount - 400 {"message":" Entity Not Found","status":400,"code":"C003","errors":[{"field":"name","value":"","reason":"이름을 입력해주세요."},{"field":"email","value":"","reason":"이메일을 입력해 주세요."},{"field":"birth","value":"","reason":"생년월일을 입력해주세요."}]}</li></ul>|
+| 비밀번호 변경 |POST /account/resetPassword|N/A|{ "email" : "email", "password" : "password", "passwordCheck" : "passwordCheck", "authKey" : "authKey", "authOption" : "authOption" }|Status 200 OK|<ul><li>Entity Not Found - 400 {"message":" Entity Not Found", "status":400, "code":"C003", "errors":[{"field":"passwordCheck", "value":"", "reason":"비밀번호를 재입력해주세요."},{"field":"password", "value":"", "reason":"최소 8자리의 소문자,대문자,숫자,특수문자가 포함되어야합니다. "}]}</li><li>Bad Auth Request - 400 {"message":" 유효하지 않은 인증 요청 입니다.", "status":400, "code":"A002", "errors":[]}</li></ul>|
 
 ## 게시판
 게시판 조건

@@ -96,6 +96,7 @@
 |회원가입|POST /account/join| N/A |{ "email" : "user@email.com", "password" : "password1", "passwordCheck" : "password2", "name" : "userName", "birth" : "920409", "nickname" : "nickname"|Status 200 OK|<ul><li> Entity Not Found - 400 { code: "C003", errors: [{field: "password", value: "", reason: "최소 8자리의 소문자,대문자,숫자,특수문자가 포함되어야합니다. "},{field: "passwordCheck", value: "", reason: "비밀번호를 재입력해주세요."}], message: " Entity Not Found", status: 400]</li></ul>|
 |회원 정보 가져오기|GET /account/{id}|id=[Integer]| N/A | Status 200 OK { "id" : 1, "nickname" : "userNick" } | <ul><li>Account Info Not Found - 400 { code: "A010", errors: [], message: " 계정 정보를 찾을 수 없습니다.", status: 400</li></ul>
 |계정 정보 변경|PATCH /account/{id}|id=[Integer]|{ "nickname" : "newNick" }|Status 200 OK|<ul><li>Entity Not Found - 400 { code: "C003", errors: [{field: "nickname", value: "", reason: "닉네임을 입력해주세요."}], message: " Entity Not Found", status: 400</li></ul>|
+|계정 찾기|POST /account/find-email|N/A|{ "name" : "name", "birth" : "birth" }|Status 200 OK [{"email" : "email" , "date" : " data"}]|<ul><li>Entity Not Fount - 400 {"message":" Entity Not Found", "status":400, "code":"C003", "errors":[{"field":"birth","value":"","reason":"생년월일을 입력해주세요."},{"field":"name", "value":"", "reason":"이름을 입력해주세요."}]</li><li>Account Not Found - 400 {"message":" 계정을 찾을 수 없습니다.", "status":400, "code":"A004", "errors":[]}</li></ul>|
 ## 게시판
 게시판 조건
 1. 카테고리를 기준으로 게시판을 나눈다.

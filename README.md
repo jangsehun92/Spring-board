@@ -86,7 +86,7 @@
     - 해당 요청에 관한 인증키로 인증처리를 한다.
     - 인증 이메일 재발송 하기 전 인증 여부를 확인하고 인증을 완료한 계정이라면 로그인 화면으로 돌아간다.
     - 인증키와 옵션이 다르거나 이미 인증을 완료한 상태라면 유효하지 않은 요청으로 처리한다. 
-    
+ ------
   * **API 명세서**
   
 | Action | API | Parameter | Body | Success Response | Fail Response |
@@ -100,7 +100,7 @@
 | 비밀번호 초기화 |POST /account/reset|N/A|{ "email" : "email", "name" : "name", "birth" : "birth" }|Status 200 OK|<ul><li>Entity Not Fount - 400 {"message":" Entity Not Found","status":400,"code":"C003","errors":[{"field":"name","value":"","reason":"이름을 입력해주세요."},{"field":"email","value":"","reason":"이메일을 입력해 주세요."},{"field":"birth","value":"","reason":"생년월일을 입력해주세요."}]}</li></ul>|
 | 비밀번호 재설정 |POST /account/resetPassword|N/A|{ "email" : "email", "password" : "password", "passwordCheck" : "passwordCheck", "authKey" : "authKey", "authOption" : "authOption" }|Status 200 OK|<ul><li>Entity Not Found - 400 {"message":" Entity Not Found", "status":400, "code":"C003", "errors":[{"field":"passwordCheck", "value":"", "reason":"비밀번호를 재입력해주세요."},{"field":"password", "value":"", "reason":"최소 8자리의 소문자,대문자,숫자,특수문자가 포함되어야합니다. "}]}</li><li>Bad Auth Request - 400 {"message":" 유효하지 않은 인증 요청 입니다.", "status":400, "code":"A002", "errors":[]}</li></ul>|
 | 비밀번호 재설정 |POST /account/passwordChange|N/A|{ "beforePassword" : "beforePassword", "afterPassword" : "afterPassword", "afterPasswordCheck":"afterPasswordCheck" }|Status 200 OK|<ul><li>Entity Not Found - 400 {"message":" Entity Not Found","status":400,"code":"C003","errors":[{"field":"afterPasswordCheck","value":"","reason":"바꿀 비밀번호를 재입력해주세요."},{"field":"beforePassword","value":"","reason":"이전 비밀번호를 입력해주세요."},{"field":"afterPassword","value":"","reason":"최소 8자리의 소문자,대문자,숫자,특수문자가 포함되어야합니다. "}]}</li><li>Password Not Match - 400 {"message":" 기존 비밀번호가 맞지 않습니다.", "status":400, "code":"A007", "errors":[]}</li><li>Password Check Failed - 400 {"message":" 비밀번호가 서로 다릅니다.", "status":400, "code":"A009", "errors":[]}</li></ul>|
-
+-------
 ## 게시판
 게시판 조건
 1. 카테고리를 기준으로 게시판을 나눈다.

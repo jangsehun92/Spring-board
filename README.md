@@ -155,9 +155,16 @@
     - 검색 결과를 최신순,추천순,댓글순,조회순으로 정렬할 수 있다.
     - 검색 값을 표시하여 무엇을 검색했는지 확인 할 수 있다.
 
+* **게시글 관련 API 명세서**
+  
 | Action | API | Parameter | Body | Success Response | Fail Response |
 |--------|-----|-----------|------|------------------|---------------|
-|--------|-----|-----------|------|------------------|---------------|
+| 해당 유저 게시글 보기 | GET /articles/account/{id}|id=[Integer]|N/A|Status 200 OK {"articles":[{"id":241,"accountId":1,"category":"notice","title":"gg","nickname":"관리자", "viewCount":6, "replyCount":0, "likeCount":0, "regdate":1597746989000}], "pagination":{"countList":10, "countPage":5, "page":1, "totalPage":6, "startCount":1, "endCount":10, "startPage":1, "endPage":5, "noticeScope":{"startCount":1,"endCount":0}}, "category":"", "query":"", "sort":"id" }|<ul><li> Articles Not Found - 400 {"message":"작성한 글이 없습니다.", "status":400, "code":"B002", "errors":[]} </li></ul>|
+| 게시글 추천 | POST /articles/like/{id}|id=[Integer]|{"articleId" : "articleId", "accountId" : "accountId" }|Status 200 OK|<ul><li>Article Not Found - 400 {"message":"해당 게시글을 찾을 수 없습니다.", "status":400, "code":"B001", "errors":[]}</li></ul>|
+| 게시글 작성 | POST /article|N/A| {"articleId" : "articleId", "category" : "category", "importance" : "importance", "title" : "title", "content" : "content"}|Status 200 OK|<ul><li>Entity Not Fount - 400 {"message":" Entity Not Found", "status":400, "code":"C003", "errors":[{"field":"title","value":"","reason":"제목을 입력해주세요."},{"field":"content", "value":"", "reason":"내용을 입력해주세요."}]}</li></ul>|
+| 게시글 수정 | PATCH /article/{id}|id=[Integer]|{"id" : "id", "articleId" : "articleId", "category" : "category", "importance" : "importance", "title" : "title", "content" : "content"}|Status 200 OK|<ul><li>Entity Not Fount - 400 {"message":" Entity Not Found", "status":400, "code":"C003", "errors":[{"field":"title","value":"","reason":"제목을 입력해주세요."},{"field":"content", "value":"", "reason":"내용을 입력해주세요."}]}</li><li> Article Not Found - 400 {"message":"해당 게시글을 찾을 수 없습니다.", "status":400, "code":"B001", "errors":[]}</li></ul>|
+| 게시글 삭제 | DELETE /article/{id}|id=[Integer]| {"articleId" : "articleId", "accountId" : "accountId"} |Status 200 OK|<ul><li> Article Not Found - 400 {"message":"해당 게시글을 찾을 수 없습니다.", "status":400, "code":"B001", "errors":[]}</li></ul>|
+-----
 ## 댓글/대댓글
 댓글/대댓글 조건
 1. 댓글과 관련된 모든 요청은 비통기 통신을 통해 이루어 진다.

@@ -187,3 +187,12 @@
 * **댓글/대댓글 삭제(비활성화)**
   - 댓글을 삭제 요청하면 해당 댓글을 비활성화 시킨 후, '삭제된 댓글입니다.' 로 표시한다.
   - 비활성화 된 댓글은 수정을 할 수 없다.
+  
+* **댓글 관련 API 명세서**
+
+| Action | API | Parameter | Body | Success Response | Fail Response |
+|--------|-----|-----------|------|------------------|---------------|
+| 댓글 가져오기 |GET /replys/{id}|id=[String]|N/A|Status 200 OK|<ul><li></li></ul>|
+| 댓글 작성 |POST /reply|N/A| 바디 내용 |Status 200 OK|<ul><li></li></ul>|
+| 댓글 수정 |PATCH /reply/{id}|id=[String]| 바디 내용| Status 200 OK|<ul><li></li></ul>|
+| 댓글 삭제 |DELETE /reply/{id}|id=[String]| 바디 내용 |Status 200 OK|<ul><li></li></ul>|

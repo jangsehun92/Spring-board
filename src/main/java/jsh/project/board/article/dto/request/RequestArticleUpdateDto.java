@@ -59,7 +59,7 @@ public class RequestArticleUpdateDto implements ArticleConverter{
 	}
 
 	public void setTitle(String title) {
-		this.title = title.trim();
+		this.title = title;
 	}
 
 	public String getContent() {
@@ -67,7 +67,7 @@ public class RequestArticleUpdateDto implements ArticleConverter{
 	}
 
 	public void setContent(String content) {
-		this.content = content.trim();
+		this.content = content;
 	}
 	
 	@Override

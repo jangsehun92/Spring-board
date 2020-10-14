@@ -3,6 +3,8 @@ package jsh.project.board.account.controller;
 import java.security.Principal;
 import java.util.List;
 
+import javax.security.auth.login.AccountNotFoundException;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -32,6 +34,7 @@ import jsh.project.board.account.dto.request.RequestPasswordDto;
 import jsh.project.board.account.dto.request.RequestPasswordResetDto;
 import jsh.project.board.account.dto.response.ResponseAccountInfoDto;
 import jsh.project.board.account.dto.response.ResponseFindAccountDto;
+import jsh.project.board.account.exception.BadRequestException;
 import jsh.project.board.account.service.AccountService;
 
 @Controller
@@ -57,8 +60,9 @@ public class AccountController {
     
     // 회원가입
     @PostMapping("/account/join")
-    public @ResponseBody ResponseEntity<HttpStatus> join(@RequestBody @Valid RequestAccountCreateDto dto) throws Exception{
+    public @ResponseBody ResponseEntity<HttpStatus> join(@RequestBody @Valid RequestAccountCreateDto dto, HttpSession session) throws Exception{
     	accountService.register(dto);
+    	session.setAttribute("email", dto.getEmail());
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
@@ -103,7 +107,12 @@ public class AccountController {
     
     // 이메일 발송 완료 페이지 이동
     @RequestMapping("/account/sendEmail")
-    public String emailPage(RequestEmailDto dto, Model model) {
+    public String emailPage(RequestEmailDto dto, Model model, HttpSession session) {
+    	String email = (String)session.getAttribute("email");
+    	if(email == null || !email.equals(dto.getEmail())) {
+    		session.removeAttribute("email");
+    		throw new BadRequestException();
+    	}
     	model.addAttribute("email", dto.getEmail());
     	return "userPages/sendEmail";
     }
@@ -118,8 +127,15 @@ public class AccountController {
     
     // 인증이메일 재발송
     @GetMapping("/account/resend")
-    public @ResponseBody ResponseEntity<HttpStatus> resendEmail(RequestEmailDto dto) throws Exception{
+    public @ResponseBody ResponseEntity<HttpStatus> resendEmail(RequestEmailDto dto, HttpSession session) throws Exception{
+    	String email = (String)session.getAttribute("email");
+    	
+    	if(email == null || !email.equals(dto.getEmail())) {
+    		session.removeAttribute("email");
+    		throw new BadRequestException();
+    	}
     	accountService.resendEmail(dto);
+    	
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
@@ -131,7 +147,7 @@ public class AccountController {
     
     // 계정 찾기
     @PostMapping("/account/find-email")
-    public @ResponseBody ResponseEntity<List<ResponseFindAccountDto>> findEmail(@RequestBody @Valid RequestFindAccountDto dto) throws Exception{
+    public @ResponseBody ResponseEntity<List<ResponseFindAccountDto>> findEmail(@RequestBody @Valid RequestFindAccountDto dto) throws AccountNotFoundException {
     	return new ResponseEntity<>(accountService.getAccounts(dto), HttpStatus.OK);
     }
     
@@ -144,7 +160,7 @@ public class AccountController {
     // 계정 정보를 입력 후 비밀번호 재설정 요청(인증이메일 발송)
     @PostMapping("/account/reset")
     public @ResponseBody ResponseEntity<HttpStatus> findPassword(@RequestBody @Valid RequestAccountResetDto dto) throws Exception{
-    	accountService.sendResetEmail(dto);
+    	accountService.sendResetEmail(dto); 
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
@@ -178,7 +194,7 @@ public class AccountController {
     }
     
     @RequestMapping("/account/status")
-    public String authPage(String email, Model model) {
+    public String authPage(String email, Model model,HttpSession session) {
     	return "commonPages/accountStatusPage";
     }
     

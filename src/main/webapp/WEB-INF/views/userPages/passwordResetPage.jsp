@@ -19,7 +19,8 @@
 <script type="text/javascript">
 function check_form(){
 	var RequestPasswordResetDto = {
-		email : "${dto.email}",
+		//email : "${dto.email}",
+		email : "jangsehun92@gmail.com",
 		password : $("#password").val(),
 		passwordCheck : $("#passwordCheck").val(),
 		authKey : "${dto.authKey}",
@@ -43,6 +44,10 @@ function check_form(){
 				for(var i in jsonValue.errors){
 					$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
 				}
+			}
+			if(code == 'A002'){
+				alert(jsonValue.message);
+				location.href="/login";
 			}
 			if(code == 'A009'){
 				$("#error_passwordCheck").append(jsonValue.message);

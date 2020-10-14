@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,7 +65,8 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 	}
 	
 	private void dispatcherForward(HttpServletRequest request, HttpServletResponse response, String url, ErrorCode errorCode) throws IOException, ServletException  {
-		request.setAttribute("email", request.getParameter("email"));
+		HttpSession session = request.getSession();
+		session.setAttribute("email", request.getParameter("email"));
 		final ErrorResponse errorResponse = new ErrorResponse(errorCode);
 		request.setAttribute("errorResponse", errorResponse);
 		request.getRequestDispatcher(url).forward(request, response);

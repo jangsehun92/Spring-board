@@ -8,7 +8,7 @@
 <title>authDenied</title>
 </head>
 <body>
-	<div class="container" style="margin-top: 80px; align-items: center;">
+	<div class="container" style="margin-top: 80px; align-items: center;"> 
 		<h1 style="color: red;">잘못된 인증 요청입니다.</h1> 
 	</div>
 </body>

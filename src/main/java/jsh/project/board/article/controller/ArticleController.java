@@ -94,6 +94,7 @@ public class ArticleController {
 	}
 	
 	// 글 작성 페이지 요청(일반)
+	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
 	@GetMapping("/articles/{category}/create")
 	public String articleCreateForm(@PathVariable("category") String category, Model model) {
 		model.addAttribute("category", categoryEnumMapper.getCategory(category));

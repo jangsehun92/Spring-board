@@ -47,4 +47,9 @@ public class ReplyDaoImpl implements ReplyDao{
 		sqlSession.update("replyMapper.deleteReply", reply);
 	}
 
+	@Override
+	public int selectReplyCheck(int id) {
+		return sqlSession.selectOne("replyMapper.selectReplyCheck",id);
+	}
+
 }

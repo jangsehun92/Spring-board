@@ -144,9 +144,7 @@ public class AccountServiceImpl implements AccountService{
 	@Override
 	public List<ResponseFindAccountDto> getAccounts(RequestFindAccountDto dto) throws AccountNotFoundException {
 		List<ResponseFindAccountDto> accountList = accountDao.selectAccounts(dto);
-		if(accountList.isEmpty()) {
-			throw new AccountNotFoundException();
-		}
+		if(accountList.isEmpty()) throw new AccountNotFoundException();
 		for(ResponseFindAccountDto responseFindAccountDto : accountList) {
 			log.info(responseFindAccountDto.toString());
 		}

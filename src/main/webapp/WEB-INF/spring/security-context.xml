@@ -21,14 +21,14 @@
         <intercept-url pattern="/account/passwordChange" method="POST" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/article/**" method="GET" access="permitAll" />
         <intercept-url pattern="/articles/{category}/create" method="GET" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/admin/articles/{category}/create" method="GET" access="hasAnyRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/article" method="POST" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/article/image" method="POST" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/article/edit/{id}" method="GET" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/article" method="PATCH" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <intercept-url pattern="/article" method="DELETE" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         
-        <intercept-url pattern="/admin" method="GET" access="hasRole('ROLE_ADMIN')" />
-        
+        <intercept-url pattern="/a/create" method="GET" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"/>
         
 		<!-- <anonymous enabled="true"/> -->
 		

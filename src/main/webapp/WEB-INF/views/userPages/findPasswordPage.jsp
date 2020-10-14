@@ -50,7 +50,7 @@ function sendEmail(){
 			
 			if(code == 'A005'){
 				alert(jsonValue.message);
-				location.href="/account/sendEmail?email="+$("#email").val();
+				location.href="/login";
 			}
 			
 			if(code == 'C003'){

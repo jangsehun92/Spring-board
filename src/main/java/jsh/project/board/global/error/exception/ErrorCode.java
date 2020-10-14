@@ -7,6 +7,7 @@ public enum ErrorCode {
     ENTITY_NOT_FOUND(400, "C003", " Entity Not Found"),
     INTERNAL_SERVER_ERROR(500, "C004", "서버 오류입니다."),
     HANDLE_ACCESS_DENIED(403, "C005", "접근 권한이 없습니다."),
+    BAD_REQUEST(400, "C006", "잘못된 요청입니다."),
 
 	//account
 	EMAIL_AREADY_USED(400, "A001", " 이미 사용중인 이메일입니다."),
@@ -21,7 +22,12 @@ public enum ErrorCode {
 	ACCOUNT_INFO_NOT_FOUND(400,"A010", " 계정 정보를 찾을 수 없습니다."),
 	
 	//article
-	ARTICLE_NOT_FOUND(400, "B002", "해당 게시글을 찾을 수 없습니다.");
+	ARTICLE_NOT_FOUND(400, "B001", "해당 게시글을 찾을 수 없습니다."),
+	ARTICLES_NOT_FOUND(400, "B002", "작성한 글이 없습니다."),
+	
+	//Reply
+	REPLYS_NOT_FOUND(400, "R001", "댓글이 없습니다."),
+	REPLY_NOT_FOUND(400, "R002", "해당 댓글이 존재하지 않습니다.");
 	
 	
 	private int status;

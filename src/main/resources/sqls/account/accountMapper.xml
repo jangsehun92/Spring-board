@@ -80,7 +80,7 @@
 		UPDATE 
 			account_table
 		SET 
-			locked = 0,
+			locked = 1,
 			password = #{password}
 		WHERE
 			email = #{email}

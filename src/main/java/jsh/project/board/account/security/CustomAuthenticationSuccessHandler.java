@@ -61,6 +61,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		if(session == null) {
 			return;
 		}
+		if(session.getAttribute("email") != null) {
+			session.removeAttribute("email");
+		}
 		session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
 	}
 	

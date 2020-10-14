@@ -30,10 +30,13 @@ public class GlobalExceptionHandler {
 	 * 주로 @RequestBody, @RequestPart 어노테이션에서 발생
 	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+	protected Object handleMethodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
 		log.error("handleMethodArgumentNotValidException", e);
-		final ErrorResponse response = new ErrorResponse(ErrorCode.ENTITY_NOT_FOUND, e.getBindingResult());
-		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		if(isAjax(request)) {
+			final ErrorResponse response = new ErrorResponse(ErrorCode.ENTITY_NOT_FOUND, e.getBindingResult());
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+		return redirectMainUrl;
 	}
 
 	/**
@@ -41,10 +44,13 @@ public class GlobalExceptionHandler {
 	 * ref https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-modelattrib-method-args
 	 */
 	@ExceptionHandler(BindException.class)
-	protected ResponseEntity<ErrorResponse> handleBindException(BindException e) {
+	protected Object handleBindException(BindException e, HttpServletRequest request) {
 		log.error("handleBindException", e);
-		final ErrorResponse response = new ErrorResponse(ErrorCode.INVALID_INPUT_VALUE, e.getBindingResult());
-		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		if(isAjax(request)) {
+			final ErrorResponse response = new ErrorResponse(ErrorCode.INVALID_INPUT_VALUE, e.getBindingResult());
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+		return redirectMainUrl;
 	}
 
 	/**

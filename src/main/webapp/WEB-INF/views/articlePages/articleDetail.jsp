@@ -64,21 +64,6 @@ function replyList(id){
 			$("#replyList").empty();
 			$("#replyContent").val("");
 			var html = "";
-			if(data.length == 0){
-				$("#replyList").append(
-					"<li class='list-group-item'>"+
-						"<div>"+
-							"<div>"+
-								"<div>"+
-									"<div id='replyForm'>"+
-										"<span>댓글이 없습니다.</span>"+
-									"</div>"+
-								"</div>"+
-							"</div>"+
-						"</div>"+
-					"</li>"
-				);
-			}
 			$.each(data, function(index, value) {
 				if(value.replyDepth == 0){
 					if(value.accountId == "${principal.id}"){
@@ -239,7 +224,25 @@ function replyList(id){
 			});
 		},
 		error:function(request,status,error){
-			alert("code:"+request.status+"\n\n"+"message:"+request.responseText+"\n\n"+"error:"+error);
+			jsonValue = jQuery.parseJSON(request.responseText);
+			code = jsonValue.code;
+			console.log(code + ":"+jsonValue.message);
+			if(code == 'R001'){
+				$("#replyList").append(
+					"<li class='list-group-item'>"+
+						"<div>"+
+							"<div>"+
+								"<div>"+
+									"<div id='replyForm'>"+
+										"<span>"+ jsonValue.message +"</span>"+
+									"</div>"+
+								"</div>"+
+							"</div>"+
+						"</div>"+
+					"</li>"
+				);
+			}
+			
 		}
 	});
 	return false;
@@ -324,15 +327,23 @@ function replyCreate(){
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
 		data: JSON.stringify(requestReplyCreateDto), 
-		
 		success:function(data){
 			replyList("${responseDto.id}");
 		},
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			console.log("errorCode : " + code);
-			alert(jsonValue.message);
+			if(code == 'C003'){
+				console.log(code +" : "+jsonValue.message);
+				alert("댓글을 입력해주세요.");
+				$("#replyContent").val("");
+				$("#replyContent").focus();
+			}
+			if(code == 'B001'){
+				console.log(code +" : "+jsonValue.message);
+				alert(jsonValue.message);
+				history.back();
+			}
 		}
 	});
 	return false;
@@ -343,9 +354,9 @@ function replyToReply(id,replyGroup){
 	var content = $("#replyToReply-"+id).val().replace(/\s|/gi,'');
 	
 	if(content==""){
-		alert("댓글을 입력해주세요.");
-		$("#replyContent").val("");
-		$("#replyContent").focus();
+		alert("대댓글을 입력해주세요.");
+		$("#replyToReplyForm").val("");
+		$("#replyToReply-"+id).focus();
 		return false;
 	}
 	
@@ -367,8 +378,17 @@ function replyToReply(id,replyGroup){
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			console.log("errorCode : " + code);
-			alert(jsonValue.message);
+			if(code == 'C003'){
+				console.log(code +" : "+jsonValue.message);
+				alert("대댓글을 입력해주세요." + id);
+				$("#replyToReplyForm").val("");
+				$("#replyToReply-"+id).focus();
+			}
+			if(code == 'B001'){
+				console.log(code +" : "+jsonValue.message);
+				alert(jsonValue.message);
+				history.back();
+			}
 		}
 	});
 	return false;
@@ -395,8 +415,21 @@ function replyUpdate(id){
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			console.log("errorCode : " + code);
-			alert(jsonValue.message);
+			if(code == 'B001'){
+				console.log(code +" : "+jsonValue.message);
+				alert(jsonValue.message);
+				history.back();
+			}
+			if(code == 'C003'){
+				console.log(code +" : "+jsonValue.message);
+				$("#replyContent-"+id).val("");
+				$("#replyContent-"+id).focus();
+			}
+			if(code == 'R002'){
+				console.log(code +" : "+jsonValue.message);
+				alert(jsonValue.message);
+				replyList("${responseDto.id}");
+			}
 		}
 	});
 	return false;
@@ -430,8 +463,16 @@ function replyDelete(id){
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			console.log("errorCode : " + code);
-			alert(jsonValue.message);
+			if(code == 'B001'){
+				console.log(code +" : "+jsonValue.message);
+				alert(jsonValue.message);
+				history.back();
+			}
+			if(code == 'R002'){
+				console.log(code +" : "+jsonValue.message);
+				alert(jsonValue.message);
+				replyList("${responseDto.id}");
+			}
 		}
 	});
 	return false;

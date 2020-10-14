@@ -12,4 +12,5 @@ public interface ReplyDao {
 	public void insertReply(final Reply reply);
 	public void updateReply(final Reply reply);
 	public void deleteReply(final Reply reply);
+	public int selectReplyCheck(int id);
 }

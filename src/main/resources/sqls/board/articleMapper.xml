@@ -10,6 +10,15 @@
 		WHERE
 			id = #{id}
 	</update>
+	
+	<select id="selectArticleCheck" parameterType="int" resultType="int">
+		SELECT 
+			count(*) 
+		FROM 
+			article_table 
+		WHERE 
+			id = #{id}
+	</select>
 
 	<select id="selectArticle" resultType="ResponseArticleDetailDto" parameterType="int">
 		SELECT 

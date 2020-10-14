@@ -10,7 +10,7 @@ public class RequestReplyUpdateDto implements ReplyConverter{
 	private int id;
 	private int articleId;
 	private int accountId;
-	@NotBlank(message = "내용을 입력해 주세요.")
+	@NotBlank(message = "댓글을 입력해 주세요.")
 	private String content;
 	
 	public RequestReplyUpdateDto() {

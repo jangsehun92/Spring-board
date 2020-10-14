@@ -83,8 +83,14 @@ public class ArticleDaoImpl implements ArticleDao{
 	}
 	
 	@Override
-	public int articleLikeCheck(RequestLikeDto dto) {
+	public int selectArticleLikeCheck(RequestLikeDto dto) {
 		return sqlSession.selectOne("articleLikeMapper.selectLikeCount", dto);
+	}
+	
+	@Override
+	public int selectArticleCheck(int id) {
+		return sqlSession.selectOne("articleMapper.selectArticleCheck",id);
+		
 	}
 	
 	@Override

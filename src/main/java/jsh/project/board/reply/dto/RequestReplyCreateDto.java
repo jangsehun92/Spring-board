@@ -12,7 +12,7 @@ public class RequestReplyCreateDto implements ReplyConverter{
 	private int replyGroup;
 	private int replyGroupOrder;
 	private int replyDepth;
-	@NotBlank(message = "내용을 입력해 주세요.")
+	@NotBlank(message = "댓글을 입력해 주세요.")
 	private String content;
 	
 	public RequestReplyCreateDto() {

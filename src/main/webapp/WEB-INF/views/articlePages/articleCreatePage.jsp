@@ -57,18 +57,11 @@ function uploadSummernoteImageFile(file, editor) {
 	});
 }
 function check_form(){
-	var inputForm_content = $("#content").val().replace(/\s|/gi,'');
+	var inputForm_content = $("#content").val().replace(/&nbsp;/gi,"").trim();
 	var importance = $("#select_importance option:selected").val();
 	
 	if(importance==null){
 		importance = "일반";
-	}
-	
-	if(inputForm_content==""){
-		alert("내용을 입력해주세요.");
-		$("#content").val("");
-		$("#content").focus();
-		return false;
 	}
 	
 	var requestArticleCreateDto = {
@@ -76,7 +69,7 @@ function check_form(){
 			category : $("#select_category option:selected").val(),
 			importance : importance,
 			title : $("#title").val(),
-			content : $("#content").val(),
+			content : inputForm_content,
 		}
 	
 	$.ajax({
@@ -90,6 +83,9 @@ function check_form(){
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
+			if(code == 'C003'){
+				alert(jsonValue.errors[0].reason);
+			}
 			if(code =='C004'){
 				console.log(code +" : "+jsonValue.message);
 				alert(jsonValue.message);

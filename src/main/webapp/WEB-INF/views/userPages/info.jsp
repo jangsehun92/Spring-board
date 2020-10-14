@@ -41,6 +41,34 @@ window.onload = function() {
 	});
 };
 
+function makeTable(){
+	$("#main").append(
+		"<div>"+
+			"<div style='margin-top: 40px'>"+
+				"<span>작성한 글 내역</span>"+
+			"</div>"+
+			"<table class='table table-hover'>"+
+				"<thead>"+
+					"<tr>"+
+						"<td class='col-md-6'><b>제목</b></td>"+
+						"<td class='col-md-1' align='right'><b>추천</b></td>"+
+						"<td class='col-md-1' align='right'><b>작성 날짜</b></td>"+
+					"</tr>"+
+				"</thead>"+
+				"<tbody id='articles'>"+
+				
+				"</tbody>"+
+			"</table>"+
+		"</div>"+
+		"<div>"+
+			"<nav aria-label='...' style='text-align: center;'>"+
+				"<ul class='pagination' id='pagination'>"+
+				"</ul>"+
+			"</nav>"+
+		"</div>"
+	);
+}
+
 //회원정보 가져오기 성공 후 
 function accountArticleList(id, page){
 	$.ajax({
@@ -49,32 +77,7 @@ function accountArticleList(id, page){
 		success:function(data){
 			console.log("회원정보 글 가져오기 : " + id);
 			$("#main").empty();
-			if(data.articles != ""){
-				$("#main").append(
-					"<div>"+
-						"<div style='margin-top: 40px'>"+
-							"<span>작성한 글 내역</span>"+
-						"</div>"+
-						"<table class='table table-hover'>"+
-							"<thead>"+
-								"<tr>"+
-									"<td class='col-md-6'><b>제목</b></td>"+
-									"<td class='col-md-1' align='right'><b>추천</b></td>"+
-									"<td class='col-md-1' align='right'><b>작성 날짜</b></td>"+
-								"</tr>"+
-							"</thead>"+
-							"<tbody id='articles'>"+
-							
-							"</tbody>"+
-						"</table>"+
-					"</div>"+
-					"<div>"+
-						"<nav aria-label='...' style='text-align: center;'>"+
-							"<ul class='pagination' id='pagination'>"+
-							"</ul>"+
-						"</nav>"+
-					"</div>"
-				);
+				makeTable();
 				for(var i in data.articles){
 					$("#articles").append(
 						"<tr>"+
@@ -115,24 +118,17 @@ function accountArticleList(id, page){
 				}else{
 					$("#pagination").append("<li class='disabled'><a href='javascript:void(0)' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>");
 				}
-			}
-			else{
-				$("#articles").append("<p align='center'>작성한 글이 없습니다.</p>");
-			}
 		},
 		error:function(request,status,error){
 			jsonValue = jQuery.parseJSON(request.responseText);
 			code = jsonValue.code;
-			if(code == 'C003'){
-				$(".error").empty();
-				for(var i in jsonValue.errors){
-					$("#user_nickname").focus();
-					$("#error_"+jsonValue.errors[i].field).append(jsonValue.errors[i].reason);
-				}
-			}
 			if(code == 'C006'){
 				alert(jsonValue.message);
 				console.log("code : " + jsonValue.code + " message : " + jsonValue.message);
+			}
+			if(code == 'B002'){
+				makeTable();
+				$("#articles").append("<p align='center'>"+ jsonValue.message +"</p>");
 			}
 		}
 	});

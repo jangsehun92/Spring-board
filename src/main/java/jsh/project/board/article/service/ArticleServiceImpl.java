@@ -21,6 +21,7 @@ import jsh.project.board.article.dto.response.ResponseArticleDto;
 import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
 import jsh.project.board.article.dto.response.ResponseBoardDto;
 import jsh.project.board.article.exception.ArticleNotFoundException;
+import jsh.project.board.article.exception.ArticlesNotFoundException;
 import jsh.project.board.global.infra.util.Pagination;
 import jsh.project.board.global.infra.util.FileService;
 
@@ -73,8 +74,11 @@ public class ArticleServiceImpl implements ArticleService{
 		dto.setStartCount(pagination.getStartCount());
 		dto.setEndCount(pagination.getEndCount());
 		
+		List<ResponseArticleDto> articles = articleDao.selectArticles(dto);
+		if(articles.isEmpty()) throw new ArticlesNotFoundException();
+		
 		ResponseBoardDto responseArticles = dto.toResponseDto();
-		responseArticles.setArticles(articleDao.selectArticles(dto));
+		responseArticles.setArticles(articles);
 		responseArticles.setPagination(pagination);
 		return responseArticles;
 	}
@@ -83,11 +87,10 @@ public class ArticleServiceImpl implements ArticleService{
 	public ResponseArticleDetailDto getArticle(RequestArticleDetailDto dto) {
 		log.info(dto.toString());
 		ResponseArticleDetailDto responseDto = articleDao.selectArticle(dto.getId());
-		if(responseDto == null) {
-			throw new ArticleNotFoundException();
-		}
+		if(responseDto == null) throw new ArticleNotFoundException();
+		
 		articleDao.updateViewCount(dto.getId());
-		responseDto.setLikeCheck(articleDao.articleLikeCheck(dto.toLikeDto()));
+		responseDto.setLikeCheck(articleDao.selectArticleLikeCheck(dto.toLikeDto()));
 		log.info(responseDto.toString());
 		return responseDto;
 	}
@@ -115,6 +118,7 @@ public class ArticleServiceImpl implements ArticleService{
 	public void updateArticle(RequestArticleUpdateDto dto) {
 		log.info(dto.toString());
 		Article article = dto.toArticle();
+		if(article == null) throw new ArticleNotFoundException();
 		log.info(article.toString());
 		articleDao.updateArticle(article);
 	}
@@ -122,6 +126,8 @@ public class ArticleServiceImpl implements ArticleService{
 	@Transactional
 	@Override
 	public void deleteArticle(int id) {
+		log.info("deleteArticle : " + id);
+		if(articleDao.selectArticleCheck(id) == 0) throw new ArticleNotFoundException();
 		articleDao.deleteArticle(id);
 		articleDao.deleteReplys(id);
 		articleDao.deleteLikes(id);
@@ -131,7 +137,8 @@ public class ArticleServiceImpl implements ArticleService{
 	@Override
 	public void like(RequestLikeDto dto) {
 		log.info(dto.toString());
-		if(articleDao.articleLikeCheck(dto)==0) {
+		if(articleDao.selectArticleCheck(dto.getArticleId()) == 0) throw new ArticleNotFoundException();
+		if(articleDao.selectArticleLikeCheck(dto)==0) {
 			articleDao.insertLike(dto);
 			log.info("insertLike");
 		}else {

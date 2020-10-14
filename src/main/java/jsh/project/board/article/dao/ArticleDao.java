@@ -23,7 +23,8 @@ public interface ArticleDao {
 	public void deleteArticle(int id);
 	public void deleteReplys(int articleId);
 	public void deleteLikes(int articleId);
-	public int articleLikeCheck(RequestLikeDto dto);
+	public int selectArticleLikeCheck(RequestLikeDto dto);
+	public int selectArticleCheck(int id);
 	public void insertLike(RequestLikeDto dto);
 	public void deleteLike(RequestLikeDto dto);
 }

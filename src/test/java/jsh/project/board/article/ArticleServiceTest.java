@@ -149,7 +149,7 @@ public class ArticleServiceTest {
 		//then
 		verify(articleDao, times(1)).updateViewCount(dto.getId());
 		verify(articleDao, times(1)).selectArticle(dto.getId());
-		verify(articleDao, times(1)).articleLikeCheck(any());
+		verify(articleDao, times(1)).selectArticleLikeCheck(any());
 		
 		assertNotNull(responseDto);
 	}
@@ -265,43 +265,7 @@ public class ArticleServiceTest {
 		articleService.like(dto);
 		
 		//then
-		verify(articleDao, times(1)).articleLikeCheck(dto);
-	}
-	
-	@Test
-	public void 카테고리_리스트_가져오기() {
-		//given
-		
-		//when
-		
-		//then
-	}
-	
-	@Test
-	public void 카테고리_입력() {
-		//given
-		
-		//when
-				
-		//then
-	}
-	
-	@Test
-	public void 카테고리_수정() {
-		//given
-		
-		//when
-				
-		//then
-	}
-	
-	@Test
-	public void 카테고리_삭제() {
-		//given
-		
-		//when
-				
-		//then
+		verify(articleDao, times(1)).selectArticleLikeCheck(dto);
 	}
 	
 }

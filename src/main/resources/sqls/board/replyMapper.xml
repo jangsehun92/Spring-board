@@ -40,6 +40,15 @@
 			reply_group = #{group}
 	</select>
 	
+	<select id="selectReplyCheck" parameterType="int" resultType="int">
+		SELECT 
+			count(*) 
+		FROM 
+			reply_table 
+		WHERE 
+			id = #{id}
+	</select>
+	
 	<insert id="insertReply" parameterType="Reply">
 		INSERT 
 		INTO 

@@ -192,7 +192,7 @@
 
 | Action | API | Parameter | Body | Success Response | Fail Response |
 |--------|-----|-----------|------|------------------|---------------|
-| 댓글 가져오기 |GET /replys/{id}|id=[String]|N/A|Status 200 OK|<ul><li></li></ul>|
-| 댓글 작성 |POST /reply|N/A| 바디 내용 |Status 200 OK|<ul><li></li></ul>|
-| 댓글 수정 |PATCH /reply/{id}|id=[String]| 바디 내용| Status 200 OK|<ul><li></li></ul>|
-| 댓글 삭제 |DELETE /reply/{id}|id=[String]| 바디 내용 |Status 200 OK|<ul><li></li></ul>|
+| 댓글 가져오기 |GET /replys/{id}|id=[String]|N/A|Status 200 OK [{"id":41,"articleId":268,"accountId":1,"nickname":"관리자","replyGroup":1,"replyDepth":0,"content":"삭제된 댓글입니다.","regdate":1602655212000,"modifyDate":1602655224000,"enabled":false}]|<ul><li>Replys Not Nound - 400 {"message":"댓글이 없습니다.", "status":400, "code":"R001", "errors":[]}</li></ul>|
+| 댓글 작성 |POST /reply|N/A| {"articleId" : "articleId", "accountId" : "accountId", "replyGroup" : "replyGroup", "content" : "content"}|Status 200 OK|<ul><li>Article Not Found - 400 {"message":"해당 게시글을 찾을 수 없습니다.", "status":400, "code":"B001", "errors":[]}</li></ul>|
+| 댓글 수정 |PATCH /reply/{id}|id=[String]| {"id" : "id", "articleId" : " articleId", "accountId" : " accountId", " content" : "content"}| Status 200 OK|<ul><li>Article Not Found - 400 {"message":"해당 게시글을 찾을 수 없습니다.", "status":400, "code":"B001", "errors":[]}</li><li>Reply Not Nound - 400 {"message":"해당 댓글이 존재하지 않습니다.", "status":400, "code":"R002", "errors":[]}</li></ul>|
+| 댓글 삭제 |DELETE /reply/{id}|id=[String]| {"id" : "id", "articleId" : "articleId", "accountId" : "accountId"} |Status 200 OK|<ul><li>Article Not Found - 400 {"message":"해당 게시글을 찾을 수 없습니다.", "status":400, "code":"B001", "errors":[]}</li><li>Reply Not Nound - 400 {"message":"해당 댓글이 존재하지 않습니다.", "status":400, "code":"R002", "errors":[]}</li></ul>|

@@ -32,7 +32,6 @@
   - @transactional을 적용하여 Unchecked Exception이 발생하면 관련 작업(DB)을 롤백한다.
   - client 단에서 ErrorReponse 내의 errorCode에 따라 처리한다.
   - Mockito를 이용하여 테스트 코드를 작성한다.
-  - https를 적용한다.
 
 ## 계정
 회원가입 조건

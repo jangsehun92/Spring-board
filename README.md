@@ -20,14 +20,16 @@
 # 기능 목록
 프로젝트 공통 사항
   - spring security를 적용한다.
-    1. 권한이 필요한 요청의 접근 처리를 한다.
+    1. 권한/접근 처리를 한다.
   - csrf를 활성화 한다. 
     1. 공통적으로 사용하는 header 페이지 내에 meta 태그를 사용하여 csrf 값을 셋팅한다.
     2. 비동기 요청인 경우 ajax_header.js 내에서 ajaxSend를 통해 csrf token값을 셋팅한다.
   - 목적에 맞는 request/response DTO 객체를 사용한다.
-  - 예외를 한곳에서 처리하기 위해 @ControllerAdvice 어노테이션을 적용한 GlobalExceptionHandler클래스에서 exception을 처리한다.(https://github.com/jangsehun92/Spring-board/blob/master/src/main/java/jsh/project/board/global/error/GlobalExceptionHandler.java)
+  - 예외를 한곳에서 일관성 있게 처리하기 위해 @ControllerAdvice 어노테이션을 적용한 GlobalExceptionHandler클래스에서 exception을 처리한다.(https://github.com/jangsehun92/Spring-board/blob/master/src/main/java/jsh/project/board/global/error/GlobalExceptionHandler.java)
     1. 비동기 요청은 ErrorResponse를 리턴한다.
     2. 비동기 요청이 아닐 경우 Error코드와 메시지를 출력하고, 메인페이지로 redirect 한다.
+    
+    (참고 : https://github.com/cheese10yun/spring-guide/blob/master/docs/exception-guide.md)
   - 유효성 검사는 서버에서 검사한다.
   - @transactional을 적용하여 Unchecked Exception이 발생하면 관련 작업(DB)을 롤백한다.
   - client 단에서 ErrorReponse 내의 errorCode에 따라 처리한다.

@@ -30,11 +30,12 @@
     2. 비동기 요청이 아닐 경우 Error코드와 메시지를 출력하고, 메인페이지로 redirect 한다.
     
     (참고 : https://github.com/cheese10yun/spring-guide/blob/master/docs/exception-guide.md)
-  - 유효성 검사는 서버에서 검사한다.
+  - 유효성 검사는 서버에서 한다.
   - 서비스단에 @transactional을 적용하여 Runtime Exception이 발생하면 관련 작업(DB)을 롤백한다.
   - client 단에서 ErrorReponse 내의 errorCode에 따라 처리한다.
   - Mockito를 이용하여 테스트 코드를 작성한다.
 -------
+
 ## 계정
 회원가입 조건
 1. 동일한 이메일을 사용할 수 없다. 
@@ -102,6 +103,7 @@
 | 비밀번호 재설정 |POST /account/resetPassword|N/A|{ "email" : "email", "password" : "password", "passwordCheck" : "passwordCheck", "authKey" : "authKey", "authOption" : "authOption" }|Status 200 OK|<ul><li>Entity Not Found - 400 {"message":" Entity Not Found", "status":400, "code":"C003", "errors":[{"field":"passwordCheck", "value":"", "reason":"비밀번호를 재입력해주세요."},{"field":"password", "value":"", "reason":"최소 8자리의 소문자,대문자,숫자,특수문자가 포함되어야합니다. "}]}</li><li>Bad Auth Request - 400 {"message":" 유효하지 않은 인증 요청 입니다.", "status":400, "code":"A002", "errors":[]}</li></ul>|
 | 비밀번호 변경 |POST /account/passwordChange|N/A|{ "beforePassword" : "beforePassword", "afterPassword" : "afterPassword", "afterPasswordCheck":"afterPasswordCheck" }|Status 200 OK|<ul><li>Entity Not Found - 400 {"message":" Entity Not Found","status":400,"code":"C003","errors":[{"field":"afterPasswordCheck","value":"","reason":"바꿀 비밀번호를 재입력해주세요."},{"field":"beforePassword","value":"","reason":"이전 비밀번호를 입력해주세요."},{"field":"afterPassword","value":"","reason":"최소 8자리의 소문자,대문자,숫자,특수문자가 포함되어야합니다. "}]}</li><li>Password Not Match - 400 {"message":" 기존 비밀번호가 맞지 않습니다.", "status":400, "code":"A007", "errors":[]}</li><li>Password Check Failed - 400 {"message":" 비밀번호가 서로 다릅니다.", "status":400, "code":"A009", "errors":[]}</li></ul>|
 -------
+
 ## 게시판
 게시판 조건
 1. 카테고리를 기준으로 게시판을 나눈다.
@@ -166,6 +168,7 @@
 | 게시글 수정 | PATCH /article/{id}|id=[Integer]|{"id" : "id", "articleId" : "articleId", "category" : "category", "importance" : "importance", "title" : "title", "content" : "content"}|Status 200 OK|<ul><li>Entity Not Fount - 400 {"message":" Entity Not Found", "status":400, "code":"C003", "errors":[{"field":"title","value":"","reason":"제목을 입력해주세요."},{"field":"content", "value":"", "reason":"내용을 입력해주세요."}]}</li><li> Article Not Found - 400 {"message":"해당 게시글을 찾을 수 없습니다.", "status":400, "code":"B001", "errors":[]}</li></ul>|
 | 게시글 삭제 | DELETE /article/{id}|id=[Integer]| {"articleId" : "articleId", "accountId" : "accountId"} |Status 200 OK|<ul><li> Article Not Found - 400 {"message":"해당 게시글을 찾을 수 없습니다.", "status":400, "code":"B001", "errors":[]}</li></ul>|
 -----
+
 ## 댓글/대댓글
 댓글/대댓글 조건
 1. 댓글과 관련된 모든 요청은 비통기 통신을 통해 이루어 진다.

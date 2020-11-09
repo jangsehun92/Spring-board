@@ -14,22 +14,21 @@
 		<typeAlias type="jsh.project.board.account.dto.request.RequestEmailConfirmDto" alias="RequestEmailConfirmDto" />
 		<typeAlias type="jsh.project.board.account.dto.request.RequestPasswordResetDto" alias="RequestPasswordResetDto" />
 		<typeAlias type="jsh.project.board.account.dto.request.RequestPasswordDto" alias="RequestPasswordDto" />
-		<typeAlias type="jsh.project.board.account.dto.AuthDto" alias="AuthDto" />
+		<typeAlias type="jsh.project.board.account.dto.auth.AuthDto" alias="AuthDto" />
 
 		<!-- Article 관련 -->
 		<typeAlias type="jsh.project.board.article.domain.Article" alias="Article" />
 		<typeAlias type="jsh.project.board.article.dto.response.ResponseArticleDto" alias="ResponseArticleDto" />
 		<typeAlias type="jsh.project.board.article.dto.response.ResponseArticleDetailDto" alias="ResponseArticleDetailDto" />
 		<typeAlias type="jsh.project.board.article.dto.response.ResponseArticleUpdateDto" alias="ResponseArticleUpdateDto" />
-		<typeAlias type="jsh.project.board.article.dto.request.RequestArticlesDto" alias="RequestArticlesDto" />
-		<typeAlias type="jsh.project.board.article.dto.request.RequestArticleDeleteDto" alias="RequestArticleDeleteDto" />
+		<typeAlias type="jsh.project.board.article.dto.request.article.RequestArticlesDto" alias="RequestArticlesDto" />
 
 		<!-- Article Like 관련 -->
 		<typeAlias type="jsh.project.board.article.dto.request.like.RequestLikeDto" alias="RequestLikeDto" />
 
 		<!-- Article Reply 관련 -->
 		<typeAlias type="jsh.project.board.reply.domain.Reply" alias="Reply" />
-		<typeAlias type="jsh.project.board.reply.dto.ResponseReplyDto" alias="ResponseReplyDto" />
+		<typeAlias type="jsh.project.board.reply.dto.response.ResponseReplyDto" alias="ResponseReplyDto" />
 
 	</typeAliases>
 	<typeHandlers>
@@ -38,7 +37,6 @@
 
 	<!-- mapper의 위치를 잡아준다. -->
 	<mappers>
-		<!-- 게시판 관련 -->
 		<mapper resource="/sqls/board/boardMapper.xml" />
 		<mapper resource="/sqls/board/articleMapper.xml" />
 		<mapper resource="/sqls/board/articleLikeMapper.xml" />

@@ -1,4 +1,4 @@
-package jsh.project.board.account.dto;
+package jsh.project.board.account.dto.auth;
 
 import java.util.Date;
 

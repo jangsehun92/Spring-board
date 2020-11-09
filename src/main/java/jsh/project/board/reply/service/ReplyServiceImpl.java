@@ -11,10 +11,10 @@ import jsh.project.board.article.dao.ArticleDao;
 import jsh.project.board.article.exception.ArticleNotFoundException;
 import jsh.project.board.reply.dao.ReplyDao;
 import jsh.project.board.reply.domain.Reply;
-import jsh.project.board.reply.dto.RequestReplyCreateDto;
-import jsh.project.board.reply.dto.RequestReplyDeleteDto;
-import jsh.project.board.reply.dto.RequestReplyUpdateDto;
-import jsh.project.board.reply.dto.ResponseReplyDto;
+import jsh.project.board.reply.dto.request.RequestReplyCreateDto;
+import jsh.project.board.reply.dto.request.RequestReplyDeleteDto;
+import jsh.project.board.reply.dto.request.RequestReplyUpdateDto;
+import jsh.project.board.reply.dto.response.ResponseReplyDto;
 import jsh.project.board.reply.exception.ReplyNotFoundException;
 import jsh.project.board.reply.exception.ReplysNotFoundException;
 

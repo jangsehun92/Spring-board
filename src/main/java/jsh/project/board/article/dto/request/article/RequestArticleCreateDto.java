@@ -1,4 +1,4 @@
-package jsh.project.board.article.dto.request;
+package jsh.project.board.article.dto.request.article;
 
 import javax.validation.constraints.NotBlank;
 
@@ -7,9 +7,8 @@ import jsh.project.board.article.domain.Article.ArticleConverter;
 import jsh.project.board.article.enums.AllCategory;
 import jsh.project.board.article.enums.Importance;
 
-public class RequestArticleUpdateDto implements ArticleConverter{
+public class RequestArticleCreateDto implements ArticleConverter{
 	
-	private int id;
 	private int accountId;
 	private String category;
 	private int importance;
@@ -18,16 +17,8 @@ public class RequestArticleUpdateDto implements ArticleConverter{
 	@NotBlank(message = "내용을 입력해주세요.")
 	private String content;
 	
-	public RequestArticleUpdateDto() {
+	public RequestArticleCreateDto() {
 		
-	}
-	
-	public int getId() {
-		return id;
-	}
-	
-	public void setId(int id) {
-		this.id = id;
 	}
 	
 	public int getAccountId() {
@@ -53,26 +44,21 @@ public class RequestArticleUpdateDto implements ArticleConverter{
 	public void setImportance(String importance) {
 		this.importance = Integer.parseInt(Importance.valueOf(importance.toUpperCase()).getValue());
 	}
-
+	
 	public String getTitle() {
 		return title;
 	}
-
+	
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
+	
 	public String getContent() {
 		return content;
 	}
-
+	
 	public void setContent(String content) {
 		this.content = content;
-	}
-	
-	@Override
-	public String toString() {
-		return "RequestArticleupdateDto { id : " + id + " accountId : " + accountId + " category : " + category + " importance : " + importance + " title : " + title + " content : " + content + " }";
 	}
 	
 	@Override
@@ -81,5 +67,9 @@ public class RequestArticleUpdateDto implements ArticleConverter{
 		return article;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "RequestArticleCreateDto { accountId : "+accountId + " category : " + category + " importance : " + importance + " content : " + content + " }";
+	}
+
 }

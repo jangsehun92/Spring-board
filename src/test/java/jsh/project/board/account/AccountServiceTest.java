@@ -25,7 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import jsh.project.board.account.dao.AccountDao;
 import jsh.project.board.account.dao.AuthDao;
 import jsh.project.board.account.domain.Account;
-import jsh.project.board.account.dto.AuthDto;
+import jsh.project.board.account.dto.auth.AuthDto;
 import jsh.project.board.account.dto.request.RequestAccountCreateDto;
 import jsh.project.board.account.dto.request.RequestAccountEditDto;
 import jsh.project.board.account.dto.request.RequestEmailConfirmDto;

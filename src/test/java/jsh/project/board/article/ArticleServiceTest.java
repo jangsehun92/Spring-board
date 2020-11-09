@@ -22,11 +22,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jsh.project.board.article.dao.ArticleDao;
-import jsh.project.board.article.dto.request.RequestArticleCreateDto;
-import jsh.project.board.article.dto.request.RequestArticleDeleteDto;
-import jsh.project.board.article.dto.request.RequestArticleDetailDto;
-import jsh.project.board.article.dto.request.RequestArticleUpdateDto;
-import jsh.project.board.article.dto.request.RequestArticlesDto;
+import jsh.project.board.article.dto.request.article.RequestArticleCreateDto;
+import jsh.project.board.article.dto.request.article.RequestArticleDeleteDto;
+import jsh.project.board.article.dto.request.article.RequestArticleDetailDto;
+import jsh.project.board.article.dto.request.article.RequestArticleUpdateDto;
+import jsh.project.board.article.dto.request.article.RequestArticlesDto;
 import jsh.project.board.article.dto.request.like.RequestLikeDto;
 import jsh.project.board.article.dto.response.ResponseArticleDetailDto;
 import jsh.project.board.article.dto.response.ResponseArticleDto;
@@ -246,7 +246,7 @@ public class ArticleServiceTest {
 		dto.setAccountId(1);
 		
 		//when
-		articleService.deleteArticle(dto.getArticleId());
+		articleService.deleteArticle(dto);
 		
 		//then
 		verify(articleDao, times(1)).deleteArticle(dto.getArticleId());

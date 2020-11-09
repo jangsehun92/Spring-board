@@ -2,9 +2,9 @@ package jsh.project.board.reply.domain;
 
 import java.util.Date;
 
-import jsh.project.board.reply.dto.RequestReplyCreateDto;
-import jsh.project.board.reply.dto.RequestReplyDeleteDto;
-import jsh.project.board.reply.dto.RequestReplyUpdateDto;
+import jsh.project.board.reply.dto.request.RequestReplyCreateDto;
+import jsh.project.board.reply.dto.request.RequestReplyDeleteDto;
+import jsh.project.board.reply.dto.request.RequestReplyUpdateDto;
 
 public class Reply {
 	

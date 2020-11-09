@@ -5,7 +5,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import jsh.project.board.account.dto.AuthDto;
+import jsh.project.board.account.dto.auth.AuthDto;
 import jsh.project.board.account.dto.request.RequestEmailConfirmDto;
 
 @Repository

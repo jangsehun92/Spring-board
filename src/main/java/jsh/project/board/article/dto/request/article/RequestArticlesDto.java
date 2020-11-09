@@ -1,4 +1,4 @@
-package jsh.project.board.article.dto.request;
+package jsh.project.board.article.dto.request.article;
 
 import jsh.project.board.article.dto.response.ResponseBoardDto;
 

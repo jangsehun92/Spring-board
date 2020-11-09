@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import jsh.project.board.account.dao.AuthDao;
-import jsh.project.board.account.dto.AuthDto;
+import jsh.project.board.account.dto.auth.AuthDto;
 import jsh.project.board.account.dto.request.RequestEmailConfirmDto;
 import jsh.project.board.account.enums.AuthOption;
 import jsh.project.board.account.exception.BadAuthRequestException;

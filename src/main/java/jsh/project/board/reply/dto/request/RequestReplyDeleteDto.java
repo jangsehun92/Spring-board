@@ -1,4 +1,4 @@
-package jsh.project.board.reply.dto;
+package jsh.project.board.reply.dto.request;
 
 import jsh.project.board.reply.domain.Reply;
 import jsh.project.board.reply.domain.Reply.ReplyConverter;

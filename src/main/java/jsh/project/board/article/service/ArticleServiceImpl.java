@@ -11,10 +11,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jsh.project.board.article.dao.ArticleDao;
 import jsh.project.board.article.domain.Article;
-import jsh.project.board.article.dto.request.RequestArticleCreateDto;
-import jsh.project.board.article.dto.request.RequestArticleDetailDto;
-import jsh.project.board.article.dto.request.RequestArticleUpdateDto;
-import jsh.project.board.article.dto.request.RequestArticlesDto;
+import jsh.project.board.article.dto.request.article.RequestArticleCreateDto;
+import jsh.project.board.article.dto.request.article.RequestArticleDeleteDto;
+import jsh.project.board.article.dto.request.article.RequestArticleDetailDto;
+import jsh.project.board.article.dto.request.article.RequestArticleUpdateDto;
+import jsh.project.board.article.dto.request.article.RequestArticlesDto;
 import jsh.project.board.article.dto.request.like.RequestLikeDto;
 import jsh.project.board.article.dto.response.ResponseArticleDetailDto;
 import jsh.project.board.article.dto.response.ResponseArticleDto;
@@ -53,7 +54,9 @@ public class ArticleServiceImpl implements ArticleService{
 	@Override
 	public ResponseBoardDto getArticles(RequestArticlesDto dto){
 		log.info(dto.toString());
-		Pagination pagination = new Pagination(articleDao.selectTotalCount(dto), dto.getPage(),articleDao.selectNoticeTotalCount());
+		Pagination pagination = new Pagination(	articleDao.selectTotalCount(dto), 
+												dto.getPage(),
+												articleDao.selectNoticeTotalCount());
 		dto.setStartCount(pagination.getStartCount());
 		dto.setEndCount(pagination.getEndCount());
 		
@@ -125,12 +128,12 @@ public class ArticleServiceImpl implements ArticleService{
 	
 	@Transactional
 	@Override
-	public void deleteArticle(int id) {
-		log.info("deleteArticle : " + id);
-		if(articleDao.selectArticleCheck(id) == 0) throw new ArticleNotFoundException();
-		articleDao.deleteArticle(id);
-		articleDao.deleteReplys(id);
-		articleDao.deleteLikes(id);
+	public void deleteArticle(RequestArticleDeleteDto dto) {
+		log.info("deleteArticle : " + dto.getArticleId());
+		if(articleDao.selectArticleCheck(dto.getArticleId()) == 0) throw new ArticleNotFoundException();
+		articleDao.deleteArticle(dto.getArticleId());
+		articleDao.deleteReplys(dto.getArticleId());
+		articleDao.deleteLikes(dto.getArticleId());
 	}
 	
 	@Transactional

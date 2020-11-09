@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import jsh.project.board.article.domain.Article;
-import jsh.project.board.article.dto.request.RequestArticlesDto;
+import jsh.project.board.article.dto.request.article.RequestArticlesDto;
 import jsh.project.board.article.dto.request.like.RequestLikeDto;
 import jsh.project.board.article.dto.response.ResponseArticleDetailDto;
 import jsh.project.board.article.dto.response.ResponseArticleDto;

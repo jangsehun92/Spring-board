@@ -2,10 +2,10 @@ package jsh.project.board.reply.service;
 
 import java.util.List;
 
-import jsh.project.board.reply.dto.RequestReplyCreateDto;
-import jsh.project.board.reply.dto.RequestReplyDeleteDto;
-import jsh.project.board.reply.dto.RequestReplyUpdateDto;
-import jsh.project.board.reply.dto.ResponseReplyDto;
+import jsh.project.board.reply.dto.request.RequestReplyCreateDto;
+import jsh.project.board.reply.dto.request.RequestReplyDeleteDto;
+import jsh.project.board.reply.dto.request.RequestReplyUpdateDto;
+import jsh.project.board.reply.dto.response.ResponseReplyDto;
 
 public interface ReplyService {
 	public List<ResponseReplyDto> getReplys(int articleId);

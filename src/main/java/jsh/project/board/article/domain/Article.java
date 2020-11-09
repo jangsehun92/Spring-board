@@ -2,8 +2,8 @@ package jsh.project.board.article.domain;
 
 import java.util.Date;
 
-import jsh.project.board.article.dto.request.RequestArticleCreateDto;
-import jsh.project.board.article.dto.request.RequestArticleUpdateDto;
+import jsh.project.board.article.dto.request.article.RequestArticleCreateDto;
+import jsh.project.board.article.dto.request.article.RequestArticleUpdateDto;
 
 public class Article {
 	

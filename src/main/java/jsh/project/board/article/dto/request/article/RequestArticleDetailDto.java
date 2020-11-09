@@ -1,4 +1,4 @@
-package jsh.project.board.article.dto.request;
+package jsh.project.board.article.dto.request.article;
 
 import jsh.project.board.article.dto.request.like.RequestLikeDto;
 import jsh.project.board.article.dto.request.like.RequestLikeDto.LikeDtoConverter;

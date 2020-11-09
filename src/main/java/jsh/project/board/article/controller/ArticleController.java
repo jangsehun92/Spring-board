@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,12 +25,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jsh.project.board.account.domain.Account;
 import jsh.project.board.account.enums.Role;
-import jsh.project.board.article.dto.request.RequestArticleCreateDto;
-import jsh.project.board.article.dto.request.RequestArticleDeleteDto;
-import jsh.project.board.article.dto.request.RequestArticleDetailDto;
-import jsh.project.board.article.dto.request.RequestArticleInfoDto;
-import jsh.project.board.article.dto.request.RequestArticleUpdateDto;
-import jsh.project.board.article.dto.request.RequestArticlesDto;
+import jsh.project.board.article.dto.request.article.RequestArticleCreateDto;
+import jsh.project.board.article.dto.request.article.RequestArticleDeleteDto;
+import jsh.project.board.article.dto.request.article.RequestArticleDetailDto;
+import jsh.project.board.article.dto.request.article.RequestArticleInfoDto;
+import jsh.project.board.article.dto.request.article.RequestArticleUpdateDto;
+import jsh.project.board.article.dto.request.article.RequestArticlesDto;
 import jsh.project.board.article.dto.request.like.RequestLikeDto;
 import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
 import jsh.project.board.article.dto.response.ResponseBoardDto;
@@ -80,7 +81,6 @@ public class ArticleController {
 			Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			dto.setAccountId(account.getId());
 		}
-		dto.setId(id);
 		model.addAttribute("responseDto",articleService.getArticle(dto));
 		return "articlePages/articleDetail";
 	}
@@ -145,11 +145,11 @@ public class ArticleController {
 	@PreAuthorize("((#dto.accountId == principal.id) and (#dto.articleId == #id)) or (hasAuthority('ROLE_ADMIN'))")
 	@DeleteMapping("/article/{id}")
 	public ResponseEntity<HttpStatus> deleteArticle(@PathVariable("id") int id, @RequestBody RequestArticleDeleteDto dto) {
-		articleService.deleteArticle(id);
+		articleService.deleteArticle(dto);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
-	// 파일 업로드
+	// 이미지 파일 업로드
 	@PostMapping("/article/image")
 	public ResponseEntity<String> imageUpload(@RequestParam("file") MultipartFile file){
 		return new ResponseEntity<>(articleService.uploadFile(file),HttpStatus.OK);

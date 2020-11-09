@@ -1,4 +1,4 @@
-package jsh.project.board.reply.dto;
+package jsh.project.board.reply.dto.response;
 
 import java.sql.Date;
 

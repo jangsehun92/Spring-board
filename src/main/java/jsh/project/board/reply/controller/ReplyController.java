@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import jsh.project.board.reply.dto.RequestReplyCreateDto;
-import jsh.project.board.reply.dto.RequestReplyDeleteDto;
-import jsh.project.board.reply.dto.RequestReplyUpdateDto;
-import jsh.project.board.reply.dto.ResponseReplyDto;
+import jsh.project.board.reply.dto.request.RequestReplyCreateDto;
+import jsh.project.board.reply.dto.request.RequestReplyDeleteDto;
+import jsh.project.board.reply.dto.request.RequestReplyUpdateDto;
+import jsh.project.board.reply.dto.response.ResponseReplyDto;
 import jsh.project.board.reply.service.ReplyService;
 
 @Controller

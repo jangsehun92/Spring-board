@@ -19,10 +19,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jsh.project.board.reply.dao.ReplyDao;
-import jsh.project.board.reply.dto.RequestReplyCreateDto;
-import jsh.project.board.reply.dto.RequestReplyDeleteDto;
-import jsh.project.board.reply.dto.RequestReplyUpdateDto;
-import jsh.project.board.reply.dto.ResponseReplyDto;
+import jsh.project.board.reply.dto.request.RequestReplyCreateDto;
+import jsh.project.board.reply.dto.request.RequestReplyDeleteDto;
+import jsh.project.board.reply.dto.request.RequestReplyUpdateDto;
+import jsh.project.board.reply.dto.response.ResponseReplyDto;
 import jsh.project.board.reply.service.ReplyServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)

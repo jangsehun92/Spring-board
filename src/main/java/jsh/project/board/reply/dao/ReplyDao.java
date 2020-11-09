@@ -3,7 +3,7 @@ package jsh.project.board.reply.dao;
 import java.util.List;
 
 import jsh.project.board.reply.domain.Reply;
-import jsh.project.board.reply.dto.ResponseReplyDto;
+import jsh.project.board.reply.dto.response.ResponseReplyDto;
 
 public interface ReplyDao {
 	public List<ResponseReplyDto> selectReplys(int articleId);

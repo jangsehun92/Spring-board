@@ -17,6 +17,100 @@
 * DB : Oracle 11g
 * Security : spring security 5.2.2
 
+------
+# 프로젝트 구조
+```
+└── src
+    └── main
+        ├── java
+        │   └── jsh
+        │       └── project
+        │           └── board
+        │               ├── account
+        │               │    ├── controller  
+        │               │    ├── service
+        │               │    ├── domain
+        │               │    ├── dao
+        │               │    ├── dto
+        │               │    │   ├── auth        
+        │               │    │   ├── request
+        │               │    │   └── response        
+        │               │    ├── enums
+        │               │    ├── exception
+        │               │    └── security
+        │               │    
+        │               ├── article
+        │               │    ├── controller  
+        │               │    ├── service
+        │               │    ├── domain
+        │               │    ├── dao
+        │               │    ├── dto
+        │               │    │   ├── request
+        │               │    │   │   └── article        
+        │               │    │   │   └── like         
+        │               │    │   └── response          
+        │               │    ├── enums
+        │               │    │   ├── dto
+        │               │    │   └── mapper
+        │               │    └── exception
+        │               │    
+        │               ├── reply
+        │               │    ├── controller  
+        │               │    ├── service
+        │               │    ├── domain
+        │               │    ├── dao
+        │               │    ├── dto        
+        │               │    │   ├── request
+        │               │    │   └── response          
+        │               │    ├── enums
+        │               │    └── exception
+        │               │    
+        │               └── global
+        │                   ├── enumModel  
+        │                   ├── error
+        │                   │   └── exception        
+        │                   ├── filter
+        │                   ├── handler
+        │                   └── infra
+        │                       ├── email
+        │                       └── util        
+        │
+        ├── resources
+        │   ├── properties
+        │   │   └── db.properties
+        │   └── sqls
+        │       ├── account   
+        │       │   ├── accountMapper.xml
+        │       │   └── authMapper.xml                
+        │       └── board     
+        │           ├── articleLikeMapperxml
+        │           ├── articleMapper.xml
+        │           ├── boardMapper.xml
+        │           └── replyMapper.xml        
+        │
+        └─── webapp
+            ├── resources
+            │   ├── css    
+            │   └── js
+            │
+            └── WEB-INF  
+                ├── web.xml    
+                ├── spring
+                │   ├── root-context.xml
+                │   ├── security-context.xml
+                │   │    
+                │   ├── appServlet
+                │   │   └── servlet-context.xml
+                │   │
+                │   └── sqls
+                │       └── mybatis-config.xml
+                │    
+                └── views
+                    └── userPages
+                    └── articlePages        
+                    └── commonPages    
+```
+------
 # 기능 목록
 프로젝트 공통 사항
   - spring security를 적용한다.
@@ -34,7 +128,7 @@
   - 서비스단에 @transactional을 적용하여 Runtime Exception이 발생하면 관련 작업(DB)을 롤백한다.
   - client 단에서 ErrorReponse 내의 errorCode에 따라 처리한다.
   - Mockito를 이용하여 테스트 코드를 작성한다.
--------
+------
 
 ## 계정
 회원가입 조건

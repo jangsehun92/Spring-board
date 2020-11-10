@@ -89,7 +89,7 @@
         │               │    │   │   ├── article
         │               │    │   │   │   ├── RequestArticleCreateDto.java
         │               │    │   │   │   ├── RequestArticleDeleteDto.java 
-        │               │    │   │   │   ├── RquestArticleDetailDto.java
+        │               │    │   │   │   ├── RequestArticleDetailDto.java
         │               │    │   │   │   ├── RequestArticleInfoDto.java 
         │               │    │   │   │   ├── RequestArticlesDto.java
         │               │    │   │   │   └── RequestArticleUpdateDto.java         

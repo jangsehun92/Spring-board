@@ -24,7 +24,7 @@ import jsh.project.board.account.dto.response.ResponseAccountInfoDto;
 import jsh.project.board.account.dto.response.ResponseFindAccountDto;
 import jsh.project.board.account.enums.AuthOption;
 import jsh.project.board.account.enums.Role;
-import jsh.project.board.account.exception.AccountNotEmailChecked;
+import jsh.project.board.account.exception.AccountNotEmailCheckedException;
 import jsh.project.board.account.exception.AccountNotFoundException;
 import jsh.project.board.account.exception.BadAuthRequestException;
 import jsh.project.board.account.exception.EmailAlreadyUsedException;
@@ -174,7 +174,7 @@ public class AccountServiceImpl implements AccountService{
 			throw new FindAccountBadRequestException(); 
 		}
 		if(!account.isEnabled()) { 
-			throw new AccountNotEmailChecked(); 
+			throw new AccountNotEmailCheckedException(); 
 		}
 		
 		updateLocked(dto.getEmail(), 1); //계정 잠굼

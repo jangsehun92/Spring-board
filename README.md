@@ -28,52 +28,138 @@
         │           └── board
         │               ├── account
         │               │    ├── controller  
+        │               │    │   └── AccountController.java        
         │               │    ├── service
+        │               │    │   ├── AccountService.java
+        │               │    │   └── AccountServiceImpl.java        
         │               │    ├── domain
+        │               │    │   └── Account.java         
         │               │    ├── dao
+        │               │    │   ├── AccountDao.java
+        │               │    │   ├── AccountDaoImpl.java   
+        │               │    │   ├── AuthDao.java
+        │               │    │   └── AuthDaoImpl.java         
         │               │    ├── dto
-        │               │    │   ├── auth        
+        │               │    │   ├── auth
+        │               │    │   │   └── AuthDto.java        
         │               │    │   ├── request
-        │               │    │   └── response        
+        │               │    │   │   ├── RequestAccountCreateDto.java
+        │               │    │   │   ├── RequestAccountEditDto.java
+        │               │    │   │   ├── RequestAccountResetDto.java
+        │               │    │   │   ├── RequestEmailConfirmDto.java
+        │               │    │   │   ├── RequestEmailDto.java
+        │               │    │   │   ├── RequestFindAccountDto.java
+        │               │    │   │   ├── RequestPasswordDto.java
+        │               │    │   │   └── RequestPasswordResetDto.java        
+        │               │    │   └── response 
+        │               │    │       ├── ResponseAccountInfoDto.java
+        │               │    │       └── ResponseFindAccountDto.java          
         │               │    ├── enums
+        │               │    │   ├── AuthOption.java
+        │               │    │   └── Role.java        
         │               │    ├── exception
+        │               │    │   ├── AccountNotEmailCheckedException.java
+        │               │    │   ├── AccountNotFoundException.java
+        │               │    │   ├── BadAuthRequestException.java
+        │               │    │   ├── BadRequestException.java 
+        │               │    │   ├── EmailAlreadyUsedException.java
+        │               │    │   ├── FindAccountBadRequestException.java 
+        │               │    │   ├── NotFoundAccountInfoException.java
+        │               │    │   ├── PasswordCheckFailedException.java 
+        │               │    │   └── PasswordNotMatchException.java         
         │               │    └── security
+        │               │        ├── CustomAuthenticationFailureHandler.java 
+        │               │        ├── CustomAuthenticationProvider.java         
+        │               │        ├── CustomAuthenticationSuccessHandler.java 
+        │               │        └── CustomUserDetailsService.java         
         │               │    
         │               ├── article
-        │               │    ├── controller  
+        │               │    ├── controller
+        │               │    │   └── ArticleController.java        
         │               │    ├── service
+        │               │    │   ├── ArticleService.java
+        │               │    │   └── ArticleServiceImpl.java        
         │               │    ├── domain
+        │               │    │   └── Article.java        
         │               │    ├── dao
+        │               │    │   ├── ArticleDao.java
+        │               │    │   └── ArticleDaoImpl.java        
         │               │    ├── dto
         │               │    │   ├── request
-        │               │    │   │   └── article        
+        │               │    │   │   ├── article
+        │               │    │   │   │   ├── RequestArticleCreateDto.java
+        │               │    │   │   │   ├── RequestArticleDeleteDto.java 
+        │               │    │   │   │   ├── RquestArticleDetailDto.java
+        │               │    │   │   │   ├── RequestArticleInfoDto.java 
+        │               │    │   │   │   ├── RequestArticlesDto.java
+        │               │    │   │   │   └── RequestArticleUpdateDto.java         
         │               │    │   │   └── like         
-        │               │    │   └── response          
+        │               │    │   │       └── RequestLikeDto.java        
+        │               │    │   └── response
+        │               │    │       ├── ResponseArticleDetailDto.java
+        │               │    │       ├── ResponseArticleDto.java
+        │               │    │       ├── ResponseArticleUpdateDto.java
+        │               │    │       └── ResponseBoardDto.java        
         │               │    ├── enums
+        │               │    │   ├── AdminCategory.java
+        │               │    │   ├── AllCategory.java
+        │               │    │   ├── Importance.java
+        │               │    │   ├── UserCategory.java        
         │               │    │   ├── dto
+        │               │    │   │   ├── CategoryDto.java
+        │               │    │   │   └── ImportanceDto.java        
         │               │    │   └── mapper
+        │               │    │       ├── CategoryEnumMapper.java
+        │               │    │       └── ImportanceEnumMapper.java        
         │               │    └── exception
+        │               │        ├── ArticleNotFoundException.java
+        │               │        └── ArticlesNotFoundException.java        
         │               │    
         │               ├── reply
         │               │    ├── controller  
+        │               │    │   └── ReplyController.java        
         │               │    ├── service
+        │               │    │   ├── ReplyService.java
+        │               │    │   └── ReplyServiceImpl.java        
         │               │    ├── domain
+        │               │    │   └── Reply.java        
         │               │    ├── dao
+        │               │    │   ├── ReplyDao.java
+        │               │    │   └── ReplyDaoImpl.java
         │               │    ├── dto        
         │               │    │   ├── request
-        │               │    │   └── response          
-        │               │    ├── enums
+        │               │    │   │   ├── RequestReplyCreateDto.java
+        │               │    │   │   ├── RequestReplyDeleteDto.java        
+        │               │    │   │   └── RequestReplyUpdateDto.java         
+        │               │    │   └── response
+        │               │    │       └── ResponseReplyDto.java        
         │               │    └── exception
+        │               │        ├── ReplyNotFoundException.java
+        │               │        └── ReplysNotFoundException.java        
         │               │    
         │               └── global
         │                   ├── enumModel  
+        │                   │   └── EnumModel.java        
         │                   ├── error
-        │                   │   └── exception        
+        │                   │   ├── exception        
+        │                   │   │   ├── BusinessException.java
+        │                   │   │   ├── EmailException.java
+        │                   │   │   ├── ErrorCode.java
+        │                   │   │   └── FieldError.java
+        │                   │   ├── ErrorResponse.java
+        │                   │   └── GlobalExceptionHandler.java        
         │                   ├── filter
+        │                   │   └── UrlFilter.java        
         │                   ├── handler
+        │                   │   └── CustomDateHandler.java        
         │                   └── infra
         │                       ├── email
+        │                       │   ├── EmailService.java
+        │                       │   └── MailUtils.java        
         │                       └── util        
+        │                           ├── AuthKey.java        
+        │                           ├── FileService.java
+        │                           └── Pagination.java        
         │
         ├── resources
         │   ├── properties

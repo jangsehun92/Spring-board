@@ -75,7 +75,7 @@ public class ArticleController {
 	}
 	
 	// 단일 Article 보기 
-	@GetMapping("/article/{id}")
+	@GetMapping("/article/{id}") 
 	public String article(@PathVariable("id") int id, Model model, Principal principal, RequestArticleDetailDto dto) {
 		if(principal != null) {
 			Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();

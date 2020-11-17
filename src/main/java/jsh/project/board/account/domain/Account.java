@@ -44,9 +44,9 @@ public class Account implements UserDetails {
 
 	private Account(RequestAccountCreateDto dto, Role role) {
 		this.email = dto.getEmail();
-		this.password = dto.getPassword();
-		this.name = dto.getName();
-		this.birth = dto.getBirth();
+		this.password = dto.getPassword(); 
+		this.name = dto.getName(); 
+		this.birth = dto.getBirth(); 
 		this.nickname = dto.getNickname();
 		this.role = role.getValue(); 
 	}
@@ -130,11 +130,11 @@ public class Account implements UserDetails {
 		return true;
 	}
 	
-	public void changeAccountNickname(String nickname) {
+	public void changeNickname(String nickname) {
 		this.nickname = nickname;
 	}
 	
-	public void changeAccountPassword(String password) {
+	public void changePassword(String password) {
 		this.password = password;
 	}
 	

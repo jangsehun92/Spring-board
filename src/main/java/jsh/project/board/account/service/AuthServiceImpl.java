@@ -3,9 +3,13 @@ package jsh.project.board.account.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jsh.project.board.account.dao.AuthDao;
+import jsh.project.board.account.domain.Account;
 import jsh.project.board.account.dto.auth.AuthDto;
 import jsh.project.board.account.dto.request.RequestEmailConfirmDto;
 import jsh.project.board.account.enums.AuthOption;
@@ -14,28 +18,43 @@ import jsh.project.board.global.infra.util.AuthKey;
 
 @Service
 public class AuthServiceImpl implements AuthService{
+	private static final Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
 	
-	private AuthDao authDao;
+	private final AuthDao authDao;
 	
 	public AuthServiceImpl(AuthDao authDao) {
 		this.authDao = authDao;
 	}
 
+	@Transactional
 	@Override
-	public AuthDto createAuth(String email, AuthOption authOption) {
+	public AuthDto createAuth(Account account, AuthOption authOption) {
 		Map<String, String> paramMap = new HashMap<>();
-		paramMap.put("email", email);
+		paramMap.put("email", account.getUsername());
 		paramMap.put("authOption", authOption.getValue());
 		
 		if(authDao.selectAuthCount(paramMap) != 0) {
-			return updateAuthKey(email);
+			return updateAuthKey(account.getUsername());
 		}
 		
-		AuthDto authDto = new AuthDto(email, new AuthKey().getKey(), authOption.getValue());
+		AuthDto authDto = new AuthDto(account.getUsername(), new AuthKey().getKey(), authOption.getValue());
 		authDao.insertAuth(authDto);
 		return authDto;
 	}
 	
+	@Transactional
+	@Override
+	public void authConfirm(final RequestEmailConfirmDto dto) {
+		log.info(dto.toString());
+		final AuthDto authDto = getAuth(dto.getEmail());
+		
+		if (authDto == null || !dto.getAuthKey().equals(authDto.getAuthKey()) || !dto.getAuthOption().equals(authDto.getAuthOption())) {
+			throw new BadAuthRequestException();
+		}
+		expired(dto);
+	}
+	
+	@Transactional
 	@Override
 	public AuthDto updateAuthKey(String email) {
 		AuthDto authDto = authDao.selectAuth(email);
@@ -53,14 +72,14 @@ public class AuthServiceImpl implements AuthService{
 		return authDao.selectAuth(email);
 	}
 
-	@Override
-	public void expired(RequestEmailConfirmDto dto) {
+	@Transactional
+	private void expired(RequestEmailConfirmDto dto) {
 		authDao.deleteAuth(dto);
 	}
 
 	@Override
-	public boolean checkAuth(Map<String, String> paramMap) {
-		return authDao.selectAuthCheck(paramMap);
+	public void checkAuth(Map<String, String> paramMap) {
+		if(!authDao.selectAuthCheck(paramMap)) throw new BadAuthRequestException(); 
 	}
 
 }

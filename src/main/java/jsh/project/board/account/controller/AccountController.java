@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jsh.project.board.account.domain.Account;
+import jsh.project.board.account.dto.auth.AuthDto;
 import jsh.project.board.account.dto.request.RequestAccountCreateDto;
 import jsh.project.board.account.dto.request.RequestAccountEditDto;
 import jsh.project.board.account.dto.request.RequestAccountResetDto;
@@ -34,16 +35,23 @@ import jsh.project.board.account.dto.request.RequestPasswordDto;
 import jsh.project.board.account.dto.request.RequestPasswordResetDto;
 import jsh.project.board.account.dto.response.ResponseAccountInfoDto;
 import jsh.project.board.account.dto.response.ResponseFindAccountDto;
+import jsh.project.board.account.enums.AuthOption;
 import jsh.project.board.account.exception.BadRequestException;
 import jsh.project.board.account.service.AccountService;
+import jsh.project.board.account.service.AuthService;
+import jsh.project.board.global.infra.email.EmailService;
 
 @Controller
 public class AccountController {
 	
 	private final AccountService accountService;
+	private final AuthService authService;
+	private final EmailService emailService;
 	
-	public AccountController(AccountService accountService) {
+	public AccountController(AccountService accountService, AuthService authService, EmailService emailService) {
 		this.accountService = accountService;
+		this.authService = authService;
+		this.emailService = emailService;
 	}
 	
 	// 로그인 요청
@@ -61,8 +69,10 @@ public class AccountController {
     // 회원가입
     @PostMapping("/account/join")
     public @ResponseBody ResponseEntity<HttpStatus> join(@RequestBody @Valid RequestAccountCreateDto dto, HttpSession session) throws Exception{
-    	accountService.register(dto);
-    	session.setAttribute("email", dto.getEmail());
+    	final Account account = accountService.register(dto);
+    	final AuthDto authDto = authService.createAuth(account, AuthOption.SIGNUP);
+    	emailService.sendEmail(authDto);
+    	session.setAttribute("email", account.getUsername());
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
@@ -90,10 +100,10 @@ public class AccountController {
     @PatchMapping("/account/{id}")
     public @ResponseBody ResponseEntity<HttpStatus> accountEdit(Principal principal, Authentication auth, Model model, @PathVariable("id")int id, @RequestBody @Valid RequestAccountEditDto dto) {
     	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	account.changeAccountNickname(dto.getNickname());
+    	account.changeNickname(dto.getNickname());
     	accountService.editAccount(account);
     	
-    	Authentication newAuth = new UsernamePasswordAuthenticationToken(account, auth.getCredentials(), account.getAuthorities());
+    	final Authentication newAuth = new UsernamePasswordAuthenticationToken(account, auth.getCredentials(), account.getAuthorities());
     	SecurityContextHolder.getContext().setAuthentication(newAuth);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -108,7 +118,7 @@ public class AccountController {
     // 이메일 발송 완료 페이지 이동
     @RequestMapping("/account/sendEmail")
     public String emailPage(RequestEmailDto dto, Model model, HttpSession session) {
-    	String email = (String)session.getAttribute("email");
+    	final String email = (String)session.getAttribute("email");
     	if(email == null || !email.equals(dto.getEmail())) {
     		session.removeAttribute("email");
     		throw new BadRequestException();
@@ -120,21 +130,24 @@ public class AccountController {
     // 회원가입(계정 활성화) 이메일 인증
     @GetMapping("/account/emailConfirm")
     public String emailConfirm(RequestEmailConfirmDto dto) {
-    	accountService.authConfirm(dto);
+    	authService.authConfirm(dto);
     	accountService.activation(dto.getEmail());
+    	
     	return "redirect:/login";
     }
     
     // 인증이메일 재발송
     @GetMapping("/account/resend")
     public @ResponseBody ResponseEntity<HttpStatus> resendEmail(RequestEmailDto dto, HttpSession session) throws Exception{
-    	String email = (String)session.getAttribute("email");
+    	final String email = (String)session.getAttribute("email");
     	
     	if(email == null || !email.equals(dto.getEmail())) {
     		session.removeAttribute("email");
     		throw new BadRequestException();
     	}
-    	accountService.resendEmail(dto);
+    	
+    	final AuthDto authDto = authService.updateAuthKey(dto.getEmail());
+		emailService.sendEmail(authDto);
     	
     	return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -160,14 +173,16 @@ public class AccountController {
     // 계정 정보를 입력 후 비밀번호 재설정 요청(인증이메일 발송)
     @PostMapping("/account/reset")
     public @ResponseBody ResponseEntity<HttpStatus> findPassword(@RequestBody @Valid RequestAccountResetDto dto) throws Exception{
-    	accountService.sendResetEmail(dto); 
+    	final Account account = accountService.lockAccount(dto); 
+    	final AuthDto authDto = authService.createAuth(account, AuthOption.RESET); //인증키 생성
+		emailService.sendEmail(authDto); //이메일 발송
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
     // 비밀번호 재설정을 위한 이메일 인증
     @GetMapping("/account/resetConfirm")
     public String resetRequest(RequestEmailConfirmDto dto, Model model) {
-    	accountService.authConfirm(dto);
+    	authService.authConfirm(dto);
     	model.addAttribute("dto",dto);
     	return "userPages/passwordResetPage";
     }
@@ -175,6 +190,9 @@ public class AccountController {
     // 비밀번호 재설정
     @PostMapping("/account/resetPassword")
     public @ResponseBody ResponseEntity<HttpStatus> resetPassword(@RequestBody @Valid RequestPasswordResetDto dto) throws Exception{
+    	// 인증 확인
+    	authService.checkAuth(dto.toAuthCheckMap());
+    	// 비밀번호 초기화
     	accountService.resetPassword(dto);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -188,7 +206,7 @@ public class AccountController {
     // 로그인상태에서 비밀번호 변경 
     @PostMapping("/account/passwordChange")
     public @ResponseBody ResponseEntity<HttpStatus> passwordChange(Principal principal, @RequestBody @Valid RequestPasswordDto dto) {
-    	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	final Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	accountService.changePassword(account, dto);
     	return new ResponseEntity<>(HttpStatus.OK);
     }

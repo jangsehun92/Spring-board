@@ -72,7 +72,7 @@ public class AccountServiceTest {
 	ResponseFindAccountDto responseDto = new ResponseFindAccountDto();
 	
 	@Spy
-	Account account = new Account("jangsehun1992@gmail", "password", "장세훈", "920409", "tester", "ROLE_ADMIN");
+	Account account = Account.of(new RequestAccountCreateDto(),Role.USER);
 	
 	
 	@Before
@@ -120,7 +120,6 @@ public class AccountServiceTest {
 		dto.setName("장세훈");
 		dto.setNickname("tester");
 		dto.setBirth("920409");
-		dto.setRole(Role.USER);
 		
 		AuthDto authDto = new AuthDto();
 		authDto.setEmail("jangsehun1992@gmail.com");

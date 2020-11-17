@@ -4,12 +4,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-import jsh.project.board.account.domain.Account;
-import jsh.project.board.account.domain.Account.AccountConverter;
-import jsh.project.board.account.enums.Role;
 import jsh.project.board.account.exception.PasswordCheckFailedException;
 
-public class RequestAccountCreateDto implements AccountConverter{
+public class RequestAccountCreateDto {
 	@NotBlank(message = "이메일을 입력해주세요. ")
 	@Email(message = "올바른 형식의 이메일 주소여야합니다. ")
 	private String email;
@@ -23,7 +20,6 @@ public class RequestAccountCreateDto implements AccountConverter{
 	private String birth;
 	@NotBlank(message = "닉네임을 입력해주세요.")
 	private String nickname;
-	private String role;
 	
 	public RequestAccountCreateDto() {
 		
@@ -77,14 +73,6 @@ public class RequestAccountCreateDto implements AccountConverter{
 		this.nickname = nickname.trim();
 	}
 	
-	public String getRole() {
-		return role;
-	}
-	
-	public void setRole(Role role) {
-		this.role = role.getValue();
-	}
-	
 	public void checkPassword() {
 		if(!password.equals(passwordCheck)) {
 			throw new PasswordCheckFailedException();
@@ -92,14 +80,9 @@ public class RequestAccountCreateDto implements AccountConverter{
 	}
 	
 	@Override
-	public Account toAccount() {
-		return new Account(email, password, name, birth, nickname, role);
-	}
-	
-	@Override
 	public String toString() {
 		return "AccountCreateDto { email : + " + email + "password : " + password + "passwordCheck : " + passwordCheck + " name : + " + name 
-				+ " birth : " + birth + " nickname : " + nickname + " role : " + role + " } ";
+				+ " birth : " + birth + " nickname : " + nickname + " } ";
 	}
 
 }

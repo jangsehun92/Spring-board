@@ -1,14 +1,16 @@
 package jsh.project.board.account.domain;
 
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import jsh.project.board.account.dto.request.RequestAccountCreateDto;
 import jsh.project.board.account.dto.request.RequestAccountResetDto;
+import jsh.project.board.account.enums.Role;
 
 @SuppressWarnings("serial")
 public class Account implements UserDetails {
@@ -25,7 +27,7 @@ public class Account implements UserDetails {
 	private Date regdate;
 	private Date lastLoginDate;
 
-	public Account(Integer id, String email, String password, String name, String birth, String nickname, Boolean locked, Boolean enabled, String role, Integer failureCount, Date regdate, Date lastLoginDate) {
+	private Account(Integer id, String email, String password, String name, String birth, String nickname, Boolean locked, Boolean enabled, String role, Integer failureCount, Date regdate, Date lastLoginDate) {
 		this.id = id;
 		this.email = email;
 		this.password = password;
@@ -40,13 +42,18 @@ public class Account implements UserDetails {
 		this.lastLoginDate = lastLoginDate;
 	}
 
-	public Account(String email, String password, String name, String birth, String nickname, String role) {
-		this.email = email;
-		this.password = password;
-		this.name = name;
-		this.birth = birth;
-		this.nickname = nickname;
-		this.role = role;
+	private Account(RequestAccountCreateDto dto, Role role) {
+		this.email = dto.getEmail();
+		this.password = dto.getPassword();
+		this.name = dto.getName();
+		this.birth = dto.getBirth();
+		this.nickname = dto.getNickname();
+		this.role = role.getValue(); 
+	}
+	
+	//정적 팩토리 메소드
+	public static Account of(RequestAccountCreateDto dto, Role role) {
+		return new Account(dto,role);
 	}
 	
 	@Override
@@ -138,8 +145,4 @@ public class Account implements UserDetails {
 				+ " regdate : " + regdate + " lastLoginDate : " + lastLoginDate + " } "  ;
 	}
 	
-	public interface AccountConverter{
-		Account toAccount();
-	}
-
 }

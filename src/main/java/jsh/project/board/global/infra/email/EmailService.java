@@ -8,13 +8,13 @@ import jsh.project.board.account.enums.AuthOption;
 
 @Component
 public class EmailService {
-	private MailUtils sendMail;
+	private final MailUtils sendMail;
 	
 	public EmailService(JavaMailSender mailSender) throws Exception {
 		this.sendMail = new MailUtils(mailSender);
 	}
 	
-	public void sendEmail(AuthDto dto) throws Exception {
+	public void sendEmail(final AuthDto dto) throws Exception {
 		if(dto.getAuthOption().equals(AuthOption.SIGNUP.getValue())) {
 			signupEmail(dto);
 		}
@@ -23,7 +23,7 @@ public class EmailService {
 		}
 	}
 	
-	public void signupEmail(AuthDto dto) throws Exception {
+	public void signupEmail(final AuthDto dto) throws Exception {
 		sendMail.setSubject("[ JSH Board Project ] 회원가입 이메일 인증");
 		sendMail.setText(new StringBuffer().append("<h1>[회원가입 이메일 인증]</h1>")
 				.append("<p>아래 링크를 클릭하시면 인증이 완료됩니다.</p>")
@@ -40,7 +40,7 @@ public class EmailService {
 		sendMail.send();
 	}
 	
-	public void passwordResetEmail(AuthDto dto) throws Exception{
+	public void passwordResetEmail(final AuthDto dto) throws Exception{
 		sendMail.setSubject("[ JSH Board Project ] 비밀번호 재설정 이메일 인증");
 		sendMail.setText(new StringBuffer().append("<h1>[비밀번호 재설정 이메일 인증]</h1>")
 				.append("<p>아래 링크를 클릭하시면 인증이 완료됩니다.</p>")

@@ -27,7 +27,7 @@
 				#{name},
 				#{birth},
 				#{nickname},
-				0,
+				1,
 				0,
 				#{role},
 				0,

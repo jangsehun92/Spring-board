@@ -72,7 +72,7 @@ public class AccountServiceTest {
 	ResponseFindAccountDto responseDto = new ResponseFindAccountDto();
 	
 	@Spy
-	Account account = new Account("jangsehun1992@gmail", "password", "장세훈", "920409", "tester", "ROLE_ADMIN");
+	Account account = Account.of(new RequestAccountCreateDto(),Role.USER);
 	
 	
 	@Before
@@ -120,7 +120,6 @@ public class AccountServiceTest {
 		dto.setName("장세훈");
 		dto.setNickname("tester");
 		dto.setBirth("920409");
-		dto.setRole(Role.USER);
 		
 		AuthDto authDto = new AuthDto();
 		authDto.setEmail("jangsehun1992@gmail.com");
@@ -157,10 +156,10 @@ public class AccountServiceTest {
 		given(authService.getAuth(dto.getEmail())).willReturn(authDto);
 		
 		//when
-		accountService.authConfirm(dto);
+		authService.authConfirm(dto);
 		
 		//than
-		verify(authService).expired(dto);
+		verify(authService).authConfirm(dto);
 	}
 	
 	@Test
@@ -223,7 +222,7 @@ public class AccountServiceTest {
 		RequestAccountEditDto requestDto = new RequestAccountEditDto();
 		requestDto.setNickname("changeNickname");
 		
-		account.changeAccountNickname(requestDto.getNickname());
+		account.changeNickname(requestDto.getNickname());
 		
 		//when
 		accountService.editAccount(account);
@@ -292,7 +291,6 @@ public class AccountServiceTest {
 		authDto.setExpired(false);
 		
 		given(accountDao.selectAccount(dto.getEmail())).willReturn(account);
-		given(authService.checkAuth(dto.toAuthCheckMap())).willReturn(true);
 		
 		//when
 		accountService.resetPassword(dto);

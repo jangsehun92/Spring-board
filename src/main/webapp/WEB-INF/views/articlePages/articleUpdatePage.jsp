@@ -64,7 +64,6 @@ function check_form(){
 	var inputForm_content = $("#content").val().replace(/&nbsp;/gi,"").trim();
 	var importance = $("#select_importance option:selected").val();
 	
-	alert(inputForm_content.trim());
 	if(importance==null){
 		importance = "일반";
 	}
@@ -142,7 +141,7 @@ function check_form(){
 					<td><input id="title" name="title" type="text" class="form-control" placeholder="제목" maxlength="50" value="${responseDto.title }"></td>
 				</tr>
 				<tr>
-					<td><textarea id="content" name="content" class="form-control" placeholder="내용" onkeydown="resize(this)"></textarea>
+					<td><p><textarea id="content" name="content" class="form-control" placeholder="내용" onkeydown="resize(this)"></textarea>
 				</tr>
 			</table>
 		<div style="float: right">

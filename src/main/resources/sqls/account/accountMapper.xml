@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="accountMapper">	
-	<resultMap type="Account" id="AccountResultMap">
-		<constructor>
-			<idArg column="id" javaType="int"/>
-			<arg column="email" javaType="string"/>
-			<arg column="password" javaType="string"/>
-			<arg column="name" javaType="string"/>
-			<arg column="birth" javaType="string"/>
-			<arg column="nickname" javaType="string"/>
-			<arg column="locked" javaType="boolean"/>
-			<arg column="enabled" javaType="boolean"/>
-			<arg column="role" javaType="string"/>
-			<arg column="failureCount" javaType="int"/>
-			<arg column="regdate" javaType="date"/>
-			<arg column="lastLoginDate" javaType="date"/>
-		</constructor>
-	</resultMap>
 
 	<insert id="insertAccount" parameterType="Account">
 		INSERT INTO 
@@ -36,7 +20,7 @@
 			)
 	</insert>
 
-	<select id="selectAccount" parameterType="java.lang.String" resultMap="AccountResultMap">
+	<select id="selectAccount" parameterType="java.lang.String" resultType="Account">
 		SELECT 
 			id,
 			email,
@@ -56,7 +40,7 @@
 			email = #{email}
 	</select>
 	
-	<select id="selectAccountInfo" parameterType="int" resultType="ResponseAccountInfoDto">
+	<select id="selectAccountInfo" parameterType="int" resultType="Account">
 		SELECT 
 			id,
 			nickname
@@ -86,7 +70,8 @@
 			email = #{email}
 	</update>
 	
-	<select id="selectAccounts" parameterType="RequestFindAccountDto" resultType="ResponseFindAccountDto">
+	<!-- <select id="selectAccounts" parameterType="RequestFindAccountDto" resultType="ResponseFindAccountDto"> -->
+	<select id="selectAccounts" parameterType="RequestFindAccountDto" resultType="Account">
 		SELECT
 			email,
 			regdate

@@ -1,12 +1,19 @@
 package jsh.project.board.account.dto.response;
 
+import jsh.project.board.account.domain.Account;
+
 public class ResponseAccountInfoDto {
 	
 	private int id;
 	private String nickname;
 	
-	public ResponseAccountInfoDto() {
-		
+	private ResponseAccountInfoDto(int id, String nickname) {
+		this.id = id;
+		this.nickname = nickname;
+	}
+	
+	public static ResponseAccountInfoDto from(Account account) {
+		return new ResponseAccountInfoDto(account.getId(), account.getNickname());
 	}
 
 	public int getId() {

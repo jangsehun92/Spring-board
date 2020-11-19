@@ -13,7 +13,8 @@ public interface AccountDao {
 	public void insertAccount(Account dto);
 	public Account selectAccount(String email);
 	public void updateAccount(Account dto);
-	public ResponseAccountInfoDto selectAccountInfo(int id);
+	//public ResponseAccountInfoDto selectAccountInfo(int id);
+	public Account selectAccountInfo(int id);
 	public void updateLoginDate(String email);
 	public void updatePassword(Account account);
 	public int selectEmailCount(RequestEmailDto dto);

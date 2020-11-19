@@ -26,20 +26,11 @@ public class Account implements UserDetails {
 	private int failureCount;
 	private Date regdate;
 	private Date lastLoginDate;
-
-	private Account(Integer id, String email, String password, String name, String birth, String nickname, Boolean locked, Boolean enabled, String role, Integer failureCount, Date regdate, Date lastLoginDate) {
-		this.id = id;
-		this.email = email;
-		this.password = password;
-		this.name = name;
-		this.birth = birth;
-		this.nickname = nickname;
-		this.locked = locked;
-		this.enabled = enabled;
-		this.role = role;
-		this.failureCount = failureCount;
-		this.regdate = regdate;
-		this.lastLoginDate = lastLoginDate;
+	
+	//Mybatis는 ResultMap에 명시된 객체를 생성하기 위해 기본생성자를 이용해 객체를 생성하고, 리플렉션으로 필드 주입을 한다.
+	//(리플렉션으로 접근 제어를 풀기 때문에 접근제한자가 private 여도 가능하다.
+	private Account() {
+		
 	}
 
 	private Account(RequestAccountCreateDto dto, Role role) {

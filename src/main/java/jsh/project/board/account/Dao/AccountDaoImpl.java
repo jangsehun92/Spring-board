@@ -32,7 +32,7 @@ public class AccountDaoImpl implements AccountDao{
 	}
 	
 	@Override
-	public ResponseAccountInfoDto selectAccountInfo(int id) {
+	public Account selectAccountInfo(int id) {
 		return sqlSession.selectOne("accountMapper.selectAccountInfo", id);
 	}
 	

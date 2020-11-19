@@ -9,6 +9,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -163,15 +165,33 @@ public class AccountServiceTest {
 	}
 	
 	@Test
-	public void 해당_계정_정보_보기() {
+	public void 해당_계정_정보_보기() throws Exception{
 		//given
 		int accountId = 1;
 		
-		ResponseAccountInfoDto responseDto = new ResponseAccountInfoDto();
-		responseDto.setId(1);
-		responseDto.setNickname("tester");
+		//클래스 정보
+		Class<Account> accountClass = Account.class;
+		//해당 클래스 생성자 불러오기 ( getDeclaredXXX() : private 생성자를 얻어 올 수 있다. )
+		Constructor<Account> constructors = accountClass.getDeclaredConstructor(new Class[] {});
+		//클래스 생성자 접근가능 처리 (private 타입의 생성자에 접근 제한을 허락)
+		constructors.setAccessible(true); // access 가능하도록 변경
+		//생성자를 통한 인스턴스 생성 
+		Account account = (Account)constructors.newInstance();
 		
-		given(accountDao.selectAccountInfo(accountId)).willReturn(responseDto);
+		//필드 건들이기
+		Field field = null;
+		//Account id값 설정
+		field = accountClass.getDeclaredField("id");
+		field.setAccessible(true); //access 가능하도록 변경
+		field.setInt(account, 1);
+		
+		//Account nickname값 설정
+		field = accountClass.getDeclaredField("nickname");
+		field.setAccessible(true); //access 가능하도록 변경
+		field.set(account, "tester");
+		System.out.println(account.toString());
+		
+		given(accountDao.selectAccountInfo(accountId)).willReturn(account);
 		//when
 		ResponseAccountInfoDto responseAccountDto = accountService.getAccountInfo(accountId);
 		

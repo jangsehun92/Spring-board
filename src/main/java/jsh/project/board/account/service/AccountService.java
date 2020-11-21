@@ -22,7 +22,7 @@ public interface AccountService {
 	// 사용자 정보 수정
 	public void editAccount(final Account account);
 	// 비밀번호 변경
-	public void changePassword(final Account account, final RequestPasswordDto dto);
+	public void changePassword(Account account, final RequestPasswordDto dto);
 	// 로그인 실패(비밀번호 틀림) 횟수 가져오기
 	public int getAccountFailureCount(final String email);
 	// 로그인 실패, 성공에 따른 실패 카운트 증가 및 초기화

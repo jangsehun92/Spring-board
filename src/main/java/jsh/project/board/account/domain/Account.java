@@ -7,10 +7,15 @@ import java.util.Date;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jsh.project.board.account.dto.request.RequestAccountCreateDto;
 import jsh.project.board.account.dto.request.RequestAccountResetDto;
+import jsh.project.board.account.dto.request.RequestPasswordDto;
+import jsh.project.board.account.dto.request.RequestPasswordResetDto;
 import jsh.project.board.account.enums.Role;
+import jsh.project.board.account.exception.PasswordCheckFailedException;
+import jsh.project.board.account.exception.PasswordNotMatchException;
 
 @SuppressWarnings("serial")
 public class Account implements UserDetails {
@@ -27,15 +32,15 @@ public class Account implements UserDetails {
 	private Date regdate;
 	private Date lastLoginDate;
 	
-	//Mybatis는 ResultMap에 명시된 객체를 생성하기 위해 기본생성자를 이용해 객체를 생성하고, 리플렉션으로 필드 주입을 한다.
-	//(리플렉션으로 접근 제어를 풀기 때문에 접근제한자가 private 여도 가능하다.
+	//Mybatis는 ResultMap(ResultType)에 명시된 객체를 생성하기 위해 기본생성자를 이용해 객체를 생성하고, 리플렉션으로 필드 주입을 한다.
+	//(리플렉션으로 접근 제어를 풀기 때문에 접근제한자가 private 여도 가능하다.)
 	private Account() {
 		
 	}
 
-	private Account(RequestAccountCreateDto dto, Role role) {
+	private Account(PasswordEncoder passwordEncoder, RequestAccountCreateDto dto, Role role) {
 		this.email = dto.getEmail();
-		this.password = dto.getPassword(); 
+		this.password = passwordEncoder.encode(dto.getPassword()); 
 		this.name = dto.getName(); 
 		this.birth = dto.getBirth(); 
 		this.nickname = dto.getNickname();
@@ -43,8 +48,11 @@ public class Account implements UserDetails {
 	}
 	
 	//정적 팩토리 메소드
-	public static Account of(RequestAccountCreateDto dto, Role role) {
-		return new Account(dto,role);
+	public static Account of(PasswordEncoder passwordEncoder, RequestAccountCreateDto dto, Role role) {
+		if(!dto.getPassword().equals(dto.getPasswordCheck())) {
+			throw new PasswordCheckFailedException();
+		}
+		return new Account(passwordEncoder, dto,role);
 	}
 	
 	@Override
@@ -114,7 +122,7 @@ public class Account implements UserDetails {
 		return enabled;
 	}
 
-	public boolean check(RequestAccountResetDto dto) {
+	public boolean checkAccount(RequestAccountResetDto dto) {
 		if (!this.name.equals(dto.getName()) || !this.birth.equals(dto.getBirth())) {
 			return false;
 		}
@@ -125,8 +133,18 @@ public class Account implements UserDetails {
 		this.nickname = nickname;
 	}
 	
-	public void changePassword(String password) {
-		this.password = password;
+	public void changePassword(PasswordEncoder passwordEncoder, RequestPasswordDto dto) {
+		if(!dto.getAfterPassword().equals(dto.getAfterPasswordCheck())) 
+			throw new PasswordCheckFailedException();
+		if(!passwordEncoder.matches(dto.getBeforePassword(), this.password))  
+			throw new PasswordNotMatchException();
+		this.password = dto.getAfterPassword();
+	}
+	
+	public void resetPassword(RequestPasswordResetDto dto) {
+		if(!dto.getPassword().equals(dto.getPasswordCheck())) 
+			throw new PasswordCheckFailedException();
+		this.password = dto.getPassword();
 	}
 	
 	@Override
@@ -135,5 +153,5 @@ public class Account implements UserDetails {
 				+ " nickname : " + nickname  + " locked : " + locked + " enabled : " + enabled + " role : " + role + " failureCount : " + failureCount 
 				+ " regdate : " + regdate + " lastLoginDate : " + lastLoginDate + " } "  ;
 	}
-	
+
 }

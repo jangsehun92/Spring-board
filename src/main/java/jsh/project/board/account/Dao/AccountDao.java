@@ -6,21 +6,18 @@ import java.util.Map;
 import jsh.project.board.account.domain.Account;
 import jsh.project.board.account.dto.request.RequestEmailDto;
 import jsh.project.board.account.dto.request.RequestFindAccountDto;
-import jsh.project.board.account.dto.response.ResponseAccountInfoDto;
-import jsh.project.board.account.dto.response.ResponseFindAccountDto;
 
 public interface AccountDao {
-	public void insertAccount(Account dto);
-	public Account selectAccount(String email);
-	public void updateAccount(Account dto);
-	//public ResponseAccountInfoDto selectAccountInfo(int id);
-	public Account selectAccountInfo(int id);
-	public void updateLoginDate(String email);
-	public void updatePassword(Account account);
-	public int selectEmailCount(RequestEmailDto dto);
-	public List<ResponseFindAccountDto> selectAccounts(RequestFindAccountDto dto);
-	public void updateEnabled(String email);
-	public int selectFailureCount(String email);
-	public void updateFailureCount(Map<String, Object> paramMap);
-	public void updateLocked(Map<String, Object> paramMap);
+	public void insertAccount(final Account dto);
+	public Account selectAccount(final String email);
+	public void updateAccount(final Account dto);
+	public Account selectAccountInfo(final int id);
+	public void updateLoginDate(final String email);
+	public void updatePassword(final Account account);
+	public int selectEmailCount(final RequestEmailDto dto);
+	public List<Account> selectAccounts(final RequestFindAccountDto dto);
+	public void updateEnabled(final String email);
+	public int selectFailureCount(final String email);
+	public void updateFailureCount(final Map<String, Object> paramMap);
+	public void updateLocked(final Map<String, Object> paramMap);
 }

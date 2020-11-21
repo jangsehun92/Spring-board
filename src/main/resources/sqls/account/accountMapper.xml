@@ -35,7 +35,7 @@
 			regdate,
 			last_login_date as lastLoginDate
 		FROM 
-			account_table
+			account_table 
 		WHERE 
 			email = #{email}
 	</select>
@@ -70,7 +70,6 @@
 			email = #{email}
 	</update>
 	
-	<!-- <select id="selectAccounts" parameterType="RequestFindAccountDto" resultType="ResponseFindAccountDto"> -->
 	<select id="selectAccounts" parameterType="RequestFindAccountDto" resultType="Account">
 		SELECT
 			email,

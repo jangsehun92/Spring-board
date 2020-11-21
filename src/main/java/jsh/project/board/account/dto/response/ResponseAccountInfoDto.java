@@ -13,7 +13,8 @@ public class ResponseAccountInfoDto {
 	}
 	
 	public static ResponseAccountInfoDto from(Account account) {
-		return new ResponseAccountInfoDto(account.getId(), account.getNickname());
+		ResponseAccountInfoDto dto = new ResponseAccountInfoDto(account.getId(), account.getNickname());
+		return dto;
 	}
 
 	public int getId() {

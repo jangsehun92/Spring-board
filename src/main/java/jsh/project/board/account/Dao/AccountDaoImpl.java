@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository;
 import jsh.project.board.account.domain.Account;
 import jsh.project.board.account.dto.request.RequestEmailDto;
 import jsh.project.board.account.dto.request.RequestFindAccountDto;
-import jsh.project.board.account.dto.response.ResponseAccountInfoDto;
-import jsh.project.board.account.dto.response.ResponseFindAccountDto;
 
 @Repository
 public class AccountDaoImpl implements AccountDao{
@@ -57,7 +55,7 @@ public class AccountDaoImpl implements AccountDao{
 	}
 	
 	@Override
-	public List<ResponseFindAccountDto> selectAccounts(RequestFindAccountDto dto){
+	public List<Account> selectAccounts(RequestFindAccountDto dto){
 		return sqlSession.selectList("accountMapper.selectAccounts", dto);
 	}
 	

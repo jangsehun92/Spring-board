@@ -2,12 +2,19 @@ package jsh.project.board.account.dto.response;
 
 import java.util.Date;
 
+import jsh.project.board.account.domain.Account;
+
 public class ResponseFindAccountDto {
 	private String email;
 	private Date regdate;
 
-	public ResponseFindAccountDto() {
-		
+	private ResponseFindAccountDto(Account account) {
+		this.email = account.getUsername();
+		this.regdate = account.getRegdate();
+	}
+	
+	public static ResponseFindAccountDto from(Account account) {
+		return new ResponseFindAccountDto(account);
 	}
 
 	public String getEmail() {

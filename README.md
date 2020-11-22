@@ -1,4 +1,6 @@
 # 게시판 프로젝트 소개
+스프링의 구조 및 설정과 서비스의 동작 과정, 개발, 관리를 이해하기 위한 게시판 프로젝트
+
 단순 CRUD 게시판이 아닌, 게시판과 관련된 여러 기능을 구현한다. 
 
 ## Front-end
@@ -33,15 +35,14 @@
         │               │    │   ├── AccountService.java
         │               │    │   └── AccountServiceImpl.java        
         │               │    ├── domain
-        │               │    │   └── Account.java         
+        │               │    │   ├── Account.java
+        │               │    │   └── Auth.java        
         │               │    ├── dao
         │               │    │   ├── AccountDao.java
         │               │    │   ├── AccountDaoImpl.java   
         │               │    │   ├── AuthDao.java
         │               │    │   └── AuthDaoImpl.java         
         │               │    ├── dto
-        │               │    │   ├── auth
-        │               │    │   │   └── AuthDto.java        
         │               │    │   ├── request
         │               │    │   │   ├── RequestAccountCreateDto.java
         │               │    │   │   ├── RequestAccountEditDto.java
@@ -142,6 +143,7 @@
         │                   │   └── EnumModel.java        
         │                   ├── error
         │                   │   ├── exception        
+        │                   │   │   ├── AuthException.java        
         │                   │   │   ├── BusinessException.java
         │                   │   │   ├── EmailException.java
         │                   │   │   ├── ErrorCode.java

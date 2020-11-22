@@ -8,7 +8,7 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(500, "C004", "서버 오류입니다."),
     HANDLE_ACCESS_DENIED(403, "C005", "접근 권한이 없습니다."),
     BAD_REQUEST(400, "C006", "잘못된 요청입니다."),
-
+    
 	//account
 	EMAIL_AREADY_USED(400, "A001", " 이미 사용중인 이메일입니다."),
 	BAD_AUTH_REQUEST(400,"A002", " 유효하지 않은 인증 요청 입니다."),

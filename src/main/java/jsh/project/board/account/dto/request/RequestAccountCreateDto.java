@@ -4,8 +4,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-import jsh.project.board.account.exception.PasswordCheckFailedException;
-
 public class RequestAccountCreateDto {
 	@NotBlank(message = "이메일을 입력해주세요. ")
 	@Email(message = "올바른 형식의 이메일 주소여야합니다. ")
@@ -71,12 +69,6 @@ public class RequestAccountCreateDto {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname.trim();
-	}
-	
-	public void checkPassword() {
-		if(!password.equals(passwordCheck)) {
-			throw new PasswordCheckFailedException();
-		}
 	}
 	
 	@Override

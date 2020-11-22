@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jsh.project.board.account.domain.Account;
-import jsh.project.board.account.dto.auth.AuthDto;
+import jsh.project.board.account.domain.Auth;
 import jsh.project.board.account.dto.request.RequestAccountCreateDto;
 import jsh.project.board.account.dto.request.RequestAccountEditDto;
 import jsh.project.board.account.dto.request.RequestAccountResetDto;
@@ -48,7 +48,7 @@ public class AccountController {
 	private final AuthService authService;
 	private final EmailService emailService;
 	
-	public AccountController(AccountService accountService, AuthService authService, EmailService emailService) {
+	public AccountController(final AccountService accountService, final AuthService authService, final EmailService emailService) {
 		this.accountService = accountService;
 		this.authService = authService;
 		this.emailService = emailService;
@@ -70,8 +70,8 @@ public class AccountController {
     @PostMapping("/account/join")
     public @ResponseBody ResponseEntity<HttpStatus> join(@RequestBody @Valid RequestAccountCreateDto dto, HttpSession session) throws Exception{
     	final Account account = accountService.register(dto);
-    	final AuthDto authDto = authService.createAuth(account, AuthOption.SIGNUP);
-    	emailService.sendEmail(authDto);
+    	final Auth auth = authService.createAuth(account, AuthOption.SIGNUP);
+    	emailService.sendEmail(auth);
     	session.setAttribute("email", account.getUsername());
     	return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -98,13 +98,13 @@ public class AccountController {
     // 계정 정보(닉네임)변경 
     @PreAuthorize("(#id == principal.id)")
     @PatchMapping("/account/{id}")
-    public @ResponseBody ResponseEntity<HttpStatus> accountEdit(Principal principal, Authentication auth, Model model, @PathVariable("id")int id, @RequestBody @Valid RequestAccountEditDto dto) {
+    public @ResponseBody ResponseEntity<HttpStatus> accountEdit(Principal principal, Authentication authentication, Model model, @PathVariable("id")int id, @RequestBody @Valid RequestAccountEditDto dto) {
     	Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	account.changeNickname(dto.getNickname());
     	accountService.editAccount(account);
     	
-    	final Authentication newAuth = new UsernamePasswordAuthenticationToken(account, auth.getCredentials(), account.getAuthorities());
-    	SecurityContextHolder.getContext().setAuthentication(newAuth);
+    	final Authentication newAuthentication = new UsernamePasswordAuthenticationToken(account, authentication.getCredentials(), account.getAuthorities());
+    	SecurityContextHolder.getContext().setAuthentication(newAuthentication);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
@@ -138,7 +138,7 @@ public class AccountController {
     
     // 인증이메일 재발송
     @GetMapping("/account/resend")
-    public @ResponseBody ResponseEntity<HttpStatus> resendEmail(RequestEmailDto dto, HttpSession session) throws Exception{
+    public @ResponseBody ResponseEntity<HttpStatus> resendEmail(RequestEmailDto dto, HttpSession session){
     	final String email = (String)session.getAttribute("email");
     	
     	if(email == null || !email.equals(dto.getEmail())) {
@@ -146,9 +146,8 @@ public class AccountController {
     		throw new BadRequestException();
     	}
     	
-    	final AuthDto authDto = authService.updateAuthKey(dto.getEmail());
-		emailService.sendEmail(authDto);
-    	
+    	final Auth auth = authService.updateAuth(dto.getEmail());
+		emailService.sendEmail(auth);
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
@@ -174,8 +173,8 @@ public class AccountController {
     @PostMapping("/account/reset")
     public @ResponseBody ResponseEntity<HttpStatus> findPassword(@RequestBody @Valid RequestAccountResetDto dto) throws Exception{
     	final Account account = accountService.lockAccount(dto); 
-    	final AuthDto authDto = authService.createAuth(account, AuthOption.RESET); //인증키 생성
-		emailService.sendEmail(authDto); //이메일 발송
+    	final Auth auth = authService.createAuth(account, AuthOption.RESET); //인증키 생성
+		emailService.sendEmail(auth); //이메일 발송 
     	return new ResponseEntity<>(HttpStatus.OK);
     }
     
@@ -190,9 +189,7 @@ public class AccountController {
     // 비밀번호 재설정
     @PostMapping("/account/resetPassword")
     public @ResponseBody ResponseEntity<HttpStatus> resetPassword(@RequestBody @Valid RequestPasswordResetDto dto) throws Exception{
-    	// 인증 확인
-    	authService.checkAuth(dto.toAuthCheckMap());
-    	// 비밀번호 초기화
+    	authService.checkAuth(dto);
     	accountService.resetPassword(dto);
     	return new ResponseEntity<>(HttpStatus.OK);
     }

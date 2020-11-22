@@ -1,12 +1,9 @@
 package jsh.project.board.account.dao;
 
-import java.util.Map;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import jsh.project.board.account.dto.auth.AuthDto;
-import jsh.project.board.account.dto.request.RequestEmailConfirmDto;
+import jsh.project.board.account.domain.Auth;
 
 @Repository
 public class AuthDaoImpl implements AuthDao{
@@ -18,32 +15,32 @@ public class AuthDaoImpl implements AuthDao{
 	}
 	
 	@Override
-	public void insertAuth(AuthDto dto) {
+	public void insertAuth(final Auth dto) {
 		sqlSession.insert("authMapper.insertAuth",dto);
 	}
 	
 	@Override
-	public AuthDto selectAuth(String email) {
+	public Auth selectAuth(final String email) {
 		return sqlSession.selectOne("authMapper.selectAuth", email);
 	}
 	
 	@Override
-	public int selectAuthCount(Map<String, String> paramMap) {
-		return sqlSession.selectOne("authMapper.selectAuthCount", paramMap);
+	public int selectAuthCount(final Auth dto) {
+		return sqlSession.selectOne("authMapper.selectAuthCount", dto);
 	}
 	
 	@Override
-	public boolean selectAuthCheck(Map<String, String> paramMap) {
-		return sqlSession.selectOne("authMapper.selectAuthCheck", paramMap);
+	public boolean selectAuthCheck(final Auth dto) {
+		return sqlSession.selectOne("authMapper.selectAuthCheck", dto);
 	}
 	
 	@Override
-	public void updateAuth(AuthDto dto) {
+	public void updateAuth(final Auth dto) {
 		sqlSession.update("authMapper.updateAuth",dto);
 	}
 	
 	@Override
-	public void deleteAuth(RequestEmailConfirmDto dto) {
+	public void deleteAuth(final Auth dto) {
 		sqlSession.update("authMapper.deleteAuth",dto);
 	}
 

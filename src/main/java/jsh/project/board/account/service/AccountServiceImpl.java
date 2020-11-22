@@ -1,5 +1,6 @@
 package jsh.project.board.account.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +26,6 @@ import jsh.project.board.account.exception.AccountNotEmailCheckedException;
 import jsh.project.board.account.exception.AccountNotFoundException;
 import jsh.project.board.account.exception.EmailAlreadyUsedException;
 import jsh.project.board.account.exception.FindAccountBadRequestException;
-import jsh.project.board.account.exception.NotFoundAccountInfoException;
-import jsh.project.board.account.exception.PasswordNotMatchException;
 
 @Service
 public class AccountServiceImpl implements AccountService{
@@ -35,7 +34,7 @@ public class AccountServiceImpl implements AccountService{
 	private final AccountDao accountDao;
 	private final PasswordEncoder passwordEncoder;
 	
-	public AccountServiceImpl(AccountDao accountDao, PasswordEncoder passwordEncoder) {
+	public AccountServiceImpl(final AccountDao accountDao, final PasswordEncoder passwordEncoder) {
 		this.accountDao = accountDao;
 		this.passwordEncoder = passwordEncoder;
 	}
@@ -43,12 +42,10 @@ public class AccountServiceImpl implements AccountService{
 	// 회원가입
 	@Transactional
 	@Override
-	public Account register(final RequestAccountCreateDto dto) throws Exception {
-		dto.checkPassword();
-		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+	public Account register(final RequestAccountCreateDto dto) {
 		log.info(dto.toString());
 		
-		final Account account = Account.of(dto, Role.USER);
+		final Account account = Account.of(passwordEncoder, dto, Role.USER);
 		log.info(account.toString());
 		
 		accountDao.insertAccount(account);
@@ -58,12 +55,12 @@ public class AccountServiceImpl implements AccountService{
 	// 계정 정보 찾기
 	@Override
 	public ResponseAccountInfoDto getAccountInfo(final int id) {
-		final ResponseAccountInfoDto responseAccountInfoDto = accountDao.selectAccountInfo(id);
-		if(responseAccountInfoDto == null) throw new NotFoundAccountInfoException();
-		return responseAccountInfoDto;
+		final Account account = accountDao.selectAccountInfo(id);
+		log.info(account.toString());
+		return ResponseAccountInfoDto.from(account);
 	}
 	
-	// 회원정보 수정
+	// 회원정보 수정(닉네임)
 	@Transactional
 	@Override
 	public void editAccount(final Account account) {
@@ -74,14 +71,10 @@ public class AccountServiceImpl implements AccountService{
 	// 비밀번호 변경
 	@Transactional
 	@Override
-	public void changePassword(final Account account, final RequestPasswordDto dto) {
+	public void changePassword(Account account, final RequestPasswordDto dto) {
 		log.info(account.toString());
 		log.info(dto.toString());
-		dto.checkPassword();
-		if(!passwordEncoder.matches(dto.getBeforePassword(), account.getPassword())) {
-			throw new PasswordNotMatchException();
-		}
-		account.changePassword(passwordEncoder.encode(dto.getAfterPassword()));
+		account.changePassword(passwordEncoder, dto);
 		accountDao.updatePassword(account);
 	}
 	
@@ -131,26 +124,28 @@ public class AccountServiceImpl implements AccountService{
 	// 가입한 계정 찾기
 	@Override
 	public List<ResponseFindAccountDto> getAccounts(final RequestFindAccountDto dto) throws AccountNotFoundException {
-		final List<ResponseFindAccountDto> accountList = accountDao.selectAccounts(dto);
+		final List<Account> accountList = accountDao.selectAccounts(dto);
+		List<ResponseFindAccountDto> responseAccountList = new ArrayList<>();
 		
 		if(accountList.isEmpty()) throw new AccountNotFoundException();
 		
-		for(ResponseFindAccountDto responseFindAccountDto : accountList) {
-			log.info(responseFindAccountDto.toString());
+		for(Account account : accountList) {
+			ResponseFindAccountDto responseDto = ResponseFindAccountDto.from(account);
+			responseAccountList.add(responseDto);
 		}
 		
-		return accountList;
+		return responseAccountList;
 	}
 	
 	// 비밀번호 재설정 인증이메일 발송을 위한 계정 잠금
 	@Transactional
 	@Override
-	public Account lockAccount(final RequestAccountResetDto dto) throws Exception {
+	public Account lockAccount(final RequestAccountResetDto dto){
 		log.info(dto.toString()); 
 		final Account account = accountDao.selectAccount(dto.getEmail());
 		
 		if(account==null) throw new AccountNotFoundException(); 
-		if(!account.check(dto)) throw new FindAccountBadRequestException(); 
+		if(!account.checkAccount(dto)) throw new FindAccountBadRequestException(); 
 		if(!account.isEnabled()) throw new AccountNotEmailCheckedException(); 
 		
 		updateLocked(dto.getEmail(), 0); //계정 잠금
@@ -162,14 +157,11 @@ public class AccountServiceImpl implements AccountService{
 	@Override
 	public void resetPassword(final RequestPasswordResetDto dto) {
 		log.info(dto.toString());
-		dto.checkPassword();
-		final Account account = accountDao.selectAccount(dto.getEmail());
 		
-		if(account == null) { 
-			throw new AccountNotFoundException(); 
-		}
+		Account account = accountDao.selectAccount(dto.getEmail());
+		if(account == null) throw new AccountNotFoundException(); 
 		
-		account.changePassword(passwordEncoder.encode(dto.getPassword()));
+		account.resetPassword(passwordEncoder, dto);
 		accountDao.updatePassword(account);
 		updateLocked(dto.getEmail(), 1); //계정 잠금 풀기
 	}
@@ -178,7 +170,6 @@ public class AccountServiceImpl implements AccountService{
 	@Override
 	public void activation(final String email) {
 		log.info(email);
-		
 		accountDao.updateEnabled(email);
 	}
 	

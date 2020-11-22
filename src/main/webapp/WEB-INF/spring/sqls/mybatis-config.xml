@@ -6,15 +6,9 @@
 	<typeAliases>
 		<!-- Account 관련 -->
 		<typeAlias type="jsh.project.board.account.domain.Account" alias="Account" />
-		<typeAlias type="jsh.project.board.account.dto.response.ResponseAccountInfoDto" alias="ResponseAccountInfoDto" />
 		<typeAlias type="jsh.project.board.account.dto.request.RequestEmailDto" alias="RequestEmailDto" />
-		<typeAlias type="jsh.project.board.account.dto.request.RequestAccountCreateDto" alias="RequestAccountCreateDto" />
 		<typeAlias type="jsh.project.board.account.dto.request.RequestFindAccountDto" alias="RequestFindAccountDto" />
-		<typeAlias type="jsh.project.board.account.dto.response.ResponseFindAccountDto" alias="ResponseFindAccountDto" />
-		<typeAlias type="jsh.project.board.account.dto.request.RequestEmailConfirmDto" alias="RequestEmailConfirmDto" />
-		<typeAlias type="jsh.project.board.account.dto.request.RequestPasswordResetDto" alias="RequestPasswordResetDto" />
-		<typeAlias type="jsh.project.board.account.dto.request.RequestPasswordDto" alias="RequestPasswordDto" />
-		<typeAlias type="jsh.project.board.account.dto.auth.AuthDto" alias="AuthDto" />
+		<typeAlias type="jsh.project.board.account.domain.Auth" alias="Auth" />
 
 		<!-- Article 관련 -->
 		<typeAlias type="jsh.project.board.article.domain.Article" alias="Article" />
@@ -29,8 +23,8 @@
 		<!-- Article Reply 관련 -->
 		<typeAlias type="jsh.project.board.reply.domain.Reply" alias="Reply" />
 		<typeAlias type="jsh.project.board.reply.dto.response.ResponseReplyDto" alias="ResponseReplyDto" />
-
 	</typeAliases>
+	
 	<typeHandlers>
 		<typeHandler handler="jsh.project.board.global.handler.CustomDateHandler" />
 	</typeHandlers>

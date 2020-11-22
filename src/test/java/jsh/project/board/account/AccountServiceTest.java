@@ -9,6 +9,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,14 +20,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jsh.project.board.account.dao.AccountDao;
 import jsh.project.board.account.dao.AuthDao;
 import jsh.project.board.account.domain.Account;
-import jsh.project.board.account.dto.auth.AuthDto;
+import jsh.project.board.account.domain.Auth;
 import jsh.project.board.account.dto.request.RequestAccountCreateDto;
 import jsh.project.board.account.dto.request.RequestAccountEditDto;
 import jsh.project.board.account.dto.request.RequestEmailConfirmDto;
@@ -36,313 +37,394 @@ import jsh.project.board.account.dto.request.RequestPasswordResetDto;
 import jsh.project.board.account.dto.response.ResponseAccountInfoDto;
 import jsh.project.board.account.dto.response.ResponseFindAccountDto;
 import jsh.project.board.account.enums.AuthOption;
-import jsh.project.board.account.enums.Role;
 import jsh.project.board.account.exception.AccountNotFoundException;
-import jsh.project.board.account.exception.BadAuthRequestException;
 import jsh.project.board.account.exception.EmailAlreadyUsedException;
 import jsh.project.board.account.exception.PasswordCheckFailedException;
 import jsh.project.board.account.exception.PasswordNotMatchException;
 import jsh.project.board.account.service.AccountServiceImpl;
 import jsh.project.board.account.service.AuthServiceImpl;
 import jsh.project.board.global.infra.email.EmailService;
-import jsh.project.board.global.infra.util.AuthKey;
+import jsh.project.board.global.infra.util.AuthKeyMaker;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccountServiceTest {
-	
+
 	@Mock
 	private AccountDao accountDao;
-	
+
 	@Mock
 	private AuthDao authDao;
-	
+
 	@InjectMocks
 	private AccountServiceImpl accountService;
-	
-	@Mock
+
+	@InjectMocks
 	private AuthServiceImpl authService;
-	
+
 	@Mock
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Mock
 	private EmailService emailService;
-	
-	@Spy
-	ResponseFindAccountDto responseDto = new ResponseFindAccountDto();
-	
-	@Spy
-	Account account = Account.of(new RequestAccountCreateDto(),Role.USER);
-	
-	
+
+
 	@Before
 	public void setUp() {
-		//가입한 계정
-		responseDto.setEmail("jangsehun1992@gmail.com");
-		responseDto.setRegdate(new Date());
+		
 	}
-	
+
 	@Test
 	public void 이메일_중복체크() {
-		//given
+		// given
 		RequestEmailDto dto = new RequestEmailDto();
 		dto.setEmail("jangsehun1992@gmail.com");
-		
-		//when
+
+		// when
 		accountService.emailCheck(dto);
-		
-		//then
+
+		// then
 		assertNull(accountDao.selectAccount(dto.getEmail()));
 	}
-	
+
 	@Test(expected = EmailAlreadyUsedException.class)
 	public void 이메일_중복일경우() {
-		//given
+		// given
 		RequestEmailDto dto = new RequestEmailDto();
 		dto.setEmail("jangsehun1992@gmail.com");
-		
+
 		given(accountDao.selectEmailCount(dto)).willReturn(1);
-		
-		//when
+
+		// when
 		accountService.emailCheck(dto);
-		
-		//then
-		assertThat(accountDao.selectAccount(dto.getEmail()),is(1));
+
+		// then
+		assertThat(accountDao.selectAccount(dto.getEmail()), is(1));
 	}
-	
+
 	@Test
 	public void 회원가입() throws Exception {
-		//given
+		// given
 		RequestAccountCreateDto dto = new RequestAccountCreateDto();
 		dto.setEmail("jangsehun1992@gmail.com");
-		dto.setPassword("1234");
-		dto.setPasswordCheck("1234");
+		dto.setPassword("password");
+		dto.setPasswordCheck("password");
 		dto.setName("장세훈");
 		dto.setNickname("tester");
 		dto.setBirth("920409");
-		
-		AuthDto authDto = new AuthDto();
-		authDto.setEmail("jangsehun1992@gmail.com");
-		authDto.setAuthKey(new AuthKey().getKey());
-		authDto.setAuthOption(AuthOption.RESET.getValue());
-		authDto.setExpired(true);
-		
-		//when
+
+		// when
 		accountService.register(dto);
-		
-		//then
+
+		// then
 		verify(accountDao, times(1)).insertAccount(any());
-		verify(passwordEncoder, times(1)).encode("1234");
-		verify(authService, times(1)).createAuth(any(),any());
-		verify(emailService, times(1)).sendEmail(any());
 	}
-	
+
 	@Test
-	public void 이메일_인증() {
-		//given
-		String authKey = new AuthKey().getKey();
-		
+	public void 이메일_인증() throws Exception{
+		// given
+		String authKey = new AuthKeyMaker().getKey();
+		AuthOption authOption = AuthOption.SIGNUP;
+
 		RequestEmailConfirmDto dto = new RequestEmailConfirmDto();
 		dto.setEmail("jangsehun1992@gmail.com");
 		dto.setAuthKey(authKey);
-		dto.setAuthOption(AuthOption.SIGNUP.getValue());
+		dto.setAuthOption(authOption.getValue());
 		
-		AuthDto authDto = new AuthDto();
-		authDto.setEmail("jangsehun1992@gmail.com");
-		authDto.setAuthKey(authKey);
-		authDto.setAuthOption(AuthOption.SIGNUP.getValue());
-		authDto.setExpired(false);
+		Auth auth = Auth.from(dto);
+		Field field = null;
+		// Auth email값 설정
+		field = Auth.class.getDeclaredField("email");
+		field.setAccessible(true); // access 가능하도록 변경
+		field.set(auth, "jangsehun1992@gmail.com");
 		
-		given(authService.getAuth(dto.getEmail())).willReturn(authDto);
+		// Auth authKey값 설정
+		field = Auth.class.getDeclaredField("authKey");
+		field.setAccessible(true); // access 가능하도록 변경
+		field.set(auth, authKey);
+
+		// Auth authOption값 설정
+		field = Auth.class.getDeclaredField("authOption");
+		field.setAccessible(true); // access 가능하도록 변경
+		field.set(auth, authOption.getValue());
+
+		// Auth expried값 설정
+		field = Auth.class.getDeclaredField("expired");
+		field.setAccessible(true); // access 가능하도록 변경
+		field.setBoolean(auth, false);
 		
-		//when
+		given(authDao.selectAuth(dto.getEmail())).willReturn(auth);
+
+		// when
 		authService.authConfirm(dto);
-		
-		//than
-		verify(authService).authConfirm(dto);
+
+		// than
+		verify(authDao).deleteAuth(any());
+		assertThat(auth.getAuthKey(), is(authKey));
 	}
-	
+
 	@Test
-	public void 해당_계정_정보_보기() {
-		//given
+	public void 해당_계정_정보_보기() throws Exception {
+		// given
 		int accountId = 1;
+
 		
-		ResponseAccountInfoDto responseDto = new ResponseAccountInfoDto();
-		responseDto.setId(1);
-		responseDto.setNickname("tester");
-		
-		given(accountDao.selectAccountInfo(accountId)).willReturn(responseDto);
-		//when
+		// 클래스 정보
+		Class<Account> accountClass = Account.class;
+		// 해당 클래스 생성자 불러오기 ( getDeclaredXXX() : 접근제한자에 상관없이 모든 속성을 가져올 수 있다. )
+		Constructor<Account> constructors = accountClass.getDeclaredConstructor(new Class[] {});
+		// 클래스 생성자 접근가능 처리 (private 타입의 생성자에 접근 제한을 허락)
+		constructors.setAccessible(true); // access 가능하도록 변경
+		// 생성자를 통한 인스턴스 생성
+		Account account = (Account) constructors.newInstance();
+
+		// 필드값 설정
+		Field field = null;
+		// Account id값 설정
+		field = accountClass.getDeclaredField("id");
+		field.setAccessible(true); // access 가능하도록 변경
+		field.setInt(account, accountId);
+
+		// Account nickname값 설정
+		field = accountClass.getDeclaredField("nickname");
+		field.setAccessible(true); // access 가능하도록 변경
+		field.set(account, "tester");
+		System.out.println(account.toString());
+
+		given(accountDao.selectAccountInfo(accountId)).willReturn(account);
+		// when
 		ResponseAccountInfoDto responseAccountDto = accountService.getAccountInfo(accountId);
-		
-		//then
+
+		// then
 		assertNotNull(responseAccountDto);
 		assertThat(responseAccountDto.getId(), is(1));
 		assertThat(responseAccountDto.getNickname(), is("tester"));
 	}
-	
+
 	@Test
-	public void 가입한_계정_찾기() {
-		//given
+	public void 가입한_계정_찾기() throws Exception{
+		// given
 		RequestFindAccountDto requestDto = new RequestFindAccountDto();
 		requestDto.setName("장세훈");
 		requestDto.setBirth("920409");
 		
-		List<ResponseFindAccountDto> accountList = new ArrayList<ResponseFindAccountDto>();
-		accountList.add(responseDto);
-		
-		given(accountDao.selectAccounts(requestDto)).willReturn(accountList);
-		
-		//when
-		accountService.getAccounts(requestDto);
-		
-		//then
-		assertThat(accountList.size(), is(1));
-		assertThat(accountList.get(0).getEmail(), is("jangsehun1992@gmail.com"));
-	}
-	
-	@Test(expected = AccountNotFoundException.class)
-	public void 가입한_계정이_없는_경우() {
-		//given
-		RequestFindAccountDto requestDto = new RequestFindAccountDto();
-		requestDto.setName("장세훈");
-		requestDto.setBirth("920409");
-		
-		List<ResponseFindAccountDto> accountList = new ArrayList<ResponseFindAccountDto>();
+		// 클래스 정보
+		Class<Account> accountClass = Account.class;
+		// 해당 클래스 생성자 불러오기 ( getDeclaredXXX() : 접근제한자에 상관없이 모든 속성을 가져올 수 있다. )
+		Constructor<Account> constructors = accountClass.getDeclaredConstructor(new Class[] {});
+		// 클래스 생성자 접근가능 처리 (private 타입의 생성자에 접근 제한을 허락)
+		constructors.setAccessible(true); // access 가능하도록 변경
+		// 생성자를 통한 인스턴스 생성
+		Account account = (Account) constructors.newInstance();
+
+		// 필드값 설정
+		Field field = null;
+		// Account email값 설정
+		field = accountClass.getDeclaredField("email");
+		field.setAccessible(true); // access 가능하도록 변경
+		field.set(account, "jangsehun1992@gmail.com");
+
+		// Account regdate값 설정
+		field = accountClass.getDeclaredField("regdate");
+		field.setAccessible(true); // access 가능하도록 변경
+		field.set(account, new Date());
+		System.out.println(account.toString());
+
+		List<Account> accountList = new ArrayList<Account>();
+		accountList.add(account);
 
 		given(accountDao.selectAccounts(requestDto)).willReturn(accountList);
-		
-		//when
+
+		// when
+		List<ResponseFindAccountDto> responseAccountList = accountService.getAccounts(requestDto);
+
+		// then
+		assertThat(responseAccountList.size(), is(1));
+		assertThat(responseAccountList.get(0).getEmail(), is("jangsehun1992@gmail.com"));
+	}
+
+	@Test(expected = AccountNotFoundException.class)
+	public void 가입한_계정이_없는_경우() {
+		// given
+		RequestFindAccountDto requestDto = new RequestFindAccountDto();
+		requestDto.setName("장세훈");
+		requestDto.setBirth("920409");
+
+		List<Account> accountList = new ArrayList<Account>();
+
+		given(accountDao.selectAccounts(requestDto)).willReturn(accountList);
+
+		// when
 		accountService.getAccounts(requestDto);
 	}
-	
+
 	@Test
-	public void 회원_정보_수정() {
-		//given
+	public void 회원_정보_수정() throws Exception{
+		// given
 		RequestAccountEditDto requestDto = new RequestAccountEditDto();
 		requestDto.setNickname("changeNickname");
 		
+		// 클래스 정보
+		Class<Account> accountClass = Account.class;
+		// 해당 클래스 생성자 불러오기 ( getDeclaredXXX() : 접근제한자에 상관없이 모든 속성을 가져올 수 있다. )
+		Constructor<Account> constructors = accountClass.getDeclaredConstructor(new Class[] {});
+		// 클래스 생성자 접근가능 처리 (private 타입의 생성자에 접근 제한을 허락)
+		constructors.setAccessible(true); // access 가능하도록 변경
+		// 생성자를 통한 인스턴스 생성
+		Account account = (Account) constructors.newInstance();
+
+		// 필드값 설정
+		Field field = null;
+		// Account nickname값 설정
+		field = accountClass.getDeclaredField("nickname");
+		field.setAccessible(true); // access 가능하도록 변경
+		field.set(account, "nickname");
+		System.out.println(account.toString());
+
 		account.changeNickname(requestDto.getNickname());
-		
-		//when
+
+		// when
 		accountService.editAccount(account);
-		
-		//then
+
+		// then
 		verify(accountDao, times(1)).updateAccount(account);
-		
+
 		assertThat(account.getNickname(), is(requestDto.getNickname()));
 	}
-	
+
 	@Test
-	public void 비밀번호_변경() {
-		//given
+	public void 비밀번호_변경() throws Exception{
+		// given
 		RequestPasswordDto dto = new RequestPasswordDto();
-		dto.setBeforePassword("password1234");
-		dto.setAfterPassword("password1234");
-		dto.setAfterPasswordCheck("password1234");
+		dto.setBeforePassword("b_password");
+		dto.setAfterPassword("a_password");
+		dto.setAfterPasswordCheck("a_password");
 		
+		// 클래스 정보
+		Class<Account> accountClass = Account.class;
+		// 해당 클래스 생성자 불러오기 ( getDeclaredXXX() : 접근제한자에 상관없이 모든 속성을 가져올 수 있다. )
+		Constructor<Account> constructors = accountClass.getDeclaredConstructor(new Class[] {});
+		// 클래스 생성자 접근가능 처리 (private 타입의 생성자에 접근 제한을 허락)
+		constructors.setAccessible(true); // access 가능하도록 변경
+		// 생성자를 통한 인스턴스 생성
+		Account account = (Account) constructors.newInstance();
+
+		// 필드값 설정
+		Field field = null;
+		// Account password값 설정
+		field = accountClass.getDeclaredField("password");
+		field.setAccessible(true); // access 가능하도록 변경
+		field.set(account, "b_password");
+
 		given(passwordEncoder.matches(any(), any())).willReturn(true);
-		//when
+		// when
 		accountService.changePassword(account, dto);
-		
-		//then
+
+		// then
 		verify(accountDao, times(1)).updatePassword(account);
 	}
-	
+
 	@Test(expected = PasswordCheckFailedException.class)
-	public void 비밀번호_변경_할때_바꿀_비밀번호가_다른_경우() {
-		//given
+	public void 비밀번호_변경_할때_바꿀_비밀번호가_다른_경우() throws Exception{
+		// given
 		RequestPasswordDto dto = new RequestPasswordDto();
 		dto.setBeforePassword("password");
 		dto.setAfterPassword("password1234");
 		dto.setAfterPasswordCheck("4321drowssap");
 		
-		//when
+		// 클래스 정보
+		Class<Account> accountClass = Account.class;
+		// 해당 클래스 생성자 불러오기 ( getDeclaredXXX() : 접근제한자에 상관없이 모든 속성을 가져올 수 있다. )
+		Constructor<Account> constructors = accountClass.getDeclaredConstructor(new Class[] {});
+		// 클래스 생성자 접근가능 처리 (private 타입의 생성자에 접근 제한을 허락)
+		constructors.setAccessible(true); // access 가능하도록 변경
+		// 생성자를 통한 인스턴스 생성
+		Account account = (Account) constructors.newInstance();
+
+		// 필드값 설정
+		Field field = null;
+		// Account password값 설정
+		field = accountClass.getDeclaredField("password");
+		field.setAccessible(true); // access 가능하도록 변경
+		field.set(account, "password");
+		System.out.println(account.toString());
+
+		// when
 		accountService.changePassword(account, dto);
 	}
-	
+
 	@Test(expected = PasswordNotMatchException.class)
-	public void 비밀변호_변경_할때_기존_비밀번호가_다른경우() {
-		//given
+	public void 비밀변호_변경_할때_기존_비밀번호가_다른경우() throws Exception{
+		// given
 		RequestPasswordDto dto = new RequestPasswordDto();
 		dto.setBeforePassword("password");
 		dto.setAfterPassword("password1234");
 		dto.setAfterPasswordCheck("password1234");
 		
-		//when
+		// 클래스 정보
+		Class<Account> accountClass = Account.class;
+		// 해당 클래스 생성자 불러오기 ( getDeclaredXXX() : 접근제한자에 상관없이 모든 속성을 가져올 수 있다. )
+		Constructor<Account> constructors = accountClass.getDeclaredConstructor(new Class[] {});
+		// 클래스 생성자 접근가능 처리 (private 타입의 생성자에 접근 제한을 허락)
+		constructors.setAccessible(true); // access 가능하도록 변경
+		// 생성자를 통한 인스턴스 생성
+		Account account = (Account) constructors.newInstance();
+
+		// 필드값 설정
+		Field field = null;
+		// Account password값 설정
+		field = accountClass.getDeclaredField("password");
+		field.setAccessible(true); // access 가능하도록 변경
+		field.set(account, "password_not_match");
+		System.out.println(account.toString());
+
+		// when
 		accountService.changePassword(account, dto);
 	}
-	
+
 	@Test
-	public void 비밀번호_재설정() {
-		//given
-		String authKey = new AuthKey().getKey();
+	public void 비밀번호_재설정() throws Exception{
+		// given
+		String authKey = new AuthKeyMaker().getKey();
 		RequestPasswordResetDto dto = new RequestPasswordResetDto();
 		dto.setAuthKey(authKey);
 		dto.setEmail("jangsehun1992@gmail.com");
 		dto.setAuthOption(AuthOption.RESET.getValue());
-		dto.setPassword("password");
-		dto.setPasswordCheck("password");
+		dto.setPassword("resetPassword");
+		dto.setPasswordCheck("resetPassword");
 		
-		AuthDto authDto = new AuthDto();
-		authDto.setEmail("jangsehun1992@gmail.com");
-		authDto.setAuthKey(authKey);
-		authDto.setAuthOption(AuthOption.RESET.getValue());
-		authDto.setExpired(false);
-		
+		// 클래스 정보
+		Class<Account> accountClass = Account.class;
+		// 해당 클래스 생성자 불러오기 ( getDeclaredXXX() : 접근제한자에 상관없이 모든 속성을 가져올 수 있다. )
+		Constructor<Account> constructors = accountClass.getDeclaredConstructor(new Class[] {});
+		// 클래스 생성자 접근가능 처리 (private 타입의 생성자에 접근 제한을 허락)
+		constructors.setAccessible(true); // access 가능하도록 변경
+		// 생성자를 통한 인스턴스 생성
+		Account account = (Account) constructors.newInstance();
+
 		given(accountDao.selectAccount(dto.getEmail())).willReturn(account);
-		
-		//when
+
+		// when
 		accountService.resetPassword(dto);
-		
-		//then
-		assertThat(dto.getAuthKey(), is(authDto.getAuthKey()));
+
+		// then
+		assertThat(dto.getPassword(), is(dto.getPasswordCheck()));
 	}
-	
+
 	@Test(expected = AccountNotFoundException.class)
 	public void 비밀번호_재설정_계정_정보를_찾을수_없는_경우() {
-		//given
-		String authKey = new AuthKey().getKey();
+		// given
+		String authKey = new AuthKeyMaker().getKey();
 		RequestPasswordResetDto dto = new RequestPasswordResetDto();
 		dto.setAuthKey(authKey);
 		dto.setEmail("jangsehun1992@gmail.com");
 		dto.setAuthOption(AuthOption.RESET.getValue());
 		dto.setPassword("password");
 		dto.setPasswordCheck("password");
-		
-		AuthDto authDto = new AuthDto();
-		authDto.setEmail("jangsehun1992@gmail.com");
-		authDto.setAuthKey(authKey);
-		authDto.setAuthOption(AuthOption.RESET.getValue());
-		authDto.setExpired(false);
-		
+
 		given(accountDao.selectAccount(dto.getEmail())).willReturn(null);
-		
-		//when
+
+		// when
 		accountService.resetPassword(dto);
 	}
-	
-	@Test(expected = BadAuthRequestException.class)
-	public void 비밀번호_재설정_인증_정보_오류인_경우() {
-		//given
-		String authKey = new AuthKey().getKey();
-		RequestPasswordResetDto dto = new RequestPasswordResetDto();
-		dto.setAuthKey(authKey);
-		dto.setEmail("jangsehun1992@gmail.com");
-		dto.setAuthOption(AuthOption.RESET.getValue());
-		dto.setPassword("password");
-		dto.setPasswordCheck("password");
-		
-		AuthDto authDto = new AuthDto();
-		authDto.setEmail("jangsehun1992@gmail.com");
-		authDto.setAuthKey(authKey);
-		authDto.setAuthOption(AuthOption.RESET.getValue());
-		authDto.setExpired(true);
-		
-		given(accountDao.selectAccount(dto.getEmail())).willReturn(account);
-		
-		//when
-		accountService.resetPassword(dto);
-	}
-	
+
 }

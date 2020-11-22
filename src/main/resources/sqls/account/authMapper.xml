@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="authMapper">
-	<resultMap type="AuthDto" id="AuthDtoResultMap">
+	<resultMap type="Auth" id="AuthResultMap">
 		<result property="email" column="email"/>
 		<result property="authKey" column="auth_key"/>
 		<result property="authOption" column="auth_option"/>
@@ -9,7 +9,7 @@
 		<result property="expiredDate" column="expried_date"/>
 	</resultMap>
 	
-	<insert id="insertAuth" parameterType="AuthDto">
+	<insert id="insertAuth" parameterType="Auth">
 		INSERT INTO 
 			auth_table
 		VALUES(
@@ -22,7 +22,7 @@
 		)
 	</insert>
 	
-	<select id="selectAuth" parameterType="java.lang.String" resultMap="AuthDtoResultMap">
+	<select id="selectAuth" parameterType="java.lang.String" resultMap="AuthResultMap">
 		SELECT
 			email,
 			auth_key,
@@ -36,7 +36,7 @@
 			expired = 0
 	</select>
 	
-	<select id="selectAuthCount" parameterType="map" resultType="int">
+	<select id="selectAuthCount" parameterType="Auth" resultType="int">
 		SELECT
 			count(email)
 		FROM
@@ -47,7 +47,7 @@
 			auth_option = #{authOption}
 	</select>
 	
-	<select id="selectAuthCheck" parameterType="map" resultType="boolean">
+	<select id="selectAuthCheck" parameterType="Auth" resultType="boolean">
 		SELECT
 			count(email)
 		FROM
@@ -59,7 +59,7 @@
 			auth_key = #{authKey}
 	</select>
 	
-	<update id="updateAuth" parameterType="AuthDto">
+	<update id="updateAuth" parameterType="Auth">
 		UPDATE 
 			auth_table
 		SET 
@@ -70,7 +70,7 @@
 			expired = 0
 	</update>
 	
-	<update id="deleteAuth" parameterType="RequestEmailConfirmDto">
+	<update id="deleteAuth" parameterType="Auth">
 		UPDATE 
 			auth_table
 		SET 

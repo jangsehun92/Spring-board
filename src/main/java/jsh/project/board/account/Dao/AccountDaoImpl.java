@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository;
 import jsh.project.board.account.domain.Account;
 import jsh.project.board.account.dto.request.RequestEmailDto;
 import jsh.project.board.account.dto.request.RequestFindAccountDto;
-import jsh.project.board.account.dto.response.ResponseAccountInfoDto;
-import jsh.project.board.account.dto.response.ResponseFindAccountDto;
 
 @Repository
 public class AccountDaoImpl implements AccountDao{
@@ -22,62 +20,62 @@ public class AccountDaoImpl implements AccountDao{
 	}
 	
 	@Override
-	public void insertAccount(Account dto) {
+	public void insertAccount(final Account dto) {
 		sqlSession.insert("accountMapper.insertAccount",dto);
 	}
 	
 	@Override
-	public Account selectAccount(String email) {
+	public Account selectAccount(final String email) {
 		return sqlSession.selectOne("accountMapper.selectAccount",email);
 	}
 	
 	@Override
-	public ResponseAccountInfoDto selectAccountInfo(int id) {
+	public Account selectAccountInfo(final int id) {
 		return sqlSession.selectOne("accountMapper.selectAccountInfo", id);
 	}
 	
 	@Override
-	public void updateAccount(Account account) {
+	public void updateAccount(final Account account) {
 		sqlSession.update("accountMapper.updateAccount", account);
 	}
 	
 	@Override
-	public void updateLoginDate(String email) {
+	public void updateLoginDate(final String email) {
 		sqlSession.update("accountMapper.updateLoginDate",email);
 	}
 	
 	@Override
-	public void updatePassword(Account account) {
+	public void updatePassword(final Account account) {
 		sqlSession.update("accountMapper.updatePassword", account);
 	}
 	
 	@Override
-	public int selectEmailCount(RequestEmailDto dto) {
+	public int selectEmailCount(final RequestEmailDto dto) {
 		return sqlSession.selectOne("accountMapper.selectEmailCount",dto);
 	}
 	
 	@Override
-	public List<ResponseFindAccountDto> selectAccounts(RequestFindAccountDto dto){
+	public List<Account> selectAccounts(final RequestFindAccountDto dto){
 		return sqlSession.selectList("accountMapper.selectAccounts", dto);
 	}
 	
 	@Override
-	public void updateEnabled(String email) {
+	public void updateEnabled(final String email) {
 		sqlSession.update("accountMapper.updateEnabled",email);
 	}
 	
 	@Override
-	public int selectFailureCount(String email) {
+	public int selectFailureCount(final String email) {
 		return sqlSession.selectOne("accountMapper.selectFailureCount", email);
 	}
 	
 	@Override
-	public void updateFailureCount(Map<String, Object> paramMap) {
+	public void updateFailureCount(final Map<String, Object> paramMap) {
 		sqlSession.update("accountMapper.updateFailureCount", paramMap);
 	}
 	
 	@Override
-	public void updateLocked(Map<String, Object> paramMap) {
+	public void updateLocked(final Map<String, Object> paramMap) {
 		sqlSession.update("accountMapper.updateLocked", paramMap);
 	}
 }

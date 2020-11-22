@@ -19,8 +19,7 @@
 <script type="text/javascript">
 function check_form(){
 	var RequestPasswordResetDto = {
-		//email : "${dto.email}",
-		email : "jangsehun92@gmail.com",
+		email : "${dto.email}",
 		password : $("#password").val(),
 		passwordCheck : $("#passwordCheck").val(),
 		authKey : "${dto.authKey}",

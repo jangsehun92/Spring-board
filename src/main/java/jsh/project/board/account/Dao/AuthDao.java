@@ -1,22 +1,19 @@
 package jsh.project.board.account.dao;
 
-import java.util.Map;
-
-import jsh.project.board.account.dto.auth.AuthDto;
-import jsh.project.board.account.dto.request.RequestEmailConfirmDto;
+import jsh.project.board.account.domain.Auth;
 
 public interface AuthDao {
 	
-	public void insertAuth(AuthDto dto);
+	public void insertAuth(final Auth dto);
 	
-	public AuthDto selectAuth(String email);
+	public Auth selectAuth(final String email);
 	
-	public int selectAuthCount(Map<String, String> paramMap);
+	public int selectAuthCount(final Auth dto);
 	
-	public boolean selectAuthCheck(Map<String, String> paramMap);
+	public boolean selectAuthCheck(final Auth dto);
 	
-	public void updateAuth(AuthDto dto);
+	public void updateAuth(final Auth dto);
 	
-	public void deleteAuth(RequestEmailConfirmDto dto);
+	public void deleteAuth(final Auth dto);
 
 }

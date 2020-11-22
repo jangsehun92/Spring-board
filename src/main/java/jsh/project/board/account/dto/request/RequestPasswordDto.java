@@ -3,8 +3,6 @@ package jsh.project.board.account.dto.request;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-import jsh.project.board.account.exception.PasswordCheckFailedException;
-
 public class RequestPasswordDto {
 	
 	@NotBlank(message = "이전 비밀번호를 입력해주세요.")
@@ -40,12 +38,6 @@ public class RequestPasswordDto {
 	
 	public void setAfterPasswordCheck(String afterPasswordCheck) {
 		this.afterPasswordCheck = afterPasswordCheck;
-	}
-	
-	public void checkPassword() {
-		if(!afterPassword.equals(afterPasswordCheck)) {
-			throw new PasswordCheckFailedException();
-		}
 	}
 	
 	@Override

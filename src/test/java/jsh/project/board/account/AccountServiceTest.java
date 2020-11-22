@@ -26,7 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import jsh.project.board.account.dao.AccountDao;
 import jsh.project.board.account.dao.AuthDao;
 import jsh.project.board.account.domain.Account;
-import jsh.project.board.account.dto.auth.AuthDto;
+import jsh.project.board.account.domain.Auth;
 import jsh.project.board.account.dto.request.RequestAccountCreateDto;
 import jsh.project.board.account.dto.request.RequestAccountEditDto;
 import jsh.project.board.account.dto.request.RequestEmailConfirmDto;
@@ -44,7 +44,7 @@ import jsh.project.board.account.exception.PasswordNotMatchException;
 import jsh.project.board.account.service.AccountServiceImpl;
 import jsh.project.board.account.service.AuthServiceImpl;
 import jsh.project.board.global.infra.email.EmailService;
-import jsh.project.board.global.infra.util.AuthKey;
+import jsh.project.board.global.infra.util.AuthKeyMaker;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccountServiceTest {
@@ -58,7 +58,7 @@ public class AccountServiceTest {
 	@InjectMocks
 	private AccountServiceImpl accountService;
 
-	@Mock
+	@InjectMocks
 	private AuthServiceImpl authService;
 
 	@Mock
@@ -120,26 +120,46 @@ public class AccountServiceTest {
 	}
 
 	@Test
-	public void 이메일_인증() {
+	public void 이메일_인증() throws Exception{
 		// given
-		String authKey = new AuthKey().getKey();
+		String authKey = new AuthKeyMaker().getKey();
+		AuthOption authOption = AuthOption.SIGNUP;
 
 		RequestEmailConfirmDto dto = new RequestEmailConfirmDto();
 		dto.setEmail("jangsehun1992@gmail.com");
 		dto.setAuthKey(authKey);
-		dto.setAuthOption(AuthOption.SIGNUP.getValue());
+		dto.setAuthOption(authOption.getValue());
+		
+		Auth auth = Auth.from(dto);
+		Field field = null;
+		// Auth email값 설정
+		field = Auth.class.getDeclaredField("email");
+		field.setAccessible(true); // access 가능하도록 변경
+		field.set(auth, "jangsehun1992@gmail.com");
+		
+		// Auth authKey값 설정
+		field = Auth.class.getDeclaredField("authKey");
+		field.setAccessible(true); // access 가능하도록 변경
+		field.set(auth, authKey);
 
-		AuthDto authDto = new AuthDto();
-		authDto.setEmail("jangsehun1992@gmail.com");
-		authDto.setAuthKey(authKey);
-		authDto.setAuthOption(AuthOption.SIGNUP.getValue());
-		authDto.setExpired(false);
+		// Auth authOption값 설정
+		field = Auth.class.getDeclaredField("authOption");
+		field.setAccessible(true); // access 가능하도록 변경
+		field.set(auth, authOption.getValue());
+
+		// Auth expried값 설정
+		field = Auth.class.getDeclaredField("expired");
+		field.setAccessible(true); // access 가능하도록 변경
+		field.setBoolean(auth, false);
+		
+		given(authDao.selectAuth(dto.getEmail())).willReturn(auth);
 
 		// when
 		authService.authConfirm(dto);
 
 		// than
-		verify(authService).authConfirm(dto);
+		verify(authDao).deleteAuth(any());
+		assertThat(auth.getAuthKey(), is(authKey));
 	}
 
 	@Test
@@ -198,12 +218,12 @@ public class AccountServiceTest {
 
 		// 필드값 설정
 		Field field = null;
-		// Account id값 설정
+		// Account email값 설정
 		field = accountClass.getDeclaredField("email");
 		field.setAccessible(true); // access 가능하도록 변경
 		field.set(account, "jangsehun1992@gmail.com");
 
-		// Account nickname값 설정
+		// Account regdate값 설정
 		field = accountClass.getDeclaredField("regdate");
 		field.setAccessible(true); // access 가능하도록 변경
 		field.set(account, new Date());
@@ -364,7 +384,7 @@ public class AccountServiceTest {
 	@Test
 	public void 비밀번호_재설정() throws Exception{
 		// given
-		String authKey = new AuthKey().getKey();
+		String authKey = new AuthKeyMaker().getKey();
 		RequestPasswordResetDto dto = new RequestPasswordResetDto();
 		dto.setAuthKey(authKey);
 		dto.setEmail("jangsehun1992@gmail.com");
@@ -393,7 +413,7 @@ public class AccountServiceTest {
 	@Test(expected = AccountNotFoundException.class)
 	public void 비밀번호_재설정_계정_정보를_찾을수_없는_경우() {
 		// given
-		String authKey = new AuthKey().getKey();
+		String authKey = new AuthKeyMaker().getKey();
 		RequestPasswordResetDto dto = new RequestPasswordResetDto();
 		dto.setAuthKey(authKey);
 		dto.setEmail("jangsehun1992@gmail.com");

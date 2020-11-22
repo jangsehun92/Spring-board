@@ -38,13 +38,13 @@ public class Account implements UserDetails {
 		
 	}
 
-	private Account(PasswordEncoder passwordEncoder, RequestAccountCreateDto dto, Role role) {
-		this.email = dto.getEmail();
-		this.password = passwordEncoder.encode(dto.getPassword()); 
-		this.name = dto.getName(); 
-		this.birth = dto.getBirth(); 
-		this.nickname = dto.getNickname();
-		this.role = role.getValue(); 
+	private Account(String email, String password, String name, String birth, String nickname, String role) {
+		this.email = email;
+		this.password = password; 
+		this.name = name; 
+		this.birth = birth; 
+		this.nickname = nickname;
+		this.role = role; 
 	}
 	
 	//정적 팩토리 메소드
@@ -52,7 +52,7 @@ public class Account implements UserDetails {
 		if(!dto.getPassword().equals(dto.getPasswordCheck())) {
 			throw new PasswordCheckFailedException();
 		}
-		return new Account(passwordEncoder, dto,role);
+		return new Account(dto.getEmail(), passwordEncoder.encode(dto.getPassword()), dto.getName(), dto.getBirth(), dto.getNickname(), role.getValue());
 	}
 	
 	@Override
@@ -138,13 +138,13 @@ public class Account implements UserDetails {
 			throw new PasswordCheckFailedException();
 		if(!passwordEncoder.matches(dto.getBeforePassword(), this.password))  
 			throw new PasswordNotMatchException();
-		this.password = dto.getAfterPassword();
+		this.password = passwordEncoder.encode(dto.getAfterPassword());
 	}
 	
-	public void resetPassword(RequestPasswordResetDto dto) {
+	public void resetPassword(PasswordEncoder passwordEncoder, RequestPasswordResetDto dto) {
 		if(!dto.getPassword().equals(dto.getPasswordCheck())) 
 			throw new PasswordCheckFailedException();
-		this.password = dto.getPassword();
+		this.password = passwordEncoder.encode(dto.getPassword());
 	}
 	
 	@Override

@@ -2,7 +2,10 @@ package jsh.project.board.global.infra.util;
 
 import java.util.Random;
 
-public class AuthKey {
+import org.springframework.stereotype.Component;
+
+@Component
+public class AuthKeyMaker {
 
 	private int size = 64;
 	private boolean lowerCheck = false;

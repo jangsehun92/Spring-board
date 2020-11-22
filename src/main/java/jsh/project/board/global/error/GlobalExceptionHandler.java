@@ -13,8 +13,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import jsh.project.board.global.error.exception.AuthException;
 import jsh.project.board.global.error.exception.BusinessException;
-import jsh.project.board.global.error.exception.EmailException;
 import jsh.project.board.global.error.exception.ErrorCode;
 
 @ControllerAdvice
@@ -99,9 +99,9 @@ public class GlobalExceptionHandler {
 	/**
 	 * 이메일 인증에서 발생 할 수 있는 에러를 처리한다.
 	 */
-	@ExceptionHandler(EmailException.class)
-	protected Object handleBusinessException(HttpServletRequest request, final EmailException e) {
-		log.error("handleEmailException", e);
+	@ExceptionHandler(AuthException.class)
+	protected Object handleBusinessException(HttpServletRequest request, final AuthException e) {
+		log.error("handleAuthException", e);
 		log.error(e.getErrorCode().getCode() + " : " + e.getErrorCode().getMessage());
 		if(isAjax(request)) {
 			final ErrorCode errorCode = e.getErrorCode();

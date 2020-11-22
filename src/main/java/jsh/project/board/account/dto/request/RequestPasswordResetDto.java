@@ -1,12 +1,7 @@
 package jsh.project.board.account.dto.request;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-
-import jsh.project.board.account.exception.PasswordCheckFailedException;
 
 public class RequestPasswordResetDto {
 	
@@ -60,25 +55,6 @@ public class RequestPasswordResetDto {
 
 	public void setAuthOption(String authOption) {
 		this.authOption = authOption;
-	}
-	
-	public RequestEmailConfirmDto toEmailConfirmDto() {
-		RequestEmailConfirmDto accountAuthRequestDto = new RequestEmailConfirmDto(email, authKey, authOption);
-		return accountAuthRequestDto;
-	}
-	
-	public void checkPassword() {
-		if(!password.equals(passwordCheck)) {
-			throw new PasswordCheckFailedException();
-		}
-	}
-	
-	public Map<String,String> toAuthCheckMap(){
-		Map<String, String> resultMap = new HashMap<String, String>();
-		resultMap.put("email", this.email);
-		resultMap.put("authOption", this.authOption);
-		resultMap.put("authKey", this.authKey);
-		return resultMap;
 	}
 	
 	@Override

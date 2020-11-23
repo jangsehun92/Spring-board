@@ -4,16 +4,16 @@ import jsh.project.board.account.domain.Auth;
 
 public interface AuthDao {
 	
-	public void insertAuth(final Auth dto);
+	public void insertAuth(final Auth auth);
 	
 	public Auth selectAuth(final String email);
 	
-	public int selectAuthCount(final Auth dto);
+	public int selectAuthCount(final Auth auth);
 	
-	public boolean selectAuthCheck(final Auth dto);
+	public boolean selectAuthCheck(final Auth auth);
 	
-	public void updateAuth(final Auth dto);
+	public void updateAuth(final Auth auth);
 	
-	public void deleteAuth(final Auth dto);
+	public void deleteAuth(final Auth auth);
 
 }

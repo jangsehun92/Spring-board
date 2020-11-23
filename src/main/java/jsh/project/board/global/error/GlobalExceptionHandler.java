@@ -97,7 +97,7 @@ public class GlobalExceptionHandler {
 	}
 	
 	/**
-	 * 이메일 인증에서 발생 할 수 있는 에러를 처리한다.
+	 * 인증 과정에서 발생 할 수 있는 에러들을 처리한다.
 	 */
 	@ExceptionHandler(AuthException.class)
 	protected Object handleBusinessException(HttpServletRequest request, final AuthException e) {

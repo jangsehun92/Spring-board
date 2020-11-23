@@ -15,8 +15,8 @@ public class AuthDaoImpl implements AuthDao{
 	}
 	
 	@Override
-	public void insertAuth(final Auth dto) {
-		sqlSession.insert("authMapper.insertAuth",dto);
+	public void insertAuth(final Auth auth) {
+		sqlSession.insert("authMapper.insertAuth", auth);
 	}
 	
 	@Override
@@ -25,23 +25,23 @@ public class AuthDaoImpl implements AuthDao{
 	}
 	
 	@Override
-	public int selectAuthCount(final Auth dto) {
-		return sqlSession.selectOne("authMapper.selectAuthCount", dto);
+	public int selectAuthCount(final Auth auth) {
+		return sqlSession.selectOne("authMapper.selectAuthCount", auth);
 	}
 	
 	@Override
-	public boolean selectAuthCheck(final Auth dto) {
-		return sqlSession.selectOne("authMapper.selectAuthCheck", dto);
+	public boolean selectAuthCheck(final Auth auth) {
+		return sqlSession.selectOne("authMapper.selectAuthCheck", auth);
 	}
 	
 	@Override
-	public void updateAuth(final Auth dto) {
-		sqlSession.update("authMapper.updateAuth",dto);
+	public void updateAuth(final Auth auth) {
+		sqlSession.update("authMapper.updateAuth", auth);
 	}
 	
 	@Override
-	public void deleteAuth(final Auth dto) {
-		sqlSession.update("authMapper.deleteAuth",dto);
+	public void deleteAuth(final Auth auth) {
+		sqlSession.update("authMapper.deleteAuth", auth);
 	}
 
 }

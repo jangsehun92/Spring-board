@@ -42,7 +42,7 @@ public class RequestArticleCreateDto implements ArticleConverter{
 	}
 	
 	public void setImportance(String importance) {
-		this.importance = Integer.parseInt(Importance.valueOf(importance.toUpperCase()).getValue());
+		this.importance = Integer.parseInt(Importance.valueOf(importance).getValue());
 	}
 	
 	public String getTitle() {

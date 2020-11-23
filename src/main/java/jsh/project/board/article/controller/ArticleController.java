@@ -61,7 +61,8 @@ public class ArticleController {
 	@GetMapping("/articles/{category}")
 	public String articleListByCategory(@PathVariable String category, RequestArticlesDto dto, Model model){
 		dto.setCategory(categoryEnumMapper.getCategory(category));
-		ResponseBoardDto responseBoardDto = categoryEnumMapper.isNoticeCategory(dto.getCategory())?articleService.getNoticeArticles(dto):articleService.getArticles(dto);
+		final ResponseBoardDto responseBoardDto = categoryEnumMapper.isNoticeCategory(dto.getCategory())?
+				articleService.getNoticeArticles(dto) : articleService.getArticles(dto);
 		model.addAttribute("responseBoardDto", responseBoardDto);
 		return "articlePages/articles";
 	}
@@ -70,7 +71,8 @@ public class ArticleController {
 	@GetMapping("/articles/account/{id}")
 	public @ResponseBody ResponseEntity<ResponseBoardDto> articleListByAccount(@PathVariable int id, RequestArticlesDto dto){
 		dto.setAccountId(id);
-		ResponseBoardDto responseArticlesDto = articleService.getAccountArticles(dto);
+		
+		final ResponseBoardDto responseArticlesDto = articleService.getAccountArticles(dto);
 		return new ResponseEntity<>(responseArticlesDto, HttpStatus.OK);
 	}
 	
@@ -78,7 +80,7 @@ public class ArticleController {
 	@GetMapping("/article/{id}") 
 	public String article(@PathVariable("id") int id, Model model, Principal principal, RequestArticleDetailDto dto) {
 		if(principal != null) {
-			Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			final Account account = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			dto.setAccountId(account.getId());
 		}
 		model.addAttribute("responseDto",articleService.getArticle(dto));

@@ -18,17 +18,16 @@ public class CategoryEnumMapper {
 	}
 	
 	public String getCategory(String category) {
-		return AllCategory.valueOf(category.toUpperCase()).getKey();
+		return AllCategory.valueOf(category.toUpperCase()).getValue();
 	}
 	
 	public boolean isNoticeCategory(String category) {
-		boolean result = false;
 		for(AdminCategory adminCategorys : AdminCategory.values()) {
 			if(adminCategorys.getKey().equals(category.toUpperCase())) {
-				result = true;
+				return true;
 			}
 		}
-		return result;
+		return false;
 	}
 	
 	public List<CategoryDto> getCategorys(String category){

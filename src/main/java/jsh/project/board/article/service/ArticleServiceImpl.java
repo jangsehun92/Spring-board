@@ -141,7 +141,7 @@ public class ArticleServiceImpl implements ArticleService{
 	public void like(RequestLikeDto dto) {
 		log.info(dto.toString());
 		if(articleDao.selectArticleCheck(dto.getArticleId()) == 0) throw new ArticleNotFoundException();
-		if(articleDao.selectArticleLikeCheck(dto)==0) {
+		if(articleDao.selectArticleLikeCheck(dto) == 0) {
 			articleDao.insertLike(dto);
 			log.info("insertLike");
 		}else {

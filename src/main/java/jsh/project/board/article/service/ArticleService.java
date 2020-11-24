@@ -13,7 +13,6 @@ import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
 import jsh.project.board.article.dto.response.ResponseBoardDto;
 
 public interface ArticleService {
-	
 	public ResponseBoardDto getNoticeArticles(RequestArticlesDto dto);
 	public ResponseBoardDto getArticles(RequestArticlesDto dto);
 	public ResponseBoardDto getAccountArticles(RequestArticlesDto dto);
@@ -24,5 +23,4 @@ public interface ArticleService {
 	public void deleteArticle(RequestArticleDeleteDto dto);
 	public void like(RequestLikeDto dto);
 	public String uploadFile(MultipartFile file);
-
 }

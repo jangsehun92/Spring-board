@@ -15,16 +15,16 @@ public interface ArticleDao {
 	public List<ResponseArticleDto> selectNoticeArticles(Map<String, Integer> paramMap);
 	public int selectTotalCount(RequestArticlesDto dto);
 	public List<ResponseArticleDto> selectArticles(RequestArticlesDto dto);
-	public void updateViewCount(int id);
+	public void updateViewCount(final int id);
 	public ResponseArticleDetailDto selectArticle(int id);
 	public ResponseArticleUpdateDto selectUpdateArticle(int id);
 	public void insertArticle(final Article article);
 	public void updateArticle(final Article article);
 	public void deleteArticle(int id);
-	public void deleteReplys(int articleId);
-	public void deleteLikes(int articleId);
+	public void deleteReplys(final int articleId);
+	public void deleteLikes(final int articleId);
 	public int selectArticleLikeCheck(RequestLikeDto dto);
-	public int selectArticleCheck(int id);
+	public int selectArticleCheck(final int id);
 	public void insertLike(RequestLikeDto dto);
 	public void deleteLike(RequestLikeDto dto);
 }

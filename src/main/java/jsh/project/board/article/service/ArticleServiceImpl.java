@@ -39,7 +39,7 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 	
 	@Override
-	public ResponseBoardDto getNoticeArticles(RequestArticlesDto dto){
+	public ResponseBoardDto getNoticeArticles(final RequestArticlesDto dto){
 		log.info(dto.toString());
 		Pagination pagination = new Pagination(articleDao.selectTotalCount(dto), dto.getPage());
 		dto.setStartCount(pagination.getStartCount());
@@ -52,7 +52,7 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 	
 	@Override
-	public ResponseBoardDto getArticles(RequestArticlesDto dto){
+	public ResponseBoardDto getArticles(final RequestArticlesDto dto){
 		log.info(dto.toString());
 		Pagination pagination = new Pagination(	articleDao.selectTotalCount(dto), 
 												dto.getPage(),
@@ -71,7 +71,7 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 	
 	@Override
-	public ResponseBoardDto getAccountArticles(RequestArticlesDto dto){
+	public ResponseBoardDto getAccountArticles(final RequestArticlesDto dto){
 		log.info(dto.toString());
 		Pagination pagination = new Pagination(articleDao.selectTotalCount(dto), dto.getPage());
 		dto.setStartCount(pagination.getStartCount());
@@ -87,7 +87,7 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 	
 	@Override
-	public ResponseArticleDetailDto getArticle(RequestArticleDetailDto dto) {
+	public ResponseArticleDetailDto getArticle(final RequestArticleDetailDto dto) {
 		log.info(dto.toString());
 		ResponseArticleDetailDto responseDto = articleDao.selectArticle(dto.getId());
 		if(responseDto == null) throw new ArticleNotFoundException();
@@ -100,7 +100,7 @@ public class ArticleServiceImpl implements ArticleService{
 	
 	@Transactional
 	@Override
-	public int createArticle(RequestArticleCreateDto dto) {
+	public int createArticle(final RequestArticleCreateDto dto) {
 		log.info(dto.toString());
 		Article article = dto.toArticle();
 		articleDao.insertArticle(article);
@@ -110,7 +110,7 @@ public class ArticleServiceImpl implements ArticleService{
 	
 	@Transactional
 	@Override
-	public ResponseArticleUpdateDto getUpdateArticle(int id) {
+	public ResponseArticleUpdateDto getUpdateArticle(final int id) {
 		ResponseArticleUpdateDto dto = articleDao.selectUpdateArticle(id);
 		log.info(dto.toString());
 		return dto;
@@ -118,7 +118,7 @@ public class ArticleServiceImpl implements ArticleService{
 	
 	@Transactional
 	@Override
-	public void updateArticle(RequestArticleUpdateDto dto) {
+	public void updateArticle(final RequestArticleUpdateDto dto) {
 		log.info(dto.toString());
 		Article article = dto.toArticle();
 		if(article == null) throw new ArticleNotFoundException();
@@ -128,7 +128,7 @@ public class ArticleServiceImpl implements ArticleService{
 	
 	@Transactional
 	@Override
-	public void deleteArticle(RequestArticleDeleteDto dto) {
+	public void deleteArticle(final RequestArticleDeleteDto dto) {
 		log.info("deleteArticle : " + dto.getArticleId());
 		if(articleDao.selectArticleCheck(dto.getArticleId()) == 0) throw new ArticleNotFoundException();
 		articleDao.deleteArticle(dto.getArticleId());
@@ -138,7 +138,7 @@ public class ArticleServiceImpl implements ArticleService{
 	
 	@Transactional
 	@Override
-	public void like(RequestLikeDto dto) {
+	public void like(final RequestLikeDto dto) {
 		log.info(dto.toString());
 		if(articleDao.selectArticleCheck(dto.getArticleId()) == 0) throw new ArticleNotFoundException();
 		if(articleDao.selectArticleLikeCheck(dto) == 0) {
@@ -151,7 +151,7 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 	
 	@Override
-	public String uploadFile(MultipartFile file) {
+	public String uploadFile(final MultipartFile file) {
 		log.info("uploadFileInfo { name : "+file.getOriginalFilename() + " size :  "+ file.getSize() + " type : " + file.getContentType() + " } ");
 		return fileService.upload(file);
 	}

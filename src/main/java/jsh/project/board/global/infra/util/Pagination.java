@@ -5,11 +5,11 @@ import java.util.Map;
 
 public class Pagination {
 	private int totalCount; //게시판의 총 게시글 수 
-	private int countList = 10; //한 페이지당 보여줄 게시글 수
-	private int countPage = 5; //페이징 처리하여 보여줄 하단의 숫자 범위 ex)5 = 1~5
+	private int countList = 10; //한 페이지당 보여줄 게시글 수 
+	private int countPage = 5; //페이징 처리하여 보여줄 하단의 숫자 범위 ex)5 = 1~5 
 	
 	private int page; //현재 페이지 
-	private int totalPage; //게시판의 총 게시글 수를 보여줄 만큼 나눈 후의 값(전체 페이지의 수)
+	private int totalPage; //게시판의 총 게시글 수를 보여줄 만큼 나눈 후의 값(전체 페이지의 수) 
 	
 	//DB 검색 조건
 	private int startCount; 
@@ -17,7 +17,7 @@ public class Pagination {
 	private int noticeCount;
 	
 	private int startPage; //하단 페이지네이션의 시작 숫자 
-	private int endPage; //하단 페이지네이션의 마지막 숫자
+	private int endPage; //하단 페이지네이션의 마지막 숫자 
 	
 	public Pagination(int totalCount, int page, int noticeCount) {
 		this.totalCount = totalCount;

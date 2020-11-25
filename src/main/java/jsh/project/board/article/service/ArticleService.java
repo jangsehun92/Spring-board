@@ -13,14 +13,14 @@ import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
 import jsh.project.board.article.dto.response.ResponseBoardDto;
 
 public interface ArticleService {
-	public ResponseBoardDto getNoticeArticles(RequestArticlesDto dto);
-	public ResponseBoardDto getArticles(RequestArticlesDto dto);
-	public ResponseBoardDto getAccountArticles(RequestArticlesDto dto);
-	public ResponseArticleDetailDto getArticle(RequestArticleDetailDto dto);
-	public int createArticle(RequestArticleCreateDto dto);
-	public ResponseArticleUpdateDto getUpdateArticle(int id);
-	public void updateArticle(RequestArticleUpdateDto dto);
-	public void deleteArticle(RequestArticleDeleteDto dto);
-	public void like(RequestLikeDto dto);
-	public String uploadFile(MultipartFile file);
+	public ResponseBoardDto getNoticeArticles(final RequestArticlesDto dto);
+	public ResponseBoardDto getArticles(final RequestArticlesDto dto);
+	public ResponseBoardDto getAccountArticles(final RequestArticlesDto dto);
+	public ResponseArticleDetailDto getArticle(final RequestArticleDetailDto dto);
+	public int createArticle(final RequestArticleCreateDto dto);
+	public ResponseArticleUpdateDto getUpdateArticle(final int id);
+	public void updateArticle(final RequestArticleUpdateDto dto);
+	public void deleteArticle(final RequestArticleDeleteDto dto);
+	public void like(final RequestLikeDto dto);
+	public String uploadFile(final MultipartFile file);
 }

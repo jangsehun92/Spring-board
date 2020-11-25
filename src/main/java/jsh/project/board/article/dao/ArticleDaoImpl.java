@@ -43,42 +43,42 @@ public class ArticleDaoImpl implements ArticleDao{
 	}
 	
 	@Override
-	public void updateViewCount(int id) {
+	public void updateViewCount(final int id) {
 		sqlSession.update("articleMapper.updateViewCount", id);
 	}
 	
 	@Override
-	public ResponseArticleDetailDto selectArticle(int id) {
+	public ResponseArticleDetailDto selectArticle(final int id) {
 		return sqlSession.selectOne("articleMapper.selectArticle", id);
 	}
 	
 	@Override
-	public ResponseArticleUpdateDto selectUpdateArticle(int id) {
+	public ResponseArticleUpdateDto selectUpdateArticle(final int id) {
 		return sqlSession.selectOne("articleMapper.selectUpdateArticle",id);
 	}
 	
 	@Override
-	public void insertArticle(Article article) {
+	public void insertArticle(final Article article) {
 		sqlSession.insert("articleMapper.insertArticle", article);
 	}
 	
 	@Override
-	public void updateArticle(Article article) {
+	public void updateArticle(final Article article) {
 		sqlSession.update("articleMapper.updateArticle", article);
 	}
 	
 	@Override
-	public void deleteArticle(int id) {
+	public void deleteArticle(final int id) {
 		sqlSession.delete("articleMapper.deleteArticle", id);
 	}
 	
 	@Override
-	public void deleteReplys(int articleId) {
+	public void deleteReplys(final int articleId) {
 		sqlSession.delete("replyMapper.deleteReplys", articleId);
 	}
 	
 	@Override
-	public void deleteLikes(int articleId) {
+	public void deleteLikes(final int articleId) {
 		sqlSession.delete("articleLikeMapper.deleteLikes", articleId);
 	}
 	
@@ -88,7 +88,7 @@ public class ArticleDaoImpl implements ArticleDao{
 	}
 	
 	@Override
-	public int selectArticleCheck(int id) {
+	public int selectArticleCheck(final int id) {
 		return sqlSession.selectOne("articleMapper.selectArticleCheck",id);
 		
 	}

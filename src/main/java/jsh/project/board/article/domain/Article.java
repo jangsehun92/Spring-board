@@ -22,7 +22,6 @@ public class Article {
 		this.importance = dto.getImportance();
 		this.title = dto.getTitle();
 		this.content = dto.getContent();
-		this.regdate = new Date();
 	}
 	
 	public Article(RequestArticleUpdateDto dto) {
@@ -31,7 +30,16 @@ public class Article {
 		this.importance = dto.getImportance();
 		this.title = dto.getTitle();
 		this.content = dto.getContent();
-		this.modifyDate = new Date();
+	}
+	
+	public static Article from(Object obj) {
+		if (obj instanceof RequestArticleCreateDto) {
+			return new Article((RequestArticleCreateDto) obj);
+		}
+		if (obj instanceof RequestArticleUpdateDto) {
+			return new Article((RequestArticleUpdateDto) obj);
+		}
+		return null;
 	}
 	
 	public int getId() {

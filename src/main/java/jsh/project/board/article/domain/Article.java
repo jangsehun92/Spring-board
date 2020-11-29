@@ -16,7 +16,11 @@ public class Article {
 	private Date regdate;
 	private Date modifyDate;
 	
-	public Article(RequestArticleCreateDto dto) {
+	private Article() {
+		
+	}
+	
+	private Article(RequestArticleCreateDto dto) {
 		this.accountId = dto.getAccountId();
 		this.category = dto.getCategory();
 		this.importance = dto.getImportance();
@@ -25,13 +29,8 @@ public class Article {
 		this.regdate = new Date();
 	}
 	
-	public Article(RequestArticleUpdateDto dto) {
-		this.id = dto.getId();
-		this.category = dto.getCategory();
-		this.importance = dto.getImportance();
-		this.title = dto.getTitle();
-		this.content = dto.getContent();
-		this.modifyDate = new Date();
+	public static Article from(RequestArticleCreateDto dto) {
+		return new Article(dto);
 	}
 	
 	public int getId() {
@@ -66,16 +65,20 @@ public class Article {
 		return modifyDate;
 	}
 	
+	public void editArticle(RequestArticleUpdateDto dto) {
+		this.category = dto.getCategory();
+		this.importance = dto.getImportance();
+		this.title = dto.getTitle();
+		this.content = dto.getContent();
+		this.modifyDate = new Date();
+	}
+	
 	@Override
 	public String toString() {
 		return "Article { id : "+id + " accountId : " + accountId 
 					+ " category : " + category + " importance : " + importance 
 					+ " title : " + title + " content : " + content + " regdate : " 
 					+ regdate + " modifyDate : " + modifyDate + " }";
-	}
-	
-	public interface ArticleConverter{
-		Article toArticle();
 	}
 	
 }

@@ -13,9 +13,9 @@ import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
 import jsh.project.board.article.dto.response.ResponseBoardDto;
 
 public interface ArticleService {
-	public ResponseBoardDto getNoticeArticles(final RequestArticlesDto dto);
-	public ResponseBoardDto getArticles(final RequestArticlesDto dto);
-	public ResponseBoardDto getAccountArticles(final RequestArticlesDto dto);
+	public ResponseBoardDto getNoticeArticles(RequestArticlesDto dto);
+	public ResponseBoardDto getArticles(RequestArticlesDto dto);
+	public ResponseBoardDto getAccountArticles(RequestArticlesDto dto);
 	public ResponseArticleDetailDto getArticle(final RequestArticleDetailDto dto);
 	public int createArticle(final RequestArticleCreateDto dto);
 	public ResponseArticleUpdateDto getUpdateArticle(final int id);

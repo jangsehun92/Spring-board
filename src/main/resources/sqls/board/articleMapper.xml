@@ -29,8 +29,8 @@
 			article_table.title,
 			article_table.content,
 			article_table.view_count AS viewCount,
-			count(reply_table.id) AS replyCount,
-			count(article_like_table.id) AS likeCount,
+			(SELECT count(*) FROM REPLY_TABLE WHERE reply_table.article_id = article_table.id)AS replyCount,
+			(SELECT count(*) FROM article_like_table WHERE article_like_table.article_id = article_table.id)AS likeCount,
 			article_table.regdate,
 			article_table.modify_date AS modifyDate
 		FROM 
@@ -43,7 +43,7 @@
 			article_table.id, article_table.account_id, article_table.category, account_table.nickname, article_table.title, article_table.content, article_table.view_count, article_table.regdate, article_table.modify_date
 	</select>
 	
-	<select id="selectUpdateArticle" resultType="ResponseArticleUpdateDto" parameterType="int">
+	<select id="selectUpdateArticle" resultType="Article" parameterType="int">
 		SELECT
 			id,
 			account_id AS accountId,

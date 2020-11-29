@@ -1,7 +1,5 @@
 package jsh.project.board.article.dto.request.article;
 
-import jsh.project.board.article.dto.response.ResponseBoardDto;
-
 public class RequestArticlesDto {
 	private int page;
 	private int accountId;
@@ -72,14 +70,6 @@ public class RequestArticlesDto {
 
 	public void setEndCount(int endCount) {
 		this.endCount = endCount;
-	}
-	
-	public ResponseBoardDto toResponseDto() {
-		ResponseBoardDto dto = new ResponseBoardDto();
-		dto.setCategory(this.category.toLowerCase());
-		dto.setQuery(this.query);
-		dto.setSort(this.sort);
-		return dto;
 	}
 	
 	@Override

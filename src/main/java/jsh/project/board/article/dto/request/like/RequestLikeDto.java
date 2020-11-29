@@ -9,11 +9,6 @@ public class RequestLikeDto {
 		
 	}
 	
-	public RequestLikeDto(int articleId, int accountId) {
-		this.articleId = articleId;
-		this.accountId = accountId;
-	}
-
 	public int getArticleId() {
 		return articleId;
 	}
@@ -35,8 +30,4 @@ public class RequestLikeDto {
 		return "RequestLikeDto { articleId : " + articleId + " accountId : " + accountId + " }";
 	}
 	
-	public interface LikeDtoConverter{
-		RequestLikeDto toLikeDto();
-	}
-
 }

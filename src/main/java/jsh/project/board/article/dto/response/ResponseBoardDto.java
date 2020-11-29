@@ -2,59 +2,46 @@ package jsh.project.board.article.dto.response;
 
 import java.util.List;
 
+import jsh.project.board.article.dto.request.article.RequestArticlesDto;
 import jsh.project.board.global.infra.util.Pagination;
 
 public class ResponseBoardDto {
-	private List<ResponseArticleDto> articles;
-	private Pagination pagination;
-	private String category;
-	private String query;
-	private String sort;
+	private final List<ResponseArticleDto> articles;
+	private final Pagination pagination;
+	private final String category;
+	private final String query;
+	private final String sort;
 	
-	public ResponseBoardDto() {
-		
+	private ResponseBoardDto(List<ResponseArticleDto> articles, Pagination pagination, RequestArticlesDto dto) {
+		this.articles = articles;
+		this.pagination = pagination;
+		this.category = dto.getCategory().toLowerCase();
+		this.query = dto.getQuery();
+		this.sort = dto.getSort();
+	}
+	
+	public static ResponseBoardDto of(List<ResponseArticleDto> articles, Pagination pagination, RequestArticlesDto dto) {
+		return new ResponseBoardDto(articles, pagination, dto);
 	}
 	
 	public List<ResponseArticleDto> getArticles() {
 		return articles;
 	}
 
-	public void setArticles(List<ResponseArticleDto> articles) {
-		this.articles = articles;
-	}
-
 	public Pagination getPagination() {
 		return pagination;
-	}
-
-	public void setPagination(Pagination pagination) {
-		this.pagination = pagination;
 	}
 
 	public String getCategory() {
 		return category;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
 	public String getQuery() {
 		return query;
 	}
 
-	public void setQuery(String query) {
-		this.query = query;
-	}
-	
 	public String getSort() {
 		return sort;
 	}
-	
-	public void setSort(String sort) {
-		this.sort = sort;
-	}
-	
-	
 	
 }

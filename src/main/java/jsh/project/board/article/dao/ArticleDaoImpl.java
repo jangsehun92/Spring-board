@@ -7,11 +7,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import jsh.project.board.article.domain.Article;
+import jsh.project.board.article.domain.Like;
 import jsh.project.board.article.dto.request.article.RequestArticlesDto;
-import jsh.project.board.article.dto.request.like.RequestLikeDto;
 import jsh.project.board.article.dto.response.ResponseArticleDetailDto;
 import jsh.project.board.article.dto.response.ResponseArticleDto;
-import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
 
 @Repository
 public class ArticleDaoImpl implements ArticleDao{
@@ -28,17 +27,17 @@ public class ArticleDaoImpl implements ArticleDao{
 	}
 	
 	@Override
-	public List<ResponseArticleDto> selectNoticeArticles(Map<String, Integer> paramMap){
+	public List<ResponseArticleDto> selectNoticeArticles(final Map<String, Integer> paramMap){
 		return sqlSession.selectList("boardMapper.selectNoticeArticles", paramMap);
 	}
 	
 	@Override
-	public int selectTotalCount(RequestArticlesDto dto) {
+	public int selectTotalCount(final RequestArticlesDto dto) {
 		return sqlSession.selectOne("boardMapper.selectTotalCount", dto);
 	}
 	
 	@Override
-	public List<ResponseArticleDto> selectArticles(RequestArticlesDto dto){
+	public List<ResponseArticleDto> selectArticles(final RequestArticlesDto dto){
 		return sqlSession.selectList("boardMapper.selectArticles", dto);
 	}
 	
@@ -53,7 +52,7 @@ public class ArticleDaoImpl implements ArticleDao{
 	}
 	
 	@Override
-	public ResponseArticleUpdateDto selectUpdateArticle(final int id) {
+	public Article selectUpdateArticle(final int id) {
 		return sqlSession.selectOne("articleMapper.selectUpdateArticle",id);
 	}
 	
@@ -83,8 +82,8 @@ public class ArticleDaoImpl implements ArticleDao{
 	}
 	
 	@Override
-	public int selectArticleLikeCheck(RequestLikeDto dto) {
-		return sqlSession.selectOne("articleLikeMapper.selectLikeCount", dto);
+	public int selectArticleLikeCheck(final Like like) {
+		return sqlSession.selectOne("articleLikeMapper.selectLikeCount", like);
 	}
 	
 	@Override
@@ -94,12 +93,12 @@ public class ArticleDaoImpl implements ArticleDao{
 	}
 	
 	@Override
-	public void insertLike(RequestLikeDto dto) {
-		sqlSession.insert("articleLikeMapper.insertLike", dto);
+	public void insertLike(final Like like) {
+		sqlSession.insert("articleLikeMapper.insertLike", like);
 	}
 	
 	@Override
-	public void deleteLike(RequestLikeDto dto) {
-		sqlSession.insert("articleLikeMapper.deleteLike", dto);
+	public void deleteLike(final Like like) {
+		sqlSession.insert("articleLikeMapper.deleteLike", like);
 	}
 }

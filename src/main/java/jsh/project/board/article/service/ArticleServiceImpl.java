@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jsh.project.board.article.dao.ArticleDao;
 import jsh.project.board.article.domain.Article;
+import jsh.project.board.article.domain.Like;
 import jsh.project.board.article.dto.request.article.RequestArticleCreateDto;
 import jsh.project.board.article.dto.request.article.RequestArticleDeleteDto;
 import jsh.project.board.article.dto.request.article.RequestArticleDetailDto;
@@ -23,8 +24,8 @@ import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
 import jsh.project.board.article.dto.response.ResponseBoardDto;
 import jsh.project.board.article.exception.ArticleNotFoundException;
 import jsh.project.board.article.exception.ArticlesNotFoundException;
-import jsh.project.board.global.infra.util.Pagination;
 import jsh.project.board.global.infra.util.FileService;
+import jsh.project.board.global.infra.util.Pagination;
 
 @Service
 public class ArticleServiceImpl implements ArticleService{
@@ -39,24 +40,31 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 	
 	@Override
-	public ResponseBoardDto getNoticeArticles(final RequestArticlesDto dto){
+	public ResponseBoardDto getNoticeArticles(RequestArticlesDto dto){
 		log.info(dto.toString());
-		Pagination pagination = new Pagination(articleDao.selectTotalCount(dto), dto.getPage());
+		
+		int totalCount = articleDao.selectTotalCount(dto);
+		int page = dto.getPage();
+		final Pagination pagination = Pagination.of(totalCount, page);
+		
 		dto.setStartCount(pagination.getStartCount());
 		dto.setEndCount(pagination.getEndCount());
 		
-		ResponseBoardDto responseArticles = dto.toResponseDto();
-		responseArticles.setArticles(articleDao.selectArticles(dto));
-		responseArticles.setPagination(pagination);
+		List<ResponseArticleDto> articles = articleDao.selectArticles(dto);
+		
+		final ResponseBoardDto responseArticles = ResponseBoardDto.of(articles, pagination, dto);
 		return responseArticles;
 	}
 	
 	@Override
-	public ResponseBoardDto getArticles(final RequestArticlesDto dto){
+	public ResponseBoardDto getArticles(RequestArticlesDto dto){
 		log.info(dto.toString());
-		Pagination pagination = new Pagination(	articleDao.selectTotalCount(dto), 
-												dto.getPage(),
-												articleDao.selectNoticeTotalCount());
+		
+		int totalCount = articleDao.selectTotalCount(dto);
+		int page = dto.getPage();
+		int noticeTotalCount = articleDao.selectNoticeTotalCount();
+		final Pagination pagination = Pagination.of(totalCount, page, noticeTotalCount);
+		
 		dto.setStartCount(pagination.getStartCount());
 		dto.setEndCount(pagination.getEndCount());
 		
@@ -64,45 +72,47 @@ public class ArticleServiceImpl implements ArticleService{
 		articles.addAll(articleDao.selectNoticeArticles(pagination.getNoticeScope()));
 		articles.addAll(articleDao.selectArticles(dto));
 		
-		ResponseBoardDto responseArticles = dto.toResponseDto();
-		responseArticles.setArticles(articles);
-		responseArticles.setPagination(pagination);
+		final ResponseBoardDto responseArticles = ResponseBoardDto.of(articles, pagination, dto);
 		return responseArticles;
 	}
 	
 	@Override
-	public ResponseBoardDto getAccountArticles(final RequestArticlesDto dto){
+	public ResponseBoardDto getAccountArticles(RequestArticlesDto dto){
 		log.info(dto.toString());
-		Pagination pagination = new Pagination(articleDao.selectTotalCount(dto), dto.getPage());
+		
+		int totalCount = articleDao.selectTotalCount(dto);
+		int page = dto.getPage();
+		final Pagination pagination = Pagination.of(totalCount, page);
+		
 		dto.setStartCount(pagination.getStartCount());
 		dto.setEndCount(pagination.getEndCount());
 		
 		List<ResponseArticleDto> articles = articleDao.selectArticles(dto);
 		if(articles.isEmpty()) throw new ArticlesNotFoundException();
 		
-		ResponseBoardDto responseArticles = dto.toResponseDto();
-		responseArticles.setArticles(articles);
-		responseArticles.setPagination(pagination);
+		final ResponseBoardDto responseArticles = ResponseBoardDto.of(articles, pagination, dto);
 		return responseArticles;
 	}
 	
 	@Override
 	public ResponseArticleDetailDto getArticle(final RequestArticleDetailDto dto) {
 		log.info(dto.toString());
-		ResponseArticleDetailDto responseDto = articleDao.selectArticle(dto.getId());
-		if(responseDto == null) throw new ArticleNotFoundException();
+		final ResponseArticleDetailDto responseArticleDetailDto = articleDao.selectArticle(dto.getId());
+		if(responseArticleDetailDto == null) throw new ArticleNotFoundException();
 		
 		articleDao.updateViewCount(dto.getId());
-		responseDto.setLikeCheck(articleDao.selectArticleLikeCheck(dto.toLikeDto()));
-		log.info(responseDto.toString());
-		return responseDto;
+		
+		final Like like = Like.of(dto.getId(), dto.getAccountId());
+		responseArticleDetailDto.setLikeCheck(articleDao.selectArticleLikeCheck(like));
+		log.info(responseArticleDetailDto.toString());
+		return responseArticleDetailDto;
 	}
 	
 	@Transactional
 	@Override
 	public int createArticle(final RequestArticleCreateDto dto) {
 		log.info(dto.toString());
-		Article article = dto.toArticle();
+		final Article article = Article.from(dto);
 		articleDao.insertArticle(article);
 		log.info(article.toString());
 		return article.getId();
@@ -111,7 +121,9 @@ public class ArticleServiceImpl implements ArticleService{
 	@Transactional
 	@Override
 	public ResponseArticleUpdateDto getUpdateArticle(final int id) {
-		ResponseArticleUpdateDto dto = articleDao.selectUpdateArticle(id);
+		final Article article = articleDao.selectUpdateArticle(id);
+		if(article == null) throw new ArticleNotFoundException();
+		final ResponseArticleUpdateDto dto = ResponseArticleUpdateDto.from(article);
 		log.info(dto.toString());
 		return dto;
 	}
@@ -120,8 +132,9 @@ public class ArticleServiceImpl implements ArticleService{
 	@Override
 	public void updateArticle(final RequestArticleUpdateDto dto) {
 		log.info(dto.toString());
-		Article article = dto.toArticle();
+		Article article = articleDao.selectUpdateArticle(dto.getId());
 		if(article == null) throw new ArticleNotFoundException();
+		article.editArticle(dto);
 		log.info(article.toString());
 		articleDao.updateArticle(article);
 	}
@@ -140,12 +153,13 @@ public class ArticleServiceImpl implements ArticleService{
 	@Override
 	public void like(final RequestLikeDto dto) {
 		log.info(dto.toString());
+		final Like like = Like.from(dto);
 		if(articleDao.selectArticleCheck(dto.getArticleId()) == 0) throw new ArticleNotFoundException();
-		if(articleDao.selectArticleLikeCheck(dto) == 0) {
-			articleDao.insertLike(dto);
+		if(articleDao.selectArticleLikeCheck(like) == 0) {
+			articleDao.insertLike(like);
 			log.info("insertLike");
 		}else {
-			articleDao.deleteLike(dto);
+			articleDao.deleteLike(like);
 			log.info("deleteLike");
 		}
 	}

@@ -2,12 +2,10 @@ package jsh.project.board.article.dto.request.article;
 
 import javax.validation.constraints.NotBlank;
 
-import jsh.project.board.article.domain.Article;
-import jsh.project.board.article.domain.Article.ArticleConverter;
 import jsh.project.board.article.enums.AllCategory;
 import jsh.project.board.article.enums.Importance;
 
-public class RequestArticleCreateDto implements ArticleConverter{
+public class RequestArticleCreateDto {
 	
 	private int accountId;
 	private String category;
@@ -59,12 +57,6 @@ public class RequestArticleCreateDto implements ArticleConverter{
 	
 	public void setContent(String content) {
 		this.content = content;
-	}
-	
-	@Override
-	public Article toArticle() {
-		final Article article = new Article(this);
-		return article;
 	}
 	
 	@Override

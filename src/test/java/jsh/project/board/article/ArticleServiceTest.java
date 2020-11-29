@@ -8,6 +8,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jsh.project.board.article.dao.ArticleDao;
+import jsh.project.board.article.domain.Article;
+import jsh.project.board.article.domain.Like;
 import jsh.project.board.article.dto.request.article.RequestArticleCreateDto;
 import jsh.project.board.article.dto.request.article.RequestArticleDeleteDto;
 import jsh.project.board.article.dto.request.article.RequestArticleDetailDto;
@@ -206,10 +210,27 @@ public class ArticleServiceTest {
 	}
 	
 	@Test
-	public void 수정할_게시글_가져오기() {
+	public void 수정할_게시글_가져오기() throws Exception{
 		//given
 		int articleId = 1;
-		given(articleDao.selectUpdateArticle(articleId)).willReturn(new ResponseArticleUpdateDto());
+		
+		// 클래스 정보
+		Class<Article> articleClass = Article.class;
+		// 해당 클래스 생성자 불러오기 ( getDeclaredXXX() : 접근제한자에 상관없이 모든 속성을 가져올 수 있다. )
+		Constructor<Article> constructors = articleClass.getDeclaredConstructor(new Class[] {});
+		// 클래스 생성자 접근가능 처리 (private 타입의 생성자에 접근 제한을 허락)
+		constructors.setAccessible(true); // access 가능하도록 변경
+		// 생성자를 통한 인스턴스 생성
+		Article article = (Article) constructors.newInstance();
+
+		// 필드값 설정
+		Field field = null;
+		// Account id값 설정
+		field = articleClass.getDeclaredField("id");
+		field.setAccessible(true); // access 가능하도록 변경
+		field.setInt(article, articleId);
+		
+		given(articleDao.selectUpdateArticle(articleId)).willReturn(article);
 		
 		//when
 		ResponseArticleUpdateDto responseDto = articleService.getUpdateArticle(articleId);
@@ -221,7 +242,7 @@ public class ArticleServiceTest {
 	}
 	
 	@Test
-	public void 게시글_수정() {
+	public void 게시글_수정() throws Exception{
 		//given
 		RequestArticleUpdateDto dto = new RequestArticleUpdateDto();
 		dto.setId(1);
@@ -231,6 +252,23 @@ public class ArticleServiceTest {
 		dto.setTitle("update title");
 		dto.setContent("update content");
 		
+		// 클래스 정보
+		Class<Article> articleClass = Article.class;
+		// 해당 클래스 생성자 불러오기 ( getDeclaredXXX() : 접근제한자에 상관없이 모든 속성을 가져올 수 있다. )
+		Constructor<Article> constructors = articleClass.getDeclaredConstructor(new Class[] {});
+		// 클래스 생성자 접근가능 처리 (private 타입의 생성자에 접근 제한을 허락)
+		constructors.setAccessible(true); // access 가능하도록 변경
+		// 생성자를 통한 인스턴스 생성
+		Article article = (Article) constructors.newInstance();
+
+		// 필드값 설정
+		Field field = null;
+		// Account id값 설정
+		field = articleClass.getDeclaredField("id");
+		field.setAccessible(true); // access 가능하도록 변경
+		field.setInt(article, dto.getId());
+		
+		given(articleDao.selectUpdateArticle(dto.getId())).willReturn(article);
 		//when
 		articleService.updateArticle(dto);
 		
@@ -244,7 +282,7 @@ public class ArticleServiceTest {
 		RequestArticleDeleteDto dto = new RequestArticleDeleteDto();
 		dto.setArticleId(1);
 		dto.setAccountId(1);
-		
+		given(articleDao.selectArticleCheck(dto.getArticleId())).willReturn(1);
 		//when
 		articleService.deleteArticle(dto);
 		
@@ -261,11 +299,13 @@ public class ArticleServiceTest {
 		dto.setArticleId(1);
 		dto.setAccountId(1);
 		
+		given(articleDao.selectArticleCheck(dto.getArticleId())).willReturn(1);
+		
 		//when
 		articleService.like(dto);
 		
 		//then
-		verify(articleDao, times(1)).selectArticleLikeCheck(dto);
+		verify(articleDao, times(1)).selectArticleLikeCheck(any());
 	}
 	
 }

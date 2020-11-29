@@ -81,7 +81,8 @@
         │               │    │   ├── ArticleService.java
         │               │    │   └── ArticleServiceImpl.java        
         │               │    ├── domain
-        │               │    │   └── Article.java        
+        │               │    │   ├── Article.java
+        │               │    │   └── Like.java        
         │               │    ├── dao
         │               │    │   ├── ArticleDao.java
         │               │    │   └── ArticleDaoImpl.java        

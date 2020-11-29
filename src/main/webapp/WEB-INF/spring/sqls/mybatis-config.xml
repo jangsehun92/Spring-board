@@ -14,11 +14,10 @@
 		<typeAlias type="jsh.project.board.article.domain.Article" alias="Article" />
 		<typeAlias type="jsh.project.board.article.dto.response.ResponseArticleDto" alias="ResponseArticleDto" />
 		<typeAlias type="jsh.project.board.article.dto.response.ResponseArticleDetailDto" alias="ResponseArticleDetailDto" />
-		<typeAlias type="jsh.project.board.article.dto.response.ResponseArticleUpdateDto" alias="ResponseArticleUpdateDto" />
 		<typeAlias type="jsh.project.board.article.dto.request.article.RequestArticlesDto" alias="RequestArticlesDto" />
 
 		<!-- Article Like 관련 -->
-		<typeAlias type="jsh.project.board.article.dto.request.like.RequestLikeDto" alias="RequestLikeDto" />
+		<typeAlias type="jsh.project.board.article.domain.Like" alias="Like" />
 
 		<!-- Article Reply 관련 -->
 		<typeAlias type="jsh.project.board.reply.domain.Reply" alias="Reply" />

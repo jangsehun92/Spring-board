@@ -19,7 +19,7 @@ public class Pagination {
 	private int startPage; //하단 페이지네이션의 시작 숫자 
 	private int endPage; //하단 페이지네이션의 마지막 숫자 
 	
-	public Pagination(int totalCount, int page, int noticeCount) {
+	private Pagination(int totalCount, int page, int noticeCount) {
 		this.totalCount = totalCount;
 		this.page = page;
 		this.noticeCount = noticeCount;
@@ -27,10 +27,18 @@ public class Pagination {
 		init();
 	}
 	
-	public Pagination(int totalCount, int page) {
+	private Pagination(int totalCount, int page) {
 		this.totalCount = totalCount;
 		this.page = page;
 		init();
+	}
+	
+	public static Pagination of(int totalCount, int page) {
+		return new Pagination(totalCount, page);
+	}	
+	
+	public static Pagination of(int totalCount, int page, int noticeCount) {
+		return new Pagination(totalCount, page, noticeCount);
 	}
 	
 	public int getCountList() {

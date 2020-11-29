@@ -1,9 +1,6 @@
 package jsh.project.board.article.dto.request.article;
 
-import jsh.project.board.article.dto.request.like.RequestLikeDto;
-import jsh.project.board.article.dto.request.like.RequestLikeDto.LikeDtoConverter;
-
-public class RequestArticleDeleteDto implements LikeDtoConverter{
+public class RequestArticleDeleteDto {
 	private int articleId;
 	private int accountId;
 	
@@ -27,12 +24,4 @@ public class RequestArticleDeleteDto implements LikeDtoConverter{
 		this.accountId = accountId;
 	}
 	
-	@Override
-	public RequestLikeDto toLikeDto() {
-		RequestLikeDto dto = new RequestLikeDto(articleId, accountId);
-		return dto;
-	}
-	
-	
-
 }

@@ -4,11 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import jsh.project.board.article.domain.Article;
+import jsh.project.board.article.domain.Like;
 import jsh.project.board.article.dto.request.article.RequestArticlesDto;
-import jsh.project.board.article.dto.request.like.RequestLikeDto;
 import jsh.project.board.article.dto.response.ResponseArticleDetailDto;
 import jsh.project.board.article.dto.response.ResponseArticleDto;
-import jsh.project.board.article.dto.response.ResponseArticleUpdateDto;
 
 public interface ArticleDao {
 	public int selectNoticeTotalCount();
@@ -17,14 +16,14 @@ public interface ArticleDao {
 	public List<ResponseArticleDto> selectArticles(RequestArticlesDto dto);
 	public void updateViewCount(final int id);
 	public ResponseArticleDetailDto selectArticle(int id);
-	public ResponseArticleUpdateDto selectUpdateArticle(int id);
+	public Article selectUpdateArticle(int id);
 	public void insertArticle(final Article article);
 	public void updateArticle(final Article article);
 	public void deleteArticle(int id);
 	public void deleteReplys(final int articleId);
 	public void deleteLikes(final int articleId);
-	public int selectArticleLikeCheck(RequestLikeDto dto);
+	public int selectArticleLikeCheck(final Like like);
 	public int selectArticleCheck(final int id);
-	public void insertLike(RequestLikeDto dto);
-	public void deleteLike(RequestLikeDto dto);
+	public void insertLike(final Like like);
+	public void deleteLike(final Like like);
 }

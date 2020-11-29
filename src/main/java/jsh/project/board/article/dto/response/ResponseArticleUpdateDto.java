@@ -1,5 +1,7 @@
 package jsh.project.board.article.dto.response;
 
+import jsh.project.board.article.domain.Article;
+
 public class ResponseArticleUpdateDto {
 	
 	private int id;
@@ -9,58 +11,48 @@ public class ResponseArticleUpdateDto {
 	private String title;
 	private String content;
 	
-	public ResponseArticleUpdateDto() {
-		
+	private ResponseArticleUpdateDto(int id, int accountId, String category, int importance, String title, String content) {
+		this.id = id;
+		this.accountId = accountId;
+		this.category = category;
+		this.importance = importance;
+		this.title = title;
+		this.content = content;
+	}
+	
+	public static ResponseArticleUpdateDto from(Article article) {
+		return new ResponseArticleUpdateDto(article.getId(), 
+											article.getAccountId(), 
+											article.getCategory(), 
+											article.getImportance(), 
+											article.getTitle(), 
+											article.getContent());
 	}
 
 	public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public int getAccountId() {
 		return accountId;
 	}
 
-	public void setAccountId(int accountId) {
-		this.accountId = accountId;
-	}
-	
 	public String getCategory() {
 		return category;
-	}
-	
-	public void setCategory(String category) {
-		this.category = category;
 	}
 	
 	public int getImportance() {
 		return importance;
 	}
 	
-	public void setImportance(int importance) {
-		this.importance = importance;
-	}
-
 	public String getTitle() {
 		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public String getContent() {
 		return content;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
-	}
-	
 	@Override
 	public String toString() {
 		return "ResponseArticleUpdateDto { id : " + id + " accountId : " + accountId 

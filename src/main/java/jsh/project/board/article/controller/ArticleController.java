@@ -117,7 +117,7 @@ public class ArticleController {
 	@PreAuthorize("((#dto.accountId == principal.id) and (#dto.id == #id)) or (hasAuthority('ROLE_ADMIN'))")
 	@PostMapping("/article/edit/{id}")
 	public String articleUpdateForm(@PathVariable("id") int id, Model model, RequestArticleInfoDto dto, HttpServletRequest request) {
-		ResponseArticleUpdateDto responseDto = articleService.getUpdateArticle(dto.getId());
+		final ResponseArticleUpdateDto responseDto = articleService.getUpdateArticle(dto.getId());
 		model.addAttribute("category", categoryEnumMapper.getCategory(responseDto.getCategory()));
 		model.addAttribute("categorys", categoryEnumMapper.getCategorys(responseDto.getCategory()));
 		if(request.isUserInRole(Role.ADMIN.getValue()) && categoryEnumMapper.isNoticeCategory(responseDto.getCategory())) {

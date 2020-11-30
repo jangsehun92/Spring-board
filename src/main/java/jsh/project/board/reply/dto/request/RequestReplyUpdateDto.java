@@ -2,10 +2,7 @@ package jsh.project.board.reply.dto.request;
 
 import javax.validation.constraints.NotBlank;
 
-import jsh.project.board.reply.domain.Reply;
-import jsh.project.board.reply.domain.Reply.ReplyConverter;
-
-public class RequestReplyUpdateDto implements ReplyConverter{
+public class RequestReplyUpdateDto {
 	
 	private int id;
 	private int articleId;
@@ -54,10 +51,4 @@ public class RequestReplyUpdateDto implements ReplyConverter{
 		return "RequestReplyUpdateDto {id : " + id + " articleId : " + articleId + " accountId : " + accountId + " content : " + content + " }";
 	}
 	
-	@Override
-	public Reply toReply() {
-		final Reply reply = new Reply(this);
-		return reply;
-	}
-
 }

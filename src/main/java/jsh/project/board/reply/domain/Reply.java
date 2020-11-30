@@ -19,7 +19,7 @@ public class Reply {
 	private Date modifyDate;
 	private int enabled;
 	
-	public Reply(RequestReplyCreateDto dto) {
+	private Reply(RequestReplyCreateDto dto) {
 		this.articleId = dto.getArticleId();
 		this.accountId = dto.getAccountId();
 		this.replyGroup = dto.getReplyGroup();
@@ -30,7 +30,7 @@ public class Reply {
 		this.enabled = 1;
 	}
 	
-	public Reply(RequestReplyUpdateDto dto) {
+	private Reply(RequestReplyUpdateDto dto) {
 		this.id = dto.getId();
 		this.articleId = dto.getArticleId();
 		this.accountId = dto.getAccountId();
@@ -38,10 +38,20 @@ public class Reply {
 		this.modifyDate = new Date();
 	}
 	
-	public Reply(RequestReplyDeleteDto dto) {
+	private Reply(RequestReplyDeleteDto dto) {
 		this.id = dto.getId();
 		this.articleId = dto.getArticleId();
 		this.enabled = 0;
+	}
+	
+	public static Reply from(Object obj) {
+		if(obj instanceof RequestReplyCreateDto) {
+			return new Reply((RequestReplyCreateDto) obj);
+		}else if(obj instanceof RequestReplyUpdateDto) {
+			return new Reply((RequestReplyUpdateDto) obj);
+		}else {
+			return new Reply((RequestReplyDeleteDto) obj);
+		}
 	}
 	
 	public int getId() {
@@ -95,10 +105,6 @@ public class Reply {
 					+ " content : " + content + " regdate : " + regdate 
 					+ " modifyDate " + modifyDate 
 					+ " enabled : " + enabled + " } ";
-	}
-	
-	public interface ReplyConverter{
-		Reply toReply();
 	}
 	
 }

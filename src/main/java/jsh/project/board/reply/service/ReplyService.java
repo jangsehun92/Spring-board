@@ -8,8 +8,8 @@ import jsh.project.board.reply.dto.request.RequestReplyUpdateDto;
 import jsh.project.board.reply.dto.response.ResponseReplyDto;
 
 public interface ReplyService {
-	public List<ResponseReplyDto> getReplys(int articleId);
+	public List<ResponseReplyDto> getReplys(final int articleId);
 	public void saveReply(RequestReplyCreateDto dto);
-	public void modifyReply(RequestReplyUpdateDto dto);
-	public void enabledReply(RequestReplyDeleteDto dto);
+	public void modifyReply(final RequestReplyUpdateDto dto);
+	public void enabledReply(final RequestReplyDeleteDto dto);
 }

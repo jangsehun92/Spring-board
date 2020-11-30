@@ -1,9 +1,6 @@
 package jsh.project.board.reply.dto.request;
 
-import jsh.project.board.reply.domain.Reply;
-import jsh.project.board.reply.domain.Reply.ReplyConverter;
-
-public class RequestReplyDeleteDto implements ReplyConverter{
+public class RequestReplyDeleteDto {
 	
 	private int id;
 	private int articleId;
@@ -41,13 +38,5 @@ public class RequestReplyDeleteDto implements ReplyConverter{
 	public String toString() {
 		return "RequestReplyDeleleteDto {id : " + id + " articleId : " + articleId + " accountId : " + accountId +" }";
 	}
-
-	@Override
-	public Reply toReply() {
-		final Reply reply = new Reply(this);
-		return reply;
-	}
-	
-	
 
 }

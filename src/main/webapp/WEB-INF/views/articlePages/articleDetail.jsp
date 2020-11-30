@@ -71,7 +71,7 @@ function replyList(id){
 								 	"<div style='position: relative; height: 100%'>"+
 								  		"<div>"+
 											"<div>"+
-												"<span>"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>";
+												"<span><a href=/account/info/"+value.accountId+">"+value.nickname+"</a></span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>";
 										if(value.modifyDate != null){
 											html +=
 												"<span class='text-muted'><small> ᛫ "+uxin_timestamp(value.modifyDate)+" 수정</small></span>";
@@ -98,7 +98,7 @@ function replyList(id){
 							 	"<div style='position: relative; height: 100%'>"+
 							  		"<div>"+
 										"<div>"+
-											"<span>"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>";
+											"<span><a href=/account/info/"+value.accountId+">"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>";
 									if(value.modifyDate != null){
 										html +=
 											"<span class='text-muted'><small> ᛫ "+uxin_timestamp(value.modifyDate)+" 수정</small></span>";
@@ -121,7 +121,7 @@ function replyList(id){
 					}
 					else{
 						html +=
-							"<li class='list-group-item'><span>"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>";
+							"<li class='list-group-item'><span><a href=/account/info/"+value.accountId+">"+value.nickname+"</span><span class='text-muted'> | <small>"+uxin_timestamp(value.regdate)+" 작성</small></span>";
 						if(value.modifyDate != null){
 							html +=
 								"<span class='text-muted'><small> ᛫ "+uxin_timestamp(value.modifyDate)+" 수정</small></span>";

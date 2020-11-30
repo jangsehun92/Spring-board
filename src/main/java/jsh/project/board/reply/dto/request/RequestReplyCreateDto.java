@@ -2,10 +2,7 @@ package jsh.project.board.reply.dto.request;
 
 import javax.validation.constraints.NotBlank;
 
-import jsh.project.board.reply.domain.Reply;
-import jsh.project.board.reply.domain.Reply.ReplyConverter;
-
-public class RequestReplyCreateDto implements ReplyConverter{
+public class RequestReplyCreateDto {
 	
 	private int articleId;
 	private int accountId;
@@ -77,10 +74,4 @@ public class RequestReplyCreateDto implements ReplyConverter{
 				+ " content : " + content + " }";
 	}
 	
-	@Override
-	public Reply toReply() {
-		final Reply reply = new Reply(this);
-		return reply;
-	}
-
 }

@@ -31,8 +31,8 @@ public class ReplyServiceImpl implements ReplyService{
 	}
 	
 	@Override
-	public List<ResponseReplyDto> getReplys(int articleId) {
-		List<ResponseReplyDto> responseDto = replyDao.selectReplys(articleId);
+	public List<ResponseReplyDto> getReplys(final int articleId) {
+		final List<ResponseReplyDto> responseDto = replyDao.selectReplys(articleId);
 		if(responseDto.isEmpty()) throw new ReplysNotFoundException();
 		return responseDto;
 	}
@@ -51,29 +51,29 @@ public class ReplyServiceImpl implements ReplyService{
 			dto.setReplyDepth(0);
 		}
 		log.info(dto.toString());
-		Reply reply = dto.toReply();
+		final Reply reply = Reply.from(dto);
 		log.info(reply.toString());
 		replyDao.insertReply(reply);
 	}
 	
 	@Transactional
 	@Override
-	public void modifyReply(RequestReplyUpdateDto dto) {
+	public void modifyReply(final RequestReplyUpdateDto dto) {
 		if(articleDao.selectArticleCheck(dto.getArticleId()) == 0) throw new ArticleNotFoundException();
 		if(replyDao.selectReplyCheck(dto.getId()) == 0) throw new ReplyNotFoundException();
 		log.info(dto.toString());
-		Reply reply = dto.toReply();
+		final Reply reply = Reply.from(dto);
 		log.info(reply.toString());
 		replyDao.updateReply(reply);
 	}
 	
 	@Transactional
 	@Override
-	public void enabledReply(RequestReplyDeleteDto dto) {
+	public void enabledReply(final RequestReplyDeleteDto dto) {
 		if(articleDao.selectArticleCheck(dto.getArticleId()) == 0) throw new ArticleNotFoundException();
 		if(replyDao.selectReplyCheck(dto.getId()) == 0) throw new ReplyNotFoundException();
 		log.info(dto.toString());
-		Reply reply = dto.toReply();
+		final Reply reply = Reply.from(dto);
 		log.info(reply.toString());
 		replyDao.deleteReply(reply);
 	}

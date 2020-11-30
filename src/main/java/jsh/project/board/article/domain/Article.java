@@ -28,27 +28,8 @@ public class Article {
 		this.content = dto.getContent();
 	}
 	
-<<<<<<< HEAD
-	public Article(RequestArticleUpdateDto dto) {
-		this.id = dto.getId();
-		this.category = dto.getCategory();
-		this.importance = dto.getImportance();
-		this.title = dto.getTitle();
-		this.content = dto.getContent();
-	}
-	
-	public static Article from(Object obj) {
-		if (obj instanceof RequestArticleCreateDto) {
-			return new Article((RequestArticleCreateDto) obj);
-		}
-		if (obj instanceof RequestArticleUpdateDto) {
-			return new Article((RequestArticleUpdateDto) obj);
-		}
-		return null;
-=======
 	public static Article from(RequestArticleCreateDto dto) {
 		return new Article(dto);
->>>>>>> refactoring
 	}
 	
 	public int getId() {

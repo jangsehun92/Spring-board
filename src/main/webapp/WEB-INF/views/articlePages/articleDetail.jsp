@@ -326,7 +326,7 @@ function replyCreate(){
 		url:"/reply",
 		type:"post",
 		contentType : "application/json; charset=UTF-8",
-		data: JSON.stringify(requestReplyCreateDto), 
+		data: JSON.stringify(requestReplyCreateDto),
 		success:function(data){
 			replyList("${responseDto.id}");
 		},

@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 
 import jsh.project.board.article.dao.ArticleDao;
 import jsh.project.board.article.domain.Article;
-import jsh.project.board.article.domain.Like;
 import jsh.project.board.article.dto.request.article.RequestArticleCreateDto;
 import jsh.project.board.article.dto.request.article.RequestArticleDeleteDto;
 import jsh.project.board.article.dto.request.article.RequestArticleDetailDto;

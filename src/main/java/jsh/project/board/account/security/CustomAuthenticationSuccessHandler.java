@@ -46,11 +46,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 	protected void resultRedirectStrategy(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 		//login View로 전환되기 전 url의 값을 가져온다.(권한이 필요한 요청을 했을 때, 로그인이 되어있지 않으면 로그인 View로 가기 때문이다)
 		SavedRequest savedRequest = requestCache.getRequest(request, response);
-		
 		if(savedRequest != null) {
 			String targetUrl = savedRequest.getRedirectUrl();
 			redirectStrategy.sendRedirect(request, response, targetUrl);
-		}else {
+		} else {
 			redirectStrategy.sendRedirect(request, response, defaultUrl);
 		}
 	}
